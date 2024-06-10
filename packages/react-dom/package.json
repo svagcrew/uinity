@@ -1,6 +1,6 @@
 {
   "name": "@uinity/react-dom",
-  "version": "0.1.2",
+  "version": "0.1.5",
   "homepage": "https://github.com/svagcrew/uinity",
   "repository": {
     "type": "git",
@@ -17,23 +17,35 @@
   "publishConfig": {
     "access": "public"
   },
-  "type": "module",
   "main": "./dist/index.js",
   "files": [
     "./src/**/*",
     "./dist/**/*"
   ],
   "scripts": {
-    "prettify": "svag-prettier prettify",
-    "dev": "svag-ts dev",
-    "watch": "svag-ts watch",
-    "types": "svag-ts types",
     "build": "svag-ts build",
-    "start": "svag-ts start",
+    "build-storybook": "storybook build",
+    "dev": "svag-ts dev",
     "lint": "svag-lint lint",
-    "test": "svag-jest test",
+    "prettify": "svag-prettier prettify",
     "sb": "storybook dev -p 6006",
-    "build-storybook": "storybook build"
+    "start": "svag-ts start",
+    "test": "svag-jest test",
+    "types": "svag-ts types",
+    "watch": "svag-ts watch"
+  },
+  "peerDependencies": {
+    "@floating-ui/react": "^0.26.16",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1"
+  },
+  "dependencies": {
+    "@uinity/core": "workspace:*",
+    "body-scroll-lock": "4.0.0-beta.0",
+    "lodash": "^4.17.21",
+    "nprogress": "^0.2.0",
+    "styled-components": "^6.1.11",
+    "svag-utils": "^0.1.8"
   },
   "devDependencies": {
     "@chromatic-com/storybook": "^1.4.0",
@@ -72,22 +84,10 @@
     "vite": "^5.2.11",
     "vite-plugin-svgr": "^4.2.0"
   },
-  "dependencies": {
-    "body-scroll-lock": "4.0.0-beta.0",
-    "lodash": "^4.17.21",
-    "nprogress": "^0.2.0",
-    "styled-components": "^6.1.11",
-    "svag-utils": "^0.1.8",
-    "@uinity/core": "workspace:*"
-  },
-  "peerDependencies": {
-    "@floating-ui/react": "^0.26.16",
-    "react": "^18.3.1",
-    "react-dom": "^18.3.1"
-  },
   "eslintConfig": {
     "extends": [
       "plugin:storybook/recommended"
     ]
-  }
+  },
+  "type": "module"
 }

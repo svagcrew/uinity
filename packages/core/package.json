@@ -1,6 +1,6 @@
 {
   "name": "@uinity/core",
-  "version": "0.1.2",
+  "version": "0.1.5",
   "homepage": "https://github.com/svagcrew/uinity",
   "repository": {
     "type": "git",
@@ -23,16 +23,23 @@
     "./dist/**/*"
   ],
   "scripts": {
-    "prettify": "svag-prettier prettify",
-    "dev": "svag-ts dev",
-    "watch": "svag-ts watch",
-    "types": "svag-ts types",
     "build": "svag-ts build && pnpm generate-default-configs",
-    "start": "svag-ts start",
-    "lint": "svag-lint lint",
-    "test": "svag-jest test",
+    "dev": "svag-ts dev",
+    "gdc": "pnpm generate-default-configs",
     "generate-default-configs": "tsx ./src/scripts/generateDefaultConfigs.ts",
-    "gdc": "pnpm generate-default-configs"
+    "lint": "svag-lint lint",
+    "prettify": "svag-prettier prettify",
+    "start": "svag-ts start",
+    "test": "svag-jest test",
+    "types": "svag-ts types",
+    "watch": "svag-ts watch"
+  },
+  "dependencies": {
+    "dedent": "^1.5.3",
+    "lodash": "^4.17.21",
+    "svag-deep-map": "^0.1.14",
+    "svag-utils": "^0.1.8",
+    "zod": "^3.23.8"
   },
   "devDependencies": {
     "@types/jest": "^29.5.12",
@@ -55,12 +62,5 @@
     "tsc-alias": "^1.8.10",
     "typescript": "^5.4.5"
   },
-  "type": "module",
-  "dependencies": {
-    "dedent": "^1.5.3",
-    "lodash": "^4.17.21",
-    "svag-deep-map": "^0.1.14",
-    "svag-utils": "^0.1.8",
-    "zod": "^3.23.8"
-  }
+  "type": "module"
 }

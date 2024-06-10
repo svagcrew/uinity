@@ -1,6 +1,6 @@
 {
   "name": "@uinity/cli",
-  "version": "0.1.2",
+  "version": "0.1.5",
   "homepage": "https://github.com/svagcrew/uinity",
   "repository": {
     "type": "git",
@@ -20,21 +20,28 @@
   "bin": {
     "uinity": "./bin/index.js"
   },
-  "type": "module",
   "files": [
     "./src/**/*",
     "./dist/**/*",
     "./bin/**/*"
   ],
   "scripts": {
-    "prettify": "svag-prettier prettify",
-    "dev": "svag-ts dev",
-    "watch": "svag-ts watch",
-    "types": "svag-ts types",
     "build": "svag-ts build",
-    "start": "svag-ts start",
+    "dev": "svag-ts dev",
     "lint": "svag-lint lint",
-    "test": "svag-jest test"
+    "prettify": "svag-prettier prettify",
+    "start": "svag-ts start",
+    "test": "svag-jest test",
+    "types": "svag-ts types",
+    "watch": "svag-ts watch"
+  },
+  "dependencies": {
+    "@uinity/core": "workspace:*",
+    "dedent": "^1.5.3",
+    "fast-glob": "^3.3.2",
+    "lodash": "^4.17.21",
+    "svag-cli-utils": "^0.1.67",
+    "zod": "^3.23.8"
   },
   "devDependencies": {
     "@types/jest": "^29.5.12",
@@ -54,12 +61,5 @@
     "tsc-alias": "^1.8.10",
     "typescript": "^5.4.5"
   },
-  "dependencies": {
-    "dedent": "^1.5.3",
-    "fast-glob": "^3.3.2",
-    "lodash": "^4.17.21",
-    "svag-cli-utils": "^0.1.67",
-    "@uinity/core": "workspace:*",
-    "zod": "^3.23.8"
-  }
+  "type": "module"
 }
