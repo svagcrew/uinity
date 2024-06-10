@@ -54,9 +54,6 @@ importers:
       eslint:
         specifier: ^9.3.0
         version: 9.4.0
-      husky:
-        specifier: ^9.0.11
-        version: 9.0.11
       jest:
         specifier: 30.0.0-alpha.4
         version: 30.0.0-alpha.4(@types/node@20.14.2)
@@ -133,9 +130,6 @@ importers:
       eslint:
         specifier: ^9.2.0
         version: 9.4.0
-      husky:
-        specifier: ^9.0.11
-        version: 9.0.11
       jest:
         specifier: 30.0.0-alpha.4
         version: 30.0.0-alpha.4(@types/node@20.14.2)
@@ -148,9 +142,6 @@ importers:
       svag-esm:
         specifier: ^0.1.10
         version: 0.1.10
-      svag-husky:
-        specifier: ^0.1.49
-        version: 0.1.49(@types/node@20.14.2)
       svag-jest:
         specifier: ^0.1.39
         version: 0.1.39(@babel/core@7.24.7)(@types/node@20.14.2)(esbuild@0.20.2)(jest@30.0.0-alpha.4)

@@ -23,7 +23,8 @@
     "lint": "pnpm recursive run lint",
     "types": "pnpm recursive run types",
     "watch": "concurrently --names 'cli,core,react-dom' 'pnpm --filter cli watch' 'pnpm --filter core watch' 'pnpm --filter react-dom watch'",
-    "build": "pnpm recursive run build"
+    "build": "pnpm recursive run build",
+    "prepare": "husky"
   },
   "devDependencies": {
     "concurrently": "^8.2.2",

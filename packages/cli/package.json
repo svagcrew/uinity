@@ -1,13 +1,13 @@
 {
   "name": "@uinity/cli",
-  "version": "0.1.17",
-  "homepage": "https://github.com/svagcrew/uinity-cli",
+  "version": "0.1.2",
+  "homepage": "https://github.com/svagcrew/uinity",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/svagcrew/uinity-cli.git"
+    "url": "git+https://github.com/svagcrew/uinity.git"
   },
   "bugs": {
-    "url": "https://github.com/svagcrew/uinity-cli/issues"
+    "url": "https://github.com/svagcrew/uinity/issues"
   },
   "author": {
     "name": "Sergei Dmitriev",
@@ -34,8 +34,7 @@
     "build": "svag-ts build",
     "start": "svag-ts start",
     "lint": "svag-lint lint",
-    "test": "svag-jest test",
-    "prepare": "husky"
+    "test": "svag-jest test"
   },
   "devDependencies": {
     "@types/jest": "^29.5.12",
@@ -43,7 +42,6 @@
     "concurrently": "^8.2.2",
     "cross-env": "^7.0.3",
     "eslint": "^9.3.0",
-    "husky": "^9.0.11",
     "jest": "30.0.0-alpha.4",
     "prettier": "^3.2.5",
     "rimraf": "^5.0.7",

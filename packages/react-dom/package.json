@@ -1,13 +1,13 @@
 {
   "name": "@uinity/react-dom",
-  "version": "0.1.34",
-  "homepage": "https://github.com/svagcrew/uinity-react-dom",
+  "version": "0.1.2",
+  "homepage": "https://github.com/svagcrew/uinity",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/svagcrew/uinity-react-dom.git"
+    "url": "git+https://github.com/svagcrew/uinity.git"
   },
   "bugs": {
-    "url": "https://github.com/svagcrew/uinity-react-dom/issues"
+    "url": "https://github.com/svagcrew/uinity/issues"
   },
   "author": {
     "name": "Sergei Dmitriev",

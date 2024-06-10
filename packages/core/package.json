@@ -1,13 +1,13 @@
 {
   "name": "@uinity/core",
-  "version": "0.1.26",
-  "homepage": "https://github.com/svagcrew/uinity-core",
+  "version": "0.1.2",
+  "homepage": "https://github.com/svagcrew/uinity",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/svagcrew/uinity-core.git"
+    "url": "git+https://github.com/svagcrew/uinity.git"
   },
   "bugs": {
-    "url": "https://github.com/svagcrew/uinity-core/issues"
+    "url": "https://github.com/svagcrew/uinity/issues"
   },
   "author": {
     "name": "Sergei Dmitriev",
@@ -32,8 +32,7 @@
     "lint": "svag-lint lint",
     "test": "svag-jest test",
     "generate-default-configs": "tsx ./src/scripts/generateDefaultConfigs.ts",
-    "gdc": "pnpm generate-default-configs",
-    "prepare": "husky"
+    "gdc": "pnpm generate-default-configs"
   },
   "devDependencies": {
     "@types/jest": "^29.5.12",
@@ -44,12 +43,10 @@
     "cross-env": "^7.0.3",
     "csstype": "^3.1.3",
     "eslint": "^9.2.0",
-    "husky": "^9.0.11",
     "jest": "30.0.0-alpha.4",
     "prettier": "^3.2.5",
     "rimraf": "^5.0.7",
     "svag-esm": "^0.1.10",
-    "svag-husky": "^0.1.49",
     "svag-jest": "^0.1.39",
     "svag-lint": "^0.1.72",
     "svag-prettier": "^0.1.63",
