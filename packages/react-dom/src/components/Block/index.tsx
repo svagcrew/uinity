@@ -1,10 +1,10 @@
 import '@/lib/cssContainerQueryPolyfill.js'
 import { mark } from '@/utils.js'
+import { camelCaseObjectToCss } from '@uinity/core/dist/utils/other.js'
 import isArray from 'lodash/isArray.js'
 import isString from 'lodash/isString.js'
 import type { RuleSet } from 'styled-components'
 import { css, styled } from 'styled-components'
-import { camelCaseObjectToCss } from '@uinity/core/dist/utils/other.js'
 
 type BlockGeneralProps = {
   /** display: flex; */

@@ -1,6 +1,6 @@
 import { mark, type RC } from '@/utils.js'
-import { styled } from 'styled-components'
 import { camelCaseObjectToCss } from '@uinity/core/dist/utils/other.js'
+import { styled } from 'styled-components'
 
 type SplashScreenStyledProps = {
   $visible: boolean

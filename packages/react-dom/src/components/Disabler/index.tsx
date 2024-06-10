@@ -1,8 +1,8 @@
 import { mark, type RC } from '@/utils.js'
-import type { HTMLAttributes } from 'react'
-import { styled } from 'styled-components'
 import type { UinityConfig } from '@uinity/core'
 import { camelCaseObjectToCss } from '@uinity/core/dist/utils/other.js'
+import type { HTMLAttributes } from 'react'
+import { styled } from 'styled-components'
 
 type DisablerStyledProps = {
   $disabled: boolean

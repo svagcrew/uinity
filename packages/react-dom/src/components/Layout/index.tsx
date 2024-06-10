@@ -1,14 +1,14 @@
 import '@/lib/cssContainerQueryPolyfill.js'
 import { elseEmptyString, mark, type RC } from '@/utils.js'
+import type { UinityConfig } from '@uinity/core'
+import type { LayoutFinalProps } from '@uinity/core/dist/components/layout.js'
+import { getLayoutFinalProps } from '@uinity/core/dist/components/layout.js'
+import { borderPropsToCssValue, camelCaseObjectToCss, maybeNumberToPx } from '@uinity/core/dist/utils/other.js'
 import * as bodyScrollLock from 'body-scroll-lock'
 import { useEffect } from 'react'
 import type { RuleSet } from 'styled-components'
 import { css, styled } from 'styled-components'
 import { getKeys } from 'svag-utils'
-import type { UinityConfig } from '@uinity/core'
-import type { LayoutFinalProps } from '@uinity/core/dist/components/layout.js'
-import { getLayoutFinalProps } from '@uinity/core/dist/components/layout.js'
-import { borderPropsToCssValue, camelCaseObjectToCss, maybeNumberToPx } from '@uinity/core/dist/utils/other.js'
 
 type LayoutStyledProps<TUinityConfig extends UinityConfig = UinityConfig> = {
   $size?: keyof TUinityConfig['layout']['size']

@@ -1,8 +1,8 @@
 import '@/lib/cssGridPolyfill.js'
 import { mark } from '@/utils.js'
+import { camelCaseObjectToCss } from '@uinity/core/dist/utils/other.js'
 import type { RuleSet } from 'styled-components'
 import { css, styled } from 'styled-components'
-import { camelCaseObjectToCss } from '@uinity/core/dist/utils/other.js'
 
 type GridGeneralProps = {
   as?: As

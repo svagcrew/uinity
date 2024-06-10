@@ -1,7 +1,7 @@
-import path from 'path'
-import { createDir, createFile, log } from 'svag-cli-utils'
 import type { UinityConfig } from '@uinity/core'
 import { getTextScssMixins } from '@uinity/core/dist/components/text.js'
+import path from 'path'
+import { createDir, createFile, log } from 'svag-cli-utils'
 
 export const createScssMixinsFiles = async ({
   scssDir,

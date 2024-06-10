@@ -1,9 +1,9 @@
-import path from 'path'
-import { createDir, createFile, log } from 'svag-cli-utils'
 import type { UinityConfig } from '@uinity/core'
 import { getColorCoreScssVariables } from '@uinity/core/dist/components/colorCore.js'
 import { getColorSemanticScssVariables } from '@uinity/core/dist/components/colorSematic.js'
 import { getLayoutScssVariables } from '@uinity/core/dist/components/layout.js'
+import path from 'path'
+import { createDir, createFile, log } from 'svag-cli-utils'
 
 export const createScssVariablesFiles = async ({
   scssDir,

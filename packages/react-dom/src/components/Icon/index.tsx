@@ -1,9 +1,9 @@
 import type { RC } from '@/utils.js'
-import { createElement } from 'react'
-import { css, styled } from 'styled-components'
 import type { UinityConfig } from '@uinity/core'
 import { getIconFinalProps } from '@uinity/core/dist/components/icon.js'
 import { camelCaseObjectToCss } from '@uinity/core/dist/utils/other.js'
+import { createElement } from 'react'
+import { css, styled } from 'styled-components'
 
 type IconGeneralProps = { className?: string; style?: React.CSSProperties }
 export type IconComponentType = (props: IconGeneralProps) => React.ReactNode

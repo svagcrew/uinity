@@ -1,8 +1,8 @@
+import type { UinityConfig } from '@uinity/core'
 import fg from 'fast-glob'
 import _ from 'lodash'
 import path from 'path'
 import { getDataFromFile } from 'svag-cli-utils'
-import type { UinityConfig } from '@uinity/core'
 import { z } from 'zod'
 
 const zCliConfigInput = z.object({

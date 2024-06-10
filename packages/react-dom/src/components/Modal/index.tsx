@@ -10,12 +10,12 @@ import {
   useMergeRefs,
   useRole,
 } from '@floating-ui/react'
+import { camelCaseObjectToCss } from '@uinity/core/dist/utils/other.js'
 import isBoolean from 'lodash/isBoolean.js'
 import type { ForwardRefExoticComponent, HTMLProps, ReactElement, RefAttributes } from 'react'
 import React, { useEffect } from 'react'
 import { createGlobalStyle, css } from 'styled-components'
 import { getHash } from 'svag-utils/dist/utils/hash.js'
-import { camelCaseObjectToCss } from '@uinity/core/dist/utils/other.js'
 
 export type ModalGeneralProps = {
   scrollContainer?: 'overlay' | 'content'

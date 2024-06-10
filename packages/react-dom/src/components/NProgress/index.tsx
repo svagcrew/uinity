@@ -1,7 +1,7 @@
 import { type RC } from '@/utils.js'
+import type { UinityConfig } from '@uinity/core'
 import NProgress from 'nprogress'
 import { createGlobalStyle } from 'styled-components'
-import type { UinityConfig } from '@uinity/core'
 
 NProgress.configure({ showSpinner: false })
 
