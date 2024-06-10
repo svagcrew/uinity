@@ -1,0 +1,17 @@
+{
+  "name": "uinity",
+  "version": "0.1.1",
+  "homepage": "https://github.com/svagcrew/uinity",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/svagcrew/uinity.git"
+  },
+  "bugs": {
+    "url": "https://github.com/svagcrew/uinity/issues"
+  },
+  "author": {
+    "name": "Sergei Dmitriev",
+    "url": "https://sergei.svag.group"
+  },
+  "license": "MIT"
+}
