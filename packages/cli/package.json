@@ -36,7 +36,7 @@
     "watch": "svag-ts watch"
   },
   "dependencies": {
-    "@uinity/core": "^workspace:*",
+    "@uinity/core": "workspace:^",
     "dedent": "^1.5.3",
     "fast-glob": "^3.3.2",
     "lodash": "^4.17.21",
