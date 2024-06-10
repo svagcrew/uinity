@@ -16,12 +16,12 @@
   "license": "MIT",
   "private": true,
   "scripts": {
-    "build": "pnpm recursive run build",
-    "lint": "pnpm recursive run lint",
-    "prepare": "husky",
-    "test": "pnpm recursive run test",
-    "types": "pnpm recursive run types",
-    "watch": "concurrently --names 'cli,core,react-dom' 'pnpm --filter cli watch' 'pnpm --filter core watch' 'pnpm --filter react-dom watch'"
+    "build": "pnpm --filter core build && pnpm --filter cli build && pnpm --filter react-dom build",
+    "lint": "pnpm --filter core lint && pnpm --filter cli lint && pnpm --filter react-dom lint",
+    "test": "pnpm --filter core test && pnpm --filter cli test && pnpm --filter react-dom test",
+    "types": "pnpm --filter core types && pnpm --filter cli types && pnpm --filter react-dom types",
+    "watch": "concurrently --names 'core,cli,react-dom' 'pnpm --filter core watch' 'pnpm --filter cli watch' 'pnpm --filter react-dom watch'",
+    "prepare": "husky"
   },
   "devDependencies": {
     "concurrently": "^8.2.2",
