@@ -13,5 +13,21 @@
     "name": "Sergei Dmitriev",
     "url": "https://sergei.svag.group"
   },
-  "license": "MIT"
+  "license": "MIT",
+  "private": true,
+  "workspaces": [
+    "packages/*"
+  ],
+  "scripts": {
+    "test": "pnpm recursive run test",
+    "lint": "pnpm recursive run lint",
+    "types": "pnpm recursive run types",
+    "watch": "concurrently --names 'cli,core,react-dom' 'pnpm --filter cli watch' 'pnpm --filter core watch' 'pnpm --filter react-dom watch'",
+    "build": "pnpm recursive run build"
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.2",
+    "husky": "^9.0.11",
+    "svag-husky": "^0.1.49"
+  }
 }
