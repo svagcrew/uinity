@@ -1,6 +1,6 @@
 {
   "name": "uinity",
-  "version": "0.1.9",
+  "version": "0.1.10",
   "homepage": "https://github.com/svagcrew/uinity",
   "repository": {
     "type": "git",
@@ -18,10 +18,10 @@
   "scripts": {
     "build": "pnpm --filter core build && pnpm --filter cli build && pnpm --filter react-dom build",
     "lint": "pnpm --filter core lint && pnpm --filter cli lint && pnpm --filter react-dom lint",
+    "prepare": "husky",
     "test": "pnpm --filter core test && pnpm --filter cli test && pnpm --filter react-dom test",
     "types": "pnpm --filter core types && pnpm --filter cli types && pnpm --filter react-dom types",
-    "watch": "concurrently --names 'core,cli,react-dom' 'pnpm --filter core watch' 'pnpm --filter cli watch' 'pnpm --filter react-dom watch'",
-    "prepare": "husky"
+    "watch": "concurrently --names 'core,cli,react-dom' 'pnpm --filter core watch' 'pnpm --filter cli watch' 'pnpm --filter react-dom watch'"
   },
   "devDependencies": {
     "concurrently": "^8.2.2",
