@@ -100,6 +100,7 @@ export const camelCaseObjectToCss = (
         'gap',
         'columnGap',
         'rowGap',
+        'flexBasis',
       ]
       if (typeof value === 'number') {
         if (value === 0) {

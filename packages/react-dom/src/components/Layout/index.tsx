@@ -213,7 +213,6 @@ export const createUinityLayout = <TUinityConfig extends UinityConfig>({
         align-items: stretch;
         justify-content: stretch;
         height: 100%;
-        container-type: inline-size;
 
         ${SidebarPlaceS} {
           display: flex;
