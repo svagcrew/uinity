@@ -24,8 +24,8 @@ export type ModalGeneralProps = {
   closeOnOutsideClick?: boolean
   overlayClickableThrough?: boolean
   lockScroll?: boolean
-  verticalPlacement?: 'top' | 'center' | 'bottom' | 'stretch'
-  horizontalPlacement?: 'start' | 'center' | 'end' | 'stretch'
+  placementVertical?: 'top' | 'center' | 'bottom' | 'stretch'
+  placementHorizontal?: 'start' | 'center' | 'end' | 'stretch'
   placement?:
     | 'top-center'
     | 'top-start'
@@ -46,14 +46,14 @@ export type ModalGeneralProps = {
   width?: string | number
   margin?: string | number
   marginTop?: string | number
-  marginRight?: string | number
+  marginEnd?: string | number
   marginBottom?: string | number
-  marginLeft?: string | number
+  marginStart?: string | number
   padding?: string | number
   paddingTop?: string | number
-  paddingRight?: string | number
+  paddingEnd?: string | number
   paddingBottom?: string | number
-  paddingLeft?: string | number
+  paddingStart?: string | number
   /** byWindowSize */
   ws?: Array<[number, ModalGeneralProps]>
   byWindowSize?: Array<[number, ModalGeneralProps]>
@@ -70,21 +70,21 @@ type ModalGeneralPropsNormalized = Required<
     | 'closeOnOutsideClick'
     | 'overlayClickableThrough'
     | 'lockScroll'
-    | 'verticalPlacement'
-    | 'horizontalPlacement'
+    | 'placementVertical'
+    | 'placementHorizontal'
   >
 > &
   Pick<
     ModalGeneralProps,
     | 'width'
     | 'marginTop'
-    | 'marginRight'
+    | 'marginEnd'
     | 'marginBottom'
-    | 'marginLeft'
+    | 'marginStart'
     | 'paddingTop'
-    | 'paddingRight'
+    | 'paddingEnd'
     | 'paddingBottom'
-    | 'paddingLeft'
+    | 'paddingStart'
   > & {
     byWindowSize: Array<[number, ModalGeneralPropsNormalized]>
     byWindowSizeReverse: Array<[number, ModalGeneralPropsNormalized]>
@@ -138,58 +138,58 @@ const useModal = ({ opened, setOpened, closeOnOutsideClick }: UseModalProps = {}
 const parseSpacing = (
   spacing?: string | number | undefined,
   spacingTop?: string | number,
-  spacingRight?: string | number,
+  spacingEnd?: string | number,
   spacingBottom?: string | number,
-  spacingLeft?: string | number
+  spacingStart?: string | number
 ) => {
   if (spacing !== undefined) {
     if (typeof spacing === 'number') {
       return {
         top: spacing,
-        right: spacing,
+        end: spacing,
         bottom: spacing,
-        left: spacing,
+        start: spacing,
       }
     }
     const spacingParts = spacing.split(' ')
     if (spacingParts.length === 1) {
       return {
         top: spacingParts[0],
-        right: spacingParts[0],
+        end: spacingParts[0],
         bottom: spacingParts[0],
-        left: spacingParts[0],
+        start: spacingParts[0],
       }
     }
     if (spacingParts.length === 2) {
       return {
         top: spacingParts[0],
-        right: spacingParts[1],
+        end: spacingParts[1],
         bottom: spacingParts[0],
-        left: spacingParts[1],
+        start: spacingParts[1],
       }
     }
     if (spacingParts.length === 3) {
       return {
         top: spacingParts[0],
-        right: spacingParts[1],
+        end: spacingParts[1],
         bottom: spacingParts[2],
-        left: spacingParts[1],
+        start: spacingParts[1],
       }
     }
     if (spacingParts.length === 4) {
       return {
         top: spacingParts[0],
-        right: spacingParts[1],
+        end: spacingParts[1],
         bottom: spacingParts[2],
-        left: spacingParts[3],
+        start: spacingParts[3],
       }
     }
   }
   return {
     top: spacingTop,
-    right: spacingRight,
+    end: spacingEnd,
     bottom: spacingBottom,
-    left: spacingLeft,
+    start: spacingStart,
   }
 }
 
@@ -202,17 +202,17 @@ const GlobalStyles = createGlobalStyle<ModalGlobalStylesProps>`
       contentClassName,
       overlayColor,
       overlayClickableThrough,
-      verticalPlacement,
-      horizontalPlacement,
+      placementVertical,
+      placementHorizontal,
       width,
       marginTop,
-      marginRight,
+      marginEnd,
       marginBottom,
-      marginLeft,
+      marginStart,
       paddingTop,
-      paddingRight,
+      paddingEnd,
       paddingBottom,
-      paddingLeft,
+      paddingStart,
     }: ModalGlobalStylesProps) => {
       return css`
         .${overlayClassName} {
@@ -225,23 +225,23 @@ const GlobalStyles = createGlobalStyle<ModalGlobalStylesProps>`
             display: 'flex',
             flexFlow: 'column',
             paddingTop: marginTop,
-            paddingRight: marginRight,
+            paddingRight: marginEnd,
             paddingBottom: marginBottom,
-            paddingLeft: marginLeft,
+            paddingLeft: marginStart,
             justifyContent:
-              verticalPlacement === 'center'
+              placementVertical === 'center'
                 ? 'safe center'
-                : verticalPlacement === 'top'
+                : placementVertical === 'top'
                   ? 'safe flex-start'
-                  : verticalPlacement === 'bottom'
+                  : placementVertical === 'bottom'
                     ? 'safe flex-end'
                     : 'safe stretch',
             alignItems:
-              horizontalPlacement === 'center'
+              placementHorizontal === 'center'
                 ? 'center'
-                : horizontalPlacement === 'start'
+                : placementHorizontal === 'start'
                   ? 'flex-start'
-                  : horizontalPlacement === 'end'
+                  : placementHorizontal === 'end'
                     ? 'flex-end'
                     : 'stretch',
           })}
@@ -251,16 +251,16 @@ const GlobalStyles = createGlobalStyle<ModalGlobalStylesProps>`
               opacity: supportingSafeJustifyContentFinished ? 1 : 0,
               pointerEvents: 'auto',
               boxSizing: 'border-box',
-              flex: verticalPlacement === 'stretch' ? '1 1 100%' : '0 0 auto',
+              flex: placementVertical === 'stretch' ? '1 1 100%' : '0 0 auto',
               maxWidth: `100%`,
               maxHeight: scrollContainer === 'overlay' ? undefined : '100%',
               width,
               overflow: scrollContainer === 'content' ? 'auto' : 'visible',
               backgroundColor: 'white',
               paddingTop,
-              paddingRight,
+              paddingRight: paddingEnd,
               paddingBottom,
-              paddingLeft,
+              paddingLeft: paddingStart,
             })}
           }
         }
@@ -321,20 +321,20 @@ export const createUinityModal = (): {
         overlayClickableThrough,
         lockScroll,
         placement,
-        verticalPlacement,
-        horizontalPlacement,
+        placementVertical,
+        placementHorizontal,
         scrollContainer,
         width,
         margin,
         marginTop,
-        marginRight,
+        marginEnd,
         marginBottom,
-        marginLeft,
+        marginStart,
         padding,
         paddingTop,
-        paddingRight,
+        paddingEnd,
         paddingBottom,
-        paddingLeft,
+        paddingStart,
         ws,
         byWindowSize,
         wsr,
@@ -357,27 +357,27 @@ export const createUinityModal = (): {
       const scrollContainerNormalized = scrollContainer ?? 'overlay'
       const {
         top: marginTop1,
-        right: marginRight1,
+        end: marginEnd1,
         bottom: marginBottom1,
-        left: marginLeft1,
-      } = parseSpacing(margin, marginTop, marginRight, marginBottom, marginLeft)
+        start: marginStart1,
+      } = parseSpacing(margin, marginTop, marginEnd, marginBottom, marginStart)
       marginTop = marginTop1
-      marginRight = marginRight1
+      marginEnd = marginEnd1
       marginBottom = marginBottom1
-      marginLeft = marginLeft1
+      marginStart = marginStart1
       const {
         top: paddingTop1,
-        right: paddingRight1,
+        end: paddingEnd1,
         bottom: paddingBottom1,
-        left: paddingLeft1,
-      } = parseSpacing(padding, paddingTop, paddingRight, paddingBottom, paddingLeft)
+        start: paddingStart1,
+      } = parseSpacing(padding, paddingTop, paddingEnd, paddingBottom, paddingStart)
       paddingTop = paddingTop1
-      paddingRight = paddingRight1
+      paddingEnd = paddingEnd1
       paddingBottom = paddingBottom1
-      paddingLeft = paddingLeft1
-      const placementParts = placement ? placement?.split('-') : [verticalPlacement, horizontalPlacement]
-      const verticalPlacementNormalized = (placementParts?.[0] ?? 'center') as 'top' | 'center' | 'bottom' | 'stretch'
-      const horizontalPlacementNormalized = (placementParts?.[1] ?? 'center') as 'start' | 'center' | 'end' | 'stretch'
+      paddingStart = paddingStart1
+      const placementParts = placement ? placement?.split('-') : [placementVertical, placementHorizontal]
+      const placementVerticalNormalized = (placementParts?.[0] ?? 'center') as 'top' | 'center' | 'bottom' | 'stretch'
+      const placementHorizontalNormalized = (placementParts?.[1] ?? 'center') as 'start' | 'center' | 'end' | 'stretch'
       const normalizedProps: ModalGeneralPropsNormalized = {
         scrollContainer: scrollContainerNormalized,
         overlayColor: overlayColorNormalized,
@@ -385,17 +385,17 @@ export const createUinityModal = (): {
         closeOnOutsideClick: closeOnOutsideClickNormalized,
         overlayClickableThrough: overlayClickableThroughNormalized,
         lockScroll: lockScrollNormalized,
-        verticalPlacement: verticalPlacementNormalized,
-        horizontalPlacement: horizontalPlacementNormalized,
+        placementVertical: placementVerticalNormalized,
+        placementHorizontal: placementHorizontalNormalized,
         width,
         marginTop,
-        marginRight,
+        marginEnd,
         marginBottom,
-        marginLeft,
+        marginStart,
         paddingTop,
-        paddingRight,
+        paddingEnd,
         paddingBottom,
-        paddingLeft,
+        paddingStart,
         byWindowSize: [], // will be added below
         byWindowSizeReverse: [], // will be added below
       }
@@ -405,44 +405,44 @@ export const createUinityModal = (): {
           const prevPropsHere = byWindowSize?.[index - 1]?.[1] ?? normalizedProps
           const {
             top: marginTop1,
-            right: marginRight1,
+            end: marginEnd1,
             bottom: marginBottom1,
-            left: marginLeft1,
+            start: marginStart1,
           } = parseSpacing(
             propsHere.margin,
             propsHere.marginTop,
-            propsHere.marginRight,
+            propsHere.marginEnd,
             propsHere.marginBottom,
-            propsHere.marginLeft
+            propsHere.marginStart
           )
           const {
             top: paddingTop1,
-            right: paddingRight1,
+            end: paddingEnd1,
             bottom: paddingBottom1,
-            left: paddingLeft1,
+            start: paddingStart1,
           } = parseSpacing(
             propsHere.padding,
             propsHere.paddingTop,
-            propsHere.paddingRight,
+            propsHere.paddingEnd,
             propsHere.paddingBottom,
-            propsHere.paddingLeft
+            propsHere.paddingStart
           )
           const propsHereNormalized = {
             marginTop: marginTop1 ?? prevPropsHere.marginTop,
-            marginRight: marginRight1 ?? prevPropsHere.marginRight,
+            marginEnd: marginEnd1 ?? prevPropsHere.marginEnd,
             marginBottom: marginBottom1 ?? prevPropsHere.marginBottom,
-            marginLeft: marginLeft1 ?? prevPropsHere.marginLeft,
+            marginStart: marginStart1 ?? prevPropsHere.marginStart,
             paddingTop: paddingTop1 ?? prevPropsHere.paddingTop,
-            paddingRight: paddingRight1 ?? prevPropsHere.paddingRight,
+            paddingEnd: paddingEnd1 ?? prevPropsHere.paddingEnd,
             paddingBottom: paddingBottom1 ?? prevPropsHere.paddingBottom,
-            paddingLeft: paddingLeft1 ?? prevPropsHere.paddingLeft,
+            paddingStart: paddingStart1 ?? prevPropsHere.paddingStart,
             overlayColor: propsHere.overlayColor ?? prevPropsHere.overlayColor,
             overlayVisible: propsHere.overlayVisible ?? prevPropsHere.overlayVisible,
             closeOnOutsideClick: propsHere.closeOnOutsideClick ?? prevPropsHere.closeOnOutsideClick,
             overlayClickableThrough: propsHere.overlayClickableThrough ?? prevPropsHere.overlayClickableThrough,
             lockScroll: propsHere.lockScroll ?? prevPropsHere.lockScroll,
-            verticalPlacement: propsHere.verticalPlacement ?? prevPropsHere.verticalPlacement,
-            horizontalPlacement: propsHere.horizontalPlacement ?? prevPropsHere.horizontalPlacement,
+            placementVertical: propsHere.placementVertical ?? prevPropsHere.placementVertical,
+            placementHorizontal: propsHere.placementHorizontal ?? prevPropsHere.placementHorizontal,
             width: propsHere.width ?? prevPropsHere.width,
             scrollContainer: propsHere.scrollContainer ?? prevPropsHere.scrollContainer,
           } as ModalGeneralPropsNormalized
@@ -454,44 +454,44 @@ export const createUinityModal = (): {
           const prevPropsHere = byWindowSize?.[index - 1]?.[1] ?? normalizedProps
           const {
             top: marginTop1,
-            right: marginRight1,
+            end: marginEnd1,
             bottom: marginBottom1,
-            left: marginLeft1,
+            start: marginStart1,
           } = parseSpacing(
             propsHere.margin,
             propsHere.marginTop,
-            propsHere.marginRight,
+            propsHere.marginEnd,
             propsHere.marginBottom,
-            propsHere.marginLeft
+            propsHere.marginStart
           )
           const {
             top: paddingTop1,
-            right: paddingRight1,
+            end: paddingEnd1,
             bottom: paddingBottom1,
-            left: paddingLeft1,
+            start: paddingStart1,
           } = parseSpacing(
             propsHere.padding,
             propsHere.paddingTop,
-            propsHere.paddingRight,
+            propsHere.paddingEnd,
             propsHere.paddingBottom,
-            propsHere.paddingLeft
+            propsHere.paddingStart
           )
           const propsHereNormalized = {
             marginTop: marginTop1 ?? prevPropsHere.marginTop,
-            marginRight: marginRight1 ?? prevPropsHere.marginRight,
+            marginEnd: marginEnd1 ?? prevPropsHere.marginEnd,
             marginBottom: marginBottom1 ?? prevPropsHere.marginBottom,
-            marginLeft: marginLeft1 ?? prevPropsHere.marginLeft,
+            marginStart: marginStart1 ?? prevPropsHere.marginStart,
             paddingTop: paddingTop1 ?? prevPropsHere.paddingTop,
-            paddingRight: paddingRight1 ?? prevPropsHere.paddingRight,
+            paddingEnd: paddingEnd1 ?? prevPropsHere.paddingEnd,
             paddingBottom: paddingBottom1 ?? prevPropsHere.paddingBottom,
-            paddingLeft: paddingLeft1 ?? prevPropsHere.paddingLeft,
+            paddingStart: paddingStart1 ?? prevPropsHere.paddingStart,
             overlayColor: propsHere.overlayColor ?? prevPropsHere.overlayColor,
             overlayVisible: propsHere.overlayVisible ?? prevPropsHere.overlayVisible,
             closeOnOutsideClick: propsHere.closeOnOutsideClick ?? prevPropsHere.closeOnOutsideClick,
             overlayClickableThrough: propsHere.overlayClickableThrough ?? prevPropsHere.overlayClickableThrough,
             lockScroll: propsHere.lockScroll ?? prevPropsHere.lockScroll,
-            verticalPlacement: propsHere.verticalPlacement ?? prevPropsHere.verticalPlacement,
-            horizontalPlacement: propsHere.horizontalPlacement ?? prevPropsHere.horizontalPlacement,
+            placementVertical: propsHere.placementVertical ?? prevPropsHere.placementVertical,
+            placementHorizontal: propsHere.placementHorizontal ?? prevPropsHere.placementHorizontal,
             width: propsHere.width ?? prevPropsHere.width,
             scrollContainer: propsHere.scrollContainer ?? prevPropsHere.scrollContainer,
           } as ModalGeneralPropsNormalized

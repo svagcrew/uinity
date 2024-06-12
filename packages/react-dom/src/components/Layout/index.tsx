@@ -99,13 +99,13 @@ export const createUinityLayout = <TUinityConfig extends UinityConfig>({
     ${LayoutSectionS} {
       ${withLayoutFinalProps(
         (fp, sp) => `
-        ${camelCaseObjectToCss({
-          width: '100%',
-          maxWidth: sp.$fullWidth ? null : fp.layoutMaxWidth,
-          paddingLeft: fp.layoutPaddingHorizontal,
-          paddingRight: fp.layoutPaddingHorizontal,
-        })}
-      `
+          ${camelCaseObjectToCss({
+            width: '100%',
+            maxWidth: sp.$fullWidth ? null : fp.layoutMaxWidth,
+            paddingLeft: fp.layoutPaddingHorizontal,
+            paddingRight: fp.layoutPaddingHorizontal,
+          })}
+        `
       )}
     }
 
@@ -225,7 +225,7 @@ export const createUinityLayout = <TUinityConfig extends UinityConfig>({
               flexShrink: 0,
               flexBasis: fp.sidebarWidth,
               width: fp.sidebarWidth,
-              marginRight: fp.sidebarMarginRight,
+              marginRight: fp.sidebarMarginEnd,
               borderRight: borderPropsToCssValue(fp.sidebarBorderWidth, fp.sidebarBorderColor),
             })
           )}
