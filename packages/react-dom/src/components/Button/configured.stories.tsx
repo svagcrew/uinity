@@ -14,7 +14,8 @@ const meta = {
   },
   tags: ['autodocs'],
   argTypes: {
-    ...getArgTypeConfigFromObject('type', uinityConfig.button.type),
+    ...getArgTypeConfigFromObject('variant', uinityConfig.button.variant),
+    ...getArgTypeConfigFromObject('color', uinityConfig.button.color, 'radio', true),
     ...getArgTypeConfigFromObject('size', uinityConfig.button.size),
     iconStart: {
       control: 'radio',
@@ -22,8 +23,9 @@ const meta = {
     },
   },
   args: {
-    type: uinityConfig.button.general.defaultType,
-    size: uinityConfig.button.general.defaultSize,
+    variant: 'primary',
+    color: undefined,
+    size: undefined,
     iconStart: undefined,
   },
 } satisfies Meta<typeof Button>

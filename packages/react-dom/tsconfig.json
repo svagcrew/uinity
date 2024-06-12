@@ -4,8 +4,7 @@
   "compilerOptions": {
     "baseUrl": ".",
     "paths": {
-      "@/*": ["./src/*"],
-      "@uinity/core": ["../core/*"]
+      "@/*": ["./src/*"]
     },
     "outDir": "./dist"
   }

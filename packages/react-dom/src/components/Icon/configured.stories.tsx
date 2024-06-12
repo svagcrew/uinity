@@ -25,7 +25,7 @@ const meta = {
     ...getArgTypeConfigFromObject('size', uinityConfig.icon.size),
   },
   args: {
-    size: uinityConfig.icon.general.defaultSize,
+    size: 'm',
     name: 'icon1',
   },
 } satisfies Meta<typeof Icon>

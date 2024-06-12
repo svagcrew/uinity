@@ -5,11 +5,12 @@ import { useColorMode } from '@/lib/colorMode.js'
 import type { AsRef } from '@/utils.js'
 import { type As, type AsPropsWithRef, forwardRefWithTypes, type RC } from '@/utils.js'
 import type { UinityConfig } from '@uinity/core'
-import { getButtonFinalProps } from '@uinity/core/dist/components/button.js'
+import { getButtonStyleRootProps } from '@uinity/core/dist/components/button.js'
 import { type ColorModeName, getColorByMode } from '@uinity/core/dist/utils/color.js'
 
 export type ButtonConfiguredSettingsProps = {
-  type?: keyof UinityConfig['button']['type'] | undefined | null
+  variant?: keyof UinityConfig['button']['variant'] | undefined | null
+  color?: keyof UinityConfig['button']['color'] | undefined | null
   size?: keyof UinityConfig['button']['size'] | undefined | null
   colorMode?: ColorModeName | undefined | null
 }
@@ -38,12 +39,20 @@ export const createUinityButton = <TAs extends As, TIconName extends string>({
   const { colorMode: colorModeGlobal } = useColorMode()
   const Button = forwardRefWithTypes(
     (
-      { type, size, iconStart, colorMode, $style = {}, ...restProps }: ButtonConfiguredPropsWithRef<TAs, TIconName>,
+      {
+        variant,
+        color,
+        size,
+        iconStart,
+        colorMode,
+        $style = {},
+        ...restProps
+      }: ButtonConfiguredPropsWithRef<TAs, TIconName>,
       ref: AsRef<TAs>
     ) => {
       const cm = colorMode || colorModeGlobal
-      const $styleConfiguredRest = getButtonFinalProps(uinityConfig, type, size, 'rest')
-      const $styleConfiguredHover = getButtonFinalProps(uinityConfig, type, size, 'hover')
+      const $styleConfiguredRest = getButtonStyleRootProps(uinityConfig, variant, color, size, 'rest')
+      const $styleConfiguredHover = getButtonStyleRootProps(uinityConfig, variant, color, size, 'hover')
       const $styleNormalized: ButtonStyleRootProps = {
         rest: {
           ...$styleConfiguredRest,
