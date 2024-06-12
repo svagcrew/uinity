@@ -11,13 +11,6 @@ export const zOptionalNumberOrString = z
   .optional()
   .nullable()
 export const zRequiredNumberOrString = z.union([z.number(), z.string().min(1)])
-export const colorModes = ['light', 'dark'] as const
-export const zColorModeName = z.enum(colorModes)
-export type ColorModeName = z.infer<typeof zColorModeName>
-export const zColorValueModed = z.record(zColorModeName, zRequiredString)
-export type ColorValueModed = z.infer<typeof zColorValueModed>
-export const zColorValue = z.union([zRequiredString, zColorValueModed])
-export type ColorValue = z.infer<typeof zColorValue>
 
 export const getFirst = <
   TProp extends string,
@@ -58,7 +51,7 @@ type CssPropertiesNullable = {
   [K in keyof CSSProperties]: CSSProperties[K] | null | undefined
 }
 
-export const camelCaseObjectToCss = (
+export const toCss = (
   // obj: Record<string, string | number | null | undefined>,
   obj: CssPropertiesNullable,
   indent: number = 2

@@ -1,5 +1,5 @@
 import { mark, type RC } from '@/utils.js'
-import { camelCaseObjectToCss } from '@uinity/core/dist/utils/other.js'
+import { toCss } from '@uinity/core/dist/utils/other.js'
 import { styled } from 'styled-components'
 
 type SplashScreenStyledProps = {
@@ -29,11 +29,11 @@ export const createUinitySplashScreen = (): {
     z-index: 90000;
     ${(sp) =>
       sp.$visible
-        ? camelCaseObjectToCss({
+        ? toCss({
             opacity: 1,
             transition: 'opacity 200s',
           })
-        : camelCaseObjectToCss({
+        : toCss({
             opacity: 0,
             marginTop: '-200000px',
             transition: 'opacity 200ms, margin-top 0ms ease 200ms',

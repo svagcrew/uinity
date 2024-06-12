@@ -2,28 +2,28 @@ import type { UinityConfig } from '@/config/index.js'
 import { zOptionalNumberOrString } from '@/utils/other.js'
 import { z } from 'zod'
 
-export const iconSizes = ['xs', 's', 'm', 'l', 'xl'] as const
-export const zIconSizeName = z.enum(iconSizes)
-export type IconSizeName = z.infer<typeof zIconSizeName>
-export const zIconSizeProps = z.object({
+export const iconConfigSizeNames = ['xs', 's', 'm', 'l', 'xl'] as const
+export const zIconConfigSizeName = z.enum(iconConfigSizeNames)
+export type IconConfigSizeName = z.infer<typeof zIconConfigSizeName>
+export const zIconConfigSizeProps = z.object({
   size: zOptionalNumberOrString,
 })
 
-export const zIconFinalProps = zIconSizeProps
-export type IconFinalProps = z.infer<typeof zIconFinalProps>
+export const zIconConfigStyleRootProps = zIconConfigSizeProps
+export type IconConfigStyleRootProps = z.infer<typeof zIconConfigStyleRootProps>
 
-export const zIconGeneralProps = z.object({
-  defaultSize: zIconSizeName.optional(),
+export const zIconConfigGeneralProps = z.object({
+  defaultSize: zIconConfigSizeName.optional(),
 })
-export type IconGeneralProps = z.infer<typeof zIconGeneralProps>
+export type IconConfigGeneralProps = z.infer<typeof zIconConfigGeneralProps>
 
-export const zIconUinityConfigInput = z.object({
-  general: zIconGeneralProps.optional(),
-  size: z.record(zIconSizeName, zIconSizeProps).optional(),
+export const zIconConfigInput = z.object({
+  general: zIconConfigGeneralProps.optional(),
+  size: z.record(zIconConfigSizeName, zIconConfigSizeProps).optional(),
 })
-export type IconUinityConfigInput = z.infer<typeof zIconUinityConfigInput>
+export type IconConfigInput = z.infer<typeof zIconConfigInput>
 
-export const defaultIconUinityConfigInput: IconUinityConfigInput = {
+export const defaultIconConfigInput: IconConfigInput = {
   general: {
     defaultSize: 'm',
   },
@@ -46,49 +46,49 @@ export const defaultIconUinityConfigInput: IconUinityConfigInput = {
   },
 }
 
-export const normalizeIconUinityConfig = (input: IconUinityConfigInput | undefined) => {
+export const normalizeIconConfig = (input: IconConfigInput | undefined) => {
   return {
     general: {
-      defaultSize: input?.general?.defaultSize ?? defaultIconUinityConfigInput.general?.defaultSize,
+      defaultSize: input?.general?.defaultSize ?? defaultIconConfigInput.general?.defaultSize,
     },
     size: {
       xs: {
-        ...defaultIconUinityConfigInput.size?.xs,
+        ...defaultIconConfigInput.size?.xs,
         ...input?.size?.xs,
       },
       s: {
-        ...defaultIconUinityConfigInput.size?.s,
+        ...defaultIconConfigInput.size?.s,
         ...input?.size?.s,
       },
       m: {
-        ...defaultIconUinityConfigInput.size?.m,
+        ...defaultIconConfigInput.size?.m,
         ...input?.size?.m,
       },
       l: {
-        ...defaultIconUinityConfigInput.size?.l,
+        ...defaultIconConfigInput.size?.l,
         ...input?.size?.l,
       },
       xl: {
-        ...defaultIconUinityConfigInput.size?.xl,
+        ...defaultIconConfigInput.size?.xl,
         ...input?.size?.xl,
       },
     },
   }
 }
-export type IconUinityConfig = ReturnType<typeof normalizeIconUinityConfig>
+export type IconConfig = ReturnType<typeof normalizeIconConfig>
 
-export const normalizeIconSizeName = (uinityConfig: UinityConfig, size?: IconSizeName | null | undefined) => {
+export const normalizeIconSizeName = (uinityConfig: UinityConfig, size?: IconConfigSizeName | null | undefined) => {
   if (size && uinityConfig.icon.size[size]) {
     return size
   }
   return uinityConfig.icon.general.defaultSize
 }
 
-export const getIconFinalProps = (uinityConfig: UinityConfig, size?: IconSizeName | undefined | null) => {
+export const getIconStyleRootProps = (uinityConfig: UinityConfig, size?: IconConfigSizeName | undefined | null) => {
   const c = uinityConfig.icon
   size = normalizeIconSizeName(uinityConfig, size)
   const result = {
     ...(size && c.size?.[size]),
-  } as IconFinalProps
+  } as IconConfigStyleRootProps
   return result
 }

@@ -1,5 +1,5 @@
 import type { UinityConfig } from '@/config/index.js'
-import { camelCaseObjectToCss, zOptionalNumberOrString, zOptionalString } from '@/utils/other.js'
+import { toCss, zOptionalNumberOrString, zOptionalString } from '@/utils/other.js'
 import { $ } from '@/utils/variables.js'
 import camelCasify from 'lodash/camelCase.js'
 import { z } from 'zod'
@@ -220,7 +220,7 @@ export const getTextStyleCss = (
   size?: TextSizeName | undefined | null,
   lineHeight?: TextLineHeightName | undefined | null
 ) => {
-  return camelCaseObjectToCss(getTextFinalProps(uinityConfig, font, type, size, lineHeight))
+  return toCss(getTextFinalProps(uinityConfig, font, type, size, lineHeight))
 }
 
 export const getTextScssMixins = (uinityConfig: UinityConfig) => {
@@ -240,7 +240,7 @@ export const getTextScssMixins = (uinityConfig: UinityConfig) => {
             sizeHere as any,
             lineHeightHere as any
           )
-          const mixinProps = camelCaseObjectToCss(props)
+          const mixinProps = toCss(props)
           const mixinName = (() => {
             const mixinNameParts = ['text']
             if (font !== 'default') {

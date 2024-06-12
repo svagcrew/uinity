@@ -364,7 +364,7 @@
         "contentMaxWidth": 1440,
         "textMaxWidth": 800,
         "sidebarWidth": 240,
-        "sidebarMarginRight": 32,
+        "sidebarMarginEnd": 32,
         "headerBorderWidth": 1,
         "footerBorderWidth": 1,
         "sidebarBorderWidth": 1,

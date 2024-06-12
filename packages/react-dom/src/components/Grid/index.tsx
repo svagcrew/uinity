@@ -1,6 +1,6 @@
 import '@/lib/cssGridPolyfill.js'
 import { mark } from '@/utils.js'
-import { camelCaseObjectToCss } from '@uinity/core/dist/utils/other.js'
+import { toCss } from '@uinity/core/dist/utils/other.js'
 import type { RuleSet } from 'styled-components'
 import { css, styled } from 'styled-components'
 
@@ -48,14 +48,14 @@ export type GridType = <TAs extends As>(props: GridProps<TAs>) => JSX.Element
 const createCssByStyledProps = (sp: GridStyledProps): RuleSet => {
   return css`
     display: grid;
-    ${camelCaseObjectToCss({
+    ${toCss({
       columnGap: sp.$columnGap,
       rowGap: sp.$rowGap,
       gridTemplateColumns: sp.$itemsInRow && `repeat(${sp.$itemsInRow}, 1fr)`,
     })}
     ${sp.$byContainerSize?.map(([, gridProps], index) => {
       const prevContainerSize = sp.$byContainerSize?.[index - 1]?.[0] ?? 0
-      const gridPropsCss = camelCaseObjectToCss({
+      const gridPropsCss = toCss({
         columnGap: gridProps.columnGap ?? gridProps.gap,
         rowGap: gridProps.rowGap ?? gridProps.gap,
         gridTemplateColumns: gridProps.itemsInRow && `repeat(${gridProps.itemsInRow}, 1fr)`,
@@ -73,7 +73,7 @@ const createCssByStyledProps = (sp: GridStyledProps): RuleSet => {
     })}
     ${sp.$byWindowSize?.map(([, gridProps], index) => {
       const prevWindowSize = sp.$byWindowSize?.[index - 1]?.[0] ?? 0
-      const gridPropsCss = camelCaseObjectToCss({
+      const gridPropsCss = toCss({
         columnGap: gridProps.columnGap ?? gridProps.gap,
         rowGap: gridProps.rowGap ?? gridProps.gap,
         gridTemplateColumns: gridProps.itemsInRow && `repeat(${gridProps.itemsInRow}, 1fr)`,
@@ -88,7 +88,7 @@ const createCssByStyledProps = (sp: GridStyledProps): RuleSet => {
       `
     })}
     ${sp.$byContainerSizeReverse?.map(([containerSize, gridProps]) => {
-      const gridPropsCss = camelCaseObjectToCss({
+      const gridPropsCss = toCss({
         columnGap: gridProps.columnGap ?? gridProps.gap,
         rowGap: gridProps.rowGap ?? gridProps.gap,
         gridTemplateColumns: gridProps.itemsInRow && `repeat(${gridProps.itemsInRow}, 1fr)`,
@@ -105,7 +105,7 @@ const createCssByStyledProps = (sp: GridStyledProps): RuleSet => {
       `
     })}
     ${sp.$byWindowSizeReverse?.map(([windowSize, gridProps]) => {
-      const gridPropsCss = camelCaseObjectToCss({
+      const gridPropsCss = toCss({
         columnGap: gridProps.columnGap ?? gridProps.gap,
         rowGap: gridProps.rowGap ?? gridProps.gap,
         gridTemplateColumns: gridProps.itemsInRow && `repeat(${gridProps.itemsInRow}, 1fr)`,

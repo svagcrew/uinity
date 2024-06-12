@@ -10,7 +10,7 @@ import {
   useMergeRefs,
   useRole,
 } from '@floating-ui/react'
-import { camelCaseObjectToCss } from '@uinity/core/dist/utils/other.js'
+import { toCss } from '@uinity/core/dist/utils/other.js'
 import isBoolean from 'lodash/isBoolean.js'
 import type { ForwardRefExoticComponent, HTMLProps, ReactElement, RefAttributes } from 'react'
 import React, { useEffect } from 'react'
@@ -216,7 +216,7 @@ const GlobalStyles = createGlobalStyle<ModalGlobalStylesProps>`
     }: ModalGlobalStylesProps) => {
       return css`
         .${overlayClassName} {
-          ${camelCaseObjectToCss({
+          ${toCss({
             opacity: supportingSafeJustifyContentFinished ? 1 : 0,
             zIndex: 9_000,
             boxSizing: 'border-box',
@@ -247,7 +247,7 @@ const GlobalStyles = createGlobalStyle<ModalGlobalStylesProps>`
           })}
 
           .${contentClassName} {
-            ${camelCaseObjectToCss({
+            ${toCss({
               opacity: supportingSafeJustifyContentFinished ? 1 : 0,
               pointerEvents: 'auto',
               boxSizing: 'border-box',

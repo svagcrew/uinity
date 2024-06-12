@@ -1,22 +1,22 @@
-import { createUinityButtons } from './index.js'
-import { Icon } from '@/components/Icon/index.stories.js'
+import { createUinityButton } from './configured.js'
+import { Icon } from '@/components/Icon/configured.stories.js'
 import { uinityConfig } from '@/stories/uinity.config.js'
-import { getOptionsFormKeysArgType } from '@/stories/utils.js'
+import { getArgTypeConfigFromObject } from '@/stories/utils.js'
 import type { Meta, StoryObj } from '@storybook/react'
 
-const Button = createUinityButtons({ uinityConfig, Icon }).Button
+const Button = createUinityButton({ uinityConfig, Icon }).Button
 
 const meta = {
-  title: 'Button',
+  title: 'Button Configured',
   component: Button,
   parameters: {
     layout: 'centered',
   },
   tags: ['autodocs'],
   argTypes: {
-    ...getOptionsFormKeysArgType('type', uinityConfig.button.type),
-    ...getOptionsFormKeysArgType('size', uinityConfig.button.size),
-    icon: {
+    ...getArgTypeConfigFromObject('type', uinityConfig.button.type),
+    ...getArgTypeConfigFromObject('size', uinityConfig.button.size),
+    iconStart: {
       control: 'radio',
       options: ['icon1', 'icon2', undefined],
     },
@@ -24,7 +24,7 @@ const meta = {
   args: {
     type: uinityConfig.button.general.defaultType,
     size: uinityConfig.button.general.defaultSize,
-    icon: undefined,
+    iconStart: undefined,
   },
 } satisfies Meta<typeof Button>
 

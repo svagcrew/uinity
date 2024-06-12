@@ -1,9 +1,9 @@
 import '@/lib/cssContainerQueryPolyfill.js'
-import { elseEmptyString, mark, type RC } from '@/utils.js'
+import { mark, type RC } from '@/utils.js'
 import type { UinityConfig } from '@uinity/core'
 import type { LayoutFinalProps } from '@uinity/core/dist/components/layout.js'
 import { getLayoutFinalProps } from '@uinity/core/dist/components/layout.js'
-import { borderPropsToCssValue, camelCaseObjectToCss, maybeNumberToPx } from '@uinity/core/dist/utils/other.js'
+import { borderPropsToCssValue, maybeNumberToPx, toCss } from '@uinity/core/dist/utils/other.js'
 import * as bodyScrollLock from 'body-scroll-lock'
 import { useEffect } from 'react'
 import type { RuleSet } from 'styled-components'
@@ -99,7 +99,7 @@ export const createUinityLayout = <TUinityConfig extends UinityConfig>({
     ${LayoutSectionS} {
       ${withLayoutFinalProps(
         (fp, sp) => `
-          ${camelCaseObjectToCss({
+          ${toCss({
             width: '100%',
             maxWidth: sp.$fullWidth ? null : fp.layoutMaxWidth,
             paddingLeft: fp.layoutPaddingHorizontal,
@@ -116,7 +116,7 @@ export const createUinityLayout = <TUinityConfig extends UinityConfig>({
       align-items: stretch;
       justify-content: stretch;
       ${withLayoutFinalProps((fp) =>
-        camelCaseObjectToCss({
+        toCss({
           height: fp.headerHeight,
           flexGrow: 0,
           flexShrink: 0,
@@ -131,18 +131,17 @@ export const createUinityLayout = <TUinityConfig extends UinityConfig>({
         align-items: center;
         justify-content: flex-start;
         ${(sp) =>
-          elseEmptyString(
-            !!sp.$headerFixed,
-            camelCaseObjectToCss({
-              position: 'fixed',
-              top: 0,
-              left: 0,
-              right: 0,
-              zIndex: 1_000,
-            })
-          )}
+          !sp.$headerFixed
+            ? ''
+            : toCss({
+                position: 'fixed',
+                top: 0,
+                left: 0,
+                right: 0,
+                zIndex: 1_000,
+              })}
         ${withLayoutFinalProps((fp) =>
-          camelCaseObjectToCss({
+          toCss({
             height: fp.headerHeight,
             background: fp.headerBackground,
             borderBottom: borderPropsToCssValue(fp.headerBorderWidth, fp.headerBorderColor),
@@ -155,7 +154,7 @@ export const createUinityLayout = <TUinityConfig extends UinityConfig>({
           align-items: stretch;
           justify-content: stretch;
           ${withLayoutFinalProps((fp) =>
-            camelCaseObjectToCss({
+            toCss({
               height: fp.headerHeight,
             })
           )}
@@ -173,11 +172,11 @@ export const createUinityLayout = <TUinityConfig extends UinityConfig>({
       overflow-y: auto;
       position: fixed;
       ${(sp) =>
-        camelCaseObjectToCss({
+        toCss({
           ...(sp.$modalOpened ? { marginTop: 0 } : { marginTop: -99_999 }),
         })}
       ${withLayoutFinalProps((fp, sp) =>
-        camelCaseObjectToCss({
+        toCss({
           background: fp.modalBackground,
           height: `calc(100% - ${maybeNumberToPx(sp.$headerFixed ? fp.headerHeight : 0)})`,
           top: maybeNumberToPx(sp.$headerFixed ? fp.headerHeight : 0),
@@ -190,7 +189,7 @@ export const createUinityLayout = <TUinityConfig extends UinityConfig>({
         align-items: stretch;
         justify-content: stretch;
         ${withLayoutFinalProps((fp) =>
-          camelCaseObjectToCss({
+          toCss({
             paddingTop: fp.modalPaddingTop,
             paddingBottom: fp.modalPaddingBottom,
             borderTop: borderPropsToCssValue(fp.modalBorderWidth, fp.modalBorderColor),
@@ -220,7 +219,7 @@ export const createUinityLayout = <TUinityConfig extends UinityConfig>({
           align-items: stretch;
           justify-content: stretch;
           ${withLayoutFinalProps((fp) =>
-            camelCaseObjectToCss({
+            toCss({
               flexGrow: 0,
               flexShrink: 0,
               flexBasis: fp.sidebarWidth,
@@ -230,19 +229,18 @@ export const createUinityLayout = <TUinityConfig extends UinityConfig>({
             })
           )}
 
-          ${elseEmptyString(
-            uinityConfig.layout.general.hideSidebarOnScreenWidth,
-            css`
-              @media (max-width: ${maybeNumberToPx(uinityConfig.layout.general.hideSidebarOnScreenWidth)}) {
-                display: none;
-              }
-            `
-          )}
+          ${!uinityConfig.layout.general.hideSidebarOnScreenWidth
+            ? ''
+            : css`
+                @media (max-width: ${maybeNumberToPx(uinityConfig.layout.general.hideSidebarOnScreenWidth)}) {
+                  display: none;
+                }
+              `}
 
 
           ${SidebarS} {
             ${withLayoutFinalProps((fp) =>
-              camelCaseObjectToCss({
+              toCss({
                 width: fp.sidebarWidth,
                 paddingTop: fp.sidebarPaddingTop,
                 paddingBottom: fp.sidebarPaddingBottom,
@@ -250,15 +248,14 @@ export const createUinityLayout = <TUinityConfig extends UinityConfig>({
               })
             )}
             ${withLayoutFinalProps((fp, sp) =>
-              elseEmptyString(
-                !!sp.$sidebarFixed,
-                camelCaseObjectToCss({
-                  overflowY: 'auto',
-                  position: 'fixed',
-                  zIndex: 900,
-                  height: `calc(100% - ${maybeNumberToPx(sp.$headerFixed ? fp.headerHeight : 0)})`,
-                })
-              )
+              !sp.$sidebarFixed
+                ? ''
+                : toCss({
+                    overflowY: 'auto',
+                    position: 'fixed',
+                    zIndex: 900,
+                    height: `calc(100% - ${maybeNumberToPx(sp.$headerFixed ? fp.headerHeight : 0)})`,
+                  })
             )}
           }
         }
@@ -269,7 +266,7 @@ export const createUinityLayout = <TUinityConfig extends UinityConfig>({
           align-items: flex-start;
           justify-content: stretch;
           ${withLayoutFinalProps((fp) =>
-            camelCaseObjectToCss({
+            toCss({
               flexGrow: 1,
               flexShrink: 1,
               flexBasis: '100%',
@@ -291,7 +288,7 @@ export const createUinityLayout = <TUinityConfig extends UinityConfig>({
       justify-content: center;
       z-index: 950;
       ${withLayoutFinalProps((fp) =>
-        camelCaseObjectToCss({
+        toCss({
           background: fp.footerBackground,
           paddingTop: fp.footerPaddingTop,
           paddingBottom: fp.footerPaddingBottom,

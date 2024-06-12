@@ -1,6 +1,6 @@
 import type { UinityConfig } from '@/config/index.js'
-import type { ColorModeName, ColorValueModed } from '@/utils/other.js'
-import { zColorValue } from '@/utils/other.js'
+import type { ColorModeName, ColorValueModed } from '@/utils/color.js'
+import { zColorValue } from '@/utils/color.js'
 import { $ } from '@/utils/variables.js'
 import camelCasify from 'lodash/camelCase.js'
 import { z } from 'zod'

@@ -1,6 +1,6 @@
 import '@/lib/cssContainerQueryPolyfill.js'
 import { mark } from '@/utils.js'
-import { camelCaseObjectToCss } from '@uinity/core/dist/utils/other.js'
+import { toCss } from '@uinity/core/dist/utils/other.js'
 import isArray from 'lodash/isArray.js'
 import isString from 'lodash/isString.js'
 import type { RuleSet } from 'styled-components'
@@ -214,7 +214,7 @@ const shortGeneralPropsToGeneralProps = (
 
 const createCssByStyledProps = (sp: BlockStyledProps): RuleSet => {
   return css`
-    ${camelCaseObjectToCss({
+    ${toCss({
       display: sp.$df ? 'flex' : sp.$db ? 'block' : sp.$di ? 'inline' : sp.$dn ? 'none' : 'flex',
       flexFlow: sp.$frnw
         ? 'row nowrap'
@@ -271,7 +271,7 @@ const createCssByStyledProps = (sp: BlockStyledProps): RuleSet => {
       columnGap: sp.$cg ? sp.$cg : undefined,
       containerType: sp.$ce ? 'inline-size' : undefined,
     })}
-    ${camelCaseObjectToCss(sp.$s || {})};
+    ${toCss(sp.$s || {})};
     ${!sp.$cp
       ? ''
       : css`

@@ -14,6 +14,12 @@ importers:
       husky:
         specifier: ^9.0.11
         version: 9.0.11
+      i:
+        specifier: ^0.3.7
+        version: 0.3.7
+      pnpm:
+        specifier: ^9.3.0
+        version: 9.3.0
       svag-husky:
         specifier: ^0.1.49
         version: 0.1.49(@types/node@20.14.2)
@@ -21,7 +27,7 @@ importers:
   packages/cli:
     dependencies:
       '@uinity/core':
-        specifier: workspace:*
+        specifier: workspace:^
         version: link:../core
       dedent:
         specifier: ^1.5.3
@@ -167,11 +173,14 @@ importers:
   packages/react-dom:
     dependencies:
       '@uinity/core':
-        specifier: workspace:*
+        specifier: workspace:^
         version: link:../core
       body-scroll-lock:
         specifier: 4.0.0-beta.0
         version: 4.0.0-beta.0
+      classnames:
+        specifier: ^2.5.1
+        version: 2.5.1
       lodash:
         specifier: ^4.17.21
         version: 4.17.21
@@ -239,6 +248,9 @@ importers:
       eslint:
         specifier: ^9.2.0
         version: 9.4.0
+      eslint-plugin-react-hooks:
+        specifier: 5.1.0-rc-f3e09d6328-20240612
+        version: 5.1.0-rc-f3e09d6328-20240612(eslint@9.4.0)
       eslint-plugin-storybook:
         specifier: ^0.8.0
         version: 0.8.0(eslint@9.4.0)(typescript@5.4.5)
@@ -5787,6 +5799,10 @@ packages:
     resolution: {integrity: sha512-a3KdPAANPbNE4ZUv9h6LckSl9zLsYOP4MBmhIPkRaeyybt+r4UghLvq+xw/YwUcC1gqylCkL4rdVs3Lwupjm4Q==}
     dev: true
 
+  /classnames@2.5.1:
+    resolution: {integrity: sha512-saHYOzhIQs6wy2sVxTM6bUDsQO4F50V9RQ22qBpEdCW+I+/Wmke2HOl6lS6dTpdxVhb88/I6+Hs+438c3lfUow==}
+    dev: false
+
   /clean-regexp@1.0.0:
     resolution: {integrity: sha512-GfisEZEJvzKrmGWkvfhgzcz/BllN1USeqD2V6tg14OAOgaCD2Z/PUEuxnAZ/nPvmaHRG7a8y77p1T/IRQ4D1Hw==}
     engines: {node: '>=4'}
@@ -7150,6 +7166,15 @@ packages:
       eslint: 9.4.0
     dev: true
 
+  /eslint-plugin-react-hooks@5.1.0-rc-f3e09d6328-20240612(eslint@9.4.0):
+    resolution: {integrity: sha512-XBGKfdU+rUDOgBFiYgPBrxJOSjh5tz0i62eO4QhKpoo4KmEF7ZU5C/D0UZ+Y8/B64iNNlAV1hooyN5G1xOrT7Q==}
+    engines: {node: '>=10'}
+    peerDependencies:
+      eslint: ^3.0.0 || ^4.0.0 || ^5.0.0 || ^6.0.0 || ^7.0.0 || ^8.0.0-0 || ^9.0.0
+    dependencies:
+      eslint: 9.4.0
+    dev: true
+
   /eslint-plugin-react@7.34.2(eslint@9.4.0):
     resolution: {integrity: sha512-2HCmrU+/JNigDN6tg55cRDKCQWicYAPB38JGSFDQt95jDm8rrvSUo7YPkOIm5l6ts1j1zCvysNcasvfTMQzUOw==}
     engines: {node: '>=4'}
@@ -8223,6 +8248,11 @@ packages:
     resolution: {integrity: sha512-AB6lFlbwwyIqMdHYhwPe+kjOC3Oc5P3nThEoW/AaO2BX3vJDjWPFxYLxokUZOo6RNX20He3AaT8sESs9NJcmEw==}
     engines: {node: '>=18'}
     hasBin: true
+    dev: true
+
+  /i@0.3.7:
+    resolution: {integrity: sha512-FYz4wlXgkQwIPqhzC5TdNMLSE5+GS1IIDJZY/1ZiEPCT2S3COUVZeT5OW4BmW4r5LHLQuOosSwsvnroG9GR59Q==}
+    engines: {node: '>=0.4'}
     dev: true
 
   /iconv-lite@0.4.24:
@@ -10176,6 +10206,12 @@ packages:
   /pluralize@8.0.0:
     resolution: {integrity: sha512-Nc3IT5yHzflTfbjgqWcCPpo7DaKy4FnpB0l/zCAW0Tc7jxAiuqSxHasntB3D7887LSrA93kDJ9IXovxJYxyLCA==}
     engines: {node: '>=4'}
+    dev: true
+
+  /pnpm@9.3.0:
+    resolution: {integrity: sha512-7nuT4MK9EUCcZCT5K4ZvMdPqG+9fvkfTx1AM3DyWaIM9LlVoGtZt9bZAxh+p3CXVRu+lTXbX+L9UsTYUrCk2MQ==}
+    engines: {node: '>=18.12'}
+    hasBin: true
     dev: true
 
   /polished@4.3.1:

@@ -38,6 +38,11 @@ const config: StorybookConfig = {
       server: {
         host: true,
       },
+      define: {
+        'process.env': {
+          NODE_ENV: 'development',
+        },
+      },
     })
   },
 }

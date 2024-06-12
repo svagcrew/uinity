@@ -18,7 +18,7 @@ import {
   normalizeFieldUinityConfig,
   zFieldUinityConfigInput,
 } from '@/components/field.js'
-import { defaultIconUinityConfigInput, normalizeIconUinityConfig, zIconUinityConfigInput } from '@/components/icon.js'
+import { defaultIconConfigInput, normalizeIconConfig, zIconConfigInput } from '@/components/icon.js'
 import {
   defaultLayoutUinityConfigInput,
   normalizeLayoutUinityConfig,
@@ -32,7 +32,7 @@ import { z } from 'zod'
 export const zUinityConfigInput = z.object({
   color: zColorUinityConfigInput.optional(),
   text: zTextUinityConfigInput.optional(),
-  icon: zIconUinityConfigInput.optional(),
+  icon: zIconConfigInput.optional(),
   layout: zLayoutUinityConfigInput.optional(),
   control: zControlUinityConfigInput.optional(),
   field: zFieldUinityConfigInput.optional(),
@@ -43,7 +43,7 @@ export type UinityConfigInput = z.infer<typeof zUinityConfigInput>
 export const defaultUinityConfigInput: UinityConfigInput = {
   color: defaultColorUinityConfigInput,
   text: defaultTextUinityConfigInput,
-  icon: defaultIconUinityConfigInput,
+  icon: defaultIconConfigInput,
   layout: defaultLayoutUinityConfigInput,
   control: defaultControlUinityConfigInput,
   field: defaultFieldUinityConfigInput,
@@ -53,15 +53,12 @@ export const defaultUinityConfigInput: UinityConfigInput = {
 export const normalizeUinityConfig = (input: UinityConfigInput) => {
   const color = normalizeColorUinityConfig(input.color)
   const text = normalizeTextUinityConfig(input.text)
-  const icon = normalizeIconUinityConfig(input.icon)
+  const icon = normalizeIconConfig(input.icon)
   const layout = normalizeLayoutUinityConfig(input.layout)
   const control = normalizeControlUinityConfig(input.control)
   const field = normalizeFieldUinityConfig(input.field)
   const button = normalizeButtonUinityConfig(input.button)
   const config = {
-    general: {
-      colorModes: ['light', 'dark'] as const,
-    },
     color,
     text,
     icon,

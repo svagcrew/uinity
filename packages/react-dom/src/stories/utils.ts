@@ -1,4 +1,4 @@
-export const getOptionsArgType = (
+export const getArgTypeConfig = (
   propName: string,
   options: Array<string | number>,
   control: 'radio' | 'select' = 'radio'
@@ -9,10 +9,10 @@ export const getOptionsArgType = (
   },
 })
 
-export const getOptionsFormKeysArgType = (
+export const getArgTypeConfigFromObject = (
   propName: string,
   obj: Record<string, any>,
   control: 'radio' | 'select' = 'radio'
 ) => {
-  return getOptionsArgType(propName, Object.keys(obj), control)
+  return getArgTypeConfig(propName, Object.keys(obj), control)
 }

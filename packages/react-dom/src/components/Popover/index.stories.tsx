@@ -1,14 +1,14 @@
-import type { WithPopoverProps } from './index.js';
+import type { WithPopoverProps } from './index.js'
 import { createUinityPopover } from './index.js'
-import { createUinityButtons } from '@/components/Button/index.js'
-import { createUinityIcon } from '@/components/Icon/index.js'
+import { createUinityButton } from '@/components/Button/configured.js'
+import { createUinityIcon } from '@/components/Icon/configured.js'
 import { uinityConfig } from '@/stories/uinity.config.js'
 import type { Meta, StoryObj } from '@storybook/react'
 
 const { Icon } = createUinityIcon({
   uinityConfig,
 })
-const { Button } = createUinityButtons({
+const { Button } = createUinityButton({
   uinityConfig,
   Icon,
 })

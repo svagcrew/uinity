@@ -26,6 +26,8 @@
   "devDependencies": {
     "concurrently": "^8.2.2",
     "husky": "^9.0.11",
+    "i": "^0.3.7",
+    "pnpm": "^9.3.0",
     "svag-husky": "^0.1.49"
   },
   "workspaces": [

@@ -1,9 +1,9 @@
 // import { fn } from '@storybook/test'
+import { createUinityIcon } from './configured.js'
 import icon1 from './icon1.svg?react'
 import icon2 from './icon2.svg?react'
-import { createUinityIcon } from './index.js'
 import { uinityConfig } from '@/stories/uinity.config.js'
-import { getOptionsFormKeysArgType } from '@/stories/utils.js'
+import { getArgTypeConfigFromObject } from '@/stories/utils.js'
 import type { Meta, StoryObj } from '@storybook/react'
 
 export const { Icon } = createUinityIcon({
@@ -15,14 +15,14 @@ export const { Icon } = createUinityIcon({
 })
 
 const meta = {
-  title: 'Icon',
+  title: 'Icon Configured',
   component: Icon,
   parameters: {
     layout: 'centered',
   },
   tags: ['autodocs'],
   argTypes: {
-    ...getOptionsFormKeysArgType('size', uinityConfig.icon.size),
+    ...getArgTypeConfigFromObject('size', uinityConfig.icon.size),
   },
   args: {
     size: uinityConfig.icon.general.defaultSize,

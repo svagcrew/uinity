@@ -1,13 +1,23 @@
 import { controlSizeNames, zControlSizeProps } from '@/components/control.js'
 import { zTextFontName, zTextLineHeightName, zTextSizeName, zTextTypeName } from '@/components/text.js'
 import type { UinityConfig } from '@/config/index.js'
-import { zColorValue, zOptionalNumberOrString } from '@/utils/other.js'
+import { zColorValue } from '@/utils/color.js'
+import { zOptionalNumberOrString } from '@/utils/other.js'
 import { $ } from '@/utils/variables.js'
 import { z } from 'zod'
 
-export const buttonSizes = controlSizeNames
-export const zButtonSizeName = z.enum(buttonSizes)
+export const buttonSizesNames = controlSizeNames
+export const zButtonSizeName = z.enum(buttonSizesNames)
 export type ButtonSizeName = z.infer<typeof zButtonSizeName>
+
+export const buttonTypesNames = ['primary', 'secondary'] as const
+export const zButtonTypeName = z.enum(buttonTypesNames)
+export type ButtonTypeName = z.infer<typeof zButtonTypeName>
+
+export const buttonStatesNames = ['rest', 'hover', 'active', 'focus', 'disabled'] as const
+export const zButtonStateName = z.enum(buttonStatesNames)
+export type ButtonStateName = z.infer<typeof zButtonStateName>
+
 export const zButtonSizeProps = zControlSizeProps.extend({
   textFont: zTextFontName.optional(),
   textType: zTextTypeName.optional(),
@@ -16,15 +26,7 @@ export const zButtonSizeProps = zControlSizeProps.extend({
   borderWidth: zOptionalNumberOrString,
   minHeight: zOptionalNumberOrString,
 })
-
-export const buttonTypes = ['primary', 'secondary'] as const
-export const zButtonTypeName = z.enum(buttonTypes)
-export type ButtonTypeName = z.infer<typeof zButtonTypeName>
-
-export const buttonStates = ['rest', 'hover', 'active', 'focus', 'disabled'] as const
-export const zButtonStateName = z.enum(buttonStates)
-export type ButtonStateName = z.infer<typeof zButtonStateName>
-
+export type ButtonSizeProps = z.infer<typeof zButtonSizeProps>
 export const zButtonAppearenceProps = z.object({
   textFont: zTextFontName.optional(),
   textType: zTextTypeName.optional(),
@@ -36,7 +38,6 @@ export const zButtonAppearenceProps = z.object({
   iconColor: zColorValue.optional(),
 })
 export type ButtonAppearenceProps = z.infer<typeof zButtonFinalProps>
-
 export const zButtonFinalProps = zButtonSizeProps.merge(zButtonAppearenceProps)
 export type ButtonFinalProps = z.infer<typeof zButtonFinalProps>
 
@@ -106,7 +107,7 @@ export const defaultButtonUinityConfigInput: ButtonUinityConfigInput = {
   //   s: getDefaultSpecificSizeProps('s'),
   //   xs: getDefaultSpecificSizeProps('xs'),
   // },
-  size: Object.fromEntries(buttonSizes.map((size) => [size, getDefaultSpecificSizeProps(size)])),
+  size: Object.fromEntries(buttonSizesNames.map((size) => [size, getDefaultSpecificSizeProps(size)])),
   state: {
     rest: {},
     hover: {},
@@ -128,9 +129,9 @@ export const defaultButtonUinityConfigInput: ButtonUinityConfigInput = {
 
 export const normalizeButtonUinityConfig = (input: ButtonUinityConfigInput | undefined) => {
   const complex = {} as ButtonComplexProps
-  for (const type of [...buttonTypes, 'any'] as const) {
-    for (const size of [...buttonSizes, 'any'] as const) {
-      for (const state of [...buttonStates, 'any'] as const) {
+  for (const type of [...buttonTypesNames, 'any'] as const) {
+    for (const size of [...buttonSizesNames, 'any'] as const) {
+      for (const state of [...buttonStatesNames, 'any'] as const) {
         const defaultComplexItem = defaultButtonUinityConfigInput.complex?.[type]?.[size]?.[state]
         const inputComplexItem = input?.complex?.[type]?.[size]?.[state]
         const complexItem =

@@ -5,4 +5,9 @@ export default [
     ignores: ['dist', 'volumes', 'node_modules', '.storybook'],
     console: true,
   }),
+  {
+    rules: {
+      'react-hooks/rules-of-hooks': 'off',
+    },
+  },
 ]
