@@ -1,7 +1,7 @@
 import type { ButtonStyleCoreProps } from './clear.js'
 import { Button as ButtonClear } from './clear.js'
 import type { ButtonMainProps, ButtonStyleStatesProps } from '@/components/Button/clear.js'
-import type { IconConfiguredType } from '@/components/Icon/configured.js'
+import type { IconConfigured } from '@/components/Icon/configured.js'
 import { useColorMode } from '@/lib/colorMode.js'
 import { type As, type AsPropsWithRef, forwardRefWithTypes, type RC } from '@/utils.js'
 import type { UinityConfig } from '@uinity/core'
@@ -25,7 +25,7 @@ export type ButtonConfiguredPropsWithRef<TAs extends As, TIconName extends strin
   TIconName
 > &
   AsPropsWithRef<TAs>
-export type ButtonConfiguredType<TAs extends As, TIconName extends string> = RC<
+export type ButtonConfigured<TAs extends As, TIconName extends string> = RC<
   ButtonConfiguredPropsWithRef<TAs, TIconName>
 >
 
@@ -48,7 +48,7 @@ export const createButton = <TIconName extends string>({
   Icon,
 }: {
   uinityConfig: UinityConfig
-  Icon: IconConfiguredType<TIconName>
+  Icon: IconConfigured<TIconName>
 }) => {
   const { colorMode: colorModeGlobal } = useColorMode()
   const Button = forwardRefWithTypes(

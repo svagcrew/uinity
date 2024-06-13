@@ -18,7 +18,7 @@ export type LayoutConfiguredMainProps<TAs extends As> = LayoutConfiguredSettings
   LayoutConfiguredSpecialProps<TAs> &
   LayoutMainProps<TAs>
 export type LayoutConfiguredPropsWithRef<TAs extends As> = LayoutConfiguredMainProps<TAs> & AsPropsWithRef<TAs>
-export type LayoutConfiguredType<TAs extends As> = RC<LayoutConfiguredPropsWithRef<TAs>>
+export type LayoutConfigured<TAs extends As> = RC<LayoutConfiguredPropsWithRef<TAs>>
 
 const normalizeLayoutStyleCoreProps = (
   cm: ColorModeName,

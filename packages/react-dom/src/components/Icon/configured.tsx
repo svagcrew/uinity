@@ -17,7 +17,7 @@ export type IconConfiguredMainProps<TIconName extends string> = IconConfiguredSe
 export type IconConfiguredPropsWithRef<TIconName extends string> = IconConfiguredMainProps<TIconName> &
   AsPropsWithRef<undefined>
 // export type IconConfiguredType<TIconName extends string = string> = RC<IconConfiguredMainProps<TIconName>>
-export type IconConfiguredType<TIconName extends string = string> = (
+export type IconConfigured<TIconName extends string = string> = (
   props: IconConfiguredPropsWithRef<TIconName>
 ) => React.ReactElement | null
 
@@ -31,7 +31,7 @@ export const createIcon = <TIconName extends string>({
   uinityConfig: UinityConfig
   iconsComponents?: IconsComponents<TIconName>
 }) => {
-  const Icon: IconConfiguredType<TIconName> = forwardRefIgnoreTypes(
+  const Icon: IconConfigured<TIconName> = forwardRefIgnoreTypes(
     ({ size, name, $style = {}, ...restProps }: IconConfiguredPropsWithRef<TIconName>, ref: any) => {
       const $styleConfigured = getIconConfigFinalProps(uinityConfig, size)
       const $styleNormalized = {
