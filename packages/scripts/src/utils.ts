@@ -53,7 +53,7 @@ export const appendString = ({ content, search, append }: { content: string; sea
   const newLines = lines.map((line) => {
     if (line.includes(search)) {
       const tabsString = line.match(/^\s*/)?.[0] ?? ''
-      return `${line}\n${tabsString}${append}`
+      return `${tabsString}${append}\n${line}`
     }
     return line
   })
