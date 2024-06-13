@@ -1,10 +1,11 @@
 import '@/lib/cssGridPolyfill.js'
-import { mark } from '@/utils.js'
+import type { As, AsPropsWithRef, RCWithAsAndForwardedRef } from '@/utils.js'
+import { forwardRefWithTypes, mark } from '@/utils.js'
 import { toCss } from '@uinity/core/dist/utils/other.js'
 import type { RuleSet } from 'styled-components'
 import { css, styled } from 'styled-components'
 
-type GridGeneralProps = {
+type GridCoreProps = {
   as?: As
   /** itemsInRow */
   i?: number
@@ -19,42 +20,41 @@ type GridGeneralProps = {
   rg?: number | string
   rowGap?: number | string
   /** byContainerSize */
-  cs?: Array<[number, GridGeneralProps | number]>
-  byContainerSize?: Array<[number, GridGeneralProps | number]>
+  cs?: Array<[number, GridCoreProps | number]>
+  byContainerSize?: Array<[number, GridCoreProps | number]>
   /** byWindowSize */
-  ws?: Array<[number, GridGeneralProps | number]>
-  byWindowSize?: Array<[number, GridGeneralProps | number]>
+  ws?: Array<[number, GridCoreProps | number]>
+  byWindowSize?: Array<[number, GridCoreProps | number]>
   /** byContainerSizeReverse */
-  csr?: Array<[number, GridGeneralProps | number]>
-  byContainerSizeReverse?: Array<[number, GridGeneralProps | number]>
+  csr?: Array<[number, GridCoreProps | number]>
+  byContainerSizeReverse?: Array<[number, GridCoreProps | number]>
   /** byWindowSizeReverse */
-  wsr?: Array<[number, GridGeneralProps | number]>
-  byWindowSizeReverse?: Array<[number, GridGeneralProps | number]>
+  wsr?: Array<[number, GridCoreProps | number]>
+  byWindowSizeReverse?: Array<[number, GridCoreProps | number]>
 }
-type GridStyledProps = {
-  $itemsInRow?: number
-  $columnGap?: number | string
-  $rowGap?: number | string
-  $byContainerSize?: Array<[number, GridGeneralProps]>
-  $byWindowSize?: Array<[number, GridGeneralProps]>
-  $byContainerSizeReverse?: Array<[number, GridGeneralProps]>
-  $byWindowSizeReverse?: Array<[number, GridGeneralProps]>
+type GridStyleRootProps = {
+  itemsInRow?: number
+  columnGap?: number | string
+  rowGap?: number | string
+  byContainerSize?: Array<[number, GridCoreProps]>
+  byWindowSize?: Array<[number, GridCoreProps]>
+  byContainerSizeReverse?: Array<[number, GridCoreProps]>
+  byWindowSizeReverse?: Array<[number, GridCoreProps]>
 }
-type As = keyof JSX.IntrinsicElements
-type HtmlElementProps<T extends As> = JSX.IntrinsicElements[T]
-type GridProps<TAs extends As> = GridGeneralProps & HtmlElementProps<TAs>
-export type GridType = <TAs extends As>(props: GridProps<TAs>) => JSX.Element
+export type GridMainProps<TAs extends As> = { as?: TAs } & GridCoreProps
+export type GridPropsWithRef<TAs extends As> = GridMainProps<TAs> & AsPropsWithRef<TAs>
+export type GridType<TAs extends As> = RCWithAsAndForwardedRef<GridPropsWithRef<TAs>>
 
-const createCssByStyledProps = (sp: GridStyledProps): RuleSet => {
+const getGridCoreCss = ($style: GridStyleRootProps): RuleSet => {
   return css`
     display: grid;
     ${toCss({
-      columnGap: sp.$columnGap,
-      rowGap: sp.$rowGap,
-      gridTemplateColumns: sp.$itemsInRow && `repeat(${sp.$itemsInRow}, 1fr)`,
+      columnGap: $style.columnGap,
+      rowGap: $style.rowGap,
+      gridTemplateColumns: $style.itemsInRow && `repeat(${$style.itemsInRow}, 1fr)`,
     })}
-    ${sp.$byContainerSize?.map(([, gridProps], index) => {
-      const prevContainerSize = sp.$byContainerSize?.[index - 1]?.[0] ?? 0
+    ${$style.byContainerSize?.map(([, gridProps], index) => {
+      const prevContainerSize = $style.byContainerSize?.[index - 1]?.[0] ?? 0
       const gridPropsCss = toCss({
         columnGap: gridProps.columnGap ?? gridProps.gap,
         rowGap: gridProps.rowGap ?? gridProps.gap,
@@ -71,8 +71,8 @@ const createCssByStyledProps = (sp: GridStyledProps): RuleSet => {
         }
       `
     })}
-    ${sp.$byWindowSize?.map(([, gridProps], index) => {
-      const prevWindowSize = sp.$byWindowSize?.[index - 1]?.[0] ?? 0
+    ${$style.byWindowSize?.map(([, gridProps], index) => {
+      const prevWindowSize = $style.byWindowSize?.[index - 1]?.[0] ?? 0
       const gridPropsCss = toCss({
         columnGap: gridProps.columnGap ?? gridProps.gap,
         rowGap: gridProps.rowGap ?? gridProps.gap,
@@ -87,7 +87,7 @@ const createCssByStyledProps = (sp: GridStyledProps): RuleSet => {
         }
       `
     })}
-    ${sp.$byContainerSizeReverse?.map(([containerSize, gridProps]) => {
+    ${$style.byContainerSizeReverse?.map(([containerSize, gridProps]) => {
       const gridPropsCss = toCss({
         columnGap: gridProps.columnGap ?? gridProps.gap,
         rowGap: gridProps.rowGap ?? gridProps.gap,
@@ -104,7 +104,7 @@ const createCssByStyledProps = (sp: GridStyledProps): RuleSet => {
         }
       `
     })}
-    ${sp.$byWindowSizeReverse?.map(([windowSize, gridProps]) => {
+    ${$style.byWindowSizeReverse?.map(([windowSize, gridProps]) => {
       const gridPropsCss = toCss({
         columnGap: gridProps.columnGap ?? gridProps.gap,
         rowGap: gridProps.rowGap ?? gridProps.gap,
@@ -122,32 +122,33 @@ const createCssByStyledProps = (sp: GridStyledProps): RuleSet => {
   `
 }
 
-export const createGrid = (): {
-  Grid: GridType
-} => {
-  const GridS = styled.div.attrs(mark('GridS'))<GridStyledProps>`
-    ${(sp) => createCssByStyledProps(sp)}
-  `
-  const Grid: GridType = ({
-    children,
-    itemsInRow,
-    i,
-    columnGap,
-    cg,
-    rowGap,
-    rg,
-    gap,
-    g,
-    byContainerSize,
-    cs,
-    byWindowSize,
-    ws,
-    byContainerSizeReverse,
-    csr,
-    byWindowSizeReverse,
-    wsr,
-    ...restProps
-  }) => {
+const GridS = styled.div.attrs(mark('GridS'))<{ $style: GridStyleRootProps }>`
+  ${({ $style }) => getGridCoreCss($style)}
+`
+export const Grid = forwardRefWithTypes(
+  <TAs extends As = 'button'>(
+    {
+      children,
+      itemsInRow,
+      i,
+      columnGap,
+      cg,
+      rowGap,
+      rg,
+      gap,
+      g,
+      byContainerSize,
+      cs,
+      byWindowSize,
+      ws,
+      byContainerSizeReverse,
+      csr,
+      byWindowSizeReverse,
+      wsr,
+      ...restProps
+    }: GridPropsWithRef<TAs>,
+    ref: any
+  ) => {
     itemsInRow = itemsInRow ?? i
     columnGap = columnGap ?? cg
     rowGap = rowGap ?? rg
@@ -156,41 +157,36 @@ export const createGrid = (): {
     byWindowSize = byWindowSize ?? ws
     byContainerSizeReverse = byContainerSizeReverse ?? csr
     byWindowSizeReverse = byWindowSizeReverse ?? wsr
-    const sp = {
+    const $style = {
       $itemsInRow: itemsInRow,
       $columnGap: columnGap ?? gap,
       $rowGap: rowGap ?? gap,
-    } as GridStyledProps
-
-    const htmlElementProps = restProps as HtmlElementProps<As>
+    } as GridStyleRootProps
 
     const normalizedByContainerSize = (byContainerSize || [])
       .sort(([a], [b]) => a - b)
-      .map(([a, b]) => [a, typeof b === 'number' ? { itemsInRow: b } : b]) as Array<[number, GridGeneralProps]>
-    sp.$byContainerSize = normalizedByContainerSize
+      .map(([a, b]) => [a, typeof b === 'number' ? { itemsInRow: b } : b]) as Array<[number, GridCoreProps]>
+    $style.byContainerSize = normalizedByContainerSize
 
     const normalizedByWindowSize = (byWindowSize || [])
       .sort(([a], [b]) => a - b)
-      .map(([a, b]) => [a, typeof b === 'number' ? { itemsInRow: b } : b]) as Array<[number, GridGeneralProps]>
-    sp.$byWindowSize = normalizedByWindowSize
+      .map(([a, b]) => [a, typeof b === 'number' ? { itemsInRow: b } : b]) as Array<[number, GridCoreProps]>
+    $style.byWindowSize = normalizedByWindowSize
 
     const normalizedByContainerSizeReverse = (byContainerSizeReverse || [])
       .sort(([a], [b]) => b - a)
-      .map(([a, b]) => [a, typeof b === 'number' ? { itemsInRow: b } : b]) as Array<[number, GridGeneralProps]>
-    sp.$byContainerSizeReverse = normalizedByContainerSizeReverse
+      .map(([a, b]) => [a, typeof b === 'number' ? { itemsInRow: b } : b]) as Array<[number, GridCoreProps]>
+    $style.byContainerSizeReverse = normalizedByContainerSizeReverse
 
     const normalizedByWindowSizeReverse = (byWindowSizeReverse || [])
       .sort(([a], [b]) => b - a)
-      .map(([a, b]) => [a, typeof b === 'number' ? { itemsInRow: b } : b]) as Array<[number, GridGeneralProps]>
-    sp.$byWindowSizeReverse = normalizedByWindowSizeReverse
+      .map(([a, b]) => [a, typeof b === 'number' ? { itemsInRow: b } : b]) as Array<[number, GridCoreProps]>
+    $style.byWindowSizeReverse = normalizedByWindowSizeReverse
 
     return (
-      <GridS as={restProps.as || 'div'} {...sp} {...(htmlElementProps as any)}>
+      <GridS {...(restProps as any)} as={restProps.as} ref={ref} $style={$style}>
         {children}
       </GridS>
     )
   }
-  return {
-    Grid: Grid as GridType,
-  }
-}
+)

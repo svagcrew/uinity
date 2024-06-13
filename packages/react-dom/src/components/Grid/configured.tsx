@@ -1,14 +1,14 @@
-import { Disabler } from './clear.js'
+import '@/lib/cssGridPolyfill.js'
+import { Grid } from './clear.js'
 import type { UinityConfig } from '@uinity/core'
 
-// TODO: extend from Block
-export const createDisabler = ({
+export const createGrid = ({
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   uinityConfig,
 }: {
   uinityConfig: UinityConfig
 }) => {
   return {
-    Disabler,
+    Grid,
   }
 }

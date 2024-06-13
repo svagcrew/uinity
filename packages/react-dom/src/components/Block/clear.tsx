@@ -201,7 +201,7 @@ const normalizeBlockCorePropsConfig = (corePropsConfig: BlockCorePropsConfig): B
   return result
 }
 
-const createCssByStyleRootProps = ($style: BlockStyleRootProps): RuleSet => {
+const getBlockCoreCss = ($style: BlockStyleRootProps): RuleSet => {
   return css`
     ${toCss({
       display: $style.df ? 'flex' : $style.db ? 'block' : $style.di ? 'inline' : $style.dn ? 'none' : 'flex',
@@ -273,19 +273,19 @@ const createCssByStyleRootProps = ($style: BlockStyleRootProps): RuleSet => {
       ? ''
       : css`
           & > * {
-            ${createCssByStyleRootProps($style.cp)}
+            ${getBlockCoreCss($style.cp)}
           }
         `}
     ${($style.ws || []).map(([, props], index): RuleSet => {
       const prevWindowSize = $style.ws?.[index - 1]?.[0] ?? 0
       if (prevWindowSize === 0) {
         return css`
-          ${createCssByStyleRootProps(props)}
+          ${getBlockCoreCss(props)}
         `
       } else {
         return css`
           @media (min-width: ${prevWindowSize + 1}px) {
-            ${createCssByStyleRootProps(props)}
+            ${getBlockCoreCss(props)}
           }
         `
       }
@@ -294,13 +294,13 @@ const createCssByStyleRootProps = ($style: BlockStyleRootProps): RuleSet => {
       const prevContainerSize = $style.cs?.[index - 1]?.[0] ?? 0
       if (prevContainerSize === 0) {
         return css`
-          ${createCssByStyleRootProps(props)}
+          ${getBlockCoreCss(props)}
         `
       } else {
         return css`
           @container (min-width: ${prevContainerSize + 1}px) {
             & {
-              ${createCssByStyleRootProps(props)}
+              ${getBlockCoreCss(props)}
             }
           }
         `
@@ -309,12 +309,12 @@ const createCssByStyleRootProps = ($style: BlockStyleRootProps): RuleSet => {
     ${($style.wsr || []).map(([windowSize, props]): RuleSet => {
       if (windowSize === Infinity) {
         return css`
-          ${createCssByStyleRootProps(props)}
+          ${getBlockCoreCss(props)}
         `
       } else {
         return css`
           @media (max-width: ${windowSize}px) {
-            ${createCssByStyleRootProps(props)}
+            ${getBlockCoreCss(props)}
           }
         `
       }
@@ -322,13 +322,13 @@ const createCssByStyleRootProps = ($style: BlockStyleRootProps): RuleSet => {
     ${($style.csr || []).map(([containerSize, props]): RuleSet => {
       if (containerSize === Infinity) {
         return css`
-          ${createCssByStyleRootProps(props)}
+          ${getBlockCoreCss(props)}
         `
       } else {
         return css`
           @container (max-width: ${containerSize}px) {
             & {
-              ${createCssByStyleRootProps(props)}
+              ${getBlockCoreCss(props)}
             }
           }
         `
@@ -338,7 +338,7 @@ const createCssByStyleRootProps = ($style: BlockStyleRootProps): RuleSet => {
 }
 
 const BlockS = styled.div.attrs(mark('BlockS'))<{ $style: BlockStyleRootProps }>`
-  ${({ $style }) => createCssByStyleRootProps($style)}
+  ${({ $style }) => getBlockCoreCss($style)}
 `
 export const Block = forwardRefWithTypes(
   <TAs extends As | undefined>({ children, ...restProps }: BlockPropsWithRef<TAs>, ref: any) => {

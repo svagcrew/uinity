@@ -1,7 +1,6 @@
-import { createGrid } from './index.js'
+import { Grid } from './clear.js'
 import type { Meta, StoryObj } from '@storybook/react'
 
-export const { Grid } = createGrid()
 const GridDemo = () => {
   return (
     <div style={{ maxWidth: 800, width: '100%', containerType: 'inline-size' }}>
@@ -73,7 +72,7 @@ const GridDemo = () => {
 }
 
 const meta = {
-  title: 'Grid',
+  title: 'Grid Clear',
   component: GridDemo,
   parameters: {
     // layout: 'centered',
