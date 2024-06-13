@@ -1,16 +1,16 @@
-import type { DisablerProps } from './index.js'
-import { createDisabler } from './index.js'
+import type { DisablerMainProps } from './clear.js'
+import { createDisabler } from './configured.js'
 import { uinityConfig } from '@/stories/uinity.config.js'
 import type { Meta, StoryObj } from '@storybook/react'
 
 const { Disabler } = createDisabler({ uinityConfig })
 
-const DisablerDemo = (props: DisablerProps) => {
+const DisablerDemo = (props: DisablerMainProps) => {
   return <Disabler {...props}>Some Content</Disabler>
 }
 
 const meta = {
-  title: 'Disabler',
+  title: 'Disabler Configured',
   component: DisablerDemo,
   parameters: {
     layout: 'centered',
@@ -21,7 +21,9 @@ const meta = {
       control: 'boolean',
     },
   },
-  args: {},
+  args: {
+    disabled: true,
+  },
 } satisfies Meta<typeof DisablerDemo>
 
 export default meta

@@ -45,43 +45,41 @@ const IconGlobalS = createGlobalStyle<{ $style: IconStyleRootProps }>`
   }}
 `
 
-export const Icon = forwardRefWithTypes(
-  ({ $style = {}, className, src, ...restProps }: IconPropsWithRef, ref: AsRef<undefined>) => {
-    const gcn = getGlobalClassName($style)
-    if (typeof src === 'string') {
-      return (
-        <>
-          <IconGlobalS $style={$style} />
-          <img className={cn(className, gcn)} src={src} ref={ref as any} {...(restProps as {})} />
-        </>
-      )
-    } else if (React.isValidElement(src)) {
-      const element = src as React.ReactElement
-      return (
-        <>
-          <IconGlobalS $style={$style} />
-          {React.cloneElement(element, {
-            ...element.props,
-            ...restProps,
-            className: cn(className, gcn, element.props?.className),
-            ref,
-          })}
-        </>
-      )
-    } else if (typeof src === 'function') {
-      const component = src as React.ComponentType<{ className?: string; ref?: AsRef<any> }>
-      return (
-        <>
-          <IconGlobalS $style={$style} />
-          {React.createElement(component, {
-            ...restProps,
-            className: cn(className, gcn),
-            ref,
-          })}
-        </>
-      )
-    } else {
-      return null
-    }
+export const Icon = forwardRefWithTypes(({ $style = {}, className, src, ...restProps }: IconPropsWithRef, ref: any) => {
+  const gcn = getGlobalClassName($style)
+  if (typeof src === 'string') {
+    return (
+      <>
+        <IconGlobalS $style={$style} />
+        <img className={cn(className, gcn)} src={src} ref={ref as any} {...(restProps as {})} />
+      </>
+    )
+  } else if (React.isValidElement(src)) {
+    const element = src as React.ReactElement
+    return (
+      <>
+        <IconGlobalS $style={$style} />
+        {React.cloneElement(element, {
+          ...element.props,
+          ...restProps,
+          className: cn(className, gcn, element.props?.className),
+          ref,
+        })}
+      </>
+    )
+  } else if (typeof src === 'function') {
+    const component = src as React.ComponentType<{ className?: string; ref?: AsRef<any> }>
+    return (
+      <>
+        <IconGlobalS $style={$style} />
+        {React.createElement(component, {
+          ...restProps,
+          className: cn(className, gcn),
+          ref,
+        })}
+      </>
+    )
+  } else {
+    return null
   }
-)
+})

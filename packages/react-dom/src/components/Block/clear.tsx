@@ -1,5 +1,5 @@
 import '@/lib/cssContainerQueryPolyfill.js'
-import type { As, AsProps, AsPropsWithRef, AsRef, RCWithAsAndForwardedRef } from '@/utils.js'
+import type { As, AsProps, AsPropsWithRef, RCWithAsAndForwardedRef } from '@/utils.js'
 import { forwardRefWithTypes, mark } from '@/utils.js'
 import { toCss } from '@uinity/core/dist/utils/other.js'
 import isArray from 'lodash/isArray.js'
@@ -341,7 +341,7 @@ const BlockS = styled.div.attrs(mark('BlockS'))<{ $style: BlockStyleRootProps }>
   ${({ $style }) => createCssByStyleRootProps($style)}
 `
 export const Block = forwardRefWithTypes(
-  <TAs extends As | undefined>({ children, ...restProps }: BlockPropsWithRef<TAs>, ref: AsRef<TAs>) => {
+  <TAs extends As | undefined>({ children, ...restProps }: BlockPropsWithRef<TAs>, ref: any) => {
     const $style = pick(restProps, blockStyleCorePropsKeys) as BlockStyleRootProps
     const htmlElementProps = Object.fromEntries(
       Object.entries(restProps).filter(

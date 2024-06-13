@@ -1,5 +1,5 @@
 import { Icon } from '@/components/Icon/clear.js'
-import type { As, AsPropsWithRef, AsRef, RCWithAsAndForwardedRef } from '@/utils.js'
+import type { As, AsPropsWithRef, RCWithAsAndForwardedRef } from '@/utils.js'
 import { forwardRefWithTypes, mark } from '@/utils.js'
 import { toCss } from '@uinity/core/dist/utils/other.js'
 import { css, styled } from 'styled-components'
@@ -97,7 +97,7 @@ const ButtonS = styled.button.attrs(mark('ButtonS'))<{ $style: ButtonStyleRootPr
 export const Button = forwardRefWithTypes(
   <TAs extends As = 'button'>(
     { iconStart, children, $style = {}, as, disabled, ...restProps }: ButtonPropsWithRef<TAs>,
-    ref: AsRef<TAs>
+    ref: any
   ) => {
     return (
       <ButtonS

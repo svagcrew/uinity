@@ -1,6 +1,6 @@
 import { Icon as IconClear } from './clear.js'
 import type { IconMainProps } from '@/components/Icon/clear.js'
-import type { AsComponent, AsRef, RC } from '@/utils.js'
+import type { AsComponent, RC } from '@/utils.js'
 import { type AsPropsWithRef, forwardRefWithTypes } from '@/utils.js'
 import type { UinityConfig } from '@uinity/core'
 import { getIconStyleRootProps } from '@uinity/core/dist/components/icon.js'
@@ -29,7 +29,7 @@ export const createIcon = <TIconName extends string>({
   iconsComponents?: IconsComponents<TIconName>
 }) => {
   const Icon = forwardRefWithTypes(
-    ({ size, name, $style = {}, ...restProps }: IconConfiguredPropsWithRef<TIconName>, ref: AsRef<undefined>) => {
+    ({ size, name, $style = {}, ...restProps }: IconConfiguredPropsWithRef<TIconName>, ref: any) => {
       const $styleConfigured = getIconStyleRootProps(uinityConfig, size)
       const $styleNormalized = {
         ...$styleConfigured,
