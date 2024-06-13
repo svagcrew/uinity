@@ -16,7 +16,7 @@ const ButtonClearDemo = (props: {
 }) => {
   return (
     <Button
-      as="button"
+      as="a"
       href="#"
       $style={{
         isDisabled: props.isDisabled,

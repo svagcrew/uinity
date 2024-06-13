@@ -2,7 +2,7 @@ import { createBlock } from '@/components/Block/configured.js'
 import { createButton } from '@/components/Button/configured.js'
 import { createDisabler } from '@/components/Disabler/configured.js'
 import { createGrid } from '@/components/Grid/configured.js'
-import type { IconsComponents } from '@/components/Icon/configured.js'
+import type { IconsSources } from '@/components/Icon/configured.js'
 import { createIcon } from '@/components/Icon/configured.js'
 import { createLayout } from '@/components/Layout/configured.js'
 import { createModal } from '@/components/Modal/configured.js'
@@ -16,7 +16,7 @@ export const createComponents = <TIconName extends string>({
   iconsComponents,
 }: {
   uinityConfig: UinityConfig
-  iconsComponents?: IconsComponents<TIconName>
+  iconsComponents?: IconsSources<TIconName>
 }) => {
   const { Icon } = createIcon({ uinityConfig, iconsComponents })
   return {

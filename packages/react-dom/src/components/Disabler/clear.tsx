@@ -4,10 +4,11 @@ import { toCss } from '@uinity/core/dist/utils/other.js'
 import { styled } from 'styled-components'
 
 type DisablerStyleRootProps = {
-  disabled: boolean
+  disabled?: boolean
 }
 export type DisablerMainProps = {
-  disabled: boolean
+  disabled?: boolean
+  children?: React.ReactNode
 }
 export type DisablerPropsWithRef = DisablerMainProps & AsPropsWithRef<'div'>
 export type DisablerType = (props: DisablerPropsWithRef) => React.ReactElement | null

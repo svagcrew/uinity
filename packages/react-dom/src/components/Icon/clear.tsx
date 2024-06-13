@@ -15,6 +15,7 @@ export type IconStyleRootProps = {
 }
 export type IconMainProps = {
   $style?: IconStyleRootProps
+  className?: string
   src: IconSrc
 }
 export type IconPropsWithRef = IconMainProps & AsPropsWithRef<undefined>

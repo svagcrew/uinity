@@ -5,7 +5,19 @@ import { getHash } from 'svag-utils'
 
 export type As = keyof JSX.IntrinsicElements
 // export type AsProps<T extends As | undefined> = T extends As ? JSX.IntrinsicElements[T] : { [key: string]: any }
-export type AsProps<T extends As | undefined> = { [key: string]: any }
+export type AsProps<T extends As | undefined> = T extends undefined
+  ? {}
+  : {
+      onClick?: React.MouseEventHandler<any>
+      className?: string
+      style?: React.CSSProperties
+    } & (T extends 'a'
+      ? {
+          href?: string
+          target?: string
+          rel?: string
+        }
+      : {})
 export type AsElement<T extends As | undefined> = React.ReactElement<AsProps<T>>
 export type AsComponent<T extends As | undefined> = React.FC<AsProps<T>>
 // export type AsRef<T extends keyof JSX.IntrinsicElements | undefined> = T extends keyof JSX.IntrinsicElements

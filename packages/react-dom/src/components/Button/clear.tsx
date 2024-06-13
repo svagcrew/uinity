@@ -28,6 +28,7 @@ export type ButtonMainProps<TAs extends As> = {
   disabled?: boolean
   iconStart?: JSX.Element | null | false
   $style?: ButtonStyleRootProps
+  children?: React.ReactNode
 }
 export type ButtonPropsWithRef<TAs extends As> = ButtonMainProps<TAs> & AsPropsWithRef<TAs>
 export type ButtonType = <TAs extends As = 'button'>(props: ButtonPropsWithRef<TAs>) => React.ReactElement | null

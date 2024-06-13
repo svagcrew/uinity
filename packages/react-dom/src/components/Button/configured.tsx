@@ -19,7 +19,7 @@ export type ButtonConfiguredSpecialProps<TIconName extends string> = {
 }
 export type ButtonConfiguredMainProps<TAs extends As, TIconName extends string> = ButtonConfiguredSettingsProps &
   ButtonConfiguredSpecialProps<TIconName> &
-  ButtonMainProps<TAs>
+  Omit<ButtonMainProps<TAs>, 'iconStart'>
 export type ButtonConfiguredPropsWithRef<TAs extends As, TIconName extends string> = ButtonConfiguredMainProps<
   TAs,
   TIconName

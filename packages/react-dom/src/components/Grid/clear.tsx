@@ -41,7 +41,7 @@ type GridStyleRootProps = {
   byContainerSizeReverse?: Array<[number, GridCoreProps]>
   byWindowSizeReverse?: Array<[number, GridCoreProps]>
 }
-export type GridMainProps<TAs extends As> = { as?: TAs } & GridCoreProps
+export type GridMainProps<TAs extends As> = { as?: TAs; children?: React.ReactNode } & GridCoreProps
 export type GridPropsWithRef<TAs extends As> = GridMainProps<TAs> & AsPropsWithRef<TAs>
 export type GridType = <TAs extends As = 'div'>(props: GridPropsWithRef<TAs>) => React.ReactElement | null
 
