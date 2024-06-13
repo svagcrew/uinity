@@ -7,26 +7,26 @@ import { z } from 'zod'
 
 const colorSemanticTypes = ['symbol', 'border', 'surfaceLayout'] as const
 export const zColorSemanticTypeName = z.enum(colorSemanticTypes)
-export type ColorSemanticTypeName = z.infer<typeof zColorSemanticTypeName>
+export type ColorSemanticTypeName = z.output<typeof zColorSemanticTypeName>
 
 export const colorSemanticSymbols = ['primary', 'secondary', 'tertiary', 'quaternary', 'quinary'] as const
 export const zColorSemanticSymbolName = z.enum(colorSemanticSymbols)
-export type ColorSemanticSymbolName = z.infer<typeof zColorSemanticSymbolName>
+export type ColorSemanticSymbolName = z.output<typeof zColorSemanticSymbolName>
 
 export const colorSemanticBorders = ['xHard', 'hard', 'medium', 'light'] as const
 export const zColorSemanticBorderName = z.enum(colorSemanticBorders)
-export type ColorSemanticBorderName = z.infer<typeof zColorSemanticBorderName>
+export type ColorSemanticBorderName = z.output<typeof zColorSemanticBorderName>
 
 export const colorSemanticSurfaceLayouts = ['accent'] as const
 export const zColorSemanticSurfaceLayoutName = z.enum(colorSemanticSurfaceLayouts)
-export type ColorSemanticSurfaceLayoutName = z.infer<typeof zColorSemanticSurfaceLayoutName>
+export type ColorSemanticSurfaceLayoutName = z.output<typeof zColorSemanticSurfaceLayoutName>
 
 export const zColorSemanticUinityConfigInput = z.object({
   symbol: z.record(zColorSemanticSymbolName, zColorValue.optional()),
   border: z.record(zColorSemanticBorderName, zColorValue.optional()),
   surfaceLayout: z.record(zColorSemanticSurfaceLayoutName, zColorValue.optional()),
 })
-type ColorSemanticUinityConfigInput = z.infer<typeof zColorSemanticUinityConfigInput>
+type ColorSemanticUinityConfigInput = z.output<typeof zColorSemanticUinityConfigInput>
 
 export const defaultColorSemanticUinityConfigInput: ColorSemanticUinityConfigInput = {
   symbol: {

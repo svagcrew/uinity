@@ -35,14 +35,14 @@ type Story = StoryObj<typeof Button>
 
 export const Primary: Story = {
   args: {
-    type: 'primary',
+    variant: 'primary',
     children: 'Button',
   },
 }
 
 export const Secondary: Story = {
   args: {
-    type: 'secondary',
+    variant: 'secondary',
     children: 'Button',
   },
 }
@@ -57,7 +57,7 @@ export const Large: Story = {
 export const Small: Story = {
   args: {
     size: 'xs',
-    type: 'primary',
+    variant: 'primary',
     children: 'Button',
   },
 }

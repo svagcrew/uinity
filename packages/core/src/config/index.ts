@@ -1,8 +1,4 @@
-import {
-  defaultButtonUinityConfigInput,
-  normalizeButtonUinityConfig,
-  zButtonUinityConfigInput,
-} from '@/components/button.js'
+import { defaultButtonConfigInput, normalizeButtonConfig, zButtonConfigInput } from '@/components/button.js'
 import {
   defaultColorUinityConfigInput,
   normalizeColorUinityConfig,
@@ -19,11 +15,7 @@ import {
   zFieldUinityConfigInput,
 } from '@/components/field.js'
 import { defaultIconConfigInput, normalizeIconConfig, zIconConfigInput } from '@/components/icon.js'
-import {
-  defaultLayoutUinityConfigInput,
-  normalizeLayoutUinityConfig,
-  zLayoutUinityConfigInput,
-} from '@/components/layout.js'
+import { defaultLayoutConfigInput, normalizeLayoutConfig, zLayoutConfigInput } from '@/components/layout.js'
 import { defaultTextUinityConfigInput, normalizeTextUinityConfig, zTextUinityConfigInput } from '@/components/text.js'
 import { getVariableValue, isVariableName } from '@/utils/variables.js'
 import { deepMap } from 'svag-deep-map'
@@ -33,31 +25,31 @@ export const zUinityConfigInput = z.object({
   color: zColorUinityConfigInput.optional(),
   text: zTextUinityConfigInput.optional(),
   icon: zIconConfigInput.optional(),
-  layout: zLayoutUinityConfigInput.optional(),
+  layout: zLayoutConfigInput.optional(),
   control: zControlUinityConfigInput.optional(),
   field: zFieldUinityConfigInput.optional(),
-  button: zButtonUinityConfigInput.optional(),
+  button: zButtonConfigInput.optional(),
 })
-export type UinityConfigInput = z.infer<typeof zUinityConfigInput>
+export type UinityConfigInput = z.output<typeof zUinityConfigInput>
 
 export const defaultUinityConfigInput: UinityConfigInput = {
   color: defaultColorUinityConfigInput,
   text: defaultTextUinityConfigInput,
   icon: defaultIconConfigInput,
-  layout: defaultLayoutUinityConfigInput,
+  layout: defaultLayoutConfigInput,
   control: defaultControlUinityConfigInput,
   field: defaultFieldUinityConfigInput,
-  button: defaultButtonUinityConfigInput,
+  button: defaultButtonConfigInput,
 }
 
 export const normalizeUinityConfig = (input: UinityConfigInput) => {
   const color = normalizeColorUinityConfig(input.color)
   const text = normalizeTextUinityConfig(input.text)
   const icon = normalizeIconConfig(input.icon)
-  const layout = normalizeLayoutUinityConfig(input.layout)
+  const layout = normalizeLayoutConfig(input.layout)
   const control = normalizeControlUinityConfig(input.control)
   const field = normalizeFieldUinityConfig(input.field)
-  const button = normalizeButtonUinityConfig(input.button)
+  const button = normalizeButtonConfig(input.button)
   const config = {
     color,
     text,

@@ -15,7 +15,7 @@ export const colorCoreNames = [
   'brown',
 ] as const
 export const zColorCoreName = z.enum(colorCoreNames)
-export type ColorCoreName = z.infer<typeof zColorCoreName>
+export type ColorCoreName = z.output<typeof zColorCoreName>
 
 // 10-240
 export const coreColorContrasts = [
@@ -50,10 +50,10 @@ export const zColorCoreContrastName = z.union([
   z.literal(240),
   z.literal(250),
 ])
-export type ColorCoreContrastName = z.infer<typeof zColorCoreContrastName>
+export type ColorCoreContrastName = z.output<typeof zColorCoreContrastName>
 
 export const zColorCoreUinityConfigInput = z.record(zColorCoreName, z.record(zColorCoreContrastName, zRequiredString))
-type ColorCoreUinityConfigInput = z.infer<typeof zColorCoreUinityConfigInput>
+type ColorCoreUinityConfigInput = z.output<typeof zColorCoreUinityConfigInput>
 
 export const defaultColorCoreUinityConfigInput = {
   brand: {

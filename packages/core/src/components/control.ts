@@ -4,7 +4,7 @@ import { z } from 'zod'
 
 export const controlSizeNames = ['xs', 's', 'm', 'l'] as const
 export const zControlSizeName = z.enum(controlSizeNames)
-export type ControlSizeName = z.infer<typeof zControlSizeName>
+export type ControlSizeName = z.output<typeof zControlSizeName>
 
 export const zControlSizeProps = z.object({
   borderRadius: zOptionalNumberOrString,
@@ -14,19 +14,19 @@ export const zControlSizeProps = z.object({
   minHeight: zOptionalNumberOrString,
   iconSize: zOptionalNumberOrString,
 })
-export type ControlSizeProps = z.infer<typeof zControlSizeProps>
+export type ControlSizeProps = z.output<typeof zControlSizeProps>
 
 export const zControlGeneralProps = z.object({
   defaultSizeProps: zControlSizeProps.optional(),
   defaultSize: zControlSizeName.optional(),
 })
-export type ControlGeneralProps = z.infer<typeof zControlGeneralProps>
+export type ControlGeneralProps = z.output<typeof zControlGeneralProps>
 
 export const zControlUinityConfigInput = z.object({
   general: zControlGeneralProps.optional(),
   size: z.record(zControlSizeName, zControlSizeProps).optional(),
 })
-export type ControlUinityConfigInput = z.infer<typeof zControlUinityConfigInput>
+export type ControlUinityConfigInput = z.output<typeof zControlUinityConfigInput>
 
 const defaultSpecificSizeProps = {
   borderRadius: $.control.general.defaultSizeProps.borderRadius,

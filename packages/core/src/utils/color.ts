@@ -3,11 +3,11 @@ import { z } from 'zod'
 
 export const colorModes = ['light', 'dark'] as const
 export const zColorModeName = z.enum(colorModes)
-export type ColorModeName = z.infer<typeof zColorModeName>
+export type ColorModeName = z.output<typeof zColorModeName>
 export const zColorValueModed = z.record(zColorModeName, zRequiredString)
-export type ColorValueModed = z.infer<typeof zColorValueModed>
+export type ColorValueModed = z.output<typeof zColorValueModed>
 export const zColorValue = z.union([zRequiredString, zColorValueModed])
-export type ColorValue = z.infer<typeof zColorValue>
+export type ColorValue = z.output<typeof zColorValue>
 
 export const getColorByMode = (mode: ColorModeName, color: ColorValue | undefined | null) => {
   if (!color) {

@@ -8,7 +8,7 @@ import { z } from 'zod'
 
 export const buttonConfigSizesNames = controlSizeNames
 export const zButtonConfigSizeName = z.enum(buttonConfigSizesNames)
-export type ButtonConfigSizeName = z.infer<typeof zButtonConfigSizeName>
+export type ButtonConfigSizeName = z.output<typeof zButtonConfigSizeName>
 
 export const buttonConfigVariantNames = [
   'primary',
@@ -19,15 +19,15 @@ export const buttonConfigVariantNames = [
   'dangerTrietary',
 ] as const
 export const zButtonConfigVariantName = z.enum(buttonConfigVariantNames)
-export type ButtonConfigVariantName = z.infer<typeof zButtonConfigVariantName>
+export type ButtonConfigVariantName = z.output<typeof zButtonConfigVariantName>
 
 export const buttonConfigColorNames = ['brand', 'gray'] as const
 export const zButtonConfigColorName = z.enum(buttonConfigColorNames)
-export type ButtonConfigColorName = z.infer<typeof zButtonConfigColorName>
+export type ButtonConfigColorName = z.output<typeof zButtonConfigColorName>
 
 export const buttonConfigStatesNames = ['rest', 'hover', 'active', 'focus', 'disabled'] as const
 export const zButtonConfigStateName = z.enum(buttonConfigStatesNames)
-export type ButtonConfigStateName = z.infer<typeof zButtonConfigStateName>
+export type ButtonConfigStateName = z.output<typeof zButtonConfigStateName>
 
 export const zButtonConfigSizeProps = zControlSizeProps.extend({
   textFont: zTextFontName.optional(),
@@ -37,7 +37,7 @@ export const zButtonConfigSizeProps = zControlSizeProps.extend({
   borderWidth: zOptionalNumberOrString,
   minHeight: zOptionalNumberOrString,
 })
-export type ButtonConfigSizeProps = z.infer<typeof zButtonConfigSizeProps>
+export type ButtonConfigSizeProps = z.output<typeof zButtonConfigSizeProps>
 
 export const zButtonConfigAppearenceProps = z.object({
   textFont: zTextFontName.optional(),
@@ -49,39 +49,39 @@ export const zButtonConfigAppearenceProps = z.object({
   textColor: zColorValue.optional(),
   iconColor: zColorValue.optional(),
 })
-export type ButtonConfigAppearenceProps = z.infer<typeof zButtonConfigStyleRootProps>
+export type ButtonConfigAppearenceProps = z.output<typeof zButtonConfigAppearenceProps>
 
-export const zButtonConfigStyleRootProps = zButtonConfigSizeProps.merge(zButtonConfigAppearenceProps)
-export type ButtonConfigStyleRootProps = z.infer<typeof zButtonConfigStyleRootProps>
+export const zButtonConfigFinalProps = zButtonConfigSizeProps.merge(zButtonConfigAppearenceProps)
+export type ButtonConfigFinalRootProps = z.output<typeof zButtonConfigFinalProps>
 
-export const zButtonGeneralProps = z.object({})
-export type ButtonGeneralProps = z.infer<typeof zButtonGeneralProps>
+export const zButtonConfigGeneralProps = z.object({})
+export type ButtonConfigGeneralProps = z.output<typeof zButtonConfigGeneralProps>
 
-export const zButtonComplexProps = z.record(
+export const zButtonConfigComplexProps = z.record(
   z.union([zButtonConfigColorName, z.literal('any')]),
   z
     .record(
       z.union([zButtonConfigSizeName, z.literal('any')]),
-      z.record(z.union([zButtonConfigStateName, z.literal('any')]), zButtonConfigStyleRootProps).optional()
+      z.record(z.union([zButtonConfigStateName, z.literal('any')]), zButtonConfigFinalProps).optional()
     )
     .optional()
 )
-export type ButtonComplexProps = z.infer<typeof zButtonComplexProps>
+export type ButtonConfigComplexProps = z.output<typeof zButtonConfigComplexProps>
 
 export const zButtonConfigVariantProps = z.object({
   color: zButtonConfigColorName.optional(),
 })
-export type ButtonConfigVariantProps = z.infer<typeof zButtonConfigVariantProps>
+export type ButtonConfigVariantProps = z.output<typeof zButtonConfigVariantProps>
 
-export const zButtonUinityConfigInput = z.object({
-  general: zButtonGeneralProps.optional(),
+export const zButtonConfigInput = z.object({
+  general: zButtonConfigGeneralProps.optional(),
   variant: z.record(zButtonConfigVariantName, zButtonConfigVariantProps).optional(),
   color: z.record(zButtonConfigColorName, zButtonConfigAppearenceProps).optional(),
   size: z.record(zButtonConfigSizeName, zButtonConfigSizeProps).optional(),
   state: z.record(zButtonConfigStateName, zButtonConfigAppearenceProps).optional(),
-  complex: zButtonComplexProps.optional(),
+  complex: zButtonConfigComplexProps.optional(),
 })
-export type ButtonUinityConfigInput = z.infer<typeof zButtonUinityConfigInput>
+export type ButtonConfigInput = z.output<typeof zButtonConfigInput>
 
 const getDefaultSpecificSizeProps = (size: ButtonConfigSizeName) => ({
   borderRadius: $.control.size[size].borderRadius,
@@ -91,7 +91,7 @@ const getDefaultSpecificSizeProps = (size: ButtonConfigSizeName) => ({
   minHeight: $.control.size[size].minHeight,
   iconSize: $.control.size[size].iconSize,
 })
-export const defaultButtonUinityConfigInput: ButtonUinityConfigInput = {
+export const defaultButtonConfigInput: ButtonConfigInput = {
   general: {},
   variant: {
     primary: {
@@ -140,12 +140,12 @@ export const defaultButtonUinityConfigInput: ButtonUinityConfigInput = {
   },
 }
 
-export const normalizeButtonUinityConfig = (input: ButtonUinityConfigInput | undefined) => {
-  const complex = {} as ButtonComplexProps
+export const normalizeButtonConfig = (input: ButtonConfigInput | undefined) => {
+  const complex = {} as ButtonConfigComplexProps
   for (const type of [...buttonConfigColorNames, 'any'] as const) {
     for (const size of [...buttonConfigSizesNames, 'any'] as const) {
       for (const state of [...buttonConfigStatesNames, 'any'] as const) {
-        const defaultComplexItem = defaultButtonUinityConfigInput.complex?.[type]?.[size]?.[state]
+        const defaultComplexItem = defaultButtonConfigInput.complex?.[type]?.[size]?.[state]
         const inputComplexItem = input?.complex?.[type]?.[size]?.[state]
         const complexItem =
           !defaultComplexItem && !inputComplexItem ? undefined : { ...defaultComplexItem, ...inputComplexItem }
@@ -166,84 +166,84 @@ export const normalizeButtonUinityConfig = (input: ButtonUinityConfigInput | und
     general: {},
     variant: {
       primary: {
-        ...defaultButtonUinityConfigInput.variant?.primary,
+        ...defaultButtonConfigInput.variant?.primary,
         ...input?.variant?.primary,
       },
       secondary: {
-        ...defaultButtonUinityConfigInput.variant?.secondary,
+        ...defaultButtonConfigInput.variant?.secondary,
         ...input?.variant?.secondary,
       },
       trietary: {
-        ...defaultButtonUinityConfigInput.variant?.trietary,
+        ...defaultButtonConfigInput.variant?.trietary,
         ...input?.variant?.trietary,
       },
       dangerPrimary: {
-        ...defaultButtonUinityConfigInput.variant?.dangerPrimary,
+        ...defaultButtonConfigInput.variant?.dangerPrimary,
         ...input?.variant?.dangerPrimary,
       },
       dangerSecondary: {
-        ...defaultButtonUinityConfigInput.variant?.dangerSecondary,
+        ...defaultButtonConfigInput.variant?.dangerSecondary,
         ...input?.variant?.dangerSecondary,
       },
       dangerTrietary: {
-        ...defaultButtonUinityConfigInput.variant?.dangerTrietary,
+        ...defaultButtonConfigInput.variant?.dangerTrietary,
         ...input?.variant?.dangerTrietary,
       },
     },
     size: {
       xs: {
-        ...defaultButtonUinityConfigInput.size?.xs,
+        ...defaultButtonConfigInput.size?.xs,
         ...input?.size?.xs,
       },
       s: {
-        ...defaultButtonUinityConfigInput.size?.s,
+        ...defaultButtonConfigInput.size?.s,
         ...input?.size?.s,
       },
       m: {
-        ...defaultButtonUinityConfigInput.size?.m,
+        ...defaultButtonConfigInput.size?.m,
         ...input?.size?.m,
       },
       l: {
-        ...defaultButtonUinityConfigInput.size?.l,
+        ...defaultButtonConfigInput.size?.l,
         ...input?.size?.l,
       },
     },
     color: {
       brand: {
-        ...defaultButtonUinityConfigInput.color?.brand,
+        ...defaultButtonConfigInput.color?.brand,
         ...input?.color?.brand,
       },
       gray: {
-        ...defaultButtonUinityConfigInput.color?.gray,
+        ...defaultButtonConfigInput.color?.gray,
         ...input?.color?.gray,
       },
     },
     state: {
       rest: {
-        ...defaultButtonUinityConfigInput.state?.rest,
+        ...defaultButtonConfigInput.state?.rest,
         ...input?.state?.rest,
       },
       hover: {
-        ...defaultButtonUinityConfigInput.state?.hover,
+        ...defaultButtonConfigInput.state?.hover,
         ...input?.state?.hover,
       },
       active: {
-        ...defaultButtonUinityConfigInput.state?.active,
+        ...defaultButtonConfigInput.state?.active,
         ...input?.state?.active,
       },
       focus: {
-        ...defaultButtonUinityConfigInput.state?.focus,
+        ...defaultButtonConfigInput.state?.focus,
         ...input?.state?.focus,
       },
       disabled: {
-        ...defaultButtonUinityConfigInput.state?.disabled,
+        ...defaultButtonConfigInput.state?.disabled,
         ...input?.state?.disabled,
       },
     },
     complex,
   }
 }
-export type ButtonUinityConfig = ReturnType<typeof normalizeButtonUinityConfig>
+export type ButtonConfig = ReturnType<typeof normalizeButtonConfig>
 
 export const normalizeButtonColorName = (
   uinityConfig: UinityConfig,
@@ -293,7 +293,7 @@ export const getButtonVariantProps = (
   }
 }
 
-export const getButtonStyleRootProps = (
+export const getButtonConfigFinalProps = (
   uinityConfig: UinityConfig,
   variant?: ButtonConfigVariantName | undefined | null,
   color?: ButtonConfigColorName | undefined | null,

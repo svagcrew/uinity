@@ -4,10 +4,10 @@ import { $ } from '@/utils/variables.js'
 import camelCasify from 'lodash/camelCase.js'
 import { z } from 'zod'
 
-export const layoutSizes = ['mobile', 'tablet', 'desktop'] as const
-export const zLayoutSizeName = z.enum(layoutSizes)
-export type LayoutSizeName = z.infer<typeof zLayoutSizeName>
-export const zLayoutSizeProps = z.object({
+export const layoutConfigSizesNames = ['mobile', 'tablet', 'desktop'] as const
+export const zLayoutConfigSizeName = z.enum(layoutConfigSizesNames)
+export type LayoutConfigSizeName = z.output<typeof zLayoutConfigSizeName>
+export const zLayoutConfigSizeProps = z.object({
   layoutMaxWidth: zOptionalNumberOrString,
   contentMaxWidth: zOptionalNumberOrString,
   textMaxWidth: zOptionalNumberOrString,
@@ -28,9 +28,9 @@ export const zLayoutSizeProps = z.object({
   sidebarBorderWidth: zOptionalNumberOrString,
   modalBorderWidth: zOptionalNumberOrString,
 })
-export type LayoutSizeProps = z.infer<typeof zLayoutSizeProps>
+export type LayoutConfigSizeProps = z.output<typeof zLayoutConfigSizeProps>
 
-export const zLayoutAppearenceProps = z.object({
+export const zLayoutConfigAppearenceProps = z.object({
   bodyBackground: zOptionalString,
   headerBackground: zOptionalString,
   footerBackground: zOptionalString,
@@ -40,56 +40,32 @@ export const zLayoutAppearenceProps = z.object({
   sidebarBorderColor: zOptionalString,
   modalBorderColor: zOptionalString,
 })
-export type LayoutAppearenceProps = z.infer<typeof zLayoutAppearenceProps>
+export type LayoutConfigAppearenceProps = z.output<typeof zLayoutConfigAppearenceProps>
 
-export const zLayoutFinalProps = zLayoutSizeProps.merge(zLayoutAppearenceProps)
-export type LayoutFinalProps = z.infer<typeof zLayoutFinalProps>
+export const zLayoutConfigFinalProps = zLayoutConfigSizeProps.merge(zLayoutConfigAppearenceProps)
+export type LayoutConfigFinalProps = z.output<typeof zLayoutConfigFinalProps>
 
-export const zLayoutGeneralProps = z.object({
-  sizeByScreenWidth: z.record(zLayoutSizeName, z.number()).optional(),
+export const zLayoutConfigGeneralProps = z.object({
+  sizeByScreenWidth: z.record(zLayoutConfigSizeName, z.number()).optional(),
   hideSidebarOnScreenWidth: z.number(),
-  defaultSize: zLayoutSizeName.optional(),
-  defaultSizeProps: zLayoutSizeProps.optional(),
 })
-export type LayoutGeneralProps = z.infer<typeof zLayoutGeneralProps>
+export type LayoutConfigGeneralProps = z.output<typeof zLayoutConfigGeneralProps>
 
-export const zLayoutUinityConfigInput = z.object({
-  general: zLayoutGeneralProps.optional(),
-  size: z.record(zLayoutSizeName, zLayoutSizeProps).optional(),
-  appearence: zLayoutAppearenceProps.optional(),
+export const zLayoutConfigInput = z.object({
+  general: zLayoutConfigGeneralProps.optional(),
+  size: z.record(zLayoutConfigSizeName, zLayoutConfigSizeProps).optional(),
+  appearence: zLayoutConfigAppearenceProps.optional(),
 })
-export type LayoutUinityConfigInput = z.infer<typeof zLayoutUinityConfigInput>
+export type LayoutConfigInput = z.output<typeof zLayoutConfigInput>
 
-const defaultSpecificSizeProps = {
-  layoutMaxWidth: $.layout.general.defaultSizeProps.layoutMaxWidth,
-  contentMaxWidth: $.layout.general.defaultSizeProps.contentMaxWidth,
-  textMaxWidth: $.layout.general.defaultSizeProps.textMaxWidth,
-  sidebarWidth: $.layout.general.defaultSizeProps.sidebarWidth,
-  sidebarMarginEnd: $.layout.general.defaultSizeProps.sidebarMarginEnd,
-  headerBorderWidth: $.layout.general.defaultSizeProps.headerBorderWidth,
-  footerBorderWidth: $.layout.general.defaultSizeProps.footerBorderWidth,
-  sidebarBorderWidth: $.layout.general.defaultSizeProps.sidebarBorderWidth,
-}
-export const defaultLayoutUinityConfigInput: LayoutUinityConfigInput = {
+export const defaultLayoutConfigInput: LayoutConfigInput = {
   general: {
-    defaultSize: 'mobile',
     sizeByScreenWidth: {
       mobile: 420,
       tablet: 1_200,
       desktop: Infinity,
     },
     hideSidebarOnScreenWidth: 1_200,
-    defaultSizeProps: {
-      layoutMaxWidth: 1_440,
-      contentMaxWidth: 1_440,
-      textMaxWidth: 800,
-      sidebarWidth: 240,
-      sidebarMarginEnd: 32,
-      headerBorderWidth: 1,
-      footerBorderWidth: 1,
-      sidebarBorderWidth: 1,
-      modalBorderWidth: 1,
-    },
   },
   appearence: {
     bodyBackground: '#fff',
@@ -103,8 +79,15 @@ export const defaultLayoutUinityConfigInput: LayoutUinityConfigInput = {
   },
   size: {
     mobile: {
-      ...defaultSpecificSizeProps,
-      layoutPaddingHorizontal: 20,
+      layoutMaxWidth: 1_440,
+      contentMaxWidth: 1_440,
+      textMaxWidth: 800,
+      sidebarWidth: 240,
+      sidebarMarginEnd: 32,
+      headerBorderWidth: 1,
+      footerBorderWidth: 1,
+      sidebarBorderWidth: 1,
+      modalBorderWidth: 1,
       headerHeight: 48,
       contentPaddingTop: 24,
       contentPaddingBottom: 48,
@@ -116,7 +99,6 @@ export const defaultLayoutUinityConfigInput: LayoutUinityConfigInput = {
       modalPaddingBottom: $.layout.size.mobile.contentPaddingTop,
     },
     tablet: {
-      ...defaultSpecificSizeProps,
       layoutPaddingHorizontal: 32,
       headerHeight: 56,
       contentPaddingTop: 24,
@@ -129,7 +111,6 @@ export const defaultLayoutUinityConfigInput: LayoutUinityConfigInput = {
       modalPaddingBottom: $.layout.size.tablet.contentPaddingTop,
     },
     desktop: {
-      ...defaultSpecificSizeProps,
       layoutPaddingHorizontal: 48,
       headerHeight: 64,
       contentPaddingTop: 24,
@@ -144,63 +125,58 @@ export const defaultLayoutUinityConfigInput: LayoutUinityConfigInput = {
   },
 }
 
-export const normalizeLayoutUinityConfig = (input: LayoutUinityConfigInput | undefined) => {
+export const normalizeLayoutConfig = (input: LayoutConfigInput | undefined) => {
   return {
     general: {
-      defaultSize: input?.general?.defaultSize ?? defaultLayoutUinityConfigInput.general?.defaultSize,
-      sizeByScreenWidth: {
-        ...defaultLayoutUinityConfigInput.general?.sizeByScreenWidth,
-        ...input?.general?.sizeByScreenWidth,
-      },
+      sizeByScreenWidth: input?.general?.sizeByScreenWidth ?? defaultLayoutConfigInput.general?.sizeByScreenWidth,
       hideSidebarOnScreenWidth:
-        input?.general?.hideSidebarOnScreenWidth ?? defaultLayoutUinityConfigInput.general?.hideSidebarOnScreenWidth,
-      defaultSizeProps: {
-        ...defaultLayoutUinityConfigInput.general?.defaultSizeProps,
-        ...input?.general?.defaultSizeProps,
-      },
+        input?.general?.hideSidebarOnScreenWidth ?? defaultLayoutConfigInput.general?.hideSidebarOnScreenWidth,
     },
     appearence: {
-      ...defaultLayoutUinityConfigInput.appearence,
+      ...defaultLayoutConfigInput.appearence,
       ...input?.appearence,
     },
     size: {
       mobile: {
-        ...defaultLayoutUinityConfigInput.size?.mobile,
+        ...defaultLayoutConfigInput.size?.mobile,
         ...input?.size?.mobile,
       },
       tablet: {
-        ...defaultLayoutUinityConfigInput.size?.tablet,
+        ...defaultLayoutConfigInput.size?.tablet,
         ...input?.size?.tablet,
       },
       desktop: {
-        ...defaultLayoutUinityConfigInput.size?.desktop,
+        ...defaultLayoutConfigInput.size?.desktop,
         ...input?.size?.desktop,
       },
     },
   }
 }
-export type LayoutUinityConfig = ReturnType<typeof normalizeLayoutUinityConfig>
+export type LayoutConfig = ReturnType<typeof normalizeLayoutConfig>
 
-export const normalizeLayoutSizeName = (uinityConfig: UinityConfig, size?: LayoutSizeName | null | undefined) => {
+export const normalizeLayoutSizeName = (uinityConfig: UinityConfig, size?: LayoutConfigSizeName | null | undefined) => {
   if (size && uinityConfig.layout.size[size]) {
     return size
   }
-  return uinityConfig.layout.general.defaultSize
+  return 'mobile'
 }
 
-export const getLayoutFinalProps = (uinityConfig: UinityConfig, size?: LayoutSizeName | undefined | null) => {
+export const getLayoutConfigFinalProps = (
+  uinityConfig: UinityConfig,
+  size?: LayoutConfigSizeName | undefined | null
+) => {
   const c = uinityConfig.layout
   size = normalizeLayoutSizeName(uinityConfig, size)
   const result = {
     ...(size && c.size?.[size]),
     ...c.appearence,
-  } as LayoutFinalProps
+  } as LayoutConfigFinalProps
   return result
 }
 
 export const getLayoutScssVariables = (uinityConfig: UinityConfig) => {
   const variables: Record<string, string> = {}
-  for (const size of layoutSizes) {
+  for (const size of layoutConfigSizesNames) {
     for (const [sizePropName, value] of Object.entries(uinityConfig.layout.size[size])) {
       const variableName = camelCasify(`$layout-${sizePropName}-${size}`)
       variables[variableName] = value as string

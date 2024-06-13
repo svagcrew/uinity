@@ -12,13 +12,13 @@ import { z } from 'zod'
 
 export const colorCollections = ['core', 'semantic'] as const
 export const zColorCollectionName = z.enum(colorCollections)
-export type ColorCollectionName = z.infer<typeof zColorCollectionName>
+export type ColorCollectionName = z.output<typeof zColorCollectionName>
 
 export const zColorUinityConfigInput = z.object({
   core: zColorCoreUinityConfigInput,
   semantic: zColorSemanticUinityConfigInput,
 })
-type ColorUinityConfigInput = z.infer<typeof zColorUinityConfigInput>
+type ColorUinityConfigInput = z.output<typeof zColorUinityConfigInput>
 
 export const defaultColorUinityConfigInput: ColorUinityConfigInput = {
   core: defaultColorCoreUinityConfigInput,

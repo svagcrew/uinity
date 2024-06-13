@@ -4,18 +4,18 @@ import { createDisabler } from '@/components/Disabler/configured.js'
 import { createGrid } from '@/components/Grid/configured.js'
 import type { IconsComponents } from '@/components/Icon/configured.js'
 import { createIcon } from '@/components/Icon/configured.js'
-import { createLayout } from '@/components/Layout/index.js'
+import { createLayout } from '@/components/Layout/configured.js'
 import { createModal } from '@/components/Modal/index.js'
 import { createNProgress } from '@/components/NProgress/index.js'
 import { createPopover } from '@/components/Popover/index.js'
 import { createSplashScreen } from '@/components/SplashScreen/index.js'
 import type { UinityConfig } from '@uinity/core'
 
-export const createComponents = <TUinityConfig extends UinityConfig, TIconName extends string>({
+export const createComponents = <TIconName extends string>({
   uinityConfig,
   iconsComponents,
 }: {
-  uinityConfig: TUinityConfig
+  uinityConfig: UinityConfig
   iconsComponents?: IconsComponents<TIconName>
 }) => {
   const { Icon } = createIcon({ uinityConfig, iconsComponents })

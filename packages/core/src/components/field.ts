@@ -9,7 +9,7 @@ export const zFieldSizeProps = zControlSizeProps.extend({
 export const zFieldUinityConfigInput = z.object({
   size: z.record(zFieldSizeName, zFieldSizeProps).optional(),
 })
-export type FieldUinityConfigInput = z.infer<typeof zFieldUinityConfigInput>
+export type FieldUinityConfigInput = z.output<typeof zFieldUinityConfigInput>
 
 export const defaultFieldUinityConfigInput: FieldUinityConfigInput = {
   size: {},

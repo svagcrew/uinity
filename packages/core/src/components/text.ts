@@ -6,19 +6,19 @@ import { z } from 'zod'
 
 export const textFonts = ['display', 'common', 'alternate'] as const
 export const zTextFontName = z.enum(textFonts)
-export type TextFontName = z.infer<typeof zTextFontName>
+export type TextFontName = z.output<typeof zTextFontName>
 export const zTextFontProps = z.object({
   fontFamily: zOptionalString,
 })
-export type TextFontProps = z.infer<typeof zTextFontProps>
+export type TextFontProps = z.output<typeof zTextFontProps>
 
 export const textTypes = ['regular', 'medium', 'bold'] as const
 export const zTextTypeName = z.enum(textTypes)
-export type TextTypeName = z.infer<typeof zTextTypeName>
+export type TextTypeName = z.output<typeof zTextTypeName>
 export const zTextTypeProps = z.object({
   fontWeight: zOptionalString,
 })
-export type TextTypeProps = z.infer<typeof zTextTypeProps>
+export type TextTypeProps = z.output<typeof zTextTypeProps>
 
 export const textSizes = [20, 30, 40, 50, 60, 70, 80, 90, 100] as const
 // eslint-disable-next-line zod/prefer-enum
@@ -33,22 +33,22 @@ export const zTextSizeName = z.union([
   z.literal(90),
   z.literal(100),
 ])
-export type TextSizeName = z.infer<typeof zTextSizeName>
+export type TextSizeName = z.output<typeof zTextSizeName>
 export const zTextSizeProps = z.object({
   fontSize: zOptionalNumberOrString,
 })
-export type TextSizeProps = z.infer<typeof zTextSizeProps>
+export type TextSizeProps = z.output<typeof zTextSizeProps>
 
 export const textLineHeights = ['xs', 's', 'm', 'l'] as const
 export const zTextLineHeightName = z.enum(textLineHeights)
-export type TextLineHeightName = z.infer<typeof zTextLineHeightName>
+export type TextLineHeightName = z.output<typeof zTextLineHeightName>
 export const zTextLineHeightProps = z.object({
   lineHeight: zOptionalNumberOrString,
 })
-export type TextLineHeightProps = z.infer<typeof zTextLineHeightProps>
+export type TextLineHeightProps = z.output<typeof zTextLineHeightProps>
 
 export const zTextFinalProps = zTextFontProps.merge(zTextTypeProps).merge(zTextSizeProps).merge(zTextLineHeightProps)
-export type TextFinalProps = z.infer<typeof zTextFinalProps>
+export type TextFinalProps = z.output<typeof zTextFinalProps>
 
 export const zTextGeneralProps = z.object({
   defaultFont: zTextFontName.optional(),
@@ -56,7 +56,7 @@ export const zTextGeneralProps = z.object({
   defaultSize: zTextSizeName.optional(),
   defaultLineHeight: zTextLineHeightName.optional(),
 })
-export type TextGeneralProps = z.infer<typeof zTextGeneralProps>
+export type TextGeneralProps = z.output<typeof zTextGeneralProps>
 
 export const zTextUinityConfigInput = z.object({
   general: zTextGeneralProps.optional(),
@@ -65,7 +65,7 @@ export const zTextUinityConfigInput = z.object({
   size: z.record(zTextSizeName, zTextSizeProps).optional(),
   lineHeight: z.record(zTextLineHeightName, zTextLineHeightProps).optional(),
 })
-type TextUinityConfigInput = z.infer<typeof zTextUinityConfigInput>
+type TextUinityConfigInput = z.output<typeof zTextUinityConfigInput>
 
 export const defaultTextUinityConfigInput: TextUinityConfigInput = {
   general: {

@@ -1,6 +1,6 @@
 import '@/lib/cssContainerQueryPolyfill.js'
-import type { As, AsProps, AsPropsWithRef, RCWithAsAndForwardedRef } from '@/utils.js'
-import { forwardRefWithTypes, mark } from '@/utils.js'
+import type { As, AsProps, AsPropsWithRef } from '@/utils.js'
+import { forwardRefIgnoreTypes, mark } from '@/utils.js'
 import { toCss } from '@uinity/core/dist/utils/other.js'
 import isArray from 'lodash/isArray.js'
 import isString from 'lodash/isString.js'
@@ -179,9 +179,9 @@ const checkBlockSpecialPropsKeys: CheckKeys<BlockSpecialProps<undefined>, typeof
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 const checkBlockStyleCorePropsKeys: CheckKeys<BlockStyleCoreProps, typeof blockStyleCorePropsKeys> = true
 
-type BlockMainProps<TAs extends As | undefined> = BlockStyleCoreProps & BlockSpecialProps<TAs>
-type BlockPropsWithRef<TAs extends As | undefined> = BlockMainProps<TAs> & AsPropsWithRef<TAs>
-export type BlockType<TAs extends As | undefined = undefined> = RCWithAsAndForwardedRef<BlockPropsWithRef<TAs>>
+type BlockMainProps<TAs extends As> = BlockStyleCoreProps & BlockSpecialProps<TAs>
+type BlockPropsWithRef<TAs extends As> = BlockMainProps<TAs> & AsPropsWithRef<TAs>
+export type BlockType = <TAs extends As = 'div'>(props: BlockPropsWithRef<TAs>) => React.ReactElement | null
 
 const normalizeBlockCorePropsConfig = (corePropsConfig: BlockCorePropsConfig): BlockStyleCoreProps => {
   if (isString(corePropsConfig)) {
@@ -340,14 +340,14 @@ const getBlockCoreCss = ($style: BlockStyleRootProps): RuleSet => {
 const BlockS = styled.div.attrs(mark('BlockS'))<{ $style: BlockStyleRootProps }>`
   ${({ $style }) => getBlockCoreCss($style)}
 `
-export const Block = forwardRefWithTypes(
-  <TAs extends As | undefined>({ children, ...restProps }: BlockPropsWithRef<TAs>, ref: any) => {
+export const Block: BlockType = forwardRefIgnoreTypes(
+  ({ children, ...restProps }: BlockPropsWithRef<'div'>, ref: any) => {
     const $style = pick(restProps, blockStyleCorePropsKeys) as BlockStyleRootProps
     const htmlElementProps = Object.fromEntries(
       Object.entries(restProps).filter(
         ([k]) => !blockStyleCorePropsKeys.includes(k as any) && !blockStyleSpecialPropsKeys.includes(k as any)
       )
-    ) as AsProps<TAs>
+    ) as AsProps<'div'>
 
     const normalizedWs = (restProps.ws || [])
       .sort(([a], [b]) => a - b)
@@ -381,7 +381,7 @@ export const Block = forwardRefWithTypes(
     $style.cp = normalizedCp
 
     return (
-      <BlockS as={restProps.as || 'div'} ref={ref} $style={$style} {...(htmlElementProps as any)}>
+      <BlockS {...(htmlElementProps as any)} as={restProps.as || 'div'} ref={ref} $style={$style}>
         {children}
       </BlockS>
     )

@@ -13,19 +13,14 @@ export type AsRef<T extends keyof JSX.IntrinsicElements | undefined> = T extends
 export type AsRefAttributes<T extends As | undefined> = { ref?: AsRef<T> }
 export type AsPropsWithoutRef<T extends As | undefined> = Omit<AsProps<T> & AsRefAttributes<T>, 'ref'>
 export type AsPropsWithRef<T extends As | undefined> = AsProps<T> & AsRefAttributes<T>
-
 export type RC<TProps> = (props: TProps) => React.ReactElement | null
-export type RCWithForwardedRef<TProps, TAs extends As | undefined> = (
-  props: React.PropsWithoutRef<TProps> & AsRefAttributes<TAs>
-) => React.ReactElement | null
-export type RCWithAsAndForwardedRef<TProps extends { as?: As }> = RCWithForwardedRef<
-  AsPropsWithoutRef<TProps['as']> & TProps,
-  TProps['as']
->
 
 export const forwardRefWithTypes = <TProps extends Record<string, any>>(
   Component: (props: TProps, ref: AsRef<undefined>) => React.ReactElement | null
 ): ((props: TProps) => React.ReactElement | null) => {
+  return React.forwardRef(Component as any) as any
+}
+export const forwardRefIgnoreTypes = (Component: any): any => {
   return React.forwardRef(Component as any) as any
 }
 

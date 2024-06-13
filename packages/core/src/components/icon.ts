@@ -4,23 +4,23 @@ import { z } from 'zod'
 
 export const iconConfigSizeNames = ['xs', 's', 'm', 'l', 'xl'] as const
 export const zIconConfigSizeName = z.enum(iconConfigSizeNames)
-export type IconConfigSizeName = z.infer<typeof zIconConfigSizeName>
+export type IconConfigSizeName = z.output<typeof zIconConfigSizeName>
 
 export const zIconConfigSizeProps = z.object({
   size: zOptionalNumberOrString,
 })
 
-export const zIconConfigStyleRootProps = zIconConfigSizeProps
-export type IconConfigStyleRootProps = z.infer<typeof zIconConfigStyleRootProps>
+export const zIconConfigFinalProps = zIconConfigSizeProps
+export type IconConfigFinalProps = z.output<typeof zIconConfigFinalProps>
 
 export const zIconConfigGeneralProps = z.object({})
-export type IconConfigGeneralProps = z.infer<typeof zIconConfigGeneralProps>
+export type IconConfigGeneralProps = z.output<typeof zIconConfigGeneralProps>
 
 export const zIconConfigInput = z.object({
   general: zIconConfigGeneralProps.optional(),
   size: z.record(zIconConfigSizeName, zIconConfigSizeProps).optional(),
 })
-export type IconConfigInput = z.infer<typeof zIconConfigInput>
+export type IconConfigInput = z.output<typeof zIconConfigInput>
 
 export const defaultIconConfigInput: IconConfigInput = {
   general: {},
@@ -79,11 +79,11 @@ export const normalizeIconSizeName = (uinityConfig: UinityConfig, size?: IconCon
   return 'm'
 }
 
-export const getIconStyleRootProps = (uinityConfig: UinityConfig, size?: IconConfigSizeName | undefined | null) => {
+export const getIconConfigFinalProps = (uinityConfig: UinityConfig, size?: IconConfigSizeName | undefined | null) => {
   const c = uinityConfig.icon
   size = normalizeIconSizeName(uinityConfig, size)
   const result = {
     ...(size && c.size?.[size]),
-  } as IconConfigStyleRootProps
+  } as IconConfigFinalProps
   return result
 }
