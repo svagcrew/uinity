@@ -1,6 +1,6 @@
+import fs from 'fs/promises'
 import path from 'path'
 import { get__dirname } from 'svag-esm'
-import fs from 'fs/promises'
 
 const __dirname = get__dirname(import.meta)
 const packagesDir = path.resolve(__dirname, '../..')
