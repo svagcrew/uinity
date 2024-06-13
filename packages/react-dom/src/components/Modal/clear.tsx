@@ -1,3 +1,4 @@
+/* eslint-disable prefer-const */
 /* eslint-disable react/forbid-component-props */
 import { itIsSupportsSafeJustifyContent } from '@/lib/cssSafeJustifyContent.js'
 import type { AsPropsWithRef } from '@/utils.js'
@@ -19,14 +20,14 @@ import React, { useEffect } from 'react'
 import { createGlobalStyle, css } from 'styled-components'
 
 export type ModalStyleCoreRawProps = {
-  scrollContainer?: 'overlay' | 'content'
-  overlayColor?: string
-  overlayVisible?: boolean
-  closeOnOutsideClick?: boolean
-  overlayClickableThrough?: boolean
-  lockScroll?: boolean
-  placementVertical?: 'top' | 'center' | 'bottom' | 'stretch'
-  placementHorizontal?: 'start' | 'center' | 'end' | 'stretch'
+  scrollContainer?: 'overlay' | 'content' | undefined | null
+  overlayColor?: string | undefined | null
+  overlayVisible?: boolean | undefined | null
+  closeOnOutsideClick?: boolean | undefined | null
+  overlayClickableThrough?: boolean | undefined | null
+  lockScroll?: boolean | undefined | null
+  placementVertical?: 'top' | 'center' | 'bottom' | 'stretch' | undefined | null
+  placementHorizontal?: 'start' | 'center' | 'end' | 'stretch' | undefined | null
   placement?:
     | 'top-center'
     | 'top-start'
@@ -44,17 +45,19 @@ export type ModalStyleCoreRawProps = {
     | 'stretch-start'
     | 'stretch-end'
     | 'stretch-stretch'
-  width?: string | number
-  margin?: string | number
-  marginTop?: string | number
-  marginEnd?: string | number
-  marginBottom?: string | number
-  marginStart?: string | number
-  padding?: string | number
-  paddingTop?: string | number
-  paddingEnd?: string | number
-  paddingBottom?: string | number
-  paddingStart?: string | number
+    | undefined
+    | null
+  width?: string | number | undefined | null
+  margin?: string | number | undefined | null
+  marginTop?: string | number | undefined | null
+  marginEnd?: string | number | undefined | null
+  marginBottom?: string | number | undefined | null
+  marginStart?: string | number | undefined | null
+  padding?: string | number | undefined | null
+  paddingTop?: string | number | undefined | null
+  paddingEnd?: string | number | undefined | null
+  paddingBottom?: string | number | undefined | null
+  paddingStart?: string | number | undefined | null
   /** byWindowSize */
   ws?: Array<[number, ModalStyleCoreRawProps]>
   byWindowSize?: Array<[number, ModalStyleCoreRawProps]>
@@ -105,7 +108,7 @@ type ModalGlobalStylesProps = ModalStyleCoreProps & {
   contentClassName: string
   supportingSafeJustifyContentFinished: boolean
 }
-export type ModalMainProps = ModalStyleCoreRawProps & ModalSpecialProps
+export type ModalMainProps = ModalSpecialProps & { $style?: ModalStyleCoreRawProps }
 export type ModalPropsWithRef = ModalMainProps & AsPropsWithRef<'div'>
 export type ModalType = (props: ModalPropsWithRef) => React.ReactElement | null
 
@@ -253,7 +256,14 @@ export const Modal: ModalType = forwardRefIgnoreTypes(
       children,
       opened,
       setOpened,
+      $style = {},
+      style,
 
+      ...restProps
+    }: ModalPropsWithRef,
+    propRef: any
+  ) => {
+    let {
       overlayColor,
       overlayVisible,
       closeOnOutsideClick,
@@ -278,20 +288,14 @@ export const Modal: ModalType = forwardRefIgnoreTypes(
       byWindowSize,
       wsr,
       byWindowSizeReverse,
-
-      style,
-      ...restProps
-    }: ModalPropsWithRef,
-    propRef: any
-  ) => {
-    const modal = useModal({ opened, setOpened, closeOnOutsideClick })
-    const ref = useMergeRefs([modal.refs.setFloating, propRef])
-    const floatingProps = modal.getFloatingProps(restProps)
-
+    } = $style
     const overlayVisibleNormalized = overlayVisible ?? true
     const overlayColorNormalized = overlayVisibleNormalized ? overlayColor ?? 'rgba(0, 0, 0, 0.8)' : 'transparent'
     const overlayClickableThroughNormalized = overlayClickableThrough ?? false
     const closeOnOutsideClickNormalized = closeOnOutsideClick ?? true
+    const modal = useModal({ opened, setOpened, closeOnOutsideClick: closeOnOutsideClickNormalized })
+    const ref = useMergeRefs([modal.refs.setFloating, propRef])
+    const floatingProps = modal.getFloatingProps(restProps)
     const lockScrollNormalized = lockScroll ?? true
     const scrollContainerNormalized = scrollContainer ?? 'overlay'
     const {
@@ -502,7 +506,7 @@ export const Modal: ModalType = forwardRefIgnoreTypes(
         />
         <FloatingPortal>
           <FloatingOverlay
-            lockScroll={normalizedProps.lockScroll}
+            lockScroll={normalizedProps.lockScroll ?? true}
             className={`${overlayClassName} uinity-modal-overlay`}
           >
             <FloatingFocusManager context={modal.context}>

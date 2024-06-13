@@ -1,7 +1,9 @@
 import '@/lib/cssContainerQueryPolyfill.js'
+import { Modal } from '@/components/Modal/clear.js'
 import type { As, AsPropsWithRef } from '@/utils.js'
 import { forwardRefIgnoreTypes, mark } from '@/utils.js'
 import { borderPropsToCssValue, maybeNumberToPx, toCss } from '@uinity/core/dist/utils/other.js'
+import isNil from 'lodash/isNil.js'
 import type { RuleSet } from 'styled-components'
 import { css, styled } from 'styled-components'
 
@@ -40,7 +42,6 @@ export type LayoutStyleCoreProps = {
   /** Should be setted to true or false to work! */
   sidebarHidden?: boolean
   fullWidth?: boolean
-  modalOpened?: boolean
 }
 export type LayoutStyleRootProps = LayoutStyleCoreProps & {
   /** byWindowSize */
@@ -53,6 +54,8 @@ export type LayoutStyleRootProps = LayoutStyleCoreProps & {
 export type LayoutMainProps<TAs extends As> = {
   as?: TAs
   $style?: LayoutStyleRootProps
+  modalOpened?: boolean
+  setModalOpened?: (opened: boolean) => void
   headerRender?: React.ReactNode
   modalRender?: React.ReactNode
   sidebarRender?: React.ReactNode
@@ -129,37 +132,6 @@ const getLayoutCoreCss = (scp: LayoutStyleCoreProps): RuleSet | string => {
             height: scp.headerHeight,
           })}
         }
-      }
-    }
-
-    ${ModalS} {
-      display: flex;
-      flex-flow: column nowrap;
-      align-items: center;
-      justify-content: stretch;
-      width: 100%;
-      z-index: 1100;
-      overflow-y: auto;
-      position: fixed;
-      ${toCss({
-        ...(scp.modalOpened ? { marginTop: 0 } : { marginTop: -99_999 }),
-      })}
-      ${toCss({
-        background: scp.modalBackground,
-        height: `calc(100% - ${maybeNumberToPx(scp.headerFixed ? scp.headerHeight : 0)})`,
-        top: maybeNumberToPx(scp.headerFixed ? scp.headerHeight : 0),
-      })}
-
-      ${LayoutSectionS} {
-        display: flex;
-        flex-flow: column nowrap;
-        align-items: stretch;
-        justify-content: stretch;
-        ${toCss({
-          paddingTop: scp.modalPaddingTop,
-          paddingBottom: scp.modalPaddingBottom,
-          borderTop: borderPropsToCssValue(scp.modalBorderWidth, scp.modalBorderColor),
-        })}
       }
     }
 
@@ -253,7 +225,6 @@ const getLayoutCoreCss = (scp: LayoutStyleCoreProps): RuleSet | string => {
 }
 
 const LayoutSectionS = styled.div.attrs(mark('LayoutSectionS'))``
-const ModalS = styled.div.attrs(mark('ModalS'))``
 const HeaderS = styled.div.attrs(mark('HeaderS'))``
 const HeaderPlaceS = styled.div.attrs(mark('HeaderPlaceS'))``
 const SidebarPlaceS = styled.div.attrs(mark('SidebarPlaceS'))``
@@ -263,13 +234,11 @@ const SidebarAndContentS = styled.div.attrs(mark('SidebarAndContentS'))``
 const FooterS = styled.div.attrs(mark('FooterS'))``
 const LayoutS = styled.div.attrs(mark('LayoutS'))<{ $style: LayoutStyleRootProps }>`
   ${({ $style }) => {
-    const byWindowSize = ($style.byWindowSize || $style.ws || []).sort(([a], [b]) => a - b)
-    const byWindowSizeReverse = ($style.byWindowSizeReverse || $style.wsr || []).sort(([a], [b]) => b - a)
     return css`
       ${getLayoutCoreCss($style)}
 
-      ${byWindowSize.map(([, coreStyleProps], index) => {
-        const nextWindowSize = byWindowSize[index - 1]?.[0] ?? 0
+      ${($style.byWindowSize || []).map(([, coreStyleProps], index) => {
+        const nextWindowSize = $style.byWindowSize?.[index - 1]?.[0] ?? 0
         const coreCss = getLayoutCoreCss({
           ...coreStyleProps,
         })
@@ -282,8 +251,70 @@ const LayoutS = styled.div.attrs(mark('LayoutS'))<{ $style: LayoutStyleRootProps
           }
         `
       })}
-      ${byWindowSizeReverse.map(([windowSize, coreStyleProps]) => {
+      ${($style.byWindowSizeReverse || []).map(([windowSize, coreStyleProps]) => {
         const coreCss = getLayoutCoreCss({
+          ...coreStyleProps,
+        })
+        if (windowSize === Infinity) {
+          return coreCss
+        }
+        return css`
+          @media (max-width: ${windowSize}px) {
+            ${coreCss}
+          }
+        `
+      })}
+    `
+  }}
+`
+
+const getLayoutModalCoreCss = (scp: LayoutStyleCoreProps): RuleSet | string => {
+  return css`
+    display: flex;
+    flex-flow: column nowrap;
+    align-items: center;
+    justify-content: stretch;
+
+    ${LayoutSectionS} {
+      display: flex;
+      flex-flow: column nowrap;
+      align-items: stretch;
+      justify-content: stretch;
+      ${toCss({
+        width: '100%',
+        maxWidth: scp.fullWidth ? null : scp.layoutMaxWidth,
+        paddingLeft: scp.layoutPaddingHorizontal,
+        paddingRight: scp.layoutPaddingHorizontal,
+        paddingTop: scp.modalPaddingTop,
+        paddingBottom: scp.modalPaddingBottom,
+        borderTop: borderPropsToCssValue(scp.modalBorderWidth, scp.modalBorderColor),
+      })}
+    }
+  `
+}
+const ModalS = styled.div.attrs(mark('ModalS'))<{
+  $style: LayoutStyleRootProps
+}>`
+  ${({ $style }) => {
+    return css`
+      ${getLayoutModalCoreCss($style)}
+
+      ${($style.byWindowSize || []).map(([, coreStyleProps], index) => {
+        const nextWindowSize = $style.byWindowSize?.[index - 1]?.[0] ?? 0
+        const coreCss = getLayoutModalCoreCss({
+          ...coreStyleProps,
+        })
+        if (nextWindowSize === 0) {
+          return coreCss
+        }
+        return css`
+          @media (min-width: ${nextWindowSize + 1}px) {
+            ${coreCss}
+          }
+        `
+      })}
+      ${($style.byWindowSizeReverse || []).map(([windowSize, coreStyleProps]) => {
+        const coreCss = getLayoutModalCoreCss({
           ...coreStyleProps,
         })
         if (windowSize === Infinity) {
@@ -307,41 +338,65 @@ export const Layout: LayoutType = forwardRefIgnoreTypes(
       sidebarRender,
       footerRender,
       modalRender,
+      modalOpened,
+      setModalOpened,
       $style = {},
       ...restProps
     }: LayoutPropsWithRef<'div'>,
     ref: any
   ) => {
+    $style.byWindowSize = ($style.byWindowSize || $style.ws || []).sort(([a], [b]) => a - b)
+    $style.byWindowSizeReverse = ($style.byWindowSizeReverse || $style.wsr || []).sort(([a], [b]) => b - a)
     return (
-      <LayoutS {...(restProps as any)} $style={$style} ref={ref}>
-        {headerRender && (
-          <HeaderPlaceS>
-            <HeaderS>
-              <LayoutSectionS>{headerRender}</LayoutSectionS>
-            </HeaderS>
-          </HeaderPlaceS>
-        )}
+      <>
+        <LayoutS {...(restProps as any)} $style={$style} ref={ref}>
+          {headerRender && (
+            <HeaderPlaceS>
+              <HeaderS>
+                <LayoutSectionS>{headerRender}</LayoutSectionS>
+              </HeaderS>
+            </HeaderPlaceS>
+          )}
+          <SidebarAndContentS>
+            <LayoutSectionS>
+              {sidebarRender && (
+                <SidebarPlaceS>
+                  <SidebarS>{sidebarRender}</SidebarS>
+                </SidebarPlaceS>
+              )}
+              <ContentS>{children}</ContentS>
+            </LayoutSectionS>
+          </SidebarAndContentS>
+          {footerRender && (
+            <FooterS>
+              <LayoutSectionS>{footerRender}</LayoutSectionS>
+            </FooterS>
+          )}
+        </LayoutS>
         {!!modalRender && (
-          <ModalS>
-            <LayoutSectionS>{modalRender}</LayoutSectionS>
-          </ModalS>
+          <Modal
+            opened={modalOpened}
+            setOpened={setModalOpened}
+            $style={{
+              placement: 'stretch-stretch',
+              marginTop: $style.headerHeight,
+              overlayVisible: false,
+              closeOnOutsideClick: false,
+              overlayClickableThrough: true,
+              ws: ($style.byWindowSize || $style.ws || [])
+                .map(([size, cfp]) => (isNil(cfp.headerHeight) ? false : [size, { marginTop: cfp.headerHeight }]))
+                .filter(Boolean) as any,
+              wsr: ($style.byWindowSizeReverse || $style.wsr || [])
+                .map(([size, cfp]) => (isNil(cfp.headerHeight) ? false : [size, { marginTop: cfp.headerHeight }]))
+                .filter(Boolean) as any,
+            }}
+          >
+            <ModalS $style={$style}>
+              <LayoutSectionS>{modalRender}</LayoutSectionS>
+            </ModalS>
+          </Modal>
         )}
-        <SidebarAndContentS>
-          <LayoutSectionS>
-            {sidebarRender && (
-              <SidebarPlaceS>
-                <SidebarS>{sidebarRender}</SidebarS>
-              </SidebarPlaceS>
-            )}
-            <ContentS>{children}</ContentS>
-          </LayoutSectionS>
-        </SidebarAndContentS>
-        {footerRender && (
-          <FooterS>
-            <LayoutSectionS>{footerRender}</LayoutSectionS>
-          </FooterS>
-        )}
-      </LayoutS>
+      </>
     )
   }
 )

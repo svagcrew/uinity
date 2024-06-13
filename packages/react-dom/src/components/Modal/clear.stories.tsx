@@ -1,10 +1,13 @@
-import type { ModalMainProps } from './clear.js'
+import type { ModalMainProps, ModalStyleCoreRawProps } from './clear.js'
 import { Modal } from './clear.js'
 import { Button } from '@/components/Button/clear.js'
 import type { Meta, StoryObj } from '@storybook/react'
 import { useState } from 'react'
 
-const ModalDemo = ({ initialOpened, ...props }: { initialOpened: boolean } & ModalMainProps) => {
+const ModalDemo = ({
+  initialOpened,
+  ...props
+}: { initialOpened: boolean } & ModalStyleCoreRawProps & ModalMainProps) => {
   const [opened, setOpened] = useState(initialOpened)
   return (
     <div>
@@ -39,21 +42,23 @@ const ModalDemo = ({ initialOpened, ...props }: { initialOpened: boolean } & Mod
       <Modal
         opened={opened}
         setOpened={setOpened}
-        {...props}
-        wsr={[
-          [
-            400,
-            {
-              padding: 0,
-            },
+        $style={{
+          ...props,
+          wsr: [
+            [
+              400,
+              {
+                padding: 0,
+              },
+            ],
+            [
+              500,
+              {
+                padding: 5,
+              },
+            ],
           ],
-          [
-            500,
-            {
-              padding: 5,
-            },
-          ],
-        ]}
+        }}
       >
         <div
           style={

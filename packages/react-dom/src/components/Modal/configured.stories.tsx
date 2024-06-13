@@ -41,21 +41,23 @@ const ModalDemo = ({ initialOpened, ...props }: { initialOpened: boolean }) => {
       <Modal
         opened={opened}
         setOpened={setOpened}
-        {...props}
-        wsr={[
-          [
-            400,
-            {
-              padding: 0,
-            },
+        $style={{
+          ...props,
+          wsr: [
+            [
+              400,
+              {
+                padding: 0,
+              },
+            ],
+            [
+              500,
+              {
+                padding: 5,
+              },
+            ],
           ],
-          [
-            500,
-            {
-              padding: 5,
-            },
-          ],
-        ]}
+        }}
       >
         <div
           style={

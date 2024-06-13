@@ -1,12 +1,42 @@
+/* eslint-disable jsx-a11y/no-static-element-interactions */
+/* eslint-disable jsx-a11y/click-events-have-key-events */
 import { createLayout } from '../Layout/configured.js'
 import { uinityConfig } from '@/stories/uinity.config.js'
 import type { Meta, StoryObj } from '@storybook/react'
+import { useState } from 'react'
 
 const { Layout } = createLayout({ uinityConfig })
 
 const LayoutDemo = () => {
+  const [modalOpened, setModalOpened] = useState(false)
   return (
-    <Layout headerRender={<div>Header</div>} sidebarRender={<div>Sidebar</div>} footerRender={<div>Footer</div>}>
+    <Layout
+      modalOpened={modalOpened}
+      setModalOpened={setModalOpened}
+      headerRender={
+        <div
+          onClick={() => {
+            setModalOpened(!modalOpened)
+          }}
+        >
+          Header
+        </div>
+      }
+      sidebarRender={<div>Sidebar</div>}
+      footerRender={<div>Footer</div>}
+      modalRender={
+        <div>
+          <div>Modal</div>
+          <button
+            onClick={() => {
+              setModalOpened(false)
+            }}
+          >
+            Close
+          </button>
+        </div>
+      }
+    >
       <div>Children</div>
     </Layout>
   )

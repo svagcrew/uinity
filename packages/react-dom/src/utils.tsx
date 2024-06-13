@@ -1,4 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
+import isNil from 'lodash/isNil.js'
 import React from 'react'
 import { getHash } from 'svag-utils'
 
@@ -36,13 +37,13 @@ export const getGlobalClassName = (src: any) => {
 }
 
 export const parseSpacing = (
-  spacing?: string | number | undefined,
-  spacingTop?: string | number,
-  spacingEnd?: string | number,
-  spacingBottom?: string | number,
-  spacingStart?: string | number
+  spacing?: string | number | undefined | null,
+  spacingTop?: string | number | undefined | null,
+  spacingEnd?: string | number | undefined | null,
+  spacingBottom?: string | number | undefined | null,
+  spacingStart?: string | number | undefined | null
 ) => {
-  if (spacing !== undefined) {
+  if (!isNil(spacing)) {
     if (typeof spacing === 'number') {
       return {
         top: spacing,
