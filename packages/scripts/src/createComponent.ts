@@ -20,12 +20,16 @@ export const createComponent = async ({
   preventIndexFilesModifications,
   preventCoreFilesModifications,
   preventReactDomFilesModifications,
+  createOnlyReactDom,
+  createOnlyCore,
 }: {
   name: string
   as?: string
   preventIndexFilesModifications?: boolean
   preventCoreFilesModifications?: boolean
   preventReactDomFilesModifications?: boolean
+  createOnlyReactDom?: boolean
+  createOnlyCore?: boolean
 }) => {
   if (!name) {
     throw new Error('Component name is required')
@@ -42,81 +46,89 @@ export const createComponent = async ({
   const newCoreFilePath = path.resolve(coreComponentsDir, `${nameCamelCaseLowercase}.ts`)
   await copyDir(blankReactDomComponentDir, newReactDomComponentDir)
   if (!preventReactDomFilesModifications) {
-    await replaceInFile({
-      filePath: newReactDomClearComponentFilePath,
-      strings: [
-        ['Blank', nameCamelCaseCapitalized],
-        ['blank', nameCamelCaseLowercase],
-        [`BlankDefaultAs = 'div'`, `${nameCamelCaseCapitalized}DefaultAs = '${as}'`],
-      ],
-    })
-    await replaceInFile({
-      filePath: newReactDomConfiguredComponentFilePath,
-      strings: [
-        ['Blank', nameCamelCaseCapitalized],
-        ['blank', nameCamelCaseLowercase],
-      ],
-    })
-    await replaceInFile({
-      filePath: newReactDomClearStoriesFilePath,
-      strings: [
-        ['Blank', nameCamelCaseCapitalized],
-        ['blank', nameCamelCaseLowercase],
-      ],
-    })
-    await replaceInFile({
-      filePath: newReactDomConfiguredStoriesFilePath,
-      strings: [
-        ['Blank', nameCamelCaseCapitalized],
-        ['blank', nameCamelCaseLowercase],
-      ],
-    })
+    if (!createOnlyCore) {
+      await replaceInFile({
+        filePath: newReactDomClearComponentFilePath,
+        strings: [
+          ['Blank', nameCamelCaseCapitalized],
+          ['blank', nameCamelCaseLowercase],
+          [`BlankDefaultAs = 'div'`, `${nameCamelCaseCapitalized}DefaultAs = '${as}'`],
+        ],
+      })
+      await replaceInFile({
+        filePath: newReactDomConfiguredComponentFilePath,
+        strings: [
+          ['Blank', nameCamelCaseCapitalized],
+          ['blank', nameCamelCaseLowercase],
+        ],
+      })
+      await replaceInFile({
+        filePath: newReactDomClearStoriesFilePath,
+        strings: [
+          ['Blank', nameCamelCaseCapitalized],
+          ['blank', nameCamelCaseLowercase],
+        ],
+      })
+      await replaceInFile({
+        filePath: newReactDomConfiguredStoriesFilePath,
+        strings: [
+          ['Blank', nameCamelCaseCapitalized],
+          ['blank', nameCamelCaseLowercase],
+        ],
+      })
+    }
   }
   if (!preventCoreFilesModifications) {
-    await copyFile(blankCoreFilePath, newCoreFilePath)
-    await replaceInFile({
-      filePath: newCoreFilePath,
-      strings: [
-        ['Blank', nameCamelCaseCapitalized],
-        ['blank', nameCamelCaseLowercase],
-      ],
-    })
+    if (!createOnlyReactDom) {
+      await copyFile(blankCoreFilePath, newCoreFilePath)
+      await replaceInFile({
+        filePath: newCoreFilePath,
+        strings: [
+          ['Blank', nameCamelCaseCapitalized],
+          ['blank', nameCamelCaseLowercase],
+        ],
+      })
+    }
   }
   if (!preventIndexFilesModifications) {
-    await appendFile({
-      filePath: coreConfigDefinitionFilePath,
-      search: `import { defaultBlankConfigInput, normalizeBlankConfig, zBlankConfigInput } from '@/components/blank.js'`,
-      append: `import { default${nameCamelCaseCapitalized}ConfigInput, normalize${nameCamelCaseCapitalized}Config, z${nameCamelCaseCapitalized}ConfigInput } from '@/components/${nameCamelCaseLowercase}.js'`,
-    })
-    await appendFile({
-      filePath: coreConfigDefinitionFilePath,
-      search: `blank: zBlankConfigInput.optional()`,
-      append: `${nameCamelCaseLowercase}: z${nameCamelCaseCapitalized}ConfigInput.optional(),`,
-    })
-    await appendFile({
-      filePath: coreConfigDefinitionFilePath,
-      search: `blank: defaultBlankConfigInput,`,
-      append: `${nameCamelCaseLowercase}: default${nameCamelCaseCapitalized}ConfigInput,`,
-    })
-    await appendFile({
-      filePath: coreConfigDefinitionFilePath,
-      search: `const blank = normalizeBlankConfig(input.blank)`,
-      append: `const ${nameCamelCaseLowercase} = normalize${nameCamelCaseCapitalized}Config(input.${nameCamelCaseLowercase})`,
-    })
-    await appendFile({
-      filePath: coreConfigDefinitionFilePath,
-      search: `    blank,`,
-      append: `${nameCamelCaseLowercase},`,
-    })
-    await appendFile({
-      filePath: reactDomIndexFilePath,
-      search: `import { createBlank } from '@/components/Blank/configured.js'`,
-      append: `import { create${nameCamelCaseCapitalized} } from '@/components/${nameCamelCaseCapitalized}/configured.js'`,
-    })
-    await appendFile({
-      filePath: reactDomIndexFilePath,
-      search: `...createBlank({ uinityConfig }),`,
-      append: `...create${nameCamelCaseCapitalized}({ uinityConfig }),`,
-    })
+    if (!createOnlyReactDom) {
+      await appendFile({
+        filePath: coreConfigDefinitionFilePath,
+        search: `import { defaultBlankConfigInput, normalizeBlankConfig, zBlankConfigInput } from '@/components/blank.js'`,
+        append: `import { default${nameCamelCaseCapitalized}ConfigInput, normalize${nameCamelCaseCapitalized}Config, z${nameCamelCaseCapitalized}ConfigInput } from '@/components/${nameCamelCaseLowercase}.js'`,
+      })
+      await appendFile({
+        filePath: coreConfigDefinitionFilePath,
+        search: `blank: zBlankConfigInput.optional()`,
+        append: `${nameCamelCaseLowercase}: z${nameCamelCaseCapitalized}ConfigInput.optional(),`,
+      })
+      await appendFile({
+        filePath: coreConfigDefinitionFilePath,
+        search: `blank: defaultBlankConfigInput,`,
+        append: `${nameCamelCaseLowercase}: default${nameCamelCaseCapitalized}ConfigInput,`,
+      })
+      await appendFile({
+        filePath: coreConfigDefinitionFilePath,
+        search: `const blank = normalizeBlankConfig(input.blank)`,
+        append: `const ${nameCamelCaseLowercase} = normalize${nameCamelCaseCapitalized}Config(input.${nameCamelCaseLowercase})`,
+      })
+      await appendFile({
+        filePath: coreConfigDefinitionFilePath,
+        search: `    blank,`,
+        append: `${nameCamelCaseLowercase},`,
+      })
+    }
+    if (!createOnlyCore) {
+      await appendFile({
+        filePath: reactDomIndexFilePath,
+        search: `import { createBlank } from '@/components/Blank/configured.js'`,
+        append: `import { create${nameCamelCaseCapitalized} } from '@/components/${nameCamelCaseCapitalized}/configured.js'`,
+      })
+      await appendFile({
+        filePath: reactDomIndexFilePath,
+        search: `...createBlank({ uinityConfig }),`,
+        append: `...create${nameCamelCaseCapitalized}({ uinityConfig }),`,
+      })
+    }
   }
 }

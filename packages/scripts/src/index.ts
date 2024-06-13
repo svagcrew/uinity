@@ -26,12 +26,24 @@ defineCliApp(async ({ cwd, command, args, flags }) => {
         keys: ['R'],
         coalesce: false,
       })
+      const createOnlyReactDom = getFlagAsBoolean({
+        flags,
+        keys: ['r'],
+        coalesce: false,
+      })
+      const createOnlyCore = getFlagAsBoolean({
+        flags,
+        keys: ['c'],
+        coalesce: false,
+      })
       await createComponent({
         as,
         name,
         preventIndexFilesModifications,
         preventCoreFilesModifications,
         preventReactDomFilesModifications,
+        createOnlyReactDom,
+        createOnlyCore,
       })
       break
     }
