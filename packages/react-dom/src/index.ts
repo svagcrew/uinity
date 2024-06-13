@@ -6,9 +6,9 @@ import type { IconsComponents } from '@/components/Icon/configured.js'
 import { createIcon } from '@/components/Icon/configured.js'
 import { createLayout } from '@/components/Layout/configured.js'
 import { createModal } from '@/components/Modal/configured.js'
-import { createNProgress } from '@/components/NProgress/index.js'
-import { createPopover } from '@/components/Popover/index.js'
-import { createSplashScreen } from '@/components/SplashScreen/index.js'
+import { createPopover } from '@/components/Popover/configured.js'
+import { createProgressLine } from '@/components/ProgressLine/configured.js'
+import { createSplashScreen } from '@/components/SplashScreen/configured.js'
 import type { UinityConfig } from '@uinity/core'
 
 export const createComponents = <TIconName extends string>({
@@ -23,12 +23,12 @@ export const createComponents = <TIconName extends string>({
     ...createIcon({ uinityConfig, iconsComponents }),
     ...createButton({ uinityConfig, Icon }),
     ...createLayout({ uinityConfig }),
-    ...createSplashScreen(),
-    ...createNProgress({ uinityConfig }),
+    ...createSplashScreen({ uinityConfig }),
+    ...createProgressLine({ uinityConfig }),
     ...createDisabler({ uinityConfig }),
     ...createBlock({ uinityConfig }),
     ...createGrid({ uinityConfig }),
-    ...createPopover(),
-    ...createModal(),
+    ...createPopover({ uinityConfig }),
+    ...createModal({ uinityConfig }),
   }
 }

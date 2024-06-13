@@ -1,21 +1,12 @@
-import { createModal } from '../Modal/configured.js'
-import type { ModalGeneralProps } from './configured.js'
-import { createButton } from '@/components/Button/configured.js'
-import { createIcon } from '@/components/Icon/configured.js'
+import { createModal } from './configured.js'
+import { Button } from '@/components/Button/clear.js'
 import { uinityConfig } from '@/stories/uinity.config.js'
 import type { Meta, StoryObj } from '@storybook/react'
 import { useState } from 'react'
 
-const { Icon } = createIcon({
-  uinityConfig,
-})
-const { Button } = createButton({
-  uinityConfig,
-  Icon,
-})
-const { Modal } = createModal()
+const { Modal } = createModal({ uinityConfig })
 
-const ModalDemo = ({ initialOpened, ...props }: { initialOpened: boolean } & ModalGeneralProps) => {
+const ModalDemo = ({ initialOpened, ...props }: { initialOpened: boolean }) => {
   const [opened, setOpened] = useState(initialOpened)
   return (
     <div>
@@ -146,75 +137,8 @@ const meta = {
     // layout: 'centered',
   },
   tags: ['autodocs'],
-  argTypes: {
-    initialOpened: {
-      control: 'boolean',
-    },
-    placement: {
-      control: {
-        type: 'radio',
-      },
-      options: [
-        'top-center',
-        'top-start',
-        'top-end',
-        'top-stretch',
-        'center-center',
-        'center-start',
-        'center-end',
-        'center-stretch',
-        'bottom-center',
-        'bottom-start',
-        'bottom-end',
-        'bottom-stretch',
-        'stretch-center',
-        'stretch-start',
-        'stretch-end',
-        'stretch-stretch',
-      ],
-    },
-    scrollContainer: {
-      control: 'radio',
-      options: ['overlay', 'content'],
-    },
-    width: {
-      control: 'text',
-    },
-    margin: {
-      control: 'text',
-    },
-    padding: {
-      control: 'text',
-    },
-    closeOnOutsideClick: {
-      control: 'boolean',
-    },
-    overlayColor: {
-      control: 'color',
-    },
-    overlayVisible: {
-      control: 'boolean',
-    },
-    overlayClickableThrough: {
-      control: 'boolean',
-    },
-    lockScroll: {
-      control: 'boolean',
-    },
-  },
-  args: {
-    initialOpened: true,
-    placement: 'center-center',
-    scrollContainer: 'overlay',
-    width: '500px',
-    margin: '15px',
-    padding: '30px',
-    closeOnOutsideClick: true,
-    overlayColor: 'rgba(0, 0, 0, 0.8)',
-    overlayVisible: true,
-    overlayClickableThrough: false,
-    lockScroll: true,
-  },
+  argTypes: {},
+  args: {},
 } satisfies Meta<typeof ModalDemo>
 
 export default meta

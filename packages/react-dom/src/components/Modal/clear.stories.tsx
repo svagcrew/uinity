@@ -1,21 +1,10 @@
-import { createModal } from '../Modal/configured.js'
-import type { ModalGeneralProps } from './configured.js'
-import { createButton } from '@/components/Button/configured.js'
-import { createIcon } from '@/components/Icon/configured.js'
-import { uinityConfig } from '@/stories/uinity.config.js'
+import type { ModalMainProps } from './clear.js'
+import { Modal } from './clear.js'
+import { Button } from '@/components/Button/clear.js'
 import type { Meta, StoryObj } from '@storybook/react'
 import { useState } from 'react'
 
-const { Icon } = createIcon({
-  uinityConfig,
-})
-const { Button } = createButton({
-  uinityConfig,
-  Icon,
-})
-const { Modal } = createModal()
-
-const ModalDemo = ({ initialOpened, ...props }: { initialOpened: boolean } & ModalGeneralProps) => {
+const ModalDemo = ({ initialOpened, ...props }: { initialOpened: boolean } & ModalMainProps) => {
   const [opened, setOpened] = useState(initialOpened)
   return (
     <div>

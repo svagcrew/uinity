@@ -34,3 +34,61 @@ export const mark = (componentName: string): {} => {
 export const getGlobalClassName = (src: any) => {
   return 'c' + getHash(src)
 }
+
+export const parseSpacing = (
+  spacing?: string | number | undefined,
+  spacingTop?: string | number,
+  spacingEnd?: string | number,
+  spacingBottom?: string | number,
+  spacingStart?: string | number
+) => {
+  if (spacing !== undefined) {
+    if (typeof spacing === 'number') {
+      return {
+        top: spacing,
+        end: spacing,
+        bottom: spacing,
+        start: spacing,
+      }
+    }
+    const spacingParts = spacing.split(' ')
+    if (spacingParts.length === 1) {
+      return {
+        top: spacingParts[0],
+        end: spacingParts[0],
+        bottom: spacingParts[0],
+        start: spacingParts[0],
+      }
+    }
+    if (spacingParts.length === 2) {
+      return {
+        top: spacingParts[0],
+        end: spacingParts[1],
+        bottom: spacingParts[0],
+        start: spacingParts[1],
+      }
+    }
+    if (spacingParts.length === 3) {
+      return {
+        top: spacingParts[0],
+        end: spacingParts[1],
+        bottom: spacingParts[2],
+        start: spacingParts[1],
+      }
+    }
+    if (spacingParts.length === 4) {
+      return {
+        top: spacingParts[0],
+        end: spacingParts[1],
+        bottom: spacingParts[2],
+        start: spacingParts[3],
+      }
+    }
+  }
+  return {
+    top: spacingTop,
+    end: spacingEnd,
+    bottom: spacingBottom,
+    start: spacingStart,
+  }
+}

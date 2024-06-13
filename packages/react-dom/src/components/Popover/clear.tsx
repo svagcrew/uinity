@@ -1,4 +1,6 @@
 /* eslint-disable react/jsx-boolean-value */
+import type { AsRefAttributes } from '@/utils.js'
+import { forwardRefIgnoreTypes } from '@/utils.js'
 import type { Placement } from '@floating-ui/react'
 import {
   autoUpdate,
@@ -15,7 +17,7 @@ import {
   useRole,
 } from '@floating-ui/react'
 import isBoolean from 'lodash/isBoolean.js'
-import type { ForwardRefExoticComponent, ReactElement, RefAttributes } from 'react'
+import type { ReactElement } from 'react'
 import React from 'react'
 
 type PopoverGeneralProps = {}
@@ -31,12 +33,13 @@ type UsePopoverProps = {
   /** Distance between popover and viewport before flip */
   flipPadding?: number
 }
-export type WithPopoverProps = {
+export type WithPopoverMainProps = {
   popover: ReactElement
   children: ReactElement
 } & PopoverGeneralProps &
   UsePopoverProps
-export type WithPopoverType = ForwardRefExoticComponent<WithPopoverProps & RefAttributes<HTMLElement>>
+export type WithPopoverPropsWithRef = WithPopoverMainProps & AsRefAttributes<undefined>
+export type WithPopoverType = (props: WithPopoverPropsWithRef) => ReactElement | null
 
 const usePopover = ({
   initialOpened = false,
@@ -86,54 +89,43 @@ const usePopover = ({
   )
 }
 
-export const createPopover = (): {
-  WithPopover: WithPopoverType
-} => {
-  const WithPopover: WithPopoverType = React.forwardRef<HTMLElement, WithPopoverProps>(
-    (
-      {
-        popover: renderPopover,
-        children: renderChildren,
-        placement,
-        initialOpened,
-        opened,
-        setOpened,
-        flipPadding,
-        offset,
-        shiftPadding,
-      },
-      propRef
-    ) => {
-      const popover = usePopover({ initialOpened, placement, opened, setOpened, flipPadding, offset, shiftPadding })
-      const ref = useMergeRefs([popover.refs.setReference, propRef, (renderChildren as any).ref])
+export const WithPopover: WithPopoverType = forwardRefIgnoreTypes(
+  (
+    {
+      popover: renderPopover,
+      children: renderChildren,
+      placement,
+      initialOpened,
+      opened,
+      setOpened,
+      flipPadding,
+      offset,
+      shiftPadding,
+    }: WithPopoverPropsWithRef,
+    propRef: any
+  ) => {
+    const popover = usePopover({ initialOpened, placement, opened, setOpened, flipPadding, offset, shiftPadding })
+    const ref = useMergeRefs([popover.refs.setReference, propRef, (renderChildren as any).ref])
 
-      return (
-        <>
-          {React.cloneElement(
-            renderChildren,
-            popover.getReferenceProps({
-              ref,
-              ...renderChildren.props,
-            })
-          )}
-          {popover.context.open && (
-            <FloatingPortal>
-              <FloatingFocusManager context={popover.context} modal={true}>
-                <div
-                  ref={popover.refs.setFloating}
-                  style={{ ...popover.floatingStyles }}
-                  {...popover.getFloatingProps()}
-                >
-                  {renderPopover}
-                </div>
-              </FloatingFocusManager>
-            </FloatingPortal>
-          )}
-        </>
-      )
-    }
-  )
-  return {
-    WithPopover: WithPopover as WithPopoverType,
+    return (
+      <>
+        {React.cloneElement(
+          renderChildren,
+          popover.getReferenceProps({
+            ref,
+            ...renderChildren.props,
+          })
+        )}
+        {popover.context.open && (
+          <FloatingPortal>
+            <FloatingFocusManager context={popover.context} modal={true}>
+              <div ref={popover.refs.setFloating} style={{ ...popover.floatingStyles }} {...popover.getFloatingProps()}>
+                {renderPopover}
+              </div>
+            </FloatingFocusManager>
+          </FloatingPortal>
+        )}
+      </>
+    )
   }
-}
+)

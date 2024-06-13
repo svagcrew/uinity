@@ -1,20 +1,8 @@
-import type { WithPopoverProps } from './index.js'
-import { createPopover } from './index.js'
-import { createButton } from '@/components/Button/configured.js'
-import { createIcon } from '@/components/Icon/configured.js'
-import { uinityConfig } from '@/stories/uinity.config.js'
+import { WithPopover, type WithPopoverMainProps } from './clear.js'
+import { Button } from '@/components/Button/clear.js'
 import type { Meta, StoryObj } from '@storybook/react'
 
-const { Icon } = createIcon({
-  uinityConfig,
-})
-const { Button } = createButton({
-  uinityConfig,
-  Icon,
-})
-const { WithPopover } = createPopover()
-
-const PopoverDemo = (props: WithPopoverProps) => {
+const PopoverDemo = (props: WithPopoverMainProps) => {
   return (
     <div
       style={{
@@ -39,7 +27,7 @@ const PopoverDemo = (props: WithPopoverProps) => {
 }
 
 const meta = {
-  title: 'Popover',
+  title: 'Popover Clear',
   component: PopoverDemo,
   parameters: {
     layout: 'centered',

@@ -1,33 +1,25 @@
-import { type RC } from '@/utils.js'
-import type { UinityConfig } from '@uinity/core'
-import NProgress from 'nprogress'
+import NProgressOriginal from 'nprogress'
 import { createGlobalStyle } from 'styled-components'
 
-NProgress.configure({ showSpinner: false })
+NProgressOriginal.configure({ showSpinner: false })
 
-type NProgressStyledProps = {
-  $color: string
+export type ProgressLineStyleRootProps = {
+  color?: string
 }
-export type NProgressStylesProps = {}
-export type NProgressStylesType = RC<NProgressStylesProps>
-export type NProgressType = typeof NProgress
+export type ProgressLineMainProps = {
+  $style?: ProgressLineStyleRootProps
+}
+export type ProgressLineType = (props: ProgressLineMainProps) => React.ReactElement | null
+export type NProgressType = typeof NProgressOriginal
 
-export const createNProgress = <TUinityConfig extends UinityConfig>({
-  uinityConfig,
-}: {
-  uinityConfig: TUinityConfig
-}): {
-  NProgressStyles: NProgressStylesType
-  NProgress: NProgressType
-} => {
-  const NProgressStylesS = createGlobalStyle<NProgressStyledProps>`
+const ProgressLineS = createGlobalStyle<{ $style: ProgressLineStyleRootProps }>`
     /* Make clicks pass-through */
     #nprogress {
       pointer-events: none;
     }
 
     #nprogress .bar {
-      background: ${(sp) => sp.$color};
+      background: ${({ $style }) => $style.color};
 
       position: fixed;
       z-index: 1031;
@@ -45,7 +37,7 @@ export const createNProgress = <TUinityConfig extends UinityConfig>({
       right: 0px;
       width: 100px;
       height: 100%;
-      box-shadow: 0 0 10px ${(sp) => sp.$color}, 0 0 5px ${(sp) => sp.$color};
+      box-shadow: 0 0 10px ${({ $style }) => $style.color}, 0 0 5px ${({ $style }) => $style.color};
       opacity: 1.0;
 
       -webkit-transform: rotate(3deg) translate(0px, -4px);
@@ -68,8 +60,8 @@ export const createNProgress = <TUinityConfig extends UinityConfig>({
       box-sizing: border-box;
 
       border: solid 2px transparent;
-      border-top-color: ${(sp) => sp.$color};
-      border-left-color: ${(sp) => sp.$color};
+      border-top-color: ${({ $style }) => $style.color};
+      border-left-color: ${({ $style }) => $style.color};
       border-radius: 50%;
 
       -webkit-animation: nprogress-spinner 400ms linear infinite;
@@ -95,12 +87,7 @@ export const createNProgress = <TUinityConfig extends UinityConfig>({
       100% { transform: rotate(360deg); }
     }
   `
-  const NProgressStyles: NProgressStylesType = () => {
-    const sp = { $color: uinityConfig.color.core.brand['100'] }
-    return <NProgressStylesS {...sp} />
-  }
-  return {
-    NProgressStyles: NProgressStyles as NProgressStylesType,
-    NProgress,
-  }
+export const ProgressLine: ProgressLineType = ({ $style = {} }) => {
+  return <ProgressLineS $style={$style} />
 }
+export const NProgress: NProgressType = NProgressOriginal

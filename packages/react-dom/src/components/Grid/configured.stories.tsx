@@ -25,7 +25,7 @@ const GridDemo = () => {
 }
 
 const meta = {
-  title: 'Grid Configure',
+  title: 'Grid Configured',
   component: GridDemo,
   parameters: {
     // layout: 'centered',
