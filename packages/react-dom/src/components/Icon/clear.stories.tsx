@@ -1,10 +1,10 @@
-import type { IconMainProps, IconStyleProps } from '@/components/Icon/clear.js'
+import type { IconMainProps, IconStyleRootProps } from '@/components/Icon/clear.js'
 import { Icon } from '@/components/Icon/clear.js'
 import SvgIcon from '@/components/Icon/icon1.svg?react'
 import type { Meta, StoryObj } from '@storybook/react'
 
 const IconClearDemo = (
-  props: IconStyleProps &
+  props: IconStyleRootProps &
     IconMainProps & {
       mode: 'element' | 'src' | 'component'
     }

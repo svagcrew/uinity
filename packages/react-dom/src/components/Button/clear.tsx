@@ -12,22 +12,22 @@ export type ButtonStyleCoreProps = {
   iconSize?: number | string | null
   minHeight?: number | string | null
 }
-export type ButtonStyleRootProps = {
+export type ButtonStyleStatesProps = {
   rest?: ButtonStyleCoreProps
   hover?: ButtonStyleCoreProps
   active?: ButtonStyleCoreProps
   focus?: ButtonStyleCoreProps
   disabled?: ButtonStyleCoreProps
 }
-export type ButtonStyleSpecialProps = {
+export type ButtonStyleModificatorsProps = {
   isDisabled?: boolean
 }
-export type ButtonStyleProps = ButtonStyleRootProps & ButtonStyleSpecialProps
+export type ButtonStyleRootProps = ButtonStyleStatesProps & ButtonStyleModificatorsProps
 export type ButtonMainProps<TAs extends As> = {
   as?: TAs
   disabled?: boolean
   iconStart?: JSX.Element | null | false
-  $style?: ButtonStyleProps
+  $style?: ButtonStyleRootProps
 }
 export type ButtonPropsWithRef<TAs extends As> = ButtonMainProps<TAs> & AsPropsWithRef<TAs>
 export type ButtonType<TAs extends As = 'button'> = RCWithAsAndForwardedRef<ButtonPropsWithRef<TAs>>
@@ -61,7 +61,7 @@ const getButtonCoreCss = (scp?: ButtonStyleCoreProps) => {
 }
 
 const IconS = styled(Icon)``
-const ButtonS = styled.button.attrs(mark('ButtonS'))<{ $style: ButtonStyleProps }>`
+const ButtonS = styled.button.attrs(mark('ButtonS'))<{ $style: ButtonStyleRootProps }>`
   ${({ $style }) => {
     if ($style.isDisabled) {
       return css`
@@ -95,7 +95,7 @@ const ButtonS = styled.button.attrs(mark('ButtonS'))<{ $style: ButtonStyleProps 
 `
 
 export const Button = forwardRefWithTypes(
-  <TAs extends As>(
+  <TAs extends As = 'button'>(
     { iconStart, children, $style = {}, as, disabled, ...restProps }: ButtonPropsWithRef<TAs>,
     ref: AsRef<TAs>
   ) => {

@@ -33,7 +33,7 @@ type LayoutSettingsProps<TUinityConfig extends UinityConfig = UinityConfig> = {
 type LayoutProps<TUinityConfig extends UinityConfig = UinityConfig> = LayoutSettingsProps<TUinityConfig>
 export type LayoutType<TUinityConfig extends UinityConfig> = RC<LayoutProps<TUinityConfig>>
 
-export const createUinityLayout = <TUinityConfig extends UinityConfig>({
+export const createLayout = <TUinityConfig extends UinityConfig>({
   uinityConfig,
 }: {
   uinityConfig: TUinityConfig

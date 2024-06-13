@@ -1,5 +1,5 @@
 import { Button as ButtonClear } from './clear.js'
-import type { ButtonMainProps, ButtonStyleRootProps } from '@/components/Button/clear.js'
+import type { ButtonMainProps, ButtonStyleStatesProps } from '@/components/Button/clear.js'
 import type { IconConfiguredType } from '@/components/Icon/configured.js'
 import { useColorMode } from '@/lib/colorMode.js'
 import type { AsRef } from '@/utils.js'
@@ -29,7 +29,7 @@ export type ButtonConfiguredType<TAs extends As, TIconName extends string> = RC<
   ButtonConfiguredPropsWithRef<TAs, TIconName>
 >
 
-export const createUinityButton = <TAs extends As, TIconName extends string>({
+export const createButton = <TAs extends As, TIconName extends string>({
   uinityConfig,
   Icon,
 }: {
@@ -53,7 +53,7 @@ export const createUinityButton = <TAs extends As, TIconName extends string>({
       const cm = colorMode || colorModeGlobal
       const $styleConfiguredRest = getButtonStyleRootProps(uinityConfig, variant, color, size, 'rest')
       const $styleConfiguredHover = getButtonStyleRootProps(uinityConfig, variant, color, size, 'hover')
-      const $styleNormalized: ButtonStyleRootProps = {
+      const $styleNormalized: ButtonStyleStatesProps = {
         rest: {
           ...$styleConfiguredRest,
           ...$style.rest,

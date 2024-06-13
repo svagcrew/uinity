@@ -1,7 +1,7 @@
-import { createUinitySplashScreen } from './index.js'
+import { createSplashScreen } from './index.js'
 import type { Meta, StoryObj } from '@storybook/react'
 
-export const { SplashScreen } = createUinitySplashScreen()
+export const { SplashScreen } = createSplashScreen()
 
 const meta = {
   title: 'SplashScreen',

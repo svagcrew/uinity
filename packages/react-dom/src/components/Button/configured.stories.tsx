@@ -1,10 +1,10 @@
-import { createUinityButton } from './configured.js'
+import { createButton } from './configured.js'
 import { Icon } from '@/components/Icon/configured.stories.js'
 import { uinityConfig } from '@/stories/uinity.config.js'
 import { getArgTypeConfigFromObject } from '@/stories/utils.js'
 import type { Meta, StoryObj } from '@storybook/react'
 
-const Button = createUinityButton({ uinityConfig, Icon }).Button
+const Button = createButton({ uinityConfig, Icon }).Button
 
 const meta = {
   title: 'Button Configured',

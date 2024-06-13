@@ -1,8 +1,7 @@
 /* eslint-disable unicorn/numeric-separators-style */
-import { createUinityBlock } from './index.js'
+import { Block } from './clear.js'
 import type { Meta, StoryObj } from '@storybook/react'
 
-export const { Block } = createUinityBlock()
 const BlockDemo = () => {
   return (
     <Block ce db s={{ maxWidth: 500, width: '100%' }}>
@@ -159,7 +158,7 @@ const BlockDemo = () => {
 }
 
 const meta = {
-  title: 'Block',
+  title: 'Block Clear',
   component: BlockDemo,
   parameters: {
     // layout: 'centered',

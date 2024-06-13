@@ -1,7 +1,7 @@
-import { createUinityGrid } from './index.js'
+import { createGrid } from './index.js'
 import type { Meta, StoryObj } from '@storybook/react'
 
-export const { Grid } = createUinityGrid()
+export const { Grid } = createGrid()
 const GridDemo = () => {
   return (
     <div style={{ maxWidth: 800, width: '100%', containerType: 'inline-size' }}>

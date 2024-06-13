@@ -13,32 +13,29 @@ export type IconStyleRootProps = {
   color?: string | null
   size?: number | string | null
 }
-export type IconStyleAdditionalProps = {}
-export type IconStyleSpecialProps = {}
-export type IconStyleProps = IconStyleRootProps & IconStyleAdditionalProps & IconStyleSpecialProps
 export type IconMainProps = {
-  $style?: IconStyleProps
+  $style?: IconStyleRootProps
   src: IconSrc
 }
 export type IconPropsWithRef = IconMainProps & AsPropsWithRef<undefined>
 export type IconType = RC<IconPropsWithRef>
 
-const getIconCoreCss = (srp?: IconStyleRootProps) => {
+const getIconCoreCss = ($style?: IconStyleRootProps) => {
   return css`
     ${toCss({
-      width: srp?.size,
-      height: srp?.size,
+      width: $style?.size,
+      height: $style?.size,
     })}
 
     path {
       ${toCss({
-        fill: srp?.color,
+        fill: $style?.color,
       })}
     }
   `
 }
 
-const IconGlobalS = createGlobalStyle<{ $style: IconStyleProps }>`
+const IconGlobalS = createGlobalStyle<{ $style: IconStyleRootProps }>`
   ${({ $style }) => {
     return css`
       .${getGlobalClassName($style)} {

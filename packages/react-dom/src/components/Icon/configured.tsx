@@ -21,7 +21,7 @@ export type IconConfiguredType<TIconName extends string = string> = RC<IconConfi
 export type IconComponentType = AsComponent<undefined>
 export type IconsComponents<TIconName extends string> = Record<TIconName, IconComponentType>
 
-export const createUinityIcon = <TIconName extends string>({
+export const createIcon = <TIconName extends string>({
   uinityConfig,
   iconsComponents,
 }: {

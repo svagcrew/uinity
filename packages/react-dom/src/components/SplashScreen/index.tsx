@@ -11,7 +11,7 @@ type SplashScreenProps = {
 }
 export type SplashScreenType = RC<SplashScreenProps>
 
-export const createUinitySplashScreen = (): {
+export const createSplashScreen = (): {
   SplashScreen: SplashScreenType
 } => {
   const ContentS = styled.div.attrs(mark('ContentS'))``

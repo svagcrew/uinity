@@ -305,7 +305,7 @@ const GlobalStyles = createGlobalStyle<ModalGlobalStylesProps>`
   }}
 `
 
-export const createUinityModal = (): {
+export const createModal = (): {
   Modal: ModalType
 } => {
   const Modal: ModalType = React.forwardRef<HTMLDivElement, React.HTMLProps<HTMLDivElement> & ModalProps>(

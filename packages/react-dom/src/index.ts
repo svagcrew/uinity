@@ -1,34 +1,34 @@
-import { createUinityBlock } from '@/components/Block/index.js'
-import { createUinityButton } from '@/components/Button/configured.js'
-import { createUinityDisabler } from '@/components/Disabler/index.js'
-import { createUinityGrid } from '@/components/Grid/index.js'
+import { createBlock } from '@/components/Block/configured.js'
+import { createButton } from '@/components/Button/configured.js'
+import { createDisabler } from '@/components/Disabler/index.js'
+import { createGrid } from '@/components/Grid/index.js'
 import type { IconsComponents } from '@/components/Icon/configured.js'
-import { createUinityIcon } from '@/components/Icon/configured.js'
-import { createUinityLayout } from '@/components/Layout/index.js'
-import { createUinityModal } from '@/components/Modal/index.js'
-import { createUinityNProgress } from '@/components/NProgress/index.js'
-import { createUinityPopover } from '@/components/Popover/index.js'
-import { createUinitySplashScreen } from '@/components/SplashScreen/index.js'
+import { createIcon } from '@/components/Icon/configured.js'
+import { createLayout } from '@/components/Layout/index.js'
+import { createModal } from '@/components/Modal/index.js'
+import { createNProgress } from '@/components/NProgress/index.js'
+import { createPopover } from '@/components/Popover/index.js'
+import { createSplashScreen } from '@/components/SplashScreen/index.js'
 import type { UinityConfig } from '@uinity/core'
 
-export const createUinityComponents = <TUinityConfig extends UinityConfig, TIconName extends string>({
+export const createComponents = <TUinityConfig extends UinityConfig, TIconName extends string>({
   uinityConfig,
   iconsComponents,
 }: {
   uinityConfig: TUinityConfig
   iconsComponents?: IconsComponents<TIconName>
 }) => {
-  const { Icon } = createUinityIcon({ uinityConfig, iconsComponents })
+  const { Icon } = createIcon({ uinityConfig, iconsComponents })
   return {
-    ...createUinityIcon({ uinityConfig, iconsComponents }),
-    ...createUinityButton({ uinityConfig, Icon }),
-    ...createUinityLayout({ uinityConfig }),
-    ...createUinitySplashScreen(),
-    ...createUinityNProgress({ uinityConfig }),
-    ...createUinityDisabler({ uinityConfig }),
-    ...createUinityBlock(),
-    ...createUinityGrid(),
-    ...createUinityPopover(),
-    ...createUinityModal(),
+    ...createIcon({ uinityConfig, iconsComponents }),
+    ...createButton({ uinityConfig, Icon }),
+    ...createLayout({ uinityConfig }),
+    ...createSplashScreen(),
+    ...createNProgress({ uinityConfig }),
+    ...createDisabler({ uinityConfig }),
+    ...createBlock({ uinityConfig }),
+    ...createGrid(),
+    ...createPopover(),
+    ...createModal(),
   }
 }

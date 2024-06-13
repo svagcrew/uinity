@@ -1,10 +1,10 @@
 import type { NProgressStylesProps } from './index.js'
-import { createUinityNProgress } from './index.js'
+import { createNProgress } from './index.js'
 import { uinityConfig } from '@/stories/uinity.config.js'
 import type { Meta, StoryObj } from '@storybook/react'
 import { useEffect } from 'react'
 
-const { NProgress, NProgressStyles } = createUinityNProgress({ uinityConfig })
+const { NProgress, NProgressStyles } = createNProgress({ uinityConfig })
 
 const NProgressDemo = (props: NProgressStylesProps) => {
   useEffect(() => {

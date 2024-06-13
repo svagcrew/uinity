@@ -1,8 +1,8 @@
-import { createUinityLayout } from './index.js'
+import { createLayout } from './index.js'
 import { uinityConfig } from '@/stories/uinity.config.js'
 import type { Meta, StoryObj } from '@storybook/react'
 
-const { Layout: LayoutOriginal } = createUinityLayout({ uinityConfig })
+const { Layout: LayoutOriginal } = createLayout({ uinityConfig })
 
 const Layout: any = () => {
   return (

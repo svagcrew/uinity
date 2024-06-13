@@ -1,18 +1,18 @@
 import type { WithPopoverProps } from './index.js'
-import { createUinityPopover } from './index.js'
-import { createUinityButton } from '@/components/Button/configured.js'
-import { createUinityIcon } from '@/components/Icon/configured.js'
+import { createPopover } from './index.js'
+import { createButton } from '@/components/Button/configured.js'
+import { createIcon } from '@/components/Icon/configured.js'
 import { uinityConfig } from '@/stories/uinity.config.js'
 import type { Meta, StoryObj } from '@storybook/react'
 
-const { Icon } = createUinityIcon({
+const { Icon } = createIcon({
   uinityConfig,
 })
-const { Button } = createUinityButton({
+const { Button } = createButton({
   uinityConfig,
   Icon,
 })
-const { WithPopover } = createUinityPopover()
+const { WithPopover } = createPopover()
 
 const PopoverDemo = (props: WithPopoverProps) => {
   return (

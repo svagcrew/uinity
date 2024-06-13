@@ -86,7 +86,7 @@ const usePopover = ({
   )
 }
 
-export const createUinityPopover = (): {
+export const createPopover = (): {
   WithPopover: WithPopoverType
 } => {
   const WithPopover: WithPopoverType = React.forwardRef<HTMLElement, WithPopoverProps>(

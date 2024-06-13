@@ -122,7 +122,7 @@ const createCssByStyledProps = (sp: GridStyledProps): RuleSet => {
   `
 }
 
-export const createUinityGrid = (): {
+export const createGrid = (): {
   Grid: GridType
 } => {
   const GridS = styled.div.attrs(mark('GridS'))<GridStyledProps>`

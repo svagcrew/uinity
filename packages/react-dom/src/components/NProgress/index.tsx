@@ -12,7 +12,7 @@ export type NProgressStylesProps = {}
 export type NProgressStylesType = RC<NProgressStylesProps>
 export type NProgressType = typeof NProgress
 
-export const createUinityNProgress = <TUinityConfig extends UinityConfig>({
+export const createNProgress = <TUinityConfig extends UinityConfig>({
   uinityConfig,
 }: {
   uinityConfig: TUinityConfig

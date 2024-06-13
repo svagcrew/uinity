@@ -14,7 +14,7 @@ export type DisablerType = RC<DisablerProps>
 
 // TODO:ASAP extend from Block
 
-export const createUinityDisabler = <TUinityConfig extends UinityConfig>({
+export const createDisabler = <TUinityConfig extends UinityConfig>({
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   uinityConfig,
 }: {
