@@ -7,26 +7,26 @@ import { getIconConfigFinalProps } from '@uinity/core/dist/components/icon.js'
 export type IconConfiguredSettingsProps = {
   size?: keyof UinityConfig['icon']['size'] | undefined | null
 }
-export type IconConfiguredSpecialProps<TIconName extends string> = {
+export type IconConfiguredSpecialProps<TIconName extends string = string> = {
   name: TIconName
 }
-export type IconConfiguredMainProps<TIconName extends string> = IconConfiguredSettingsProps &
+export type IconConfiguredMainProps<TIconName extends string = string> = IconConfiguredSettingsProps &
   IconConfiguredSpecialProps<TIconName> &
   Omit<IconMainProps, 'src'>
-export type IconConfiguredPropsWithRef<TIconName extends string> = IconConfiguredMainProps<TIconName> &
+export type IconConfiguredPropsWithRef<TIconName extends string = string> = IconConfiguredMainProps<TIconName> &
   AsPropsWithRef<undefined>
 export type IconConfigured<TIconName extends string = string> = (
   props: IconConfiguredPropsWithRef<TIconName>
 ) => React.ReactElement | null
 
-export type IconsSources<TIconName extends string> = Record<TIconName, IconSrc>
+export type IconsSources<TIconName extends string = string> = Record<TIconName, IconSrc>
 
-export const createIcon = <TIconName extends string>({
+export const createIcon = <TIconName extends string = string>({
   uinityConfig,
-  iconsComponents,
+  iconsSources,
 }: {
   uinityConfig: UinityConfig
-  iconsComponents?: IconsSources<TIconName>
+  iconsSources?: IconsSources<TIconName>
 }) => {
   const Icon: IconConfigured<TIconName> = forwardRefIgnoreTypes(
     ({ size, name, $style = {}, ...restProps }: IconConfiguredPropsWithRef<TIconName>, ref: any) => {
@@ -35,7 +35,7 @@ export const createIcon = <TIconName extends string>({
         ...$styleConfigured,
         ...$style,
       }
-      const src = iconsComponents && name in iconsComponents ? iconsComponents[name] : null
+      const src = iconsSources && name in iconsSources ? iconsSources[name] : null
       return <IconClear src={src} $style={$styleNormalized} ref={ref} {...(restProps as {})} />
     }
   )

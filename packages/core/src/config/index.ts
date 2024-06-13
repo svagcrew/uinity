@@ -1,3 +1,4 @@
+import { defaultBlankConfigInput, normalizeBlankConfig, zBlankConfigInput } from '@/components/blank.js'
 import { defaultButtonConfigInput, normalizeButtonConfig, zButtonConfigInput } from '@/components/button.js'
 import {
   defaultColorUinityConfigInput,
@@ -29,6 +30,7 @@ export const zUinityConfigInput = z.object({
   control: zControlUinityConfigInput.optional(),
   field: zFieldUinityConfigInput.optional(),
   button: zButtonConfigInput.optional(),
+  blank: zBlankConfigInput.optional(),
 })
 export type UinityConfigInput = z.output<typeof zUinityConfigInput>
 
@@ -40,6 +42,7 @@ export const defaultUinityConfigInput: UinityConfigInput = {
   control: defaultControlUinityConfigInput,
   field: defaultFieldUinityConfigInput,
   button: defaultButtonConfigInput,
+  blank: defaultBlankConfigInput,
 }
 
 export const normalizeUinityConfig = (input: UinityConfigInput) => {
@@ -50,6 +53,7 @@ export const normalizeUinityConfig = (input: UinityConfigInput) => {
   const control = normalizeControlUinityConfig(input.control)
   const field = normalizeFieldUinityConfig(input.field)
   const button = normalizeButtonConfig(input.button)
+  const blank = normalizeBlankConfig(input.blank)
   const config = {
     color,
     text,
@@ -58,6 +62,7 @@ export const normalizeUinityConfig = (input: UinityConfigInput) => {
     control,
     field,
     button,
+    blank,
   }
   const configWithVariablesAsStringsReferences = deepMap(
     config,

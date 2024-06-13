@@ -1,6 +1,6 @@
 import '@/lib/cssContainerQueryPolyfill.js'
 import { Modal } from '@/components/Modal/clear.js'
-import type { As, AsPropsWithRef } from '@/utils.js'
+import type { As, AsPropsWithRef, WithoutRef } from '@/utils.js'
 import { forwardRefIgnoreTypes, mark } from '@/utils.js'
 import { borderPropsToCssValue, maybeNumberToPx, toCss } from '@uinity/core/dist/utils/other.js'
 import isNil from 'lodash/isNil.js'
@@ -51,7 +51,8 @@ export type LayoutStyleRootProps = LayoutStyleCoreProps & {
   wsr?: Array<[number, LayoutStyleCoreProps]>
   byWindowSizeReverse?: Array<[number, LayoutStyleCoreProps]>
 }
-export type LayoutMainProps<TAs extends As> = {
+export type LayoutDefaultAs = 'div'
+export type LayoutMainProps<TAs extends As = LayoutDefaultAs> = {
   as?: TAs
   $style?: LayoutStyleRootProps
   modalOpened?: boolean
@@ -62,8 +63,9 @@ export type LayoutMainProps<TAs extends As> = {
   footerRender?: React.ReactNode
   children?: React.ReactNode
 }
-export type LayoutPropsWithRef<TAs extends As> = LayoutMainProps<TAs> & AsPropsWithRef<TAs>
-export type LayoutType = <TAs extends As = 'div'>(props: LayoutPropsWithRef<TAs>) => React.ReactElement | null
+export type LayoutPropsWithRef<TAs extends As = LayoutDefaultAs> = LayoutMainProps<TAs> & AsPropsWithRef<TAs>
+export type LayoutPropsWithoutRef<TAs extends As = LayoutDefaultAs> = WithoutRef<LayoutPropsWithRef<TAs>>
+export type LayoutType = <TAs extends As = LayoutDefaultAs>(props: LayoutPropsWithRef<TAs>) => React.ReactElement | null
 
 const getLayoutCoreCss = (scp: LayoutStyleCoreProps): RuleSet | string => {
   return css`
@@ -349,7 +351,7 @@ export const Layout: LayoutType = forwardRefIgnoreTypes(
     $style.byWindowSizeReverse = ($style.byWindowSizeReverse || $style.wsr || []).sort(([a], [b]) => b - a)
     return (
       <>
-        <LayoutS {...(restProps as any)} $style={$style} ref={ref}>
+        <LayoutS {...(restProps as {})} $style={$style} ref={ref}>
           {headerRender && (
             <HeaderPlaceS>
               <HeaderS>

@@ -1,7 +1,7 @@
 /* eslint-disable prefer-const */
 /* eslint-disable react/forbid-component-props */
 import { itIsSupportsSafeJustifyContent } from '@/lib/cssSafeJustifyContent.js'
-import type { AsPropsWithRef } from '@/utils.js'
+import type { AsPropsWithRef, WithoutRef } from '@/utils.js'
 import { forwardRefIgnoreTypes, getGlobalClassName, parseSpacing } from '@/utils.js'
 import {
   FloatingFocusManager,
@@ -111,7 +111,9 @@ type ModalGlobalStylesProps = ModalStyleCoreProps & {
   supportingSafeJustifyContentFinished: boolean
 }
 export type ModalMainProps = ModalSpecialProps & { $style?: ModalStyleCoreRawProps }
-export type ModalPropsWithRef = ModalMainProps & AsPropsWithRef<'div'>
+export type ModalDefaultAs = 'div'
+export type ModalPropsWithRef = ModalMainProps & AsPropsWithRef<ModalDefaultAs>
+export type ModalPropsWithoutRef = WithoutRef<ModalPropsWithRef>
 export type ModalType = (props: ModalPropsWithRef) => React.ReactElement | null
 
 const useModal = ({ opened, setOpened, closeOnOutsideClick }: UseModalProps = {}) => {

@@ -1,4 +1,4 @@
-import type { ButtonStyleCoreProps } from './clear.js'
+import type { ButtonDefaultAs, ButtonStyleCoreProps } from './clear.js'
 import { Button as ButtonClear } from './clear.js'
 import type { ButtonMainProps, ButtonStyleStatesProps } from '@/components/Button/clear.js'
 import type { IconConfigured } from '@/components/Icon/configured.js'
@@ -17,15 +17,15 @@ export type ButtonConfiguredSettingsProps = {
 export type ButtonConfiguredSpecialProps<TIconName extends string> = {
   iconStart?: TIconName
 }
-export type ButtonConfiguredMainProps<TAs extends As, TIconName extends string> = ButtonConfiguredSettingsProps &
-  ButtonConfiguredSpecialProps<TIconName> &
-  Omit<ButtonMainProps<TAs>, 'iconStart'>
-export type ButtonConfiguredPropsWithRef<TAs extends As, TIconName extends string> = ButtonConfiguredMainProps<
-  TAs,
-  TIconName
-> &
-  AsPropsWithRef<TAs>
-export type ButtonConfigured<TIconName extends string> = <TAs extends As>(
+export type ButtonConfiguredMainProps<
+  TAs extends As = ButtonDefaultAs,
+  TIconName extends string = string,
+> = ButtonConfiguredSettingsProps & ButtonConfiguredSpecialProps<TIconName> & Omit<ButtonMainProps<TAs>, 'iconStart'>
+export type ButtonConfiguredPropsWithRef<
+  TAs extends As = ButtonDefaultAs,
+  TIconName extends string = string,
+> = ButtonConfiguredMainProps<TAs, TIconName> & AsPropsWithRef<TAs>
+export type ButtonConfigured<TIconName extends string = string> = <TAs extends As = ButtonDefaultAs>(
   props: ButtonConfiguredPropsWithRef<TAs, TIconName>
 ) => React.ReactElement | null
 
@@ -53,15 +53,7 @@ export const createButton = <TIconName extends string>({
   const { colorMode: colorModeGlobal } = useColorMode()
   const Button: ButtonConfigured<TIconName> = forwardRefIgnoreTypes(
     (
-      {
-        variant,
-        color,
-        size,
-        iconStart,
-        colorMode,
-        $style = {},
-        ...restProps
-      }: ButtonConfiguredPropsWithRef<'button', TIconName>,
+      { variant, color, size, iconStart, colorMode, $style = {}, ...restProps }: ButtonConfiguredPropsWithRef,
       ref: any
     ) => {
       const cm = colorMode || colorModeGlobal

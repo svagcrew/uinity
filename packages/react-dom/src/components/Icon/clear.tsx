@@ -1,6 +1,6 @@
 /* eslint-disable jsx-a11y/alt-text */
 
-import type { AsPropsWithRef, AsRef } from '@/utils.js'
+import type { AsPropsWithRef, AsRef, WithoutRef } from '@/utils.js'
 import { forwardRefIgnoreTypes, getGlobalClassName } from '@/utils.js'
 import { toCss } from '@uinity/core/dist/utils/other.js'
 import cn from 'classnames'
@@ -19,6 +19,7 @@ export type IconMainProps = {
   src: IconSrc
 }
 export type IconPropsWithRef = IconMainProps & AsPropsWithRef<undefined>
+export type IconPropsWithoutRef = WithoutRef<IconPropsWithRef>
 export type IconType = (props: IconPropsWithRef) => React.ReactElement | null
 
 const getIconCoreCss = ($style?: IconStyleRootProps) => {

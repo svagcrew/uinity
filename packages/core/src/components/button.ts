@@ -52,7 +52,7 @@ export const zButtonConfigAppearenceProps = z.object({
 export type ButtonConfigAppearenceProps = z.output<typeof zButtonConfigAppearenceProps>
 
 export const zButtonConfigFinalProps = zButtonConfigSizeProps.merge(zButtonConfigAppearenceProps)
-export type ButtonConfigFinalRootProps = z.output<typeof zButtonConfigFinalProps>
+export type ButtonConfigFinalProps = z.output<typeof zButtonConfigFinalProps>
 
 export const zButtonConfigGeneralProps = z.object({})
 export type ButtonConfigGeneralProps = z.output<typeof zButtonConfigGeneralProps>

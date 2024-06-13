@@ -1,17 +1,12 @@
 // import { fn } from '@storybook/test'
-import { createIcon } from '../Icon/configured.js'
-import icon1 from './icon1.svg?react'
-import icon2 from './icon2.svg?react'
-import { uinityConfig } from '@/stories/uinity.config.js'
+import { createIcon } from './configured.js'
+import { iconsSources, uinityConfig } from '@/stories/uinity.config.js'
 import { getArgTypeConfigFromObject } from '@/stories/utils.js'
 import type { Meta, StoryObj } from '@storybook/react'
 
 export const { Icon } = createIcon({
   uinityConfig,
-  iconsComponents: {
-    icon1,
-    icon2,
-  },
+  iconsSources,
 })
 
 const meta = {

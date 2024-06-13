@@ -1,3 +1,4 @@
+import { createBlank } from '@/components/Blank/configured.js'
 import { createBlock } from '@/components/Block/configured.js'
 import { createButton } from '@/components/Button/configured.js'
 import { createDisabler } from '@/components/Disabler/configured.js'
@@ -13,14 +14,14 @@ import type { UinityConfig } from '@uinity/core'
 
 export const createComponents = <TIconName extends string>({
   uinityConfig,
-  iconsComponents,
+  iconsSources,
 }: {
   uinityConfig: UinityConfig
-  iconsComponents?: IconsSources<TIconName>
+  iconsSources?: IconsSources<TIconName>
 }) => {
-  const { Icon } = createIcon({ uinityConfig, iconsComponents })
+  const { Icon } = createIcon({ uinityConfig, iconsSources })
   return {
-    ...createIcon({ uinityConfig, iconsComponents }),
+    ...createIcon({ uinityConfig, iconsSources }),
     ...createButton({ uinityConfig, Icon }),
     ...createLayout({ uinityConfig }),
     ...createSplashScreen({ uinityConfig }),
@@ -30,5 +31,6 @@ export const createComponents = <TIconName extends string>({
     ...createGrid({ uinityConfig }),
     ...createPopover({ uinityConfig }),
     ...createModal({ uinityConfig }),
+    ...createBlank({ uinityConfig }),
   }
 }

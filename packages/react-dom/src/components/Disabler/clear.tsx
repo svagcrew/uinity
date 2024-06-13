@@ -1,4 +1,4 @@
-import type { AsPropsWithRef } from '@/utils.js'
+import type { AsPropsWithRef, WithoutRef } from '@/utils.js'
 import { forwardRefIgnoreTypes, mark } from '@/utils.js'
 import { toCss } from '@uinity/core/dist/utils/other.js'
 import { styled } from 'styled-components'
@@ -10,7 +10,9 @@ export type DisablerMainProps = {
   disabled?: boolean
   children?: React.ReactNode
 }
-export type DisablerPropsWithRef = DisablerMainProps & AsPropsWithRef<'div'>
+export type DisablerDefaultAs = 'div'
+export type DisablerPropsWithRef = DisablerMainProps & AsPropsWithRef<DisablerDefaultAs>
+export type DisablerPropsWithoutRef = WithoutRef<DisablerPropsWithRef>
 export type DisablerType = (props: DisablerPropsWithRef) => React.ReactElement | null
 
 const DisablerS = styled.div.attrs(mark('DisablerS'))<{ $style: DisablerStyleRootProps }>`

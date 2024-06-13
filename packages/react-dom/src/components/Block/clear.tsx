@@ -1,5 +1,5 @@
 import '@/lib/cssContainerQueryPolyfill.js'
-import type { As, AsProps, AsPropsWithRef } from '@/utils.js'
+import type { As, AsProps, AsPropsWithRef, WithoutRef } from '@/utils.js'
 import { forwardRefIgnoreTypes, mark } from '@/utils.js'
 import { toCss } from '@uinity/core/dist/utils/other.js'
 import isArray from 'lodash/isArray.js'
@@ -101,7 +101,7 @@ type BlockCorePropsConfig =
   | BlockStyleCorePropsKey
   | BlockStyleCoreProps
   | Array<BlockStyleCorePropsKey | BlockStyleCoreProps>
-type BlockSpecialProps<TAs extends As> = {
+type BlockSpecialProps<TAs extends As = BlockDefaultAs> = {
   /** properties by window size: [[maxWidth1, blockProps], [maxWidth2, blockProps], ...] */
   ws?: Array<[number, BlockCorePropsConfig]>
   /** properties by container size: [[maxWidth1, blockProps], [maxWidth2, blockProps], ...] */
@@ -175,13 +175,15 @@ const blockStyleCorePropsKeys = [
 ] satisfies BlockStyleCorePropsKey[]
 // Just check that all keys exists in this array
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-const checkBlockSpecialPropsKeys: CheckKeys<BlockSpecialProps<'div'>, typeof blockStyleSpecialPropsKeys> = true
+const checkBlockSpecialPropsKeys: CheckKeys<BlockSpecialProps, typeof blockStyleSpecialPropsKeys> = true
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 const checkBlockStyleCorePropsKeys: CheckKeys<BlockStyleCoreProps, typeof blockStyleCorePropsKeys> = true
 
-type BlockMainProps<TAs extends As> = BlockStyleCoreProps & BlockSpecialProps<TAs>
-type BlockPropsWithRef<TAs extends As> = BlockMainProps<TAs> & AsPropsWithRef<TAs>
-export type BlockType = <TAs extends As = 'div'>(props: BlockPropsWithRef<TAs>) => React.ReactElement | null
+export type BlockDefaultAs = 'div'
+export type BlockMainProps<TAs extends As = BlockDefaultAs> = BlockStyleCoreProps & BlockSpecialProps<TAs>
+export type BlockPropsWithRef<TAs extends As = BlockDefaultAs> = BlockMainProps<TAs> & AsPropsWithRef<TAs>
+export type BlockPropsWithoutRef<TAs extends As = BlockDefaultAs> = WithoutRef<BlockPropsWithRef<TAs>>
+export type BlockType = <TAs extends As = BlockDefaultAs>(props: BlockPropsWithRef<TAs>) => React.ReactElement | null
 
 const normalizeBlockCorePropsConfig = (corePropsConfig: BlockCorePropsConfig): BlockStyleCoreProps => {
   if (isString(corePropsConfig)) {
@@ -340,50 +342,48 @@ const getBlockCoreCss = ($style: BlockStyleRootProps): RuleSet => {
 const BlockS = styled.div.attrs(mark('BlockS'))<{ $style: BlockStyleRootProps }>`
   ${({ $style }) => getBlockCoreCss($style)}
 `
-export const Block: BlockType = forwardRefIgnoreTypes(
-  ({ children, ...restProps }: BlockPropsWithRef<'div'>, ref: any) => {
-    const $style = pick(restProps, blockStyleCorePropsKeys) as BlockStyleRootProps
-    const htmlElementProps = Object.fromEntries(
-      Object.entries(restProps).filter(
-        ([k]) => !blockStyleCorePropsKeys.includes(k as any) && !blockStyleSpecialPropsKeys.includes(k as any)
-      )
-    ) as AsProps<'div'>
-
-    const normalizedWs = (restProps.ws || [])
-      .sort(([a], [b]) => a - b)
-      .map(([maxWidth, props]) => {
-        return [maxWidth, normalizeBlockCorePropsConfig(props)]
-      }) as Array<[number, BlockStyleCoreProps]>
-    $style.ws = normalizedWs
-
-    const normalizedEs = (restProps.cs || [])
-      .sort(([a], [b]) => a - b)
-      .map(([maxWidth, props]) => {
-        return [maxWidth, normalizeBlockCorePropsConfig(props)]
-      }) as Array<[number, BlockStyleCoreProps]>
-    $style.cs = normalizedEs
-
-    const normalizedWsr = (restProps.wsr || [])
-      .sort(([a], [b]) => b - a)
-      .map(([maxWidth, props]) => {
-        return [maxWidth, normalizeBlockCorePropsConfig(props)]
-      }) as Array<[number, BlockStyleCoreProps]>
-    $style.wsr = normalizedWsr
-
-    const normalizedEsr = (restProps.csr || [])
-      .sort(([a], [b]) => b - a)
-      .map(([maxWidth, props]) => {
-        return [maxWidth, normalizeBlockCorePropsConfig(props)]
-      }) as Array<[number, BlockStyleCoreProps]>
-    $style.csr = normalizedEsr
-
-    const normalizedCp = restProps.cp && normalizeBlockCorePropsConfig(restProps.cp)
-    $style.cp = normalizedCp
-
-    return (
-      <BlockS {...(htmlElementProps as any)} as={restProps.as || 'div'} ref={ref} $style={$style}>
-        {children}
-      </BlockS>
+export const Block: BlockType = forwardRefIgnoreTypes(({ children, as, ...restProps }: BlockPropsWithRef, ref: any) => {
+  const $style = pick(restProps, blockStyleCorePropsKeys) as BlockStyleRootProps
+  const htmlElementProps = Object.fromEntries(
+    Object.entries(restProps).filter(
+      ([k]) => !blockStyleCorePropsKeys.includes(k as any) && !blockStyleSpecialPropsKeys.includes(k as any)
     )
-  }
-)
+  ) as AsProps<BlockDefaultAs>
+
+  const normalizedWs = (restProps.ws || [])
+    .sort(([a], [b]) => a - b)
+    .map(([maxWidth, props]) => {
+      return [maxWidth, normalizeBlockCorePropsConfig(props)]
+    }) as Array<[number, BlockStyleCoreProps]>
+  $style.ws = normalizedWs
+
+  const normalizedEs = (restProps.cs || [])
+    .sort(([a], [b]) => a - b)
+    .map(([maxWidth, props]) => {
+      return [maxWidth, normalizeBlockCorePropsConfig(props)]
+    }) as Array<[number, BlockStyleCoreProps]>
+  $style.cs = normalizedEs
+
+  const normalizedWsr = (restProps.wsr || [])
+    .sort(([a], [b]) => b - a)
+    .map(([maxWidth, props]) => {
+      return [maxWidth, normalizeBlockCorePropsConfig(props)]
+    }) as Array<[number, BlockStyleCoreProps]>
+  $style.wsr = normalizedWsr
+
+  const normalizedEsr = (restProps.csr || [])
+    .sort(([a], [b]) => b - a)
+    .map(([maxWidth, props]) => {
+      return [maxWidth, normalizeBlockCorePropsConfig(props)]
+    }) as Array<[number, BlockStyleCoreProps]>
+  $style.csr = normalizedEsr
+
+  const normalizedCp = restProps.cp && normalizeBlockCorePropsConfig(restProps.cp)
+  $style.cp = normalizedCp
+
+  return (
+    <BlockS {...(htmlElementProps as any)} as={as} ref={ref} $style={$style}>
+      {children}
+    </BlockS>
+  )
+})

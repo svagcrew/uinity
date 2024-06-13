@@ -1,4 +1,4 @@
-import type { As, AsPropsWithRef } from '@/utils.js'
+import type { As, AsPropsWithRef, WithoutRef } from '@/utils.js'
 import { forwardRefIgnoreTypes, mark } from '@/utils.js'
 import { toCss } from '@uinity/core/dist/utils/other.js'
 import { styled } from 'styled-components'
@@ -6,12 +6,17 @@ import { styled } from 'styled-components'
 export type SplashScreenStyleRootProps = {
   visible?: boolean
 }
-export type SplashScreenMainProps<TAs extends As> = SplashScreenStyleRootProps & {
+export type SplashScreenDefaultAs = 'div'
+export type SplashScreenMainProps<TAs extends As = SplashScreenDefaultAs> = SplashScreenStyleRootProps & {
   as?: TAs
   children?: React.ReactNode
 }
-export type SplashScreenPropsWithRef<TAs extends As> = SplashScreenMainProps<TAs> & AsPropsWithRef<TAs>
-export type SplashScreenType = <TAs extends As = 'div'>(
+export type SplashScreenPropsWithRef<TAs extends As = SplashScreenDefaultAs> = SplashScreenMainProps<TAs> &
+  AsPropsWithRef<TAs>
+export type SplashScreenPropsWithoutRef<TAs extends As = SplashScreenDefaultAs> = WithoutRef<
+  SplashScreenPropsWithRef<TAs>
+>
+export type SplashScreenType = <TAs extends As = SplashScreenDefaultAs>(
   props: SplashScreenPropsWithRef<TAs>
 ) => React.ReactElement | null
 
@@ -44,9 +49,9 @@ const SplashScreenS = styled.div.attrs(mark('SplashScreenS'))<{ $style: SplashSc
   }
 `
 export const SplashScreen: SplashScreenType = forwardRefIgnoreTypes(
-  ({ visible, children }: SplashScreenPropsWithRef<'div'>, ref: any) => {
+  ({ visible, children, ...restProps }: SplashScreenPropsWithRef, ref: any) => {
     return (
-      <SplashScreenS $style={{ visible }} ref={ref}>
+      <SplashScreenS {...(restProps as {})} $style={{ visible }} ref={ref}>
         <ContentS>{children}</ContentS>
       </SplashScreenS>
     )

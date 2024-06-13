@@ -1,0 +1,12 @@
+{
+  "extends": "svag-ts/configs/base.json",
+  "include": ["src", ".storybook"],
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["./src/*"],
+      "@uinity/core": ["../core/*"]
+    },
+    "outDir": "./dist"
+  }
+}

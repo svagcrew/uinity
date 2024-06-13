@@ -17,11 +17,12 @@
   "private": true,
   "scripts": {
     "build": "pnpm --filter core build && pnpm --filter cli build && pnpm --filter react-dom build",
-    "lint": "pnpm --filter core lint && pnpm --filter cli lint && pnpm --filter react-dom lint",
+    "lint": "pnpm --filter core lint && pnpm --filter cli lint && pnpm --filter react-dom lint && pnpm --filter scripts lint",
     "prepare": "husky",
-    "test": "pnpm --filter core test && pnpm --filter cli test && pnpm --filter react-dom test",
-    "types": "pnpm --filter core types && pnpm --filter cli types && pnpm --filter react-dom types",
-    "watch": "concurrently --names 'core,cli,react-dom' 'pnpm --filter core watch' 'pnpm --filter cli watch' 'pnpm --filter react-dom watch'"
+    "test": "pnpm --filter core test && pnpm --filter cli test && pnpm --filter react-dom test && pnpm --filter scripts test",
+    "types": "pnpm --filter core types && pnpm --filter cli types && pnpm --filter react-dom types && pnpm --filter scripts types",
+    "watch": "concurrently --names 'core,cli,react-dom' 'pnpm --filter core watch' 'pnpm --filter cli watch' 'pnpm --filter react-dom watch'",
+    "do": "pnpm --filter scripts do"
   },
   "devDependencies": {
     "concurrently": "^8.2.2",

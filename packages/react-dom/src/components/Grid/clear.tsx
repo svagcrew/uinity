@@ -1,5 +1,5 @@
 import '@/lib/cssGridPolyfill.js'
-import type { As, AsPropsWithRef } from '@/utils.js'
+import type { As, AsPropsWithRef, WithoutRef } from '@/utils.js'
 import { forwardRefIgnoreTypes, mark } from '@/utils.js'
 import { toCss } from '@uinity/core/dist/utils/other.js'
 import type { RuleSet } from 'styled-components'
@@ -41,9 +41,11 @@ type GridStyleRootProps = {
   byContainerSizeReverse?: Array<[number, GridCoreProps]>
   byWindowSizeReverse?: Array<[number, GridCoreProps]>
 }
-export type GridMainProps<TAs extends As> = { as?: TAs; children?: React.ReactNode } & GridCoreProps
-export type GridPropsWithRef<TAs extends As> = GridMainProps<TAs> & AsPropsWithRef<TAs>
-export type GridType = <TAs extends As = 'div'>(props: GridPropsWithRef<TAs>) => React.ReactElement | null
+export type GridDefaultAs = 'div'
+export type GridMainProps<TAs extends As = GridDefaultAs> = { as?: TAs; children?: React.ReactNode } & GridCoreProps
+export type GridPropsWithRef<TAs extends As = GridDefaultAs> = GridMainProps<TAs> & AsPropsWithRef<TAs>
+export type GridPropsWithoutRef<TAs extends As = GridDefaultAs> = WithoutRef<GridPropsWithRef<TAs>>
+export type GridType = <TAs extends As = GridDefaultAs>(props: GridPropsWithRef<TAs>) => React.ReactElement | null
 
 const getGridCoreCss = ($style: GridStyleRootProps): RuleSet => {
   return css`
@@ -146,7 +148,7 @@ export const Grid: GridType = forwardRefIgnoreTypes(
       byWindowSizeReverse,
       wsr,
       ...restProps
-    }: GridPropsWithRef<'div'>,
+    }: GridPropsWithRef,
     ref: any
   ) => {
     itemsInRow = itemsInRow ?? i
@@ -184,7 +186,7 @@ export const Grid: GridType = forwardRefIgnoreTypes(
     $style.byWindowSizeReverse = normalizedByWindowSizeReverse
 
     return (
-      <GridS {...(restProps as any)} as={restProps.as} ref={ref} $style={$style}>
+      <GridS {...(restProps as {})} ref={ref} $style={$style}>
         {children}
       </GridS>
     )

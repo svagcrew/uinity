@@ -1,5 +1,5 @@
 /* eslint-disable react/jsx-boolean-value */
-import type { AsRefAttributes } from '@/utils.js'
+import type { AsRefAttributes, WithoutRef } from '@/utils.js'
 import { forwardRefIgnoreTypes } from '@/utils.js'
 import type { Placement } from '@floating-ui/react'
 import {
@@ -39,6 +39,7 @@ export type WithPopoverMainProps = {
 } & PopoverGeneralProps &
   UsePopoverProps
 export type WithPopoverPropsWithRef = WithPopoverMainProps & AsRefAttributes<undefined>
+export type WithPopoverPropsWithoutRef = WithoutRef<WithPopoverPropsWithRef>
 export type WithPopoverType = (props: WithPopoverPropsWithRef) => ReactElement | null
 
 const usePopover = ({
