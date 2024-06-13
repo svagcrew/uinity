@@ -1,5 +1,5 @@
+import { createDisabler } from '../Disabler/configured.js'
 import type { DisablerMainProps } from './clear.js'
-import { createDisabler } from './configured.js'
 import { uinityConfig } from '@/stories/uinity.config.js'
 import type { Meta, StoryObj } from '@storybook/react'
 

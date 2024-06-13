@@ -1,4 +1,4 @@
-import { createGrid } from './configured.js'
+import { createGrid } from '../Grid/configured.js'
 import { uinityConfig } from '@/stories/uinity.config.js'
 import type { Meta, StoryObj } from '@storybook/react'
 

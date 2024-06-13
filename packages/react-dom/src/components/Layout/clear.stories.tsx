@@ -1,4 +1,4 @@
-import { Layout } from './clear.js'
+import { Layout } from '../Layout/clear.js'
 import type { Meta, StoryObj } from '@storybook/react'
 
 const LayoutDemo = () => {

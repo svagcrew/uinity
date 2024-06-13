@@ -1,5 +1,5 @@
+import { Disabler } from '../Disabler/clear.js'
 import type { DisablerMainProps } from './clear.js'
-import { Disabler } from './clear.js'
 import type { Meta, StoryObj } from '@storybook/react'
 
 const DisablerDemo = (props: DisablerMainProps) => {

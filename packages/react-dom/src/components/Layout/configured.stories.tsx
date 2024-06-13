@@ -1,4 +1,4 @@
-import { createLayout } from './configured.js'
+import { createLayout } from '../Layout/configured.js'
 import { uinityConfig } from '@/stories/uinity.config.js'
 import type { Meta, StoryObj } from '@storybook/react'
 

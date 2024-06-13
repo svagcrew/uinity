@@ -1,5 +1,5 @@
+import { createModal } from '../Modal/configured.js'
 import type { ModalGeneralProps } from './configured.js'
-import { createModal } from './configured.js'
 import { createButton } from '@/components/Button/configured.js'
 import { createIcon } from '@/components/Icon/configured.js'
 import { uinityConfig } from '@/stories/uinity.config.js'
@@ -140,7 +140,7 @@ const ModalDemo = ({ initialOpened, ...props }: { initialOpened: boolean } & Mod
 }
 
 const meta = {
-  title: 'Modal',
+  title: 'Modal Configured',
   component: ModalDemo,
   parameters: {
     // layout: 'centered',

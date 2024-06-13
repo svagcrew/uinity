@@ -1,4 +1,4 @@
-import { Button } from '@/components/Button/clear.js'
+import { Button } from '../Button/clear.js'
 import SvgIcon from '@/components/Icon/icon1.svg?react'
 import type { Meta, StoryObj } from '@storybook/react'
 
@@ -16,7 +16,7 @@ const ButtonClearDemo = (props: {
 }) => {
   return (
     <Button
-      as="a"
+      as="button"
       href="#"
       $style={{
         isDisabled: props.isDisabled,

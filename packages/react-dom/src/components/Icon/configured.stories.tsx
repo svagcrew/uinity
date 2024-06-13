@@ -1,5 +1,5 @@
 // import { fn } from '@storybook/test'
-import { createIcon } from './configured.js'
+import { createIcon } from '../Icon/configured.js'
 import icon1 from './icon1.svg?react'
 import icon2 from './icon2.svg?react'
 import { uinityConfig } from '@/stories/uinity.config.js'

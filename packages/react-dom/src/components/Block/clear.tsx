@@ -101,7 +101,7 @@ type BlockCorePropsConfig =
   | BlockStyleCorePropsKey
   | BlockStyleCoreProps
   | Array<BlockStyleCorePropsKey | BlockStyleCoreProps>
-type BlockSpecialProps<TAs extends As | undefined> = {
+type BlockSpecialProps<TAs extends As> = {
   /** properties by window size: [[maxWidth1, blockProps], [maxWidth2, blockProps], ...] */
   ws?: Array<[number, BlockCorePropsConfig]>
   /** properties by container size: [[maxWidth1, blockProps], [maxWidth2, blockProps], ...] */
@@ -175,7 +175,7 @@ const blockStyleCorePropsKeys = [
 ] satisfies BlockStyleCorePropsKey[]
 // Just check that all keys exists in this array
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-const checkBlockSpecialPropsKeys: CheckKeys<BlockSpecialProps<undefined>, typeof blockStyleSpecialPropsKeys> = true
+const checkBlockSpecialPropsKeys: CheckKeys<BlockSpecialProps<'div'>, typeof blockStyleSpecialPropsKeys> = true
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 const checkBlockStyleCorePropsKeys: CheckKeys<BlockStyleCoreProps, typeof blockStyleCorePropsKeys> = true
 

@@ -1,12 +1,12 @@
 /* eslint-disable unicorn/numeric-separators-style */
-import { Block } from './clear.js'
+import { Block } from '../Block/clear.js'
 import type { Meta, StoryObj } from '@storybook/react'
 
 const BlockDemo = () => {
   return (
     <Block ce db s={{ maxWidth: 500, width: '100%' }}>
       <Block frnw jc>
-        <div>flex</div>
+        <div>flexx</div>
         <div>row</div>
         <div>nowrap</div>
         <div>nowrap</div>
