@@ -1,6 +1,6 @@
 {
   "name": "@uinity/react-dom",
-  "version": "0.1.14",
+  "version": "0.1.15",
   "homepage": "https://github.com/svagcrew/uinity",
   "repository": {
     "type": "git",
@@ -31,10 +31,10 @@
     "sb": "storybook dev -p 6006",
     "start": "svag-ts start",
     "test": "svag-jest test",
-    "types": "cross-env NODE_OPTIONS=--max-old-space-size=26384 svag-ts types",
-    "ts-trace": "cross-env NODE_OPTIONS=--max-old-space-size=26384 tsc --generateTrace ts-trace",
     "ts-analyze": "analyze-trace ts-trace",
+    "ts-trace": "cross-env NODE_OPTIONS=--max-old-space-size=26384 tsc --generateTrace ts-trace",
     "ts-trace-analyze": "pnpm ts-trace && pnpm ts-analyze",
+    "types": "cross-env NODE_OPTIONS=--max-old-space-size=26384 svag-ts types",
     "watch": "svag-ts watch"
   },
   "peerDependencies": {
