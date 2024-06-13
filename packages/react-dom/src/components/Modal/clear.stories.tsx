@@ -174,6 +174,9 @@ const meta = {
     width: {
       control: 'text',
     },
+    height: {
+      control: 'text',
+    },
     margin: {
       control: 'text',
     },
@@ -201,6 +204,7 @@ const meta = {
     placement: 'center-center',
     scrollContainer: 'overlay',
     width: '500px',
+    height: '',
     margin: '15px',
     padding: '30px',
     closeOnOutsideClick: true,

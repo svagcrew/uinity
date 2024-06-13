@@ -48,6 +48,7 @@ export type ModalStyleCoreRawProps = {
     | undefined
     | null
   width?: string | number | undefined | null
+  height?: string | number | undefined | null
   margin?: string | number | undefined | null
   marginTop?: string | number | undefined | null
   marginEnd?: string | number | undefined | null
@@ -81,6 +82,7 @@ export type ModalStyleCoreProps = Required<
   Pick<
     ModalStyleCoreRawProps,
     | 'width'
+    | 'height'
     | 'marginTop'
     | 'marginEnd'
     | 'marginBottom'
@@ -150,6 +152,7 @@ const ModalGlobalStyles = createGlobalStyle<ModalGlobalStylesProps>`
       placementVertical,
       placementHorizontal,
       width,
+      height,
       marginTop,
       marginEnd,
       marginBottom,
@@ -200,6 +203,7 @@ const ModalGlobalStyles = createGlobalStyle<ModalGlobalStylesProps>`
               maxWidth: `100%`,
               maxHeight: scrollContainer === 'overlay' ? undefined : '100%',
               width,
+              height,
               overflow: scrollContainer === 'content' ? 'auto' : 'visible',
               backgroundColor: 'white',
               paddingTop,
@@ -274,6 +278,7 @@ export const Modal: ModalType = forwardRefIgnoreTypes(
       placementHorizontal,
       scrollContainer,
       width,
+      height,
       margin,
       marginTop,
       marginEnd,
@@ -331,6 +336,7 @@ export const Modal: ModalType = forwardRefIgnoreTypes(
       placementVertical: placementVerticalNormalized,
       placementHorizontal: placementHorizontalNormalized,
       width,
+      height,
       marginTop,
       marginEnd,
       marginBottom,
@@ -387,6 +393,7 @@ export const Modal: ModalType = forwardRefIgnoreTypes(
           placementVertical: propsHere.placementVertical ?? prevPropsHere.placementVertical,
           placementHorizontal: propsHere.placementHorizontal ?? prevPropsHere.placementHorizontal,
           width: propsHere.width ?? prevPropsHere.width,
+          height: propsHere.height ?? prevPropsHere.height,
           scrollContainer: propsHere.scrollContainer ?? prevPropsHere.scrollContainer,
         } as ModalStyleCoreProps
         return [windowSize, propsHereNormalized]
@@ -436,6 +443,7 @@ export const Modal: ModalType = forwardRefIgnoreTypes(
           placementVertical: propsHere.placementVertical ?? prevPropsHere.placementVertical,
           placementHorizontal: propsHere.placementHorizontal ?? prevPropsHere.placementHorizontal,
           width: propsHere.width ?? prevPropsHere.width,
+          height: propsHere.width ?? prevPropsHere.height,
           scrollContainer: propsHere.scrollContainer ?? prevPropsHere.scrollContainer,
         } as ModalStyleCoreProps
         return [windowSize, propsHereNormalized]
