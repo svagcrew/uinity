@@ -1,5 +1,5 @@
-import type { ModalGeneralProps } from './index.js'
-import { createModal } from './index.js'
+import type { ModalGeneralProps } from './configured.js'
+import { createModal } from './configured.js'
 import { createButton } from '@/components/Button/configured.js'
 import { createIcon } from '@/components/Icon/configured.js'
 import { uinityConfig } from '@/stories/uinity.config.js'

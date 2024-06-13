@@ -1,8 +1,8 @@
 import { Layout as LayoutClear } from './clear.js'
 import type { LayoutMainProps, LayoutStyleCoreProps } from '@/components/Layout/clear.js'
 import { useColorMode } from '@/lib/colorMode.js'
-import type { As, AsPropsWithRef, RC } from '@/utils.js'
-import { forwardRefWithTypes } from '@/utils.js'
+import type { As, AsPropsWithRef } from '@/utils.js'
+import { forwardRefIgnoreTypes } from '@/utils.js'
 import type { UinityConfig } from '@uinity/core'
 import type { LayoutConfigFinalProps } from '@uinity/core/dist/components/layout.js'
 import { getLayoutConfigFinalProps } from '@uinity/core/dist/components/layout.js'
@@ -18,7 +18,7 @@ export type LayoutConfiguredMainProps<TAs extends As> = LayoutConfiguredSettings
   LayoutConfiguredSpecialProps<TAs> &
   LayoutMainProps<TAs>
 export type LayoutConfiguredPropsWithRef<TAs extends As> = LayoutConfiguredMainProps<TAs> & AsPropsWithRef<TAs>
-export type LayoutConfigured<TAs extends As> = RC<LayoutConfiguredPropsWithRef<TAs>>
+export type LayoutConfigured = <TAs extends As>(props: LayoutConfiguredPropsWithRef<TAs>) => React.ReactElement | null
 
 const normalizeLayoutStyleCoreProps = (
   cm: ColorModeName,
@@ -41,8 +41,8 @@ const normalizeLayoutStyleCoreProps = (
 
 export const createLayout = ({ uinityConfig }: { uinityConfig: UinityConfig }) => {
   const { colorMode: colorModeGlobal } = useColorMode()
-  const Layout = forwardRefWithTypes(
-    <TAs extends As>({ colorMode, $style = {}, ...restProps }: LayoutConfiguredPropsWithRef<TAs>, ref: any) => {
+  const Layout: LayoutConfigured = forwardRefIgnoreTypes(
+    ({ colorMode, $style = {}, ...restProps }: LayoutConfiguredPropsWithRef<'div'>, ref: any) => {
       const cm = colorMode || colorModeGlobal
       const configuredByWindowSize = [
         ...(uinityConfig.layout.general.sizeByScreenWidth?.mobile

@@ -15,11 +15,6 @@ export type AsPropsWithoutRef<T extends As | undefined> = Omit<AsProps<T> & AsRe
 export type AsPropsWithRef<T extends As | undefined> = AsProps<T> & AsRefAttributes<T>
 export type RC<TProps> = (props: TProps) => React.ReactElement | null
 
-export const forwardRefWithTypes = <TProps extends Record<string, any>>(
-  Component: (props: TProps, ref: AsRef<undefined>) => React.ReactElement | null
-): ((props: TProps) => React.ReactElement | null) => {
-  return React.forwardRef(Component as any) as any
-}
 export const forwardRefIgnoreTypes = (Component: any): any => {
   return React.forwardRef(Component as any) as any
 }
