@@ -6,6 +6,7 @@ import {
   copyFile,
   coreComponentsDir,
   coreConfigDefinitionFilePath,
+  getRelativePath,
   reactDomComponentsDir,
   reactDomIndexFilePath,
   replaceInFile,
@@ -37,16 +38,16 @@ export const createComponent = async ({
   const nameCamelCaseLowercase = _.camelCase(name)
   const nameCamelCaseCapitalized = _.upperFirst(nameCamelCaseLowercase)
   log.black(`Creating component "${nameCamelCaseCapitalized}", as:${JSON.stringify(as)}`)
-  log.green('createComponent.ts', { name, as, nameCamelCaseLowercase, nameCamelCaseCapitalized })
   const newReactDomComponentDir = path.resolve(reactDomComponentsDir, nameCamelCaseCapitalized)
   const newReactDomClearComponentFilePath = path.resolve(newReactDomComponentDir, 'clear.tsx')
   const newReactDomConfiguredComponentFilePath = path.resolve(newReactDomComponentDir, 'configured.tsx')
   const newReactDomClearStoriesFilePath = path.resolve(newReactDomComponentDir, 'clear.stories.tsx')
   const newReactDomConfiguredStoriesFilePath = path.resolve(newReactDomComponentDir, 'configured.stories.tsx')
   const newCoreFilePath = path.resolve(coreComponentsDir, `${nameCamelCaseLowercase}.ts`)
-  await copyDir(blankReactDomComponentDir, newReactDomComponentDir)
   if (!preventReactDomFilesModifications) {
     if (!createOnlyCore) {
+      await copyDir(blankReactDomComponentDir, newReactDomComponentDir)
+      log.black(`Created ${getRelativePath(newReactDomComponentDir)}`)
       await replaceInFile({
         filePath: newReactDomClearComponentFilePath,
         strings: [
@@ -81,6 +82,7 @@ export const createComponent = async ({
   if (!preventCoreFilesModifications) {
     if (!createOnlyReactDom) {
       await copyFile(blankCoreFilePath, newCoreFilePath)
+      log.black(`Created ${getRelativePath(newCoreFilePath)}`)
       await replaceInFile({
         filePath: newCoreFilePath,
         strings: [
@@ -92,6 +94,7 @@ export const createComponent = async ({
   }
   if (!preventIndexFilesModifications) {
     if (!createOnlyReactDom) {
+      log.black(`Modified ${getRelativePath(coreConfigDefinitionFilePath)}`)
       await appendFile({
         filePath: coreConfigDefinitionFilePath,
         search: `import { defaultBlankConfigInput, normalizeBlankConfig, zBlankConfigInput } from '@/components/blank.js'`,
@@ -119,6 +122,7 @@ export const createComponent = async ({
       })
     }
     if (!createOnlyCore) {
+      log.black(`Modified ${getRelativePath(reactDomIndexFilePath)}`)
       await appendFile({
         filePath: reactDomIndexFilePath,
         search: `import { createBlank } from '@/components/Blank/configured.js'`,

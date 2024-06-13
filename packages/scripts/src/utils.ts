@@ -18,6 +18,10 @@ export const blankReactDomClearStoriesFilePath = path.resolve(blankReactDomCompo
 export const blankReactDomConfiguredStoriesFilePath = path.resolve(blankReactDomComponentDir, 'configured.stories.tsx')
 export const blankCoreFilePath = path.resolve(coreComponentsDir, 'blank.ts')
 
+export const getRelativePath = (filePath: string) => {
+  return path.relative(packagesDir, filePath)
+}
+
 export const copyDir = async (srcDir: string, destDir: string) => {
   // Create the destination directory
   await fs.mkdir(destDir, { recursive: true })
