@@ -1,4 +1,3 @@
-import { zControlSizeProps } from '@/components/control.js'
 import type { UinityConfig } from '@/config/index.js'
 import { zColorValue } from '@/utils/color.js'
 import { zOptionalNumberOrString } from '@/utils/other.js'
@@ -17,7 +16,7 @@ export const blankConfigColorNames = ['brand', 'green', 'red'] as const
 export const zBlankConfigColorName = z.enum(blankConfigColorNames)
 export type BlankConfigColorName = z.output<typeof zBlankConfigColorName>
 
-export const zBlankConfigSizeProps = zControlSizeProps.extend({
+export const zBlankConfigSizeProps = z.object({
   width: zOptionalNumberOrString,
   height: zOptionalNumberOrString,
 })
