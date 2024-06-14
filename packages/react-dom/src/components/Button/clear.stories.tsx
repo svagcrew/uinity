@@ -18,8 +18,8 @@ const ButtonClearDemo = (props: {
     <Button
       as="a"
       href="#"
+      disabled={props.isDisabled}
       $style={{
-        isDisabled: props.isDisabled,
         rest: {
           background: props.restBackground,
           textColor: props.restTextColor,

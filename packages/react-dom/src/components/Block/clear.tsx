@@ -8,7 +8,7 @@ import type { RuleSet } from 'styled-components'
 import { css, styled } from 'styled-components'
 import { pick } from 'svag-utils/dist/utils/pick.js'
 
-type BlockStyleCoreProps = {
+type BlockStyleCore = {
   /** display: flex; */
   df?: boolean
   /** display: block; */
@@ -96,34 +96,31 @@ type BlockStyleCoreProps = {
   /** style: {{ ...cssProperties }}; */
   s?: React.CSSProperties
 }
-type BlockStyleCorePropsKey = keyof BlockStyleCoreProps
-type BlockCorePropsConfig =
-  | BlockStyleCorePropsKey
-  | BlockStyleCoreProps
-  | Array<BlockStyleCorePropsKey | BlockStyleCoreProps>
+type BlockStyleCoreKey = keyof BlockStyleCore
+type BlockStyleCoreConfig = BlockStyleCoreKey | BlockStyleCore | Array<BlockStyleCoreKey | BlockStyleCore>
 type BlockSpecialProps<TAs extends As = BlockDefaultAs> = {
   /** properties by window size: [[maxWidth1, blockProps], [maxWidth2, blockProps], ...] */
-  ws?: Array<[number, BlockCorePropsConfig]>
+  ws?: Array<[number, BlockStyleCoreConfig]>
   /** properties by container size: [[maxWidth1, blockProps], [maxWidth2, blockProps], ...] */
-  cs?: Array<[number, BlockCorePropsConfig]>
+  cs?: Array<[number, BlockStyleCoreConfig]>
   /** properties by window size in reverse order: [[maxWidth1, blockProps], [maxWidth2, blockProps], ...] */
-  wsr?: Array<[number, BlockCorePropsConfig]>
+  wsr?: Array<[number, BlockStyleCoreConfig]>
   /** properties by container size in reverse order: [[maxWidth1, blockProps], [maxWidth2, blockProps], ...] */
-  csr?: Array<[number, BlockCorePropsConfig]>
+  csr?: Array<[number, BlockStyleCoreConfig]>
   /** [blockProps1, blockProps2] & > * { ... }  */
-  cp?: BlockCorePropsConfig
+  cp?: BlockStyleCoreConfig
   /** as which element */
   as?: TAs
   /** children */
   children?: React.ReactNode
 }
 
-type BlockStyleRootProps = BlockStyleCoreProps & {
-  ws?: Array<[number, BlockStyleCoreProps]>
-  cs?: Array<[number, BlockStyleCoreProps]>
-  wsr?: Array<[number, BlockStyleCoreProps]>
-  csr?: Array<[number, BlockStyleCoreProps]>
-  cp?: BlockStyleCoreProps
+type BlockStyleFinal = BlockStyleCore & {
+  ws?: Array<[number, BlockStyleCore]>
+  cs?: Array<[number, BlockStyleCore]>
+  wsr?: Array<[number, BlockStyleCore]>
+  csr?: Array<[number, BlockStyleCore]>
+  cp?: BlockStyleCore
 }
 
 type CheckKeys<T, U extends readonly string[]> = U[number] extends keyof T
@@ -131,8 +128,8 @@ type CheckKeys<T, U extends readonly string[]> = U[number] extends keyof T
     ? true
     : never
   : never
-const blockStyleSpecialPropsKeys = ['ws', 'cs', 'wsr', 'csr', 'cp', 'as', 'children'] as const
-const blockStyleCorePropsKeys = [
+const blockSpecialPropsKeys = ['ws', 'cs', 'wsr', 'csr', 'cp', 'as', 'children'] as const
+const blockStyleCoreKeys = [
   'df',
   'db',
   'di',
@@ -172,27 +169,27 @@ const blockStyleCorePropsKeys = [
   'cg',
   'ce',
   's',
-] satisfies BlockStyleCorePropsKey[]
+] satisfies BlockStyleCoreKey[]
 // Just check that all keys exists in this array
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-const checkBlockSpecialPropsKeys: CheckKeys<BlockSpecialProps, typeof blockStyleSpecialPropsKeys> = true
+const checkBlockSpecialPropsKeys: CheckKeys<BlockSpecialProps, typeof blockSpecialPropsKeys> = true
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-const checkBlockStyleCorePropsKeys: CheckKeys<BlockStyleCoreProps, typeof blockStyleCorePropsKeys> = true
+const checkBlockStyleCoreKeys: CheckKeys<BlockStyleCore, typeof blockStyleCoreKeys> = true
 
 export type BlockDefaultAs = 'div'
-export type BlockMainProps<TAs extends As = BlockDefaultAs> = BlockStyleCoreProps & BlockSpecialProps<TAs>
+export type BlockMainProps<TAs extends As = BlockDefaultAs> = BlockStyleCore & BlockSpecialProps<TAs>
 export type BlockPropsWithRef<TAs extends As = BlockDefaultAs> = BlockMainProps<TAs> & AsPropsWithRef<TAs>
 export type BlockPropsWithoutRef<TAs extends As = BlockDefaultAs> = WithoutRef<BlockPropsWithRef<TAs>>
 export type BlockType = <TAs extends As = BlockDefaultAs>(props: BlockPropsWithRef<TAs>) => React.ReactNode
 
-const normalizeBlockCorePropsConfig = (corePropsConfig: BlockCorePropsConfig): BlockStyleCoreProps => {
+const normalizeBlockCorePropsConfig = (corePropsConfig: BlockStyleCoreConfig): BlockStyleCore => {
   if (isString(corePropsConfig)) {
-    return { [corePropsConfig]: true } as BlockStyleCoreProps
+    return { [corePropsConfig]: true } as BlockStyleCore
   }
   if (!isArray(corePropsConfig)) {
     return corePropsConfig
   }
-  const result = {} as BlockStyleCoreProps
+  const result = {} as BlockStyleCore
   for (const keyOrProps of corePropsConfig) {
     if (isString(keyOrProps)) {
       ;(result as any)[keyOrProps] = true
@@ -203,83 +200,75 @@ const normalizeBlockCorePropsConfig = (corePropsConfig: BlockCorePropsConfig): B
   return result
 }
 
-const getBlockCoreCss = ($style: BlockStyleRootProps): RuleSet => {
+const getBlockCoreCss = ($sf: BlockStyleFinal): RuleSet => {
   return css`
     ${toCss({
-      display: $style.df ? 'flex' : $style.db ? 'block' : $style.di ? 'inline' : $style.dn ? 'none' : 'flex',
-      flexFlow: $style.frnw
+      display: $sf.df ? 'flex' : $sf.db ? 'block' : $sf.di ? 'inline' : $sf.dn ? 'none' : 'flex',
+      flexFlow: $sf.frnw
         ? 'row nowrap'
-        : $style.frw
+        : $sf.frw
           ? 'row wrap'
-          : $style.fcnw
+          : $sf.fcnw
             ? 'column nowrap'
-            : $style.fcw
+            : $sf.fcw
               ? 'column wrap'
               : undefined,
-      alignItems: $style.ac
+      alignItems: $sf.ac ? 'center' : $sf.afs ? 'flex-start' : $sf.afe ? 'flex-end' : $sf.ast ? 'stretch' : undefined,
+      justifyContent: $sf.jc
         ? 'center'
-        : $style.afs
+        : $sf.jfs
           ? 'flex-start'
-          : $style.afe
+          : $sf.jfe
             ? 'flex-end'
-            : $style.ast
-              ? 'stretch'
-              : undefined,
-      justifyContent: $style.jc
-        ? 'center'
-        : $style.jfs
-          ? 'flex-start'
-          : $style.jfe
-            ? 'flex-end'
-            : $style.jsb
+            : $sf.jsb
               ? 'space-between'
-              : $style.jsa
+              : $sf.jsa
                 ? 'space-around'
-                : $style.jst
+                : $sf.jst
                   ? 'stretch'
                   : undefined,
-      flexGrow: $style.f11 ? 1 : $style.f10 ? 1 : $style.f01 ? 0 : $style.f00 ? 0 : undefined,
-      flexShrink: $style.f11 ? 1 : $style.f10 ? 0 : $style.f01 ? 1 : $style.f00 ? 0 : undefined,
-      flexBasis: $style.fb
-        ? $style.fb
-        : $style.fb100
+      flexGrow: $sf.f11 ? 1 : $sf.f10 ? 1 : $sf.f01 ? 0 : $sf.f00 ? 0 : undefined,
+      flexShrink: $sf.f11 ? 1 : $sf.f10 ? 0 : $sf.f01 ? 1 : $sf.f00 ? 0 : undefined,
+      flexBasis: $sf.fb
+        ? $sf.fb
+        : $sf.fb100
           ? '100%'
-          : $style.fba
+          : $sf.fba
             ? 'auto'
-            : $style.fb2
+            : $sf.fb2
               ? '50%'
-              : $style.fb3
+              : $sf.fb3
                 ? '33.3333%'
-                : $style.fb4
+                : $sf.fb4
                   ? '25%'
-                  : $style.fb5
+                  : $sf.fb5
                     ? '20%'
-                    : $style.fb6
+                    : $sf.fb6
                       ? '16.6667%'
-                      : $style.fb7
+                      : $sf.fb7
                         ? '14.2857%'
-                        : $style.fb8
+                        : $sf.fb8
                           ? '12.5%'
-                          : $style.fb9
+                          : $sf.fb9
                             ? '11.1111%'
-                            : $style.fb10
+                            : $sf.fb10
                               ? '10%'
                               : undefined,
-      gap: $style.g ? $style.g : undefined,
-      rowGap: $style.rg ? $style.rg : undefined,
-      columnGap: $style.cg ? $style.cg : undefined,
-      containerType: $style.ce ? 'inline-size' : undefined,
+      gap: $sf.g ? $sf.g : undefined,
+      rowGap: $sf.rg ? $sf.rg : undefined,
+      columnGap: $sf.cg ? $sf.cg : undefined,
+      containerType: $sf.ce ? 'inline-size' : undefined,
     })}
-    ${toCss($style.s || {})};
-    ${!$style.cp
+    ${toCss($sf.s || {})};
+    ${!$sf.cp
       ? ''
       : css`
           & > * {
-            ${getBlockCoreCss($style.cp)}
+            ${getBlockCoreCss($sf.cp)}
           }
         `}
-    ${($style.ws || []).map(([, props], index): RuleSet => {
-      const prevWindowSize = $style.ws?.[index - 1]?.[0] ?? 0
+    ${($sf.ws || []).map(([, props], index): RuleSet => {
+      const prevWindowSize = $sf.ws?.[index - 1]?.[0] ?? 0
       if (prevWindowSize === 0) {
         return css`
           ${getBlockCoreCss(props)}
@@ -292,8 +281,8 @@ const getBlockCoreCss = ($style: BlockStyleRootProps): RuleSet => {
         `
       }
     })}
-    ${($style.cs || []).map(([, props], index): RuleSet => {
-      const prevContainerSize = $style.cs?.[index - 1]?.[0] ?? 0
+    ${($sf.cs || []).map(([, props], index): RuleSet => {
+      const prevContainerSize = $sf.cs?.[index - 1]?.[0] ?? 0
       if (prevContainerSize === 0) {
         return css`
           ${getBlockCoreCss(props)}
@@ -308,7 +297,7 @@ const getBlockCoreCss = ($style: BlockStyleRootProps): RuleSet => {
         `
       }
     })}
-    ${($style.wsr || []).map(([windowSize, props]): RuleSet => {
+    ${($sf.wsr || []).map(([windowSize, props]): RuleSet => {
       if (windowSize === Infinity) {
         return css`
           ${getBlockCoreCss(props)}
@@ -321,7 +310,7 @@ const getBlockCoreCss = ($style: BlockStyleRootProps): RuleSet => {
         `
       }
     })}
-    ${($style.csr || []).map(([containerSize, props]): RuleSet => {
+    ${($sf.csr || []).map(([containerSize, props]): RuleSet => {
       if (containerSize === Infinity) {
         return css`
           ${getBlockCoreCss(props)}
@@ -339,15 +328,15 @@ const getBlockCoreCss = ($style: BlockStyleRootProps): RuleSet => {
   `
 }
 
-const BlockS = styled.div.attrs(mark('BlockS'))<{ $style: BlockStyleRootProps }>`
-  ${({ $style }) => getBlockCoreCss($style)}
+const BlockS = styled.div.attrs(mark('BlockS'))<{ $sf: BlockStyleFinal }>`
+  ${({ $sf }) => getBlockCoreCss($sf)}
 `
 export const Block: BlockType = forwardRefIgnoreTypes(
   ({ children, as, ...restProps }: BlockPropsWithoutRef, ref: any) => {
-    const $style = pick(restProps, blockStyleCorePropsKeys) as BlockStyleRootProps
+    const $sf = pick(restProps, blockStyleCoreKeys) as BlockStyleFinal
     const htmlElementProps = Object.fromEntries(
       Object.entries(restProps).filter(
-        ([k]) => !blockStyleCorePropsKeys.includes(k as any) && !blockStyleSpecialPropsKeys.includes(k as any)
+        ([k]) => !blockStyleCoreKeys.includes(k as any) && !blockSpecialPropsKeys.includes(k as any)
       )
     ) as AsProps<BlockDefaultAs>
 
@@ -355,35 +344,35 @@ export const Block: BlockType = forwardRefIgnoreTypes(
       .sort(([a], [b]) => a - b)
       .map(([maxWidth, props]) => {
         return [maxWidth, normalizeBlockCorePropsConfig(props)]
-      }) as Array<[number, BlockStyleCoreProps]>
-    $style.ws = normalizedWs
+      }) as Array<[number, BlockStyleCore]>
+    $sf.ws = normalizedWs
 
     const normalizedEs = (restProps.cs || [])
       .sort(([a], [b]) => a - b)
       .map(([maxWidth, props]) => {
         return [maxWidth, normalizeBlockCorePropsConfig(props)]
-      }) as Array<[number, BlockStyleCoreProps]>
-    $style.cs = normalizedEs
+      }) as Array<[number, BlockStyleCore]>
+    $sf.cs = normalizedEs
 
     const normalizedWsr = (restProps.wsr || [])
       .sort(([a], [b]) => b - a)
       .map(([maxWidth, props]) => {
         return [maxWidth, normalizeBlockCorePropsConfig(props)]
-      }) as Array<[number, BlockStyleCoreProps]>
-    $style.wsr = normalizedWsr
+      }) as Array<[number, BlockStyleCore]>
+    $sf.wsr = normalizedWsr
 
     const normalizedEsr = (restProps.csr || [])
       .sort(([a], [b]) => b - a)
       .map(([maxWidth, props]) => {
         return [maxWidth, normalizeBlockCorePropsConfig(props)]
-      }) as Array<[number, BlockStyleCoreProps]>
-    $style.csr = normalizedEsr
+      }) as Array<[number, BlockStyleCore]>
+    $sf.csr = normalizedEsr
 
     const normalizedCp = restProps.cp && normalizeBlockCorePropsConfig(restProps.cp)
-    $style.cp = normalizedCp
+    $sf.cp = normalizedCp
 
     return (
-      <BlockS {...(htmlElementProps as any)} as={as} ref={ref} $style={$style}>
+      <BlockS {...(htmlElementProps as any)} as={as} ref={ref} $sf={$sf}>
         {children}
       </BlockS>
     )

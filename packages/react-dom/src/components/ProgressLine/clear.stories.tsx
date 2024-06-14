@@ -1,9 +1,9 @@
-import type { ProgressLineStyleRootProps } from './clear.js'
+import type { ProgressLineStyleRoot } from './clear.js'
 import { NProgress, ProgressLine } from '@/components/ProgressLine/clear.js'
 import type { Meta, StoryObj } from '@storybook/react'
 import { useEffect } from 'react'
 
-const ProgressLineDemo = (props: ProgressLineStyleRootProps) => {
+const ProgressLineDemo = (props: ProgressLineStyleRoot) => {
   useEffect(() => {
     setInterval(() => {
       NProgress.start()

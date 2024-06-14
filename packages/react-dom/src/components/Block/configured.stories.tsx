@@ -6,7 +6,7 @@ export const { Block } = createBlock({ uinityConfig })
 const BlockDemo = () => {
   return (
     <Block ce db s={{ maxWidth: 500, width: '100%' }}>
-      <Block frnw jc>
+      <Block frw g="3px 30px">
         <div>flex</div>
         <div>row</div>
         <div>nowrap</div>

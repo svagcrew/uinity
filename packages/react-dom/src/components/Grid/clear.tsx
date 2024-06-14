@@ -32,7 +32,7 @@ type GridCoreProps = {
   wsr?: Array<[number, GridCoreProps | number]>
   byWindowSizeReverse?: Array<[number, GridCoreProps | number]>
 }
-type GridStyleRootProps = {
+type GridStyleRoot = {
   itemsInRow?: number
   columnGap?: number | string
   rowGap?: number | string
@@ -47,7 +47,7 @@ export type GridPropsWithRef<TAs extends As = GridDefaultAs> = GridMainProps<TAs
 export type GridPropsWithoutRef<TAs extends As = GridDefaultAs> = WithoutRef<GridPropsWithRef<TAs>>
 export type GridType = <TAs extends As = GridDefaultAs>(props: GridPropsWithRef<TAs>) => React.ReactNode
 
-const getGridCoreCss = ($style: GridStyleRootProps): RuleSet => {
+const getGridCoreCss = ($style: GridStyleRoot): RuleSet => {
   return css`
     display: grid;
     ${toCss({
@@ -124,7 +124,7 @@ const getGridCoreCss = ($style: GridStyleRootProps): RuleSet => {
   `
 }
 
-const GridS = styled.div.attrs(mark('GridS'))<{ $style: GridStyleRootProps }>`
+const GridS = styled.div.attrs(mark('GridS'))<{ $style: GridStyleRoot }>`
   ${({ $style }) => getGridCoreCss($style)}
 `
 export const Grid: GridType = forwardRefIgnoreTypes(
@@ -163,7 +163,7 @@ export const Grid: GridType = forwardRefIgnoreTypes(
       $itemsInRow: itemsInRow,
       $columnGap: columnGap ?? gap,
       $rowGap: rowGap ?? gap,
-    } as GridStyleRootProps
+    } as GridStyleRoot
 
     const normalizedByContainerSize = (byContainerSize || [])
       .sort(([a], [b]) => a - b)

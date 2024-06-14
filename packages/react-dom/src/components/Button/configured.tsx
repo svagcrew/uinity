@@ -1,11 +1,13 @@
-import type { ButtonDefaultAs, ButtonStyleCoreProps } from './clear.js'
+import type { ButtonDefaultAs, ButtonStyleCore, ButtonStyleRoot } from './clear.js'
 import { Button as ButtonClear } from './clear.js'
-import type { ButtonMainProps, ButtonStyleStatesProps } from '@/components/Button/clear.js'
+import type { ButtonMainProps } from '@/components/Button/clear.js'
+import type { IconSrc } from '@/components/Icon/clear.js'
 import type { IconConfigured } from '@/components/Icon/configured.js'
 import { useColorMode } from '@/lib/colorMode.js'
 import type { WithoutRef } from '@/utils.js'
 import { type As, type AsPropsWithRef, forwardRefIgnoreTypes } from '@/utils.js'
 import type { UinityConfig } from '@uinity/core'
+import type { ButtonConfigFinalProps } from '@uinity/core/dist/components/button.js'
 import { getButtonConfigFinalProps } from '@uinity/core/dist/components/button.js'
 import { type ColorModeName, getColorByMode } from '@uinity/core/dist/utils/color.js'
 
@@ -16,7 +18,7 @@ export type ButtonConfiguredSettingsProps = {
   colorMode?: ColorModeName | undefined | null
 }
 export type ButtonConfiguredSpecialProps<TIconName extends string> = {
-  iconStart?: TIconName
+  iconStart?: TIconName | IconSrc
 }
 export type ButtonConfiguredMainProps<
   TAs extends As = ButtonDefaultAs,
@@ -34,17 +36,21 @@ export type ButtonConfigured<TIconName extends string = string> = <TAs extends A
   props: ButtonConfiguredPropsWithRef<TAs, TIconName>
 ) => React.ReactNode
 
-const normalizeButtonStyleCoreProps = (
-  cm: ColorModeName,
-  passedScp: ButtonStyleCoreProps | undefined,
-  configuredScp: any
-) => {
+const makeButtonStyleCore = ({
+  cm,
+  sc = {},
+  cfp,
+}: {
+  cm: ColorModeName
+  sc?: ButtonStyleCore
+  cfp: ButtonConfigFinalProps
+}) => {
   return {
-    ...configuredScp,
-    ...passedScp,
-    background: getColorByMode(cm, passedScp?.background || configuredScp.background),
-    iconColor: getColorByMode(cm, passedScp?.iconColor || configuredScp.iconColor),
-    textColor: getColorByMode(cm, passedScp?.textColor || configuredScp.textColor),
+    ...cfp,
+    ...sc,
+    background: getColorByMode(cm, sc.background ?? cfp.background),
+    iconColor: getColorByMode(cm, sc.iconColor ?? cfp.iconColor),
+    textColor: getColorByMode(cm, sc.textColor ?? cfp.textColor),
   }
 }
 
@@ -55,26 +61,23 @@ export const createButton = <TIconName extends string>({
   uinityConfig: UinityConfig
   Icon: IconConfigured<TIconName>
 }) => {
-  const { colorMode: colorModeGlobal } = useColorMode()
   const Button: ButtonConfigured<TIconName> = forwardRefIgnoreTypes(
     (
       { variant, color, size, iconStart, colorMode, $style = {}, ...restProps }: ButtonConfiguredPropsWithoutRef,
       ref: any
     ) => {
-      const cm = colorMode || colorModeGlobal
-      const $styleConfiguredRest = getButtonConfigFinalProps(uinityConfig, variant, color, size, 'rest')
-      const $styleConfiguredHover = getButtonConfigFinalProps(uinityConfig, variant, color, size, 'hover')
-      const $styleNormalized: ButtonStyleStatesProps = {
-        rest: {
-          ...$styleConfiguredRest,
-          ...$style.rest,
-          ...normalizeButtonStyleCoreProps(cm, $style.rest, $styleConfiguredRest),
-        },
-        hover: {
-          ...$styleConfiguredHover,
-          ...$style.hover,
-          ...normalizeButtonStyleCoreProps(cm, $style.hover, $styleConfiguredHover),
-        },
+      const { cm } = useColorMode(colorMode)
+      const $styleNormalized: ButtonStyleRoot = {
+        rest: makeButtonStyleCore({
+          cm,
+          sc: $style.rest,
+          cfp: getButtonConfigFinalProps(uinityConfig, variant, color, size, 'rest'),
+        }),
+        hover: makeButtonStyleCore({
+          cm,
+          sc: $style.hover,
+          cfp: getButtonConfigFinalProps(uinityConfig, variant, color, size, 'hover'),
+        }),
       }
       return (
         <ButtonClear

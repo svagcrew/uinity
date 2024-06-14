@@ -8,13 +8,13 @@ import React from 'react'
 import { createGlobalStyle, css } from 'styled-components'
 
 // TODO: fix types IconSrc
-export type IconSrc = string | React.ReactElement | React.ComponentType | null
-export type IconStyleRootProps = {
+export type IconSrc = string | React.ReactElement | React.ComponentType | null | false | undefined
+export type IconStyleRoot = {
   color?: string | null
   size?: number | string | null
 }
 export type IconMainProps = {
-  $style?: IconStyleRootProps
+  $style?: IconStyleRoot
   className?: string
   src: IconSrc
 }
@@ -22,7 +22,7 @@ export type IconPropsWithRef = IconMainProps & AsPropsWithRef<undefined>
 export type IconPropsWithoutRef = WithoutRef<IconPropsWithRef>
 export type IconType = (props: IconPropsWithRef) => React.ReactNode
 
-const getIconCoreCss = ($style?: IconStyleRootProps) => {
+const getIconCoreCss = ($style?: IconStyleRoot) => {
   return css`
     ${toCss({
       width: $style?.size,
@@ -37,7 +37,7 @@ const getIconCoreCss = ($style?: IconStyleRootProps) => {
   `
 }
 
-const IconGlobalS = createGlobalStyle<{ $style: IconStyleRootProps }>`
+const IconGlobalS = createGlobalStyle<{ $style: IconStyleRoot }>`
   ${({ $style }) => {
     return css`
       .${getGlobalClassName($style)} {

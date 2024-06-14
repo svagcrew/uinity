@@ -1,10 +1,15 @@
-import type { ColorValue } from '@uinity/core/dist/utils/color.js'
+import type { ColorModeName, ColorValue } from '@uinity/core/dist/utils/color.js'
 import { getColorByMode } from '@uinity/core/dist/utils/color.js'
 
-export const colorMode = 'light' as const
-export const useColorMode = () => {
-  return { colorMode, getColorByMode: (color: ColorValue) => getColorByMode(colorMode, color) }
+export const hardcodedColorMode = 'light' as const
+export const getColorMode = (forceColorMode?: ColorModeName | null | undefined) => {
+  return forceColorMode ?? hardcodedColorMode
 }
-export const getColorMode = () => {
-  return colorMode
+export const useColorMode = (forceColorMode?: ColorModeName | null | undefined) => {
+  const colorModeHere = getColorMode(forceColorMode)
+  return {
+    colorMode: colorModeHere,
+    cm: colorModeHere,
+    getColorByMode: (color: ColorValue) => getColorByMode(colorModeHere, color),
+  }
 }

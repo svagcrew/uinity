@@ -43,7 +43,7 @@ export type LayoutStyleCoreProps = {
   sidebarHidden?: boolean
   fullWidth?: boolean
 }
-export type LayoutStyleRootProps = LayoutStyleCoreProps & {
+export type LayoutStyleRoot = LayoutStyleCoreProps & {
   /** byWindowSize */
   ws?: Array<[number, LayoutStyleCoreProps]>
   byWindowSize?: Array<[number, LayoutStyleCoreProps]>
@@ -54,7 +54,7 @@ export type LayoutStyleRootProps = LayoutStyleCoreProps & {
 export type LayoutDefaultAs = 'div'
 export type LayoutMainProps<TAs extends As = LayoutDefaultAs> = {
   as?: TAs
-  $style?: LayoutStyleRootProps
+  $style?: LayoutStyleRoot
   modalOpened?: boolean
   setModalOpened?: (opened: boolean) => void
   headerRender?: React.ReactNode
@@ -234,7 +234,7 @@ const SidebarS = styled.div.attrs(mark('SidebarS'))``
 const ContentS = styled.div.attrs(mark('ContentS'))``
 const SidebarAndContentS = styled.div.attrs(mark('SidebarAndContentS'))``
 const FooterS = styled.div.attrs(mark('FooterS'))``
-const LayoutS = styled.div.attrs(mark('LayoutS'))<{ $style: LayoutStyleRootProps }>`
+const LayoutS = styled.div.attrs(mark('LayoutS'))<{ $style: LayoutStyleRoot }>`
   ${({ $style }) => {
     return css`
       ${getLayoutCoreCss($style)}
@@ -295,7 +295,7 @@ const getLayoutModalCoreCss = (scp: LayoutStyleCoreProps): RuleSet | string => {
   `
 }
 const ModalS = styled.div.attrs(mark('ModalS'))<{
-  $style: LayoutStyleRootProps
+  $style: LayoutStyleRoot
 }>`
   ${({ $style }) => {
     return css`

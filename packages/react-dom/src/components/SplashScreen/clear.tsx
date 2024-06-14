@@ -3,11 +3,11 @@ import { forwardRefIgnoreTypes, mark } from '@/utils.js'
 import { toCss } from '@uinity/core/dist/utils/other.js'
 import { styled } from 'styled-components'
 
-export type SplashScreenStyleRootProps = {
+export type SplashScreenStyleRoot = {
   visible?: boolean
 }
 export type SplashScreenDefaultAs = 'div'
-export type SplashScreenMainProps<TAs extends As = SplashScreenDefaultAs> = SplashScreenStyleRootProps & {
+export type SplashScreenMainProps<TAs extends As = SplashScreenDefaultAs> = SplashScreenStyleRoot & {
   as?: TAs
   children?: React.ReactNode
 }
@@ -21,7 +21,7 @@ export type SplashScreenType = <TAs extends As = SplashScreenDefaultAs>(
 ) => React.ReactNode
 
 const ContentS = styled.div.attrs(mark('ContentS'))``
-const SplashScreenS = styled.div.attrs(mark('SplashScreenS'))<{ $style: SplashScreenStyleRootProps }>`
+const SplashScreenS = styled.div.attrs(mark('SplashScreenS'))<{ $style: SplashScreenStyleRoot }>`
   width: calc(100% + 100000px);
   height: calc(100% + 100000px);
   position: fixed;

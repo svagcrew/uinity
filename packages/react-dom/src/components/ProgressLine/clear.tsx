@@ -3,16 +3,16 @@ import { createGlobalStyle } from 'styled-components'
 
 NProgressOriginal.configure({ showSpinner: false })
 
-export type ProgressLineStyleRootProps = {
+export type ProgressLineStyleRoot = {
   color?: string
 }
 export type ProgressLineMainProps = {
-  $style?: ProgressLineStyleRootProps
+  $style?: ProgressLineStyleRoot
 }
 export type ProgressLineType = (props: ProgressLineMainProps) => React.ReactNode
 export type NProgressType = typeof NProgressOriginal
 
-const ProgressLineS = createGlobalStyle<{ $style: ProgressLineStyleRootProps }>`
+const ProgressLineS = createGlobalStyle<{ $style: ProgressLineStyleRoot }>`
     /* Make clicks pass-through */
     #nprogress {
       pointer-events: none;
