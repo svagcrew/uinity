@@ -27,7 +27,7 @@ const DisablerS = styled.div.attrs(mark('DisablerS'))<{ $style: DisablerStyleRoo
     })}
 `
 export const Disabler: DisablerType = forwardRefIgnoreTypes(
-  ({ disabled, children, ...restProps }: DisablerPropsWithRef, ref: any) => {
+  ({ disabled, children, ...restProps }: DisablerPropsWithoutRef, ref: any) => {
     const $style = { disabled }
     return (
       <DisablerS {...restProps} ref={ref} $style={$style}>

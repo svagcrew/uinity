@@ -47,7 +47,7 @@ const BlankS = styled.div.attrs(mark('BlankS'))<{ $style: BlankStyleRootProps }>
   }}
 `
 export const Blank: BlankType = forwardRefIgnoreTypes(
-  ({ $style = {}, children, ...restProps }: BlankPropsWithRef, ref: any) => {
+  ({ $style = {}, children, ...restProps }: BlankPropsWithoutRef, ref: any) => {
     const $styleNormalized = { ...$style }
     return (
       <BlankS {...restProps} ref={ref} $style={$styleNormalized}>

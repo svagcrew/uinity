@@ -342,48 +342,50 @@ const getBlockCoreCss = ($style: BlockStyleRootProps): RuleSet => {
 const BlockS = styled.div.attrs(mark('BlockS'))<{ $style: BlockStyleRootProps }>`
   ${({ $style }) => getBlockCoreCss($style)}
 `
-export const Block: BlockType = forwardRefIgnoreTypes(({ children, as, ...restProps }: BlockPropsWithRef, ref: any) => {
-  const $style = pick(restProps, blockStyleCorePropsKeys) as BlockStyleRootProps
-  const htmlElementProps = Object.fromEntries(
-    Object.entries(restProps).filter(
-      ([k]) => !blockStyleCorePropsKeys.includes(k as any) && !blockStyleSpecialPropsKeys.includes(k as any)
+export const Block: BlockType = forwardRefIgnoreTypes(
+  ({ children, as, ...restProps }: BlockPropsWithoutRef, ref: any) => {
+    const $style = pick(restProps, blockStyleCorePropsKeys) as BlockStyleRootProps
+    const htmlElementProps = Object.fromEntries(
+      Object.entries(restProps).filter(
+        ([k]) => !blockStyleCorePropsKeys.includes(k as any) && !blockStyleSpecialPropsKeys.includes(k as any)
+      )
+    ) as AsProps<BlockDefaultAs>
+
+    const normalizedWs = (restProps.ws || [])
+      .sort(([a], [b]) => a - b)
+      .map(([maxWidth, props]) => {
+        return [maxWidth, normalizeBlockCorePropsConfig(props)]
+      }) as Array<[number, BlockStyleCoreProps]>
+    $style.ws = normalizedWs
+
+    const normalizedEs = (restProps.cs || [])
+      .sort(([a], [b]) => a - b)
+      .map(([maxWidth, props]) => {
+        return [maxWidth, normalizeBlockCorePropsConfig(props)]
+      }) as Array<[number, BlockStyleCoreProps]>
+    $style.cs = normalizedEs
+
+    const normalizedWsr = (restProps.wsr || [])
+      .sort(([a], [b]) => b - a)
+      .map(([maxWidth, props]) => {
+        return [maxWidth, normalizeBlockCorePropsConfig(props)]
+      }) as Array<[number, BlockStyleCoreProps]>
+    $style.wsr = normalizedWsr
+
+    const normalizedEsr = (restProps.csr || [])
+      .sort(([a], [b]) => b - a)
+      .map(([maxWidth, props]) => {
+        return [maxWidth, normalizeBlockCorePropsConfig(props)]
+      }) as Array<[number, BlockStyleCoreProps]>
+    $style.csr = normalizedEsr
+
+    const normalizedCp = restProps.cp && normalizeBlockCorePropsConfig(restProps.cp)
+    $style.cp = normalizedCp
+
+    return (
+      <BlockS {...(htmlElementProps as any)} as={as} ref={ref} $style={$style}>
+        {children}
+      </BlockS>
     )
-  ) as AsProps<BlockDefaultAs>
-
-  const normalizedWs = (restProps.ws || [])
-    .sort(([a], [b]) => a - b)
-    .map(([maxWidth, props]) => {
-      return [maxWidth, normalizeBlockCorePropsConfig(props)]
-    }) as Array<[number, BlockStyleCoreProps]>
-  $style.ws = normalizedWs
-
-  const normalizedEs = (restProps.cs || [])
-    .sort(([a], [b]) => a - b)
-    .map(([maxWidth, props]) => {
-      return [maxWidth, normalizeBlockCorePropsConfig(props)]
-    }) as Array<[number, BlockStyleCoreProps]>
-  $style.cs = normalizedEs
-
-  const normalizedWsr = (restProps.wsr || [])
-    .sort(([a], [b]) => b - a)
-    .map(([maxWidth, props]) => {
-      return [maxWidth, normalizeBlockCorePropsConfig(props)]
-    }) as Array<[number, BlockStyleCoreProps]>
-  $style.wsr = normalizedWsr
-
-  const normalizedEsr = (restProps.csr || [])
-    .sort(([a], [b]) => b - a)
-    .map(([maxWidth, props]) => {
-      return [maxWidth, normalizeBlockCorePropsConfig(props)]
-    }) as Array<[number, BlockStyleCoreProps]>
-  $style.csr = normalizedEsr
-
-  const normalizedCp = restProps.cp && normalizeBlockCorePropsConfig(restProps.cp)
-  $style.cp = normalizedCp
-
-  return (
-    <BlockS {...(htmlElementProps as any)} as={as} ref={ref} $style={$style}>
-      {children}
-    </BlockS>
-  )
-})
+  }
+)

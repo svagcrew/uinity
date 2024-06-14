@@ -1,5 +1,6 @@
 import { Icon as IconClear } from './clear.js'
 import type { IconMainProps, IconSrc } from '@/components/Icon/clear.js'
+import type { WithoutRef } from '@/utils.js'
 import { type AsPropsWithRef, forwardRefIgnoreTypes } from '@/utils.js'
 import type { UinityConfig } from '@uinity/core'
 import { getIconConfigFinalProps } from '@uinity/core/dist/components/icon.js'
@@ -15,6 +16,9 @@ export type IconConfiguredMainProps<TIconName extends string = string> = IconCon
   Omit<IconMainProps, 'src'>
 export type IconConfiguredPropsWithRef<TIconName extends string = string> = IconConfiguredMainProps<TIconName> &
   AsPropsWithRef<undefined>
+export type IconConfiguredPropsWithoutRef<TIconName extends string = string> = WithoutRef<
+  IconConfiguredPropsWithRef<TIconName>
+>
 export type IconConfigured<TIconName extends string = string> = (
   props: IconConfiguredPropsWithRef<TIconName>
 ) => React.ReactNode
@@ -29,7 +33,7 @@ export const createIcon = <TIconName extends string = string>({
   iconsSources?: IconsSources<TIconName>
 }) => {
   const Icon: IconConfigured<TIconName> = forwardRefIgnoreTypes(
-    ({ size, name, $style = {}, ...restProps }: IconConfiguredPropsWithRef<TIconName>, ref: any) => {
+    ({ size, name, $style = {}, ...restProps }: IconConfiguredPropsWithoutRef<TIconName>, ref: any) => {
       const $styleConfigured = getIconConfigFinalProps(uinityConfig, size)
       const $styleNormalized = {
         ...$styleConfigured,

@@ -49,7 +49,7 @@ const SplashScreenS = styled.div.attrs(mark('SplashScreenS'))<{ $style: SplashSc
   }
 `
 export const SplashScreen: SplashScreenType = forwardRefIgnoreTypes(
-  ({ visible, children, ...restProps }: SplashScreenPropsWithRef, ref: any) => {
+  ({ visible, children, ...restProps }: SplashScreenPropsWithoutRef, ref: any) => {
     return (
       <SplashScreenS {...(restProps as {})} $style={{ visible }} ref={ref}>
         <ContentS>{children}</ContentS>

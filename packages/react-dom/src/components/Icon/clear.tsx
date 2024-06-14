@@ -48,7 +48,7 @@ const IconGlobalS = createGlobalStyle<{ $style: IconStyleRootProps }>`
 `
 
 export const Icon: IconType = forwardRefIgnoreTypes(
-  ({ $style = {}, className, src, ...restProps }: IconPropsWithRef, ref: any) => {
+  ({ $style = {}, className, src, ...restProps }: IconPropsWithoutRef, ref: any) => {
     const gcn = getGlobalClassName($style)
     if (typeof src === 'string') {
       return (

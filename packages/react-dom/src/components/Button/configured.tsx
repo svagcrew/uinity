@@ -3,6 +3,7 @@ import { Button as ButtonClear } from './clear.js'
 import type { ButtonMainProps, ButtonStyleStatesProps } from '@/components/Button/clear.js'
 import type { IconConfigured } from '@/components/Icon/configured.js'
 import { useColorMode } from '@/lib/colorMode.js'
+import type { WithoutRef } from '@/utils.js'
 import { type As, type AsPropsWithRef, forwardRefIgnoreTypes } from '@/utils.js'
 import type { UinityConfig } from '@uinity/core'
 import { getButtonConfigFinalProps } from '@uinity/core/dist/components/button.js'
@@ -25,6 +26,10 @@ export type ButtonConfiguredPropsWithRef<
   TAs extends As = ButtonDefaultAs,
   TIconName extends string = string,
 > = ButtonConfiguredMainProps<TAs, TIconName> & AsPropsWithRef<TAs>
+export type ButtonConfiguredPropsWithoutRef<
+  TAs extends As = ButtonDefaultAs,
+  TIconName extends string = string,
+> = WithoutRef<ButtonConfiguredPropsWithRef<TAs, TIconName>>
 export type ButtonConfigured<TIconName extends string = string> = <TAs extends As = ButtonDefaultAs>(
   props: ButtonConfiguredPropsWithRef<TAs, TIconName>
 ) => React.ReactNode
@@ -53,7 +58,7 @@ export const createButton = <TIconName extends string>({
   const { colorMode: colorModeGlobal } = useColorMode()
   const Button: ButtonConfigured<TIconName> = forwardRefIgnoreTypes(
     (
-      { variant, color, size, iconStart, colorMode, $style = {}, ...restProps }: ButtonConfiguredPropsWithRef,
+      { variant, color, size, iconStart, colorMode, $style = {}, ...restProps }: ButtonConfiguredPropsWithoutRef,
       ref: any
     ) => {
       const cm = colorMode || colorModeGlobal

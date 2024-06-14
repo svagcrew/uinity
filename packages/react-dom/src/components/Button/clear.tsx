@@ -98,7 +98,7 @@ const ButtonS = styled.button.attrs(mark('ButtonS'))<{ $style: ButtonStyleRootPr
 `
 
 export const Button: ButtonType = forwardRefIgnoreTypes(
-  ({ iconStart, children, $style = {}, disabled, ...restProps }: ButtonPropsWithRef, ref: any) => {
+  ({ iconStart, children, $style = {}, disabled, ...restProps }: ButtonPropsWithoutRef, ref: any) => {
     return (
       <ButtonS
         {...(restProps as {})}

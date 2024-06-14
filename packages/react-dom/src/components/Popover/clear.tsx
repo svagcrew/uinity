@@ -102,7 +102,7 @@ export const WithPopover: WithPopoverType = forwardRefIgnoreTypes(
       flipPadding,
       offset,
       shiftPadding,
-    }: WithPopoverPropsWithRef,
+    }: WithPopoverPropsWithoutRef,
     propRef: any
   ) => {
     const popover = usePopover({ initialOpened, placement, opened, setOpened, flipPadding, offset, shiftPadding })

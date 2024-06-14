@@ -148,7 +148,7 @@ export const Grid: GridType = forwardRefIgnoreTypes(
       byWindowSizeReverse,
       wsr,
       ...restProps
-    }: GridPropsWithRef,
+    }: GridPropsWithoutRef,
     ref: any
   ) => {
     itemsInRow = itemsInRow ?? i

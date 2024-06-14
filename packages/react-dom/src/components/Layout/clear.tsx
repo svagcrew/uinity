@@ -344,7 +344,7 @@ export const Layout: LayoutType = forwardRefIgnoreTypes(
       setModalOpened,
       $style = {},
       ...restProps
-    }: LayoutPropsWithRef<'div'>,
+    }: LayoutPropsWithoutRef<'div'>,
     ref: any
   ) => {
     $style.byWindowSize = ($style.byWindowSize || $style.ws || []).sort(([a], [b]) => a - b)

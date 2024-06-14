@@ -40,7 +40,7 @@ const normalizeBlankStyleRootProps = (
 export const createBlank = ({ uinityConfig }: { uinityConfig: UinityConfig }) => {
   const { colorMode: colorModeGlobal } = useColorMode()
   const Blank: BlankConfigured = forwardRefIgnoreTypes(
-    ({ variant, color, size, colorMode, $style = {}, ...restProps }: BlankConfiguredPropsWithRef, ref: any) => {
+    ({ variant, color, size, colorMode, $style = {}, ...restProps }: BlankConfiguredPropsWithoutRef, ref: any) => {
       const cm = colorMode || colorModeGlobal
       const $styleConfigured = getBlankConfigFinalProps(uinityConfig, variant, color, size)
       const $styleNormalized: BlankStyleRootProps = {

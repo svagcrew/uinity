@@ -266,7 +266,7 @@ export const Modal: ModalType = forwardRefIgnoreTypes(
       style,
 
       ...restProps
-    }: ModalPropsWithRef,
+    }: ModalPropsWithoutRef,
     propRef: any
   ) => {
     let {
