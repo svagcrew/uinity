@@ -1,4 +1,4 @@
-import { Grid } from '../Grid/clear.js'
+import { Grid } from './clear.js'
 import type { Meta, StoryObj } from '@storybook/react'
 
 const GridDemo = () => {

@@ -1,4 +1,4 @@
-import { createBlock } from '../Block/configured.js'
+import { createBlock } from './configured.js'
 import { uinityConfig } from '@/stories/uinity.config.js'
 import type { Meta, StoryObj } from '@storybook/react'
 

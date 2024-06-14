@@ -1,4 +1,4 @@
-import { Button } from '../Button/clear.js'
+import { Button } from './clear.js'
 import SvgIcon from '@/components/Icon/icon1.svg?react'
 import type { Meta, StoryObj } from '@storybook/react'
 

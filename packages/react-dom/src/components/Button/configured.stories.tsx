@@ -1,4 +1,4 @@
-import { createButton } from '../Button/configured.js'
+import { createButton } from './configured.js'
 import { Icon } from '@/components/Icon/configured.stories.js'
 import { uinityConfig } from '@/stories/uinity.config.js'
 import { getArgTypeConfigFromObject } from '@/stories/utils.js'

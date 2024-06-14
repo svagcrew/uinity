@@ -1,5 +1,5 @@
 /* eslint-disable unicorn/numeric-separators-style */
-import { Block } from '../Block/clear.js'
+import { Block } from './clear.js'
 import type { Meta, StoryObj } from '@storybook/react'
 
 const BlockDemo = () => {
