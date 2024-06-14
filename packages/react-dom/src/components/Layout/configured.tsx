@@ -18,7 +18,7 @@ export type LayoutConfiguredMainProps<TAs extends As> = LayoutConfiguredSettings
   LayoutConfiguredSpecialProps<TAs> &
   LayoutMainProps<TAs>
 export type LayoutConfiguredPropsWithRef<TAs extends As> = LayoutConfiguredMainProps<TAs> & AsPropsWithRef<TAs>
-export type LayoutConfigured = <TAs extends As>(props: LayoutConfiguredPropsWithRef<TAs>) => React.ReactElement | null
+export type LayoutConfigured = <TAs extends As>(props: LayoutConfiguredPropsWithRef<TAs>) => React.ReactNode
 
 const normalizeLayoutStyleCoreProps = (
   cm: ColorModeName,

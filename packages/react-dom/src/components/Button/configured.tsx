@@ -27,7 +27,7 @@ export type ButtonConfiguredPropsWithRef<
 > = ButtonConfiguredMainProps<TAs, TIconName> & AsPropsWithRef<TAs>
 export type ButtonConfigured<TIconName extends string = string> = <TAs extends As = ButtonDefaultAs>(
   props: ButtonConfiguredPropsWithRef<TAs, TIconName>
-) => React.ReactElement | null
+) => React.ReactNode
 
 const normalizeButtonStyleCoreProps = (
   cm: ColorModeName,

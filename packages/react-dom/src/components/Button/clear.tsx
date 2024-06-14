@@ -33,7 +33,7 @@ export type ButtonMainProps<TAs extends As = ButtonDefaultAs> = {
 }
 export type ButtonPropsWithRef<TAs extends As = ButtonDefaultAs> = ButtonMainProps<TAs> & AsPropsWithRef<TAs>
 export type ButtonPropsWithoutRef<TAs extends As = ButtonDefaultAs> = WithoutRef<ButtonPropsWithRef<TAs>>
-export type ButtonType = <TAs extends As = ButtonDefaultAs>(props: ButtonPropsWithRef<TAs>) => React.ReactElement | null
+export type ButtonType = <TAs extends As = ButtonDefaultAs>(props: ButtonPropsWithRef<TAs>) => React.ReactNode
 
 const getButtonCoreCss = (scp?: ButtonStyleCoreProps) => {
   return css`

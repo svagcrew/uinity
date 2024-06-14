@@ -114,7 +114,7 @@ export type ModalMainProps = ModalSpecialProps & { $style?: ModalStyleCoreRawPro
 export type ModalDefaultAs = 'div'
 export type ModalPropsWithRef = ModalMainProps & AsPropsWithRef<ModalDefaultAs>
 export type ModalPropsWithoutRef = WithoutRef<ModalPropsWithRef>
-export type ModalType = (props: ModalPropsWithRef) => React.ReactElement | null
+export type ModalType = (props: ModalPropsWithRef) => React.ReactNode
 
 const useModal = ({ opened, setOpened, closeOnOutsideClick }: UseModalProps = {}) => {
   closeOnOutsideClick = isBoolean(closeOnOutsideClick) ? closeOnOutsideClick : true

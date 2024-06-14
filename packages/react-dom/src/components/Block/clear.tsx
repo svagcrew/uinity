@@ -183,7 +183,7 @@ export type BlockDefaultAs = 'div'
 export type BlockMainProps<TAs extends As = BlockDefaultAs> = BlockStyleCoreProps & BlockSpecialProps<TAs>
 export type BlockPropsWithRef<TAs extends As = BlockDefaultAs> = BlockMainProps<TAs> & AsPropsWithRef<TAs>
 export type BlockPropsWithoutRef<TAs extends As = BlockDefaultAs> = WithoutRef<BlockPropsWithRef<TAs>>
-export type BlockType = <TAs extends As = BlockDefaultAs>(props: BlockPropsWithRef<TAs>) => React.ReactElement | null
+export type BlockType = <TAs extends As = BlockDefaultAs>(props: BlockPropsWithRef<TAs>) => React.ReactNode
 
 const normalizeBlockCorePropsConfig = (corePropsConfig: BlockCorePropsConfig): BlockStyleCoreProps => {
   if (isString(corePropsConfig)) {

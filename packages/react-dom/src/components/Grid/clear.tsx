@@ -45,7 +45,7 @@ export type GridDefaultAs = 'div'
 export type GridMainProps<TAs extends As = GridDefaultAs> = { as?: TAs; children?: React.ReactNode } & GridCoreProps
 export type GridPropsWithRef<TAs extends As = GridDefaultAs> = GridMainProps<TAs> & AsPropsWithRef<TAs>
 export type GridPropsWithoutRef<TAs extends As = GridDefaultAs> = WithoutRef<GridPropsWithRef<TAs>>
-export type GridType = <TAs extends As = GridDefaultAs>(props: GridPropsWithRef<TAs>) => React.ReactElement | null
+export type GridType = <TAs extends As = GridDefaultAs>(props: GridPropsWithRef<TAs>) => React.ReactNode
 
 const getGridCoreCss = ($style: GridStyleRootProps): RuleSet => {
   return css`

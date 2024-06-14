@@ -9,7 +9,7 @@ export type ProgressLineStyleRootProps = {
 export type ProgressLineMainProps = {
   $style?: ProgressLineStyleRootProps
 }
-export type ProgressLineType = (props: ProgressLineMainProps) => React.ReactElement | null
+export type ProgressLineType = (props: ProgressLineMainProps) => React.ReactNode
 export type NProgressType = typeof NProgressOriginal
 
 const ProgressLineS = createGlobalStyle<{ $style: ProgressLineStyleRootProps }>`

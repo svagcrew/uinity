@@ -22,7 +22,7 @@ export type BlankConfiguredPropsWithoutRef<TAs extends As = BlankDefaultAs> = Wi
 >
 export type BlankConfigured = <TAs extends As = BlankDefaultAs>(
   props: BlankConfiguredPropsWithRef<TAs>
-) => React.ReactElement | null
+) => React.ReactNode
 
 const normalizeBlankStyleRootProps = (
   cm: ColorModeName,

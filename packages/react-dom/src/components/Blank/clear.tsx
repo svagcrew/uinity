@@ -17,7 +17,7 @@ export type BlankMainProps<TAs extends As = BlankDefaultAs> = {
 }
 export type BlankPropsWithRef<TAs extends As = BlankDefaultAs> = BlankMainProps<TAs> & AsPropsWithRef<TAs>
 export type BlankPropsWithoutRef<TAs extends As = BlankDefaultAs> = WithoutRef<BlankPropsWithRef<TAs>>
-export type BlankType = <TAs extends As = BlankDefaultAs>(props: BlankPropsWithRef<TAs>) => React.ReactElement | null
+export type BlankType = <TAs extends As = BlankDefaultAs>(props: BlankPropsWithRef<TAs>) => React.ReactNode
 
 const getBlankCoreCss = ($style: BlankStyleRootProps) => {
   return css`

@@ -20,7 +20,7 @@ export type IconMainProps = {
 }
 export type IconPropsWithRef = IconMainProps & AsPropsWithRef<undefined>
 export type IconPropsWithoutRef = WithoutRef<IconPropsWithRef>
-export type IconType = (props: IconPropsWithRef) => React.ReactElement | null
+export type IconType = (props: IconPropsWithRef) => React.ReactNode
 
 const getIconCoreCss = ($style?: IconStyleRootProps) => {
   return css`

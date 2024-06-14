@@ -17,7 +17,7 @@ export type IconConfiguredPropsWithRef<TIconName extends string = string> = Icon
   AsPropsWithRef<undefined>
 export type IconConfigured<TIconName extends string = string> = (
   props: IconConfiguredPropsWithRef<TIconName>
-) => React.ReactElement | null
+) => React.ReactNode
 
 export type IconsSources<TIconName extends string = string> = Record<TIconName, IconSrc>
 

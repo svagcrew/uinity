@@ -13,7 +13,7 @@ export type DisablerMainProps = {
 export type DisablerDefaultAs = 'div'
 export type DisablerPropsWithRef = DisablerMainProps & AsPropsWithRef<DisablerDefaultAs>
 export type DisablerPropsWithoutRef = WithoutRef<DisablerPropsWithRef>
-export type DisablerType = (props: DisablerPropsWithRef) => React.ReactElement | null
+export type DisablerType = (props: DisablerPropsWithRef) => React.ReactNode
 
 const DisablerS = styled.div.attrs(mark('DisablerS'))<{ $style: DisablerStyleRootProps }>`
   transition: none;

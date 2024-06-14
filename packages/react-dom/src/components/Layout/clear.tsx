@@ -65,7 +65,7 @@ export type LayoutMainProps<TAs extends As = LayoutDefaultAs> = {
 }
 export type LayoutPropsWithRef<TAs extends As = LayoutDefaultAs> = LayoutMainProps<TAs> & AsPropsWithRef<TAs>
 export type LayoutPropsWithoutRef<TAs extends As = LayoutDefaultAs> = WithoutRef<LayoutPropsWithRef<TAs>>
-export type LayoutType = <TAs extends As = LayoutDefaultAs>(props: LayoutPropsWithRef<TAs>) => React.ReactElement | null
+export type LayoutType = <TAs extends As = LayoutDefaultAs>(props: LayoutPropsWithRef<TAs>) => React.ReactNode
 
 const getLayoutCoreCss = (scp: LayoutStyleCoreProps): RuleSet | string => {
   return css`

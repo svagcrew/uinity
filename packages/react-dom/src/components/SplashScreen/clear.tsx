@@ -18,7 +18,7 @@ export type SplashScreenPropsWithoutRef<TAs extends As = SplashScreenDefaultAs> 
 >
 export type SplashScreenType = <TAs extends As = SplashScreenDefaultAs>(
   props: SplashScreenPropsWithRef<TAs>
-) => React.ReactElement | null
+) => React.ReactNode
 
 const ContentS = styled.div.attrs(mark('ContentS'))``
 const SplashScreenS = styled.div.attrs(mark('SplashScreenS'))<{ $style: SplashScreenStyleRootProps }>`
