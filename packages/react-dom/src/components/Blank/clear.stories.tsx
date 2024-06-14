@@ -1,8 +1,8 @@
-import type { BlankMainProps, BlankStyleRootProps } from './clear.js'
+import type { BlankMainProps, BlankStyleRoot } from './clear.js'
 import { Blank } from './clear.js'
 import type { Meta, StoryObj } from '@storybook/react'
 
-const BlankDemo = ({ as, ...restProps }: BlankStyleRootProps & BlankMainProps) => {
+const BlankDemo = ({ as, ...restProps }: BlankStyleRoot & BlankMainProps) => {
   return (
     <Blank $style={restProps} as={as}>
       Blank

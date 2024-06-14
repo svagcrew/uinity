@@ -1,8 +1,9 @@
-import type { BlankDefaultAs, BlankMainProps, BlankStyleRootProps } from './clear.js'
+import type { BlankDefaultAs, BlankMainProps, BlankStyleRoot } from './clear.js'
 import { Blank as BlankClear } from './clear.js'
 import { useColorMode } from '@/lib/colorMode.js'
 import { type As, type AsPropsWithRef, forwardRefIgnoreTypes, type WithoutRef } from '@/utils.js'
 import { type ColorModeName, getColorByMode, type UinityConfig } from '@uinity/core'
+import type { BlankConfigFinalProps } from '@uinity/core/dist/components/blank.js'
 import { getBlankConfigFinalProps } from '@uinity/core/dist/components/blank.js'
 
 export type BlankConfiguredSettingsProps = {
@@ -24,16 +25,20 @@ export type BlankConfigured = <TAs extends As = BlankDefaultAs>(
   props: BlankConfiguredPropsWithRef<TAs>
 ) => React.ReactNode
 
-const normalizeBlankStyleRootProps = (
-  cm: ColorModeName,
-  passedSrp: BlankStyleRootProps | undefined,
-  configuredCfp: any
-) => {
+const makeBlankStyleRoot = ({
+  cm,
+  $style,
+  cfp,
+}: {
+  cm: ColorModeName
+  $style: BlankStyleRoot
+  cfp: BlankConfigFinalProps
+}): BlankStyleRoot => {
   return {
-    ...configuredCfp,
-    ...passedSrp,
-    background: getColorByMode(cm, passedSrp?.background || configuredCfp.background),
-    childrenBackground: getColorByMode(cm, passedSrp?.childrenBackground || configuredCfp.childrenBackground),
+    ...cfp,
+    ...$style,
+    background: getColorByMode(cm, $style.background || cfp.background),
+    childrenBackground: getColorByMode(cm, $style.childrenBackground || cfp.childrenBackground),
   }
 }
 
@@ -42,12 +47,8 @@ export const createBlank = ({ uinityConfig }: { uinityConfig: UinityConfig }) =>
   const Blank: BlankConfigured = forwardRefIgnoreTypes(
     ({ variant, color, size, colorMode, $style = {}, ...restProps }: BlankConfiguredPropsWithoutRef, ref: any) => {
       const cm = colorMode || colorModeGlobal
-      const $styleConfigured = getBlankConfigFinalProps(uinityConfig, variant, color, size)
-      const $styleNormalized: BlankStyleRootProps = {
-        ...$styleConfigured,
-        ...$style,
-        ...normalizeBlankStyleRootProps(cm, $style, $styleConfigured),
-      }
+      const cfp = getBlankConfigFinalProps(uinityConfig, variant, color, size)
+      const $styleNormalized = makeBlankStyleRoot({ cm, $style, cfp })
       return <BlankClear {...(restProps as {})} $style={$styleNormalized} ref={ref} />
     }
   )
