@@ -1,6 +1,6 @@
 {
   "name": "@uinity/scripts",
-  "version": "0.1.17",
+  "version": "0.1.18",
   "homepage": "https://github.com/svagcrew/uinity",
   "repository": {
     "type": "git",
@@ -17,13 +17,13 @@
   "private": "true",
   "scripts": {
     "build": "svag-ts build",
+    "do": "tsx ./src/index.ts",
     "lint": "svag-lint lint",
     "prepare": "husky",
     "prettify": "svag-prettier prettify",
     "test": "svag-jest test",
     "types": "svag-ts types",
-    "watch": "svag-ts watch",
-    "do": "tsx ./src/index.ts"
+    "watch": "svag-ts watch"
   },
   "dependencies": {
     "concurrently": "^8.2.2",
