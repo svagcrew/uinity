@@ -29,13 +29,13 @@ export const createBlank = ({ uinityConfig }: { uinityConfig: UinityConfig }) =>
     ({ variant, color, size, colorMode, $style = {}, ...restProps }: BlankConfiguredPropsWithoutRef, ref: any) => {
       const { cm } = useColorMode(colorMode)
       const cfp = getBlankConfigFinalProps(uinityConfig, variant, color, size)
-      const $styleNormalized: BlankStyleRoot = {
+      const $styleConfigured: BlankStyleRoot = {
         ...cfp,
         ...$style,
         background: getColorByMode(cm, $style.background ?? cfp.background),
         childrenBackground: getColorByMode(cm, $style.childrenBackground ?? cfp.childrenBackground),
       }
-      return <BlankClear {...(restProps as {})} $style={$styleNormalized} ref={ref} />
+      return <BlankClear {...(restProps as {})} $style={$styleConfigured} ref={ref} />
     }
   )
   return {

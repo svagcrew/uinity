@@ -13,6 +13,7 @@ export type IconStyleRoot = {
   color?: string | null
   size?: number | string | null
 }
+export type IconStyleFinal = IconStyleRoot
 export type IconMainProps = {
   $style?: IconStyleRoot
   className?: string
@@ -22,38 +23,42 @@ export type IconPropsWithRef = IconMainProps & AsPropsWithRef<undefined>
 export type IconPropsWithoutRef = WithoutRef<IconPropsWithRef>
 export type IconType = (props: IconPropsWithRef) => React.ReactNode
 
-const getIconCoreCss = ($style?: IconStyleRoot) => {
+const getIconCoreCss = ($sf: IconStyleFinal) => {
   return css`
     ${toCss({
-      width: $style?.size,
-      height: $style?.size,
+      width: $sf.size,
+      height: $sf.size,
     })}
 
     path {
       ${toCss({
-        fill: $style?.color,
+        fill: $sf.color,
       })}
     }
   `
 }
+export const getIconFinalCss = ($sf: IconStyleFinal) => {
+  return css`
+    .${getGlobalClassName($sf)} {
+      ${getIconCoreCss($sf)}
+    }
+  `
+}
 
-const IconGlobalS = createGlobalStyle<{ $style: IconStyleRoot }>`
-  ${({ $style }) => {
-    return css`
-      .${getGlobalClassName($style)} {
-        ${getIconCoreCss($style)}
-      }
-    `
-  }}
+const IconGlobalS = createGlobalStyle<{ $sf: IconStyleFinal }>`
+  ${({ $sf }) => getIconFinalCss($sf)}
 `
 
 export const Icon: IconType = forwardRefIgnoreTypes(
   ({ $style = {}, className, src, ...restProps }: IconPropsWithoutRef, ref: any) => {
     const gcn = getGlobalClassName($style)
+    const $sf: IconStyleFinal = {
+      ...$style,
+    }
     if (typeof src === 'string') {
       return (
         <>
-          <IconGlobalS $style={$style} />
+          <IconGlobalS $sf={$sf} />
           <img className={cn(className, gcn)} src={src} ref={ref as any} {...(restProps as {})} />
         </>
       )
@@ -61,7 +66,7 @@ export const Icon: IconType = forwardRefIgnoreTypes(
       const element = src as React.ReactElement
       return (
         <>
-          <IconGlobalS $style={$style} />
+          <IconGlobalS $sf={$sf} />
           {React.cloneElement(element, {
             ...element.props,
             ...restProps,
@@ -74,7 +79,7 @@ export const Icon: IconType = forwardRefIgnoreTypes(
       const component = src as React.ComponentType<{ className?: string; ref?: AsRef<any> }>
       return (
         <>
-          <IconGlobalS $style={$style} />
+          <IconGlobalS $sf={$sf} />
           {React.createElement(component, {
             ...restProps,
             className: cn(className, gcn),

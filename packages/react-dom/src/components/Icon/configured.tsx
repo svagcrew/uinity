@@ -5,11 +5,13 @@ import { type AsPropsWithRef, forwardRefIgnoreTypes } from '@/utils.js'
 import type { UinityConfig } from '@uinity/core'
 import { getIconConfigFinalProps } from '@uinity/core/dist/components/icon.js'
 
+export type ConfiguredIconSrc<TIconName extends string = string> = TIconName | Exclude<IconSrc, string>
 export type IconConfiguredSettingsProps = {
   size?: keyof UinityConfig['icon']['size'] | undefined | null
 }
 export type IconConfiguredSpecialProps<TIconName extends string = string> = {
-  name: TIconName
+  name?: TIconName
+  src?: IconSrc
 }
 export type IconConfiguredMainProps<TIconName extends string = string> = IconConfiguredSettingsProps &
   IconConfiguredSpecialProps<TIconName> &
@@ -33,14 +35,14 @@ export const createIcon = <TIconName extends string = string>({
   iconsSources?: IconsSources<TIconName>
 }) => {
   const Icon: IconConfigured<TIconName> = forwardRefIgnoreTypes(
-    ({ size, name, $style = {}, ...restProps }: IconConfiguredPropsWithoutRef<TIconName>, ref: any) => {
-      const $styleConfigured = getIconConfigFinalProps(uinityConfig, size)
-      const $styleNormalized = {
-        ...$styleConfigured,
+    ({ size, name, src, $style = {}, ...restProps }: IconConfiguredPropsWithoutRef<TIconName>, ref: any) => {
+      const cfp = getIconConfigFinalProps(uinityConfig, size)
+      const $styleConfigured = {
+        ...cfp,
         ...$style,
       }
-      const src = iconsSources && name in iconsSources ? iconsSources[name] : null
-      return <IconClear src={src} $style={$styleNormalized} ref={ref} {...(restProps as {})} />
+      src = iconsSources && name && name in iconsSources ? iconsSources[name] : src
+      return <IconClear {...(restProps as {})} src={src} $style={$styleConfigured} ref={ref} />
     }
   )
   return {

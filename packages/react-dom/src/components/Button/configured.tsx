@@ -1,8 +1,7 @@
 import type { ButtonDefaultAs, ButtonStyleCore, ButtonStyleRoot } from './clear.js'
 import { Button as ButtonClear } from './clear.js'
 import type { ButtonMainProps } from '@/components/Button/clear.js'
-import type { IconSrc } from '@/components/Icon/clear.js'
-import type { IconConfigured } from '@/components/Icon/configured.js'
+import type { ConfiguredIconSrc, IconConfigured } from '@/components/Icon/configured.js'
 import { useColorMode } from '@/lib/colorMode.js'
 import type { WithoutRef } from '@/utils.js'
 import { type As, type AsPropsWithRef, forwardRefIgnoreTypes } from '@/utils.js'
@@ -17,8 +16,8 @@ export type ButtonConfiguredSettingsProps = {
   size?: keyof UinityConfig['button']['size'] | undefined | null
   colorMode?: ColorModeName | undefined | null
 }
-export type ButtonConfiguredSpecialProps<TIconName extends string> = {
-  iconStart?: TIconName | IconSrc
+export type ButtonConfiguredSpecialProps<TIconName extends string = string> = {
+  iconStart?: ConfiguredIconSrc<TIconName>
 }
 export type ButtonConfiguredMainProps<
   TAs extends As = ButtonDefaultAs,
@@ -67,7 +66,7 @@ export const createButton = <TIconName extends string>({
       ref: any
     ) => {
       const { cm } = useColorMode(colorMode)
-      const $styleNormalized: ButtonStyleRoot = {
+      const $styleConfigured: ButtonStyleRoot = {
         rest: makeButtonStyleCore({
           cm,
           sc: $style.rest,
@@ -83,7 +82,7 @@ export const createButton = <TIconName extends string>({
         <ButtonClear
           {...(restProps as {})}
           iconStart={<Icon name={iconStart as any} />}
-          $style={$styleNormalized}
+          $style={$styleConfigured}
           ref={ref}
         />
       )

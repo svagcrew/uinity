@@ -1,4 +1,5 @@
 // import { fn } from '@storybook/test'
+import type { IconConfiguredMainProps } from './configured.js'
 import { createIcon } from './configured.js'
 import { iconsSources, uinityConfig } from '@/stories/uinity.config.js'
 import { getArgTypeConfigFromObject } from '@/stories/utils.js'
@@ -9,9 +10,13 @@ export const { Icon } = createIcon({
   iconsSources,
 })
 
+const IconDemo = (props: IconConfiguredMainProps) => {
+  return <Icon {...(props as any)} />
+}
+
 const meta = {
   title: 'Icon Configured',
-  component: Icon,
+  component: IconDemo,
   parameters: {
     layout: 'centered',
   },
@@ -23,10 +28,10 @@ const meta = {
     size: 'm',
     name: 'icon1',
   },
-} satisfies Meta<typeof Icon>
+} satisfies Meta<typeof IconDemo>
 
 export default meta
-type Story = StoryObj<typeof Icon>
+type Story = StoryObj<typeof IconDemo>
 
 export const Large: Story = {
   args: {

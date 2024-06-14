@@ -1,3 +1,4 @@
+import type { ButtonConfiguredMainProps } from './configured.js'
 import { createButton } from './configured.js'
 import { Icon } from '@/components/Icon/configured.stories.js'
 import { uinityConfig } from '@/stories/uinity.config.js'
@@ -6,9 +7,13 @@ import type { Meta, StoryObj } from '@storybook/react'
 
 const { Button } = createButton({ uinityConfig, Icon })
 
+const ButtonDemo = ({ ...restProps }: ButtonConfiguredMainProps) => {
+  return <Button {...(restProps as any)} />
+}
+
 const meta = {
   title: 'Button Configured',
-  component: Button,
+  component: ButtonDemo,
   parameters: {
     layout: 'centered',
   },
@@ -28,10 +33,10 @@ const meta = {
     size: undefined,
     iconStart: undefined,
   },
-} satisfies Meta<typeof Button>
+} satisfies Meta<typeof ButtonDemo>
 
 export default meta
-type Story = StoryObj<typeof Button>
+type Story = StoryObj<typeof ButtonDemo>
 
 export const Primary: Story = {
   args: {

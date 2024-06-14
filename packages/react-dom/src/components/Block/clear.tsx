@@ -200,7 +200,7 @@ const normalizeBlockCorePropsConfig = (corePropsConfig: BlockStyleCoreConfig): B
   return result
 }
 
-const getBlockCoreCss = ($sf: BlockStyleFinal): RuleSet => {
+const getBlockFinalCss = ($sf: BlockStyleFinal): RuleSet => {
   return css`
     ${toCss({
       display: $sf.df ? 'flex' : $sf.db ? 'block' : $sf.di ? 'inline' : $sf.dn ? 'none' : 'flex',
@@ -264,19 +264,19 @@ const getBlockCoreCss = ($sf: BlockStyleFinal): RuleSet => {
       ? ''
       : css`
           & > * {
-            ${getBlockCoreCss($sf.cp)}
+            ${getBlockFinalCss($sf.cp)}
           }
         `}
     ${($sf.ws || []).map(([, props], index): RuleSet => {
       const prevWindowSize = $sf.ws?.[index - 1]?.[0] ?? 0
       if (prevWindowSize === 0) {
         return css`
-          ${getBlockCoreCss(props)}
+          ${getBlockFinalCss(props)}
         `
       } else {
         return css`
           @media (min-width: ${prevWindowSize + 1}px) {
-            ${getBlockCoreCss(props)}
+            ${getBlockFinalCss(props)}
           }
         `
       }
@@ -285,13 +285,13 @@ const getBlockCoreCss = ($sf: BlockStyleFinal): RuleSet => {
       const prevContainerSize = $sf.cs?.[index - 1]?.[0] ?? 0
       if (prevContainerSize === 0) {
         return css`
-          ${getBlockCoreCss(props)}
+          ${getBlockFinalCss(props)}
         `
       } else {
         return css`
           @container (min-width: ${prevContainerSize + 1}px) {
             & {
-              ${getBlockCoreCss(props)}
+              ${getBlockFinalCss(props)}
             }
           }
         `
@@ -300,12 +300,12 @@ const getBlockCoreCss = ($sf: BlockStyleFinal): RuleSet => {
     ${($sf.wsr || []).map(([windowSize, props]): RuleSet => {
       if (windowSize === Infinity) {
         return css`
-          ${getBlockCoreCss(props)}
+          ${getBlockFinalCss(props)}
         `
       } else {
         return css`
           @media (max-width: ${windowSize}px) {
-            ${getBlockCoreCss(props)}
+            ${getBlockFinalCss(props)}
           }
         `
       }
@@ -313,13 +313,13 @@ const getBlockCoreCss = ($sf: BlockStyleFinal): RuleSet => {
     ${($sf.csr || []).map(([containerSize, props]): RuleSet => {
       if (containerSize === Infinity) {
         return css`
-          ${getBlockCoreCss(props)}
+          ${getBlockFinalCss(props)}
         `
       } else {
         return css`
           @container (max-width: ${containerSize}px) {
             & {
-              ${getBlockCoreCss(props)}
+              ${getBlockFinalCss(props)}
             }
           }
         `
@@ -329,7 +329,7 @@ const getBlockCoreCss = ($sf: BlockStyleFinal): RuleSet => {
 }
 
 const BlockS = styled.div.attrs(mark('BlockS'))<{ $sf: BlockStyleFinal }>`
-  ${({ $sf }) => getBlockCoreCss($sf)}
+  ${({ $sf }) => getBlockFinalCss($sf)}
 `
 export const Block: BlockType = forwardRefIgnoreTypes(
   ({ children, as, ...restProps }: BlockPropsWithoutRef, ref: any) => {

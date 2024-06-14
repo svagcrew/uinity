@@ -6,6 +6,7 @@ import { styled } from 'styled-components'
 type DisablerStyleRoot = {
   disabled?: boolean
 }
+type DisablerStyleFinal = DisablerStyleRoot
 export type DisablerMainProps = {
   disabled?: boolean
   children?: React.ReactNode
@@ -15,11 +16,11 @@ export type DisablerPropsWithRef = DisablerMainProps & AsPropsWithRef<DisablerDe
 export type DisablerPropsWithoutRef = WithoutRef<DisablerPropsWithRef>
 export type DisablerType = (props: DisablerPropsWithRef) => React.ReactNode
 
-const DisablerS = styled.div.attrs(mark('DisablerS'))<{ $style: DisablerStyleRoot }>`
+const DisablerS = styled.div.attrs(mark('DisablerS'))<{ $sf: DisablerStyleFinal }>`
   transition: none;
   opacity: 1;
-  ${({ $style }) =>
-    $style.disabled &&
+  ${({ $sf }) =>
+    $sf.disabled &&
     toCss({
       pointerEvents: 'none',
       opacity: 0.3,
@@ -28,9 +29,9 @@ const DisablerS = styled.div.attrs(mark('DisablerS'))<{ $style: DisablerStyleRoo
 `
 export const Disabler: DisablerType = forwardRefIgnoreTypes(
   ({ disabled, children, ...restProps }: DisablerPropsWithoutRef, ref: any) => {
-    const $style = { disabled }
+    const $sf = { disabled }
     return (
-      <DisablerS {...restProps} ref={ref} $style={$style}>
+      <DisablerS {...restProps} ref={ref} $sf={$sf}>
         {children}
       </DisablerS>
     )

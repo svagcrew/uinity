@@ -60,7 +60,7 @@ const getButtonCoreCss = (sc: ButtonStyleCore) => {
     }
   `
 }
-const getButtonRootCss = ($sf: ButtonStyleFinal) => {
+const getButtonFinalCss = ($sf: ButtonStyleFinal) => {
   return css`
     cursor: pointer;
     ${getButtonCoreCss($sf.rest)}
@@ -87,32 +87,28 @@ const getButtonRootCss = ($sf: ButtonStyleFinal) => {
 
 const IconS = styled(Icon)``
 const ButtonS = styled.button.attrs(mark('ButtonS'))<{ $sf: ButtonStyleFinal }>`
-  ${({ $sf }) => getButtonRootCss($sf)}
+  ${({ $sf }) => getButtonFinalCss($sf)}
 `
-
-const makeButtonStyleFinal = ({ $style }: { $style: ButtonStyleRoot }): ButtonStyleFinal => {
-  return {
-    rest: {
-      ...$style.rest,
-    },
-    hover: {
-      ...$style.hover,
-    },
-    active: {
-      ...$style.active,
-    },
-    focus: {
-      ...$style.focus,
-    },
-    disabled: {
-      ...$style.disabled,
-    },
-  }
-}
 
 export const Button: ButtonType = forwardRefIgnoreTypes(
   ({ iconStart, children, $style = {}, ...restProps }: ButtonPropsWithoutRef, ref: any) => {
-    const $sf = makeButtonStyleFinal({ $style })
+    const $sf: ButtonStyleFinal = {
+      rest: {
+        ...$style.rest,
+      },
+      hover: {
+        ...$style.hover,
+      },
+      active: {
+        ...$style.active,
+      },
+      focus: {
+        ...$style.focus,
+      },
+      disabled: {
+        ...$style.disabled,
+      },
+    }
     return (
       <ButtonS {...(restProps as {})} ref={ref} $sf={$sf}>
         {iconStart && <IconS src={iconStart} />}

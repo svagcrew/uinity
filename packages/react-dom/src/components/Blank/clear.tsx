@@ -38,7 +38,7 @@ const getBlankCoreCss = ($sf: BlankStyleFinal) => {
     }
   `
 }
-const getBlankRootCss = ($sf: BlankStyleFinal) => {
+const getBlankFinalCss = ($sf: BlankStyleFinal) => {
   return css`
     ${getBlankCoreCss($sf)}
   `
@@ -46,18 +46,14 @@ const getBlankRootCss = ($sf: BlankStyleFinal) => {
 
 const ChildrenS = styled.div.attrs(mark('ChildrenS'))``
 const BlankS = styled.div.attrs(mark('BlankS'))<{ $sf: BlankStyleFinal }>`
-  ${({ $sf }) => getBlankRootCss($sf)}
+  ${({ $sf }) => getBlankFinalCss($sf)}
 `
-
-const makeBlankStyleFinal = ({ $style }: { $style: BlankStyleRoot }): BlankStyleFinal => {
-  return {
-    ...$style,
-  }
-}
 
 export const Blank: BlankType = forwardRefIgnoreTypes(
   ({ $style = {}, children, ...restProps }: BlankPropsWithoutRef, ref: any) => {
-    const $sf = makeBlankStyleFinal({ $style })
+    const $sf: BlankStyleFinal = {
+      ...$style,
+    }
     return (
       <BlankS {...restProps} ref={ref} $sf={$sf}>
         <ChildrenS>{children}</ChildrenS>
