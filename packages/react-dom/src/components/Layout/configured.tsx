@@ -43,7 +43,7 @@ export const createLayout = ({ uinityConfig }: { uinityConfig: UinityConfig }) =
   const Layout: LayoutConfigured = forwardRefIgnoreTypes(
     ({ colorMode, $style = {}, ...restProps }: LayoutConfiguredPropsWithoutRef<'div'>, ref: any) => {
       const { cm } = useColorMode(colorMode)
-      const byWindowSizeConfigured = [
+      const byWindowSizeReverseConfigured = [
         ...(uinityConfig.layout.general.sizeByScreenWidth?.mobile
           ? [[uinityConfig.layout.general.sizeByScreenWidth.mobile, getLayoutConfigFinalProps(uinityConfig, 'mobile')]]
           : []),
@@ -61,12 +61,6 @@ export const createLayout = ({ uinityConfig }: { uinityConfig: UinityConfig }) =
         ...(uinityConfig.layout.general.hideSidebarOnScreenWidth
           ? [
               [
-                0,
-                {
-                  sidebarHidden: true,
-                },
-              ],
-              [
                 uinityConfig.layout.general.hideSidebarOnScreenWidth,
                 {
                   sidebarHidden: false,
@@ -75,13 +69,13 @@ export const createLayout = ({ uinityConfig }: { uinityConfig: UinityConfig }) =
             ]
           : []),
       ] as Array<[number, LayoutConfigFinalProps]>
-      const byWindowSizeNormalized =
-        $style.byWindowSize ||
+      const byWindowSizeReverseNormalized =
+        $style.byWindowSizeReverse ||
         $style.ws ||
-        byWindowSizeConfigured.map(([size, cfp]) => [size, makeLayoutStyleCore({ cm, sc: {}, cfp })])
+        byWindowSizeReverseConfigured.map(([size, cfp]) => [size, makeLayoutStyleCore({ cm, sc: {}, cfp })])
       const $styleConfigured = {
         ...$style,
-        byWindowSize: byWindowSizeNormalized,
+        byWindowSizeReverse: byWindowSizeReverseNormalized,
       }
       return <LayoutClear {...(restProps as {})} $style={$styleConfigured} ref={ref} />
     }

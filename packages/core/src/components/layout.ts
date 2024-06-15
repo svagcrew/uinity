@@ -61,9 +61,9 @@ export type LayoutConfigInput = z.output<typeof zLayoutConfigInput>
 export const defaultLayoutConfigInput: LayoutConfigInput = {
   general: {
     sizeByScreenWidth: {
-      mobile: 420,
-      tablet: 1_200,
       desktop: Infinity,
+      tablet: 1_200,
+      mobile: 420,
     },
     hideSidebarOnScreenWidth: 1_200,
   },
@@ -78,7 +78,7 @@ export const defaultLayoutConfigInput: LayoutConfigInput = {
     modalBorderColor: '#ccc',
   },
   size: {
-    mobile: {
+    desktop: {
       layoutMaxWidth: 1_440,
       contentMaxWidth: 1_440,
       textMaxWidth: 800,
@@ -87,16 +87,17 @@ export const defaultLayoutConfigInput: LayoutConfigInput = {
       headerBorderWidth: 1,
       footerBorderWidth: 1,
       sidebarBorderWidth: 1,
-      modalBorderWidth: 1,
-      headerHeight: 48,
+      modalBorderWidth: null,
+      layoutPaddingHorizontal: 48,
+      headerHeight: 64,
       contentPaddingTop: 24,
       contentPaddingBottom: 48,
       footerPaddingTop: 24,
       footerPaddingBottom: 24,
-      sidebarPaddingTop: $.layout.size.mobile.contentPaddingTop,
-      sidebarPaddingBottom: $.layout.size.mobile.contentPaddingTop,
-      modalPaddingTop: $.layout.size.mobile.contentPaddingTop,
-      modalPaddingBottom: $.layout.size.mobile.contentPaddingTop,
+      sidebarPaddingTop: $.layout.size.desktop.contentPaddingTop,
+      sidebarPaddingBottom: $.layout.size.desktop.contentPaddingTop,
+      modalPaddingTop: $.layout.size.desktop.contentPaddingTop,
+      modalPaddingBottom: $.layout.size.desktop.contentPaddingTop,
     },
     tablet: {
       layoutPaddingHorizontal: 32,
@@ -110,17 +111,17 @@ export const defaultLayoutConfigInput: LayoutConfigInput = {
       modalPaddingTop: $.layout.size.tablet.contentPaddingTop,
       modalPaddingBottom: $.layout.size.tablet.contentPaddingTop,
     },
-    desktop: {
-      layoutPaddingHorizontal: 48,
-      headerHeight: 64,
+    mobile: {
+      layoutPaddingHorizontal: 20,
+      headerHeight: 48,
       contentPaddingTop: 24,
       contentPaddingBottom: 48,
       footerPaddingTop: 24,
       footerPaddingBottom: 24,
-      sidebarPaddingTop: $.layout.size.desktop.contentPaddingTop,
-      sidebarPaddingBottom: $.layout.size.desktop.contentPaddingTop,
-      modalPaddingTop: $.layout.size.desktop.contentPaddingTop,
-      modalPaddingBottom: $.layout.size.desktop.contentPaddingTop,
+      sidebarPaddingTop: $.layout.size.mobile.contentPaddingTop,
+      sidebarPaddingBottom: $.layout.size.mobile.contentPaddingTop,
+      modalPaddingTop: $.layout.size.mobile.contentPaddingTop,
+      modalPaddingBottom: $.layout.size.mobile.contentPaddingTop,
     },
   },
 }
