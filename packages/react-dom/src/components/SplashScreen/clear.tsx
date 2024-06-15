@@ -6,6 +6,7 @@ import { styled } from 'styled-components'
 export type SplashScreenStyleRoot = {
   visible?: boolean
 }
+export type SplashScreenStyleFinal = Required<SplashScreenStyleRoot>
 export type SplashScreenDefaultAs = 'div'
 export type SplashScreenMainProps<TAs extends As = SplashScreenDefaultAs> = SplashScreenStyleRoot & {
   as?: TAs
@@ -21,7 +22,7 @@ export type SplashScreenType = <TAs extends As = SplashScreenDefaultAs>(
 ) => React.ReactNode
 
 const ContentS = styled.div.attrs(mark('ContentS'))``
-const SplashScreenS = styled.div.attrs(mark('SplashScreenS'))<{ $style: SplashScreenStyleRoot }>`
+const SplashScreenS = styled.div.attrs(mark('SplashScreenS'))<{ $sf: SplashScreenStyleFinal }>`
   width: calc(100% + 100000px);
   height: calc(100% + 100000px);
   position: fixed;
@@ -33,8 +34,8 @@ const SplashScreenS = styled.div.attrs(mark('SplashScreenS'))<{ $style: SplashSc
   align-items: center;
   justify-content: center;
   z-index: 90000;
-  ${({ $style }) =>
-    $style.visible
+  ${({ $sf }) =>
+    $sf.visible
       ? toCss({
           opacity: 1,
           transition: 'opacity 200ms, margin-top 0ms ease 0ms',
@@ -50,8 +51,9 @@ const SplashScreenS = styled.div.attrs(mark('SplashScreenS'))<{ $style: SplashSc
 `
 export const SplashScreen: SplashScreenType = forwardRefIgnoreTypes(
   ({ visible, children, ...restProps }: SplashScreenPropsWithoutRef, ref: any) => {
+    const $sf = { visible: !!visible }
     return (
-      <SplashScreenS {...(restProps as {})} $style={{ visible }} ref={ref}>
+      <SplashScreenS {...(restProps as {})} $sf={$sf} ref={ref}>
         <ContentS>{children}</ContentS>
       </SplashScreenS>
     )

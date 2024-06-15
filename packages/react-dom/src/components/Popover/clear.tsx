@@ -20,7 +20,6 @@ import isBoolean from 'lodash/isBoolean.js'
 import type { ReactElement } from 'react'
 import React from 'react'
 
-type PopoverGeneralProps = {}
 type UsePopoverProps = {
   opened?: boolean
   setOpened?: (opened: boolean) => void
@@ -36,8 +35,7 @@ type UsePopoverProps = {
 export type WithPopoverMainProps = {
   popover: ReactElement
   children: ReactElement
-} & PopoverGeneralProps &
-  UsePopoverProps
+} & UsePopoverProps
 export type WithPopoverPropsWithRef = WithPopoverMainProps & AsRefAttributes<undefined>
 export type WithPopoverPropsWithoutRef = WithoutRef<WithPopoverPropsWithRef>
 export type WithPopoverType = (props: WithPopoverPropsWithRef) => ReactElement | null
