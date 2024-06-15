@@ -19,7 +19,7 @@ import type { ReactElement } from 'react'
 import React, { useEffect } from 'react'
 import { createGlobalStyle, css } from 'styled-components'
 
-export type ModalStyleCoreRawProps = {
+export type ModalStyleRootCore = {
   scrollContainer?: 'overlay' | 'content' | undefined | null
   overlayColor?: string | undefined | null
   overlayVisible?: boolean | undefined | null
@@ -59,19 +59,20 @@ export type ModalStyleCoreRawProps = {
   paddingEnd?: string | number | undefined | null
   paddingBottom?: string | number | undefined | null
   paddingStart?: string | number | undefined | null
-  /** byWindowSize */
-  ws?: Array<[number, ModalStyleCoreRawProps]>
-  byWindowSize?: Array<[number, ModalStyleCoreRawProps]>
-  /** byWindowSizeReverse */
-  wsr?: Array<[number, ModalStyleCoreRawProps]>
-  byWindowSizeReverse?: Array<[number, ModalStyleCoreRawProps]>
 }
-export type ModalStyleCoreProps = Required<
+export type ModalStyleRoot = ModalStyleRootCore & {
+  /** byWindowSize */
+  ws?: Array<[number, ModalStyleRootCore]>
+  byWindowSize?: Array<[number, ModalStyleRootCore]>
+  /** byWindowSizeReverse */
+  wsr?: Array<[number, ModalStyleRootCore]>
+  byWindowSizeReverse?: Array<[number, ModalStyleRootCore]>
+}
+export type ModalStyleFinalCore = Required<
   Pick<
-    ModalStyleCoreRawProps,
+    ModalStyleRoot,
     | 'scrollContainer'
     | 'overlayColor'
-    | 'overlayVisible'
     | 'closeOnOutsideClick'
     | 'overlayClickableThrough'
     | 'lockScroll'
@@ -80,7 +81,7 @@ export type ModalStyleCoreProps = Required<
   >
 > &
   Pick<
-    ModalStyleCoreRawProps,
+    ModalStyleRoot,
     | 'width'
     | 'height'
     | 'marginTop'
@@ -92,25 +93,25 @@ export type ModalStyleCoreProps = Required<
     | 'paddingBottom'
     | 'paddingStart'
   > & {
-    byWindowSize: Array<[number, ModalStyleCoreProps]>
-    byWindowSizeReverse: Array<[number, ModalStyleCoreProps]>
+    overlayClassName: string
+    contentClassName: string
+    supportingSafeJustifyContentFinished: boolean
   }
+export type ModalStyleFinal = ModalStyleFinalCore & {
+  byWindowSize: Array<[number, ModalStyleFinalCore]>
+  byWindowSizeReverse: Array<[number, ModalStyleFinalCore]>
+}
 type UseModalProps = {
   opened?: boolean
   setOpened?: (opened: boolean) => void
   closeOnOutsideClick?: boolean
 }
-type ModalSpecialProps = {
+export type ModalMainProps = {
+  $style?: ModalStyleRoot
   children: ReactElement
   opened?: boolean
   setOpened?: (opened: boolean) => void
 }
-type ModalGlobalStylesProps = ModalStyleCoreProps & {
-  overlayClassName: string
-  contentClassName: string
-  supportingSafeJustifyContentFinished: boolean
-}
-export type ModalMainProps = ModalSpecialProps & { $style?: ModalStyleCoreRawProps }
 export type ModalDefaultAs = 'div'
 export type ModalPropsWithRef = ModalMainProps & AsPropsWithRef<ModalDefaultAs>
 export type ModalPropsWithoutRef = WithoutRef<ModalPropsWithRef>
@@ -142,133 +143,94 @@ const useModal = ({ opened, setOpened, closeOnOutsideClick }: UseModalProps = {}
   )
 }
 
-const ModalGlobalStyles = createGlobalStyle<ModalGlobalStylesProps>`
-  ${(props) => {
-    const getCssString = ({
-      supportingSafeJustifyContentFinished,
-      scrollContainer,
-      overlayClassName,
-      contentClassName,
-      overlayColor,
-      overlayClickableThrough,
-      placementVertical,
-      placementHorizontal,
-      width,
-      height,
-      marginTop,
-      marginEnd,
-      marginBottom,
-      marginStart,
-      paddingTop,
-      paddingEnd,
-      paddingBottom,
-      paddingStart,
-    }: ModalGlobalStylesProps) => {
-      return css`
-        .${overlayClassName} {
-          ${toCss({
-            opacity: supportingSafeJustifyContentFinished ? 1 : 0,
-            zIndex: 9_000,
-            boxSizing: 'border-box',
-            background: overlayColor,
-            pointerEvents: overlayClickableThrough ? 'none' : 'auto',
-            display: 'flex',
-            flexFlow: 'column',
-            paddingTop: marginTop,
-            paddingRight: marginEnd,
-            paddingBottom: marginBottom,
-            paddingLeft: marginStart,
-            justifyContent:
-              placementVertical === 'center'
-                ? 'safe center'
-                : placementVertical === 'top'
-                  ? 'safe flex-start'
-                  : placementVertical === 'bottom'
-                    ? 'safe flex-end'
-                    : 'safe stretch',
-            alignItems:
-              placementHorizontal === 'center'
-                ? 'center'
-                : placementHorizontal === 'start'
-                  ? 'flex-start'
-                  : placementHorizontal === 'end'
-                    ? 'flex-end'
-                    : 'stretch',
-          })}
+const getModalCoreCss = (sc: ModalStyleFinalCore) => {
+  return css`
+    .${sc.overlayClassName} {
+      ${toCss({
+        opacity: sc.supportingSafeJustifyContentFinished ? 1 : 0,
+        zIndex: 9_000,
+        boxSizing: 'border-box',
+        background: sc.overlayColor,
+        pointerEvents: sc.overlayClickableThrough ? 'none' : 'auto',
+        display: 'flex',
+        flexFlow: 'column',
+        paddingTop: sc.marginTop,
+        paddingRight: sc.marginEnd,
+        paddingBottom: sc.marginBottom,
+        paddingLeft: sc.marginStart,
+        justifyContent:
+          sc.placementVertical === 'center'
+            ? 'safe center'
+            : sc.placementVertical === 'top'
+              ? 'safe flex-start'
+              : sc.placementVertical === 'bottom'
+                ? 'safe flex-end'
+                : 'safe stretch',
+        alignItems:
+          sc.placementHorizontal === 'center'
+            ? 'center'
+            : sc.placementHorizontal === 'start'
+              ? 'flex-start'
+              : sc.placementHorizontal === 'end'
+                ? 'flex-end'
+                : 'stretch',
+      })}
 
-          .${contentClassName} {
-            ${toCss({
-              opacity: supportingSafeJustifyContentFinished ? 1 : 0,
-              pointerEvents: 'auto',
-              boxSizing: 'border-box',
-              flex: placementVertical === 'stretch' ? '1 1 100%' : '0 0 auto',
-              maxWidth: `100%`,
-              maxHeight: scrollContainer === 'overlay' ? undefined : '100%',
-              width,
-              height,
-              overflow: scrollContainer === 'content' ? 'auto' : 'visible',
-              backgroundColor: 'white',
-              paddingTop,
-              paddingRight: paddingEnd,
-              paddingBottom,
-              paddingLeft: paddingStart,
-            })}
-          }
+      .${sc.contentClassName} {
+        ${toCss({
+          opacity: sc.supportingSafeJustifyContentFinished ? 1 : 0,
+          pointerEvents: 'auto',
+          boxSizing: 'border-box',
+          flex: sc.placementVertical === 'stretch' ? '1 1 100%' : '0 0 auto',
+          maxWidth: `100%`,
+          maxHeight: sc.scrollContainer === 'overlay' ? undefined : '100%',
+          width: sc.width,
+          height: sc.height,
+          overflow: sc.scrollContainer === 'content' ? 'auto' : 'visible',
+          backgroundColor: 'white',
+          paddingTop: sc.paddingTop,
+          paddingRight: sc.paddingEnd,
+          paddingBottom: sc.paddingBottom,
+          paddingLeft: sc.paddingStart,
+        })}
+      }
+    }
+  `
+}
+const getModalFinalCss = ($sf: ModalStyleFinal) => {
+  return css`
+    ${getModalCoreCss($sf)}
+    ${$sf.byWindowSize.map(([, modalStyleFinalCore], index) => {
+      const nextWindowSize = $sf.byWindowSize[index - 1]?.[0] ?? 0
+      const coreCss = getModalCoreCss(modalStyleFinalCore)
+      if (nextWindowSize === 0) {
+        return coreCss
+      }
+      return css`
+        @media (min-width: ${nextWindowSize + 1}px) {
+          ${coreCss}
         }
       `
-    }
-    return css`
-      ${getCssString(props)}
-      ${props?.byWindowSize?.map(([, modalGeneralProps], index) => {
-        const nextWindowSize = props?.byWindowSize?.[index - 1]?.[0] ?? 0
-        const cssString = getCssString({
-          ...modalGeneralProps,
-          supportingSafeJustifyContentFinished: props.supportingSafeJustifyContentFinished,
-          overlayClassName: props.overlayClassName,
-          contentClassName: props.contentClassName,
-        })
-        if (nextWindowSize === 0) {
-          return cssString
+    })}
+  ${$sf.byWindowSizeReverse.map(([windowSize, modalStyleFinalCore]) => {
+      const coreCss = getModalCoreCss(modalStyleFinalCore)
+      if (windowSize === Infinity) {
+        return coreCss
+      }
+      return css`
+        @media (max-width: ${windowSize}px) {
+          ${coreCss}
         }
-        return css`
-          @media (min-width: ${nextWindowSize + 1}px) {
-            ${cssString}
-          }
-        `
-      })}
-      ${props?.byWindowSizeReverse?.map(([windowSize, modalGeneralProps]) => {
-        const cssString = getCssString({
-          ...modalGeneralProps,
-          supportingSafeJustifyContentFinished: props.supportingSafeJustifyContentFinished,
-          overlayClassName: props.overlayClassName,
-          contentClassName: props.contentClassName,
-        })
-        if (windowSize === Infinity) {
-          return cssString
-        }
-        return css`
-          @media (max-width: ${windowSize}px) {
-            ${cssString}
-          }
-        `
-      })}
-    `
-  }}
+      `
+    })}
+  `
+}
+const ModalGlobalStyles = createGlobalStyle<{ $sf: ModalStyleFinal }>`
+  ${({ $sf }) => getModalFinalCss($sf)}
 `
 
 export const Modal: ModalType = forwardRefIgnoreTypes(
-  (
-    {
-      children,
-      opened,
-      setOpened,
-      $style = {},
-      style,
-
-      ...restProps
-    }: ModalPropsWithoutRef,
-    propRef: any
-  ) => {
+  ({ children, opened, setOpened, $style = {}, style, ...restProps }: ModalPropsWithoutRef, propRef: any) => {
     let {
       overlayColor,
       overlayVisible,
@@ -296,15 +258,6 @@ export const Modal: ModalType = forwardRefIgnoreTypes(
       wsr,
       byWindowSizeReverse,
     } = $style
-    const overlayVisibleNormalized = overlayVisible ?? true
-    const overlayColorNormalized = overlayVisibleNormalized ? overlayColor ?? 'rgba(0, 0, 0, 0.8)' : 'transparent'
-    const overlayClickableThroughNormalized = overlayClickableThrough ?? false
-    const closeOnOutsideClickNormalized = closeOnOutsideClick ?? true
-    const modal = useModal({ opened, setOpened, closeOnOutsideClick: closeOnOutsideClickNormalized })
-    const ref = useMergeRefs([modal.refs.setFloating, propRef])
-    const floatingProps = modal.getFloatingProps(restProps)
-    const lockScrollNormalized = lockScroll ?? true
-    const scrollContainerNormalized = scrollContainer ?? 'overlay'
     const {
       top: marginTop1,
       end: marginEnd1,
@@ -328,13 +281,14 @@ export const Modal: ModalType = forwardRefIgnoreTypes(
     const placementParts = placement ? placement?.split('-') : [placementVertical, placementHorizontal]
     const placementVerticalNormalized = (placementParts?.[0] ?? 'center') as 'top' | 'center' | 'bottom' | 'stretch'
     const placementHorizontalNormalized = (placementParts?.[1] ?? 'center') as 'start' | 'center' | 'end' | 'stretch'
-    const normalizedProps: ModalStyleCoreProps = {
-      scrollContainer: scrollContainerNormalized,
-      overlayColor: overlayColorNormalized,
-      overlayVisible: overlayVisibleNormalized,
-      closeOnOutsideClick: closeOnOutsideClickNormalized,
-      overlayClickableThrough: overlayClickableThroughNormalized,
-      lockScroll: lockScrollNormalized,
+    const [supportingSafeJustifyContentFinished, setSupportingSafeJustifyContentFinished] =
+      React.useState(itIsSupportsSafeJustifyContent)
+    const $sf: ModalStyleFinal = {
+      scrollContainer: scrollContainer ?? 'overlay',
+      overlayColor: overlayVisible ?? true ? overlayColor ?? 'rgba(0, 0, 0, 0.8)' : 'transparent',
+      closeOnOutsideClick: closeOnOutsideClick ?? true,
+      overlayClickableThrough: overlayClickableThrough ?? false,
+      lockScroll: lockScroll ?? true,
       placementVertical: placementVerticalNormalized,
       placementHorizontal: placementHorizontalNormalized,
       width,
@@ -347,13 +301,16 @@ export const Modal: ModalType = forwardRefIgnoreTypes(
       paddingEnd,
       paddingBottom,
       paddingStart,
+      supportingSafeJustifyContentFinished,
       byWindowSize: [], // will be added below
       byWindowSizeReverse: [], // will be added below
+      contentClassName: '', // will be added below
+      overlayClassName: '', // will be added below
     }
-    normalizedProps.byWindowSize = (byWindowSize || ws || [])
+    $sf.byWindowSize = (byWindowSize || ws || [])
       .sort(([a], [b]) => a - b)
       .map(([windowSize, propsHere], index) => {
-        const prevPropsHere = byWindowSize?.[index - 1]?.[1] ?? normalizedProps
+        const prevPropsHere = byWindowSize?.[index - 1]?.[1] ?? $sf
         const {
           top: marginTop1,
           end: marginEnd1,
@@ -388,7 +345,6 @@ export const Modal: ModalType = forwardRefIgnoreTypes(
           paddingBottom: paddingBottom1 ?? prevPropsHere.paddingBottom,
           paddingStart: paddingStart1 ?? prevPropsHere.paddingStart,
           overlayColor: propsHere.overlayColor ?? prevPropsHere.overlayColor,
-          overlayVisible: propsHere.overlayVisible ?? prevPropsHere.overlayVisible,
           closeOnOutsideClick: propsHere.closeOnOutsideClick ?? prevPropsHere.closeOnOutsideClick,
           overlayClickableThrough: propsHere.overlayClickableThrough ?? prevPropsHere.overlayClickableThrough,
           lockScroll: propsHere.lockScroll ?? prevPropsHere.lockScroll,
@@ -397,13 +353,13 @@ export const Modal: ModalType = forwardRefIgnoreTypes(
           width: propsHere.width ?? prevPropsHere.width,
           height: propsHere.height ?? prevPropsHere.height,
           scrollContainer: propsHere.scrollContainer ?? prevPropsHere.scrollContainer,
-        } as ModalStyleCoreProps
+        } as ModalStyleFinalCore
         return [windowSize, propsHereNormalized]
-      }) as Array<[number, ModalStyleCoreProps]>
-    normalizedProps.byWindowSizeReverse = (byWindowSizeReverse || wsr || [])
+      }) as Array<[number, ModalStyleFinalCore]>
+    $sf.byWindowSizeReverse = (byWindowSizeReverse || wsr || [])
       .sort(([a], [b]) => b - a)
       .map(([windowSize, propsHere], index) => {
-        const prevPropsHere = byWindowSize?.[index - 1]?.[1] ?? normalizedProps
+        const prevPropsHere = byWindowSize?.[index - 1]?.[1] ?? $sf
         const {
           top: marginTop1,
           end: marginEnd1,
@@ -438,7 +394,6 @@ export const Modal: ModalType = forwardRefIgnoreTypes(
           paddingBottom: paddingBottom1 ?? prevPropsHere.paddingBottom,
           paddingStart: paddingStart1 ?? prevPropsHere.paddingStart,
           overlayColor: propsHere.overlayColor ?? prevPropsHere.overlayColor,
-          overlayVisible: propsHere.overlayVisible ?? prevPropsHere.overlayVisible,
           closeOnOutsideClick: propsHere.closeOnOutsideClick ?? prevPropsHere.closeOnOutsideClick,
           overlayClickableThrough: propsHere.overlayClickableThrough ?? prevPropsHere.overlayClickableThrough,
           lockScroll: propsHere.lockScroll ?? prevPropsHere.lockScroll,
@@ -447,25 +402,30 @@ export const Modal: ModalType = forwardRefIgnoreTypes(
           width: propsHere.width ?? prevPropsHere.width,
           height: propsHere.width ?? prevPropsHere.height,
           scrollContainer: propsHere.scrollContainer ?? prevPropsHere.scrollContainer,
-        } as ModalStyleCoreProps
+        } as ModalStyleFinalCore
         return [windowSize, propsHereNormalized]
-      }) as Array<[number, ModalStyleCoreProps]>
+      }) as Array<[number, ModalStyleFinalCore]>
 
-    const uniqueMark = getGlobalClassName(normalizedProps)
-    const overlayClassName = `uinity-modal-overlay-${uniqueMark}`
-    const contentClassName = `uinity-modal-content-${uniqueMark}`
+    const uniqueMark = getGlobalClassName($sf)
+    $sf.overlayClassName = `uinity-modal-overlay-${uniqueMark}`
+    $sf.contentClassName = `uinity-modal-content-${uniqueMark}`
+
+    const lockScrollHere = !!$sf.lockScroll
+    const closeOnOutsideClickHere = !!$sf.closeOnOutsideClick
+    // TODO: modify lockScrollHere and closeOnOutsideClickHere by windowSize
+    const modal = useModal({ opened, setOpened, closeOnOutsideClick: closeOnOutsideClickHere })
+    const ref = useMergeRefs([modal.refs.setFloating, propRef])
+    const floatingProps = modal.getFloatingProps(restProps)
 
     // polyfill for justify-content: safe
     const originalOverlaySafeJustifyContentRef = React.useRef<string | null>(null)
-    const [supportingSafeJustifyContentFinished, setSupportingSafeJustifyContentFinished] =
-      React.useState(itIsSupportsSafeJustifyContent)
     useEffect(() => {
       if (itIsSupportsSafeJustifyContent) {
         return
       }
       const makeItSupportsSafeJustifyContent = () => {
-        const overlayEl = document.querySelector(`.${overlayClassName}`)
-        const contentEl = document.querySelector(`.${contentClassName}`)
+        const overlayEl = document.querySelector(`.${$sf.overlayClassName}`)
+        const contentEl = document.querySelector(`.${$sf.contentClassName}`)
         if (!(overlayEl instanceof HTMLElement) || !(contentEl instanceof HTMLElement)) {
           return
         }
@@ -505,20 +465,9 @@ export const Modal: ModalType = forwardRefIgnoreTypes(
 
     return (
       <>
-        <ModalGlobalStyles
-          {...{
-            ...normalizedProps,
-            overlayClassName,
-            contentClassName,
-            supportingSafeJustifyContentFinished,
-            floatingProps,
-          }}
-        />
+        <ModalGlobalStyles $sf={$sf} />
         <FloatingPortal>
-          <FloatingOverlay
-            lockScroll={normalizedProps.lockScroll ?? true}
-            className={`${overlayClassName} uinity-modal-overlay`}
-          >
+          <FloatingOverlay lockScroll={lockScrollHere} className={$sf.overlayClassName}>
             <FloatingFocusManager context={modal.context}>
               <div
                 ref={ref}
@@ -527,7 +476,7 @@ export const Modal: ModalType = forwardRefIgnoreTypes(
                   ...(floatingProps as any).style,
                   ...style,
                 }}
-                className={`${contentClassName} uinity-modal-content`}
+                className={$sf.contentClassName}
               >
                 {children}
               </div>

@@ -1,5 +1,5 @@
 import { Layout as LayoutClear } from './clear.js'
-import type { LayoutMainProps, LayoutStyleCoreProps } from '@/components/Layout/clear.js'
+import type { LayoutMainProps, LayoutStyleCore } from '@/components/Layout/clear.js'
 import { useColorMode } from '@/lib/colorMode.js'
 import type { As, AsPropsWithRef, WithoutRef } from '@/utils.js'
 import { forwardRefIgnoreTypes } from '@/utils.js'
@@ -11,41 +11,39 @@ import { type ColorModeName, getColorByMode } from '@uinity/core/dist/utils/colo
 export type LayoutConfiguredSettingsProps = {
   colorMode?: ColorModeName | undefined | null
 }
-export type LayoutConfiguredSpecialProps<TAs extends As> = {
-  as?: TAs
-}
-export type LayoutConfiguredMainProps<TAs extends As> = LayoutConfiguredSettingsProps &
-  LayoutConfiguredSpecialProps<TAs> &
-  LayoutMainProps<TAs>
+export type LayoutConfiguredMainProps<TAs extends As> = LayoutConfiguredSettingsProps & LayoutMainProps<TAs>
 export type LayoutConfiguredPropsWithRef<TAs extends As> = LayoutConfiguredMainProps<TAs> & AsPropsWithRef<TAs>
 export type LayoutConfiguredPropsWithoutRef<TAs extends As> = WithoutRef<LayoutConfiguredPropsWithRef<TAs>>
 export type LayoutConfigured = <TAs extends As>(props: LayoutConfiguredPropsWithRef<TAs>) => React.ReactNode
 
-const normalizeLayoutStyleCoreProps = (
-  cm: ColorModeName,
-  passedScp: LayoutStyleCoreProps,
-  configuredCfp: LayoutConfigFinalProps
-) => {
+const makeLayoutStyleCore = ({
+  cm,
+  sc,
+  cfp,
+}: {
+  cm: ColorModeName
+  sc: LayoutStyleCore
+  cfp: LayoutConfigFinalProps
+}): LayoutStyleCore => {
   return {
-    ...configuredCfp,
-    ...passedScp,
-    bodyBackground: getColorByMode(cm, passedScp.bodyBackground || configuredCfp.bodyBackground),
-    headerBackground: getColorByMode(cm, passedScp.headerBackground || configuredCfp.headerBackground),
-    footerBackground: getColorByMode(cm, passedScp.footerBackground || configuredCfp.footerBackground),
-    modalBackground: getColorByMode(cm, passedScp.modalBackground || configuredCfp.modalBackground),
-    headerBorderColor: getColorByMode(cm, passedScp.headerBorderColor || configuredCfp.headerBorderColor),
-    footerBorderColor: getColorByMode(cm, passedScp.footerBorderColor || configuredCfp.footerBorderColor),
-    sidebarBorderColor: getColorByMode(cm, passedScp.sidebarBorderColor || configuredCfp.sidebarBorderColor),
-    modalBorderColor: getColorByMode(cm, passedScp.modalBorderColor || configuredCfp.modalBorderColor),
+    ...cfp,
+    ...sc,
+    bodyBackground: getColorByMode(cm, sc.bodyBackground ?? cfp.bodyBackground),
+    headerBackground: getColorByMode(cm, sc.headerBackground ?? cfp.headerBackground),
+    footerBackground: getColorByMode(cm, sc.footerBackground ?? cfp.footerBackground),
+    modalBackground: getColorByMode(cm, sc.modalBackground ?? cfp.modalBackground),
+    headerBorderColor: getColorByMode(cm, sc.headerBorderColor ?? cfp.headerBorderColor),
+    footerBorderColor: getColorByMode(cm, sc.footerBorderColor ?? cfp.footerBorderColor),
+    sidebarBorderColor: getColorByMode(cm, sc.sidebarBorderColor ?? cfp.sidebarBorderColor),
+    modalBorderColor: getColorByMode(cm, sc.modalBorderColor ?? cfp.modalBorderColor),
   }
 }
 
 export const createLayout = ({ uinityConfig }: { uinityConfig: UinityConfig }) => {
-  const { colorMode: colorModeGlobal } = useColorMode()
   const Layout: LayoutConfigured = forwardRefIgnoreTypes(
     ({ colorMode, $style = {}, ...restProps }: LayoutConfiguredPropsWithoutRef<'div'>, ref: any) => {
-      const cm = colorMode || colorModeGlobal
-      const configuredByWindowSize = [
+      const { cm } = useColorMode(colorMode)
+      const byWindowSizeConfigured = [
         ...(uinityConfig.layout.general.sizeByScreenWidth?.mobile
           ? [[uinityConfig.layout.general.sizeByScreenWidth.mobile, getLayoutConfigFinalProps(uinityConfig, 'mobile')]]
           : []),
@@ -80,12 +78,12 @@ export const createLayout = ({ uinityConfig }: { uinityConfig: UinityConfig }) =
       const byWindowSizeNormalized =
         $style.byWindowSize ||
         $style.ws ||
-        configuredByWindowSize.map(([size, cfp]) => [size, normalizeLayoutStyleCoreProps(cm, {}, cfp)])
-      const $styleNormalized = {
+        byWindowSizeConfigured.map(([size, cfp]) => [size, makeLayoutStyleCore({ cm, sc: {}, cfp })])
+      const $styleConfigured = {
         ...$style,
         byWindowSize: byWindowSizeNormalized,
       }
-      return <LayoutClear {...(restProps as {})} $style={$styleNormalized} ref={ref} />
+      return <LayoutClear {...(restProps as {})} $style={$styleConfigured} ref={ref} />
     }
   )
   return {

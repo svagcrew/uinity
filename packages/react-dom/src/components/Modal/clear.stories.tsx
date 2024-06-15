@@ -1,13 +1,10 @@
-import type { ModalMainProps, ModalStyleCoreRawProps } from './clear.js'
+import type { ModalMainProps, ModalStyleRoot } from './clear.js'
 import { Modal } from './clear.js'
 import { Button } from '@/components/Button/clear.js'
 import type { Meta, StoryObj } from '@storybook/react'
 import { useState } from 'react'
 
-const ModalDemo = ({
-  initialOpened,
-  ...props
-}: { initialOpened: boolean } & ModalStyleCoreRawProps & ModalMainProps) => {
+const ModalDemo = ({ initialOpened, ...props }: { initialOpened: boolean } & ModalStyleRoot & ModalMainProps) => {
   const [opened, setOpened] = useState(initialOpened)
   return (
     <div>

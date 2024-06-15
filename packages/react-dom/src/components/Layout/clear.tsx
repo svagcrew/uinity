@@ -4,10 +4,9 @@ import type { As, AsPropsWithRef, WithoutRef } from '@/utils.js'
 import { forwardRefIgnoreTypes, mark } from '@/utils.js'
 import { borderPropsToCssValue, maybeNumberToPx, toCss } from '@uinity/core/dist/utils/other.js'
 import isNil from 'lodash/isNil.js'
-import type { RuleSet } from 'styled-components'
 import { css, styled } from 'styled-components'
 
-export type LayoutStyleCoreProps = {
+export type LayoutStyleCore = {
   layoutMaxWidth?: number | string | null | undefined
   contentMaxWidth?: number | string | null | undefined
   textMaxWidth?: number | string | null | undefined
@@ -43,13 +42,17 @@ export type LayoutStyleCoreProps = {
   sidebarHidden?: boolean
   fullWidth?: boolean
 }
-export type LayoutStyleRoot = LayoutStyleCoreProps & {
+export type LayoutStyleRoot = LayoutStyleCore & {
   /** byWindowSize */
-  ws?: Array<[number, LayoutStyleCoreProps]>
-  byWindowSize?: Array<[number, LayoutStyleCoreProps]>
+  ws?: Array<[number, LayoutStyleCore]>
+  byWindowSize?: Array<[number, LayoutStyleCore]>
   /** byWindowSizeReverse */
-  wsr?: Array<[number, LayoutStyleCoreProps]>
-  byWindowSizeReverse?: Array<[number, LayoutStyleCoreProps]>
+  wsr?: Array<[number, LayoutStyleCore]>
+  byWindowSizeReverse?: Array<[number, LayoutStyleCore]>
+}
+export type LayoutStyleFinal = LayoutStyleCore & {
+  byWindowSize: Array<[number, LayoutStyleCore]>
+  byWindowSizeReverse: Array<[number, LayoutStyleCore]>
 }
 export type LayoutDefaultAs = 'div'
 export type LayoutMainProps<TAs extends As = LayoutDefaultAs> = {
@@ -67,7 +70,7 @@ export type LayoutPropsWithRef<TAs extends As = LayoutDefaultAs> = LayoutMainPro
 export type LayoutPropsWithoutRef<TAs extends As = LayoutDefaultAs> = WithoutRef<LayoutPropsWithRef<TAs>>
 export type LayoutType = <TAs extends As = LayoutDefaultAs>(props: LayoutPropsWithRef<TAs>) => React.ReactNode
 
-const getLayoutCoreCss = (scp: LayoutStyleCoreProps): RuleSet | string => {
+const getLayoutCoreCss = (sc: LayoutStyleCore) => {
   return css`
     width: 100%;
     height: 100%;
@@ -85,9 +88,9 @@ const getLayoutCoreCss = (scp: LayoutStyleCoreProps): RuleSet | string => {
     ${LayoutSectionS} {
       ${toCss({
         width: '100%',
-        maxWidth: scp.fullWidth ? null : scp.layoutMaxWidth,
-        paddingLeft: scp.layoutPaddingHorizontal,
-        paddingRight: scp.layoutPaddingHorizontal,
+        maxWidth: sc.fullWidth ? null : sc.layoutMaxWidth,
+        paddingLeft: sc.layoutPaddingHorizontal,
+        paddingRight: sc.layoutPaddingHorizontal,
       })}
     }
 
@@ -98,10 +101,10 @@ const getLayoutCoreCss = (scp: LayoutStyleCoreProps): RuleSet | string => {
       align-items: stretch;
       justify-content: stretch;
       ${toCss({
-        height: scp.headerHeight,
+        height: sc.headerHeight,
         flexGrow: 0,
         flexShrink: 0,
-        flexBasis: scp.headerHeight,
+        flexBasis: sc.headerHeight,
       })}
 
       ${HeaderS} {
@@ -110,7 +113,7 @@ const getLayoutCoreCss = (scp: LayoutStyleCoreProps): RuleSet | string => {
         flex-flow: column nowrap;
         align-items: center;
         justify-content: flex-start;
-        ${!scp.headerFixed
+        ${!sc.headerFixed
           ? ''
           : toCss({
               position: 'fixed',
@@ -120,9 +123,9 @@ const getLayoutCoreCss = (scp: LayoutStyleCoreProps): RuleSet | string => {
               zIndex: 1_000,
             })}
         ${toCss({
-          height: scp.headerHeight,
-          background: scp.headerBackground,
-          borderBottom: borderPropsToCssValue(scp.headerBorderWidth, scp.headerBorderColor),
+          height: sc.headerHeight,
+          background: sc.headerBackground,
+          borderBottom: borderPropsToCssValue(sc.headerBorderWidth, sc.headerBorderColor),
         })}
 
         ${LayoutSectionS} {
@@ -131,7 +134,7 @@ const getLayoutCoreCss = (scp: LayoutStyleCoreProps): RuleSet | string => {
           align-items: stretch;
           justify-content: stretch;
           ${toCss({
-            height: scp.headerHeight,
+            height: sc.headerHeight,
           })}
         }
       }
@@ -157,29 +160,29 @@ const getLayoutCoreCss = (scp: LayoutStyleCoreProps): RuleSet | string => {
           align-items: stretch;
           justify-content: stretch;
           ${toCss({
-            display: scp.sidebarHidden === true ? 'none' : scp.sidebarHidden === false ? 'flex' : undefined,
+            display: sc.sidebarHidden === true ? 'none' : sc.sidebarHidden === false ? 'flex' : undefined,
             flexGrow: 0,
             flexShrink: 0,
-            flexBasis: scp.sidebarWidth,
-            width: scp.sidebarWidth,
-            marginRight: scp.sidebarMarginEnd,
-            borderRight: borderPropsToCssValue(scp.sidebarBorderWidth, scp.sidebarBorderColor),
+            flexBasis: sc.sidebarWidth,
+            width: sc.sidebarWidth,
+            marginRight: sc.sidebarMarginEnd,
+            borderRight: borderPropsToCssValue(sc.sidebarBorderWidth, sc.sidebarBorderColor),
           })}
 
           ${SidebarS} {
             ${toCss({
-              width: scp.sidebarWidth,
-              paddingTop: scp.sidebarPaddingTop,
-              paddingBottom: scp.sidebarPaddingBottom,
+              width: sc.sidebarWidth,
+              paddingTop: sc.sidebarPaddingTop,
+              paddingBottom: sc.sidebarPaddingBottom,
               containerType: 'inline-size',
             })}
-            ${!scp.sidebarFixed
+            ${!sc.sidebarFixed
               ? ''
               : toCss({
                   overflowY: 'auto',
                   position: 'fixed',
                   zIndex: 900,
-                  height: `calc(100% - ${maybeNumberToPx(scp.headerFixed ? scp.headerHeight : 0)})`,
+                  height: `calc(100% - ${maybeNumberToPx(sc.headerFixed ? sc.headerHeight : 0)})`,
                 })}
           }
         }
@@ -193,9 +196,9 @@ const getLayoutCoreCss = (scp: LayoutStyleCoreProps): RuleSet | string => {
             flexGrow: 1,
             flexShrink: 1,
             flexBasis: '100%',
-            maxWidth: scp.contentMaxWidth,
-            paddingTop: scp.contentPaddingTop,
-            paddingBottom: scp.contentPaddingBottom,
+            maxWidth: sc.contentMaxWidth,
+            paddingTop: sc.contentPaddingTop,
+            paddingBottom: sc.contentPaddingBottom,
             containerType: 'inline-size',
           })}
         }
@@ -210,10 +213,10 @@ const getLayoutCoreCss = (scp: LayoutStyleCoreProps): RuleSet | string => {
       justify-content: center;
       z-index: 950;
       ${toCss({
-        background: scp.footerBackground,
-        paddingTop: scp.footerPaddingTop,
-        paddingBottom: scp.footerPaddingBottom,
-        borderTop: borderPropsToCssValue(scp.footerBorderWidth, scp.footerBorderColor),
+        background: sc.footerBackground,
+        paddingTop: sc.footerPaddingTop,
+        paddingBottom: sc.footerPaddingBottom,
+        borderTop: borderPropsToCssValue(sc.footerBorderWidth, sc.footerBorderColor),
       })}
 
       ${LayoutSectionS} {
@@ -225,6 +228,39 @@ const getLayoutCoreCss = (scp: LayoutStyleCoreProps): RuleSet | string => {
     }
   `
 }
+const getLayoutFinalCss = ($sf: LayoutStyleFinal) => {
+  return css`
+    ${getLayoutCoreCss($sf)}
+
+    ${$sf.byWindowSize.map(([, coreStyleProps], index) => {
+      const nextWindowSize = $sf.byWindowSize?.[index - 1]?.[0] ?? 0
+      const coreCss = getLayoutCoreCss({
+        ...coreStyleProps,
+      })
+      if (nextWindowSize === 0) {
+        return coreCss
+      }
+      return css`
+        @media (min-width: ${nextWindowSize + 1}px) {
+          ${coreCss}
+        }
+      `
+    })}
+  ${$sf.byWindowSizeReverse.map(([windowSize, coreStyleProps]) => {
+      const coreCss = getLayoutCoreCss({
+        ...coreStyleProps,
+      })
+      if (windowSize === Infinity) {
+        return coreCss
+      }
+      return css`
+        @media (max-width: ${windowSize}px) {
+          ${coreCss}
+        }
+      `
+    })}
+  `
+}
 
 const LayoutSectionS = styled.div.attrs(mark('LayoutSectionS'))``
 const HeaderS = styled.div.attrs(mark('HeaderS'))``
@@ -234,43 +270,13 @@ const SidebarS = styled.div.attrs(mark('SidebarS'))``
 const ContentS = styled.div.attrs(mark('ContentS'))``
 const SidebarAndContentS = styled.div.attrs(mark('SidebarAndContentS'))``
 const FooterS = styled.div.attrs(mark('FooterS'))``
-const LayoutS = styled.div.attrs(mark('LayoutS'))<{ $style: LayoutStyleRoot }>`
-  ${({ $style }) => {
-    return css`
-      ${getLayoutCoreCss($style)}
-
-      ${($style.byWindowSize || []).map(([, coreStyleProps], index) => {
-        const nextWindowSize = $style.byWindowSize?.[index - 1]?.[0] ?? 0
-        const coreCss = getLayoutCoreCss({
-          ...coreStyleProps,
-        })
-        if (nextWindowSize === 0) {
-          return coreCss
-        }
-        return css`
-          @media (min-width: ${nextWindowSize + 1}px) {
-            ${coreCss}
-          }
-        `
-      })}
-      ${($style.byWindowSizeReverse || []).map(([windowSize, coreStyleProps]) => {
-        const coreCss = getLayoutCoreCss({
-          ...coreStyleProps,
-        })
-        if (windowSize === Infinity) {
-          return coreCss
-        }
-        return css`
-          @media (max-width: ${windowSize}px) {
-            ${coreCss}
-          }
-        `
-      })}
-    `
+const LayoutS = styled.div.attrs(mark('LayoutS'))<{ $sf: LayoutStyleFinal }>`
+  ${({ $sf }) => {
+    return getLayoutFinalCss($sf)
   }}
 `
 
-const getLayoutModalCoreCss = (scp: LayoutStyleCoreProps): RuleSet | string => {
+const getLayoutModalCoreCss = (sc: LayoutStyleCore) => {
   return css`
     display: flex;
     flex-flow: column nowrap;
@@ -284,51 +290,54 @@ const getLayoutModalCoreCss = (scp: LayoutStyleCoreProps): RuleSet | string => {
       justify-content: stretch;
       ${toCss({
         width: '100%',
-        maxWidth: scp.fullWidth ? null : scp.layoutMaxWidth,
-        paddingLeft: scp.layoutPaddingHorizontal,
-        paddingRight: scp.layoutPaddingHorizontal,
-        paddingTop: scp.modalPaddingTop,
-        paddingBottom: scp.modalPaddingBottom,
-        borderTop: borderPropsToCssValue(scp.modalBorderWidth, scp.modalBorderColor),
+        maxWidth: sc.fullWidth ? null : sc.layoutMaxWidth,
+        paddingLeft: sc.layoutPaddingHorizontal,
+        paddingRight: sc.layoutPaddingHorizontal,
+        paddingTop: sc.modalPaddingTop,
+        paddingBottom: sc.modalPaddingBottom,
+        borderTop: borderPropsToCssValue(sc.modalBorderWidth, sc.modalBorderColor),
       })}
     }
   `
 }
-const ModalS = styled.div.attrs(mark('ModalS'))<{
-  $style: LayoutStyleRoot
-}>`
-  ${({ $style }) => {
-    return css`
-      ${getLayoutModalCoreCss($style)}
+const getLayoutModalFinalCss = ($sf: LayoutStyleFinal) => {
+  return css`
+    ${getLayoutModalCoreCss($sf)}
 
-      ${($style.byWindowSize || []).map(([, coreStyleProps], index) => {
-        const nextWindowSize = $style.byWindowSize?.[index - 1]?.[0] ?? 0
-        const coreCss = getLayoutModalCoreCss({
-          ...coreStyleProps,
-        })
-        if (nextWindowSize === 0) {
-          return coreCss
+    ${($sf.byWindowSize || []).map(([, coreStyleProps], index) => {
+      const nextWindowSize = $sf.byWindowSize?.[index - 1]?.[0] ?? 0
+      const coreCss = getLayoutModalCoreCss({
+        ...coreStyleProps,
+      })
+      if (nextWindowSize === 0) {
+        return coreCss
+      }
+      return css`
+        @media (min-width: ${nextWindowSize + 1}px) {
+          ${coreCss}
         }
-        return css`
-          @media (min-width: ${nextWindowSize + 1}px) {
-            ${coreCss}
-          }
-        `
-      })}
-      ${($style.byWindowSizeReverse || []).map(([windowSize, coreStyleProps]) => {
-        const coreCss = getLayoutModalCoreCss({
-          ...coreStyleProps,
-        })
-        if (windowSize === Infinity) {
-          return coreCss
+      `
+    })}
+      ${($sf.byWindowSizeReverse || []).map(([windowSize, coreStyleProps]) => {
+      const coreCss = getLayoutModalCoreCss({
+        ...coreStyleProps,
+      })
+      if (windowSize === Infinity) {
+        return coreCss
+      }
+      return css`
+        @media (max-width: ${windowSize}px) {
+          ${coreCss}
         }
-        return css`
-          @media (max-width: ${windowSize}px) {
-            ${coreCss}
-          }
-        `
-      })}
-    `
+      `
+    })}
+  `
+}
+const ModalS = styled.div.attrs(mark('ModalS'))<{
+  $sf: LayoutStyleFinal
+}>`
+  ${({ $sf }) => {
+    return getLayoutModalFinalCss($sf)
   }}
 `
 
@@ -347,11 +356,16 @@ export const Layout: LayoutType = forwardRefIgnoreTypes(
     }: LayoutPropsWithoutRef<'div'>,
     ref: any
   ) => {
-    $style.byWindowSize = ($style.byWindowSize || $style.ws || []).sort(([a], [b]) => a - b)
-    $style.byWindowSizeReverse = ($style.byWindowSizeReverse || $style.wsr || []).sort(([a], [b]) => b - a)
+    const $sf: LayoutStyleFinal = {
+      ...$style,
+      byWindowSize: [], // will be assigned below
+      byWindowSizeReverse: [], // will be assigned below
+    }
+    $sf.byWindowSize = ($style.byWindowSize || $style.ws || []).sort(([a], [b]) => a - b)
+    $sf.byWindowSizeReverse = ($style.byWindowSizeReverse || $style.wsr || []).sort(([a], [b]) => b - a)
     return (
       <>
-        <LayoutS {...(restProps as {})} $style={$style} ref={ref}>
+        <LayoutS {...(restProps as {})} $sf={$sf} ref={ref}>
           {headerRender && (
             <HeaderPlaceS>
               <HeaderS>
@@ -385,15 +399,15 @@ export const Layout: LayoutType = forwardRefIgnoreTypes(
               overlayVisible: false,
               closeOnOutsideClick: false,
               overlayClickableThrough: true,
-              ws: ($style.byWindowSize || $style.ws || [])
+              ws: $sf.byWindowSize
                 .map(([size, cfp]) => (isNil(cfp.headerHeight) ? false : [size, { marginTop: cfp.headerHeight }]))
                 .filter(Boolean) as any,
-              wsr: ($style.byWindowSizeReverse || $style.wsr || [])
+              wsr: $sf.byWindowSizeReverse
                 .map(([size, cfp]) => (isNil(cfp.headerHeight) ? false : [size, { marginTop: cfp.headerHeight }]))
                 .filter(Boolean) as any,
             }}
           >
-            <ModalS $style={$style}>
+            <ModalS $sf={$sf}>
               <LayoutSectionS>{modalRender}</LayoutSectionS>
             </ModalS>
           </Modal>

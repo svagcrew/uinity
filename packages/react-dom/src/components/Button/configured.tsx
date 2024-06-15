@@ -43,7 +43,7 @@ const makeButtonStyleCore = ({
   cm: ColorModeName
   sc?: ButtonStyleCore
   cfp: ButtonConfigFinalProps
-}) => {
+}): ButtonStyleCore => {
   return {
     ...cfp,
     ...sc,

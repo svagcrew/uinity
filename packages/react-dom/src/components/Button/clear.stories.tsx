@@ -1,5 +1,5 @@
 import { Button } from './clear.js'
-import SvgIcon from '@/components/Icon/icon1.svg?react'
+import SvgIcon from '@/stories/icon1.svg?react'
 import type { Meta, StoryObj } from '@storybook/react'
 
 const ButtonClearDemo = (props: {
