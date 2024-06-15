@@ -32,9 +32,9 @@
     "start": "svag-ts start",
     "test": "svag-jest test",
     "ts-analyze": "analyze-trace ts-trace",
-    "ts-trace": "cross-env NODE_OPTIONS=--max-old-space-size=26384 tsc --generateTrace ts-trace",
+    "ts-trace": "tsc --generateTrace ts-trace",
     "ts-trace-analyze": "pnpm ts-trace && pnpm ts-analyze",
-    "types": "cross-env NODE_OPTIONS=--max-old-space-size=26384 svag-ts types",
+    "types": "svag-ts types",
     "watch": "svag-ts watch"
   },
   "peerDependencies": {

@@ -11,13 +11,6 @@ export const coreSrcDir = path.resolve(packagesDir, 'core/src')
 export const coreComponentsDir = path.resolve(coreSrcDir, 'components')
 export const coreConfigDefinitionFilePath = path.resolve(coreSrcDir, 'config/index.ts')
 
-export const blankReactDomComponentDir = path.resolve(reactDomComponentsDir, 'Blank')
-export const blankReactDomClearComponentFilePath = path.resolve(blankReactDomComponentDir, 'clear.tsx')
-export const blankReactDomConfiguredComponentFilePath = path.resolve(blankReactDomComponentDir, 'configured.tsx')
-export const blankReactDomClearStoriesFilePath = path.resolve(blankReactDomComponentDir, 'clear.stories.tsx')
-export const blankReactDomConfiguredStoriesFilePath = path.resolve(blankReactDomComponentDir, 'configured.stories.tsx')
-export const blankCoreFilePath = path.resolve(coreComponentsDir, 'blank.ts')
-
 export const getRelativePath = (filePath: string) => {
   return path.relative(packagesDir, filePath)
 }

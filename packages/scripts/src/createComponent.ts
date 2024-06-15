@@ -1,7 +1,5 @@
 import {
   appendFile,
-  blankCoreFilePath,
-  blankReactDomComponentDir,
   copyDir,
   copyFile,
   coreComponentsDir,
@@ -16,7 +14,8 @@ import path from 'path'
 import { log } from 'svag-cli-utils'
 
 export const createComponent = async ({
-  name,
+  srcName,
+  destName,
   as = 'div',
   preventIndexFilesModifications,
   preventCoreFilesModifications,
@@ -24,7 +23,8 @@ export const createComponent = async ({
   createOnlyReactDom,
   createOnlyCore,
 }: {
-  name: string
+  srcName: string
+  destName: string
   as?: string
   preventIndexFilesModifications?: boolean
   preventCoreFilesModifications?: boolean
@@ -32,62 +32,66 @@ export const createComponent = async ({
   createOnlyReactDom?: boolean
   createOnlyCore?: boolean
 }) => {
-  if (!name) {
+  if (!destName) {
     throw new Error('Component name is required')
   }
-  const nameCamelCaseLowercase = _.camelCase(name)
-  const nameCamelCaseCapitalized = _.upperFirst(nameCamelCaseLowercase)
-  log.black(`Creating component "${nameCamelCaseCapitalized}", as:${JSON.stringify(as)}`)
-  const newReactDomComponentDir = path.resolve(reactDomComponentsDir, nameCamelCaseCapitalized)
-  const newReactDomClearComponentFilePath = path.resolve(newReactDomComponentDir, 'clear.tsx')
-  const newReactDomConfiguredComponentFilePath = path.resolve(newReactDomComponentDir, 'configured.tsx')
-  const newReactDomClearStoriesFilePath = path.resolve(newReactDomComponentDir, 'clear.stories.tsx')
-  const newReactDomConfiguredStoriesFilePath = path.resolve(newReactDomComponentDir, 'configured.stories.tsx')
-  const newCoreFilePath = path.resolve(coreComponentsDir, `${nameCamelCaseLowercase}.ts`)
+  const srcNameLowercased = _.camelCase(srcName)
+  const srcNameCapitalized = _.upperFirst(srcNameLowercased)
+  const srcCoreFilePath = path.resolve(coreComponentsDir, `${srcNameLowercased}.ts`)
+  const srcReactDomComponentDir = path.resolve(reactDomComponentsDir, srcNameCapitalized)
+  const destNameLowercased = _.camelCase(destName)
+  const destNameCapitalized = _.upperFirst(destNameLowercased)
+  log.black(`Creating component "${destNameCapitalized}", as:${JSON.stringify(as)}`)
+  const destReactDomComponentDir = path.resolve(reactDomComponentsDir, destNameCapitalized)
+  const destReactDomClearComponentFilePath = path.resolve(destReactDomComponentDir, 'clear.tsx')
+  const destReactDomConfiguredComponentFilePath = path.resolve(destReactDomComponentDir, 'configured.tsx')
+  const destReactDomClearStoriesFilePath = path.resolve(destReactDomComponentDir, 'clear.stories.tsx')
+  const destReactDomConfiguredStoriesFilePath = path.resolve(destReactDomComponentDir, 'configured.stories.tsx')
+  const destCoreFilePath = path.resolve(coreComponentsDir, `${destNameLowercased}.ts`)
   if (!preventReactDomFilesModifications) {
     if (!createOnlyCore) {
-      await copyDir(blankReactDomComponentDir, newReactDomComponentDir)
-      log.black(`Created ${getRelativePath(newReactDomComponentDir)}`)
+      await copyDir(srcReactDomComponentDir, destReactDomComponentDir)
+      log.black(`Created ${getRelativePath(destReactDomComponentDir)}`)
       await replaceInFile({
-        filePath: newReactDomClearComponentFilePath,
+        filePath: destReactDomClearComponentFilePath,
         strings: [
-          ['Blank', nameCamelCaseCapitalized],
-          ['blank', nameCamelCaseLowercase],
-          [`BlankDefaultAs = 'div'`, `${nameCamelCaseCapitalized}DefaultAs = '${as}'`],
+          [srcNameCapitalized, destNameCapitalized],
+          [srcNameLowercased, destNameLowercased],
+          [`${srcNameCapitalized}DefaultAs = 'div'`, `${destNameCapitalized}DefaultAs = '${as}'`],
         ],
       })
       await replaceInFile({
-        filePath: newReactDomConfiguredComponentFilePath,
+        filePath: destReactDomConfiguredComponentFilePath,
         strings: [
-          ['Blank', nameCamelCaseCapitalized],
-          ['blank', nameCamelCaseLowercase],
+          [srcNameCapitalized, destNameCapitalized],
+          [srcNameLowercased, destNameLowercased],
         ],
       })
       await replaceInFile({
-        filePath: newReactDomClearStoriesFilePath,
+        filePath: destReactDomClearStoriesFilePath,
         strings: [
-          ['Blank', nameCamelCaseCapitalized],
-          ['blank', nameCamelCaseLowercase],
+          [srcNameCapitalized, destNameCapitalized],
+          [srcNameLowercased, destNameLowercased],
         ],
       })
       await replaceInFile({
-        filePath: newReactDomConfiguredStoriesFilePath,
+        filePath: destReactDomConfiguredStoriesFilePath,
         strings: [
-          ['Blank', nameCamelCaseCapitalized],
-          ['blank', nameCamelCaseLowercase],
+          [srcNameCapitalized, destNameCapitalized],
+          [srcNameLowercased, destNameLowercased],
         ],
       })
     }
   }
   if (!preventCoreFilesModifications) {
     if (!createOnlyReactDom) {
-      await copyFile(blankCoreFilePath, newCoreFilePath)
-      log.black(`Created ${getRelativePath(newCoreFilePath)}`)
+      await copyFile(srcCoreFilePath, destCoreFilePath)
+      log.black(`Created ${getRelativePath(destCoreFilePath)}`)
       await replaceInFile({
-        filePath: newCoreFilePath,
+        filePath: destCoreFilePath,
         strings: [
-          ['Blank', nameCamelCaseCapitalized],
-          ['blank', nameCamelCaseLowercase],
+          [srcNameCapitalized, destNameCapitalized],
+          [srcNameLowercased, destNameLowercased],
         ],
       })
     }
@@ -98,27 +102,27 @@ export const createComponent = async ({
       await appendFile({
         filePath: coreConfigDefinitionFilePath,
         search: `import { defaultBlankConfigInput, normalizeBlankConfig, zBlankConfigInput } from '@/components/blank.js'`,
-        append: `import { default${nameCamelCaseCapitalized}ConfigInput, normalize${nameCamelCaseCapitalized}Config, z${nameCamelCaseCapitalized}ConfigInput } from '@/components/${nameCamelCaseLowercase}.js'`,
+        append: `import { default${destNameCapitalized}ConfigInput, normalize${destNameCapitalized}Config, z${destNameCapitalized}ConfigInput } from '@/components/${destNameLowercased}.js'`,
       })
       await appendFile({
         filePath: coreConfigDefinitionFilePath,
         search: `blank: zBlankConfigInput.optional()`,
-        append: `${nameCamelCaseLowercase}: z${nameCamelCaseCapitalized}ConfigInput.optional(),`,
+        append: `${destNameLowercased}: z${destNameCapitalized}ConfigInput.optional(),`,
       })
       await appendFile({
         filePath: coreConfigDefinitionFilePath,
         search: `blank: defaultBlankConfigInput,`,
-        append: `${nameCamelCaseLowercase}: default${nameCamelCaseCapitalized}ConfigInput,`,
+        append: `${destNameLowercased}: default${destNameCapitalized}ConfigInput,`,
       })
       await appendFile({
         filePath: coreConfigDefinitionFilePath,
         search: `const blank = normalizeBlankConfig(input.blank)`,
-        append: `const ${nameCamelCaseLowercase} = normalize${nameCamelCaseCapitalized}Config(input.${nameCamelCaseLowercase})`,
+        append: `const ${destNameLowercased} = normalize${destNameCapitalized}Config(input.${destNameLowercased})`,
       })
       await appendFile({
         filePath: coreConfigDefinitionFilePath,
         search: `    blank,`,
-        append: `${nameCamelCaseLowercase},`,
+        append: `${destNameLowercased},`,
       })
     }
     if (!createOnlyCore) {
@@ -126,12 +130,12 @@ export const createComponent = async ({
       await appendFile({
         filePath: reactDomIndexFilePath,
         search: `import { createBlank } from '@/components/Blank/configured.js'`,
-        append: `import { create${nameCamelCaseCapitalized} } from '@/components/${nameCamelCaseCapitalized}/configured.js'`,
+        append: `import { create${destNameCapitalized} } from '@/components/${destNameCapitalized}/configured.js'`,
       })
       await appendFile({
         filePath: reactDomIndexFilePath,
         search: `...createBlank({ uinityConfig }),`,
-        append: `...create${nameCamelCaseCapitalized}({ uinityConfig }),`,
+        append: `...create${destNameCapitalized}({ uinityConfig }),`,
       })
     }
   }

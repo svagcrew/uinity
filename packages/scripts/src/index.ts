@@ -5,7 +5,7 @@ defineCliApp(async ({ cwd, command, args, flags }) => {
   switch (command) {
     case 'create-component':
     case 'cc': {
-      const name = args[0]
+      const destName = args[0]
       const as = getFlagAsString({
         flags,
         keys: ['as', 'a'],
@@ -36,9 +36,15 @@ defineCliApp(async ({ cwd, command, args, flags }) => {
         keys: ['c'],
         coalesce: false,
       })
+      const srcName = getFlagAsString({
+        flags,
+        keys: ['s'],
+        coalesce: 'Blank',
+      })
       await createComponent({
         as,
-        name,
+        srcName,
+        destName,
         preventIndexFilesModifications,
         preventCoreFilesModifications,
         preventReactDomFilesModifications,
