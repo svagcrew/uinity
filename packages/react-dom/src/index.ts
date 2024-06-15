@@ -14,6 +14,7 @@ import { createDisabler } from '@/components/Disabler/configured.js'
 import { createDivider } from '@/components/Divider/configured.js'
 import { createFormItem } from '@/components/FormItem/configured.js'
 import { createGrid } from '@/components/Grid/configured.js'
+import type { IconSrc } from '@/components/Icon/clear.js'
 import type { IconsSources } from '@/components/Icon/configured.js'
 import { createIcon } from '@/components/Icon/configured.js'
 import { createIndicator } from '@/components/Indicator/configured.js'
@@ -43,9 +44,11 @@ import type { UinityConfig } from '@uinity/core'
 export const createComponents = <TIconName extends string>({
   uinityConfig,
   iconsSources,
+  blankAvatarSrc,
 }: {
   uinityConfig: UinityConfig
   iconsSources?: IconsSources<TIconName>
+  blankAvatarSrc?: IconSrc
 }) => {
   const { Icon } = createIcon({ uinityConfig, iconsSources })
   return {
@@ -65,11 +68,11 @@ export const createComponents = <TIconName extends string>({
     ...createLoader({ uinityConfig }),
     ...createButonLikeSelect({ uinityConfig }),
     ...createTextfield({ uinityConfig }),
-    ...createContextMenuItem({ uinityConfig }),
+    ...createContextMenuItem({ uinityConfig, Icon }),
     ...createSelect({ uinityConfig }),
     ...createTextarea({ uinityConfig }),
     ...createFormItem({ uinityConfig }),
-    ...createControlIcon({ uinityConfig }),
+    ...createControlIcon({ uinityConfig, Icon }),
     ...createAssignedElement({ uinityConfig }),
     ...createInformer({ uinityConfig }),
     ...createToast({ uinityConfig }),
@@ -85,7 +88,7 @@ export const createComponents = <TIconName extends string>({
     ...createDivider({ uinityConfig }),
     ...createBadge({ uinityConfig }),
     ...createIndicator({ uinityConfig }),
-    ...createAvatar({ uinityConfig }),
+    ...createAvatar({ uinityConfig, blankAvatarSrc }),
     ...createDelimitedLine({ uinityConfig }),
     ...createBlank({ uinityConfig }),
   }

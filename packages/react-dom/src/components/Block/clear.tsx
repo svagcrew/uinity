@@ -100,6 +100,11 @@ type BlockStyleCore = {
   /** width: 100%; // wf — width-full */
   wf?: boolean
 
+  /** max-width: {value}; */
+  mw?: string | number
+  /** max-height: {value}; */
+  mh?: string | number
+
   /** style: {{ ...cssProperties }}; */
   s?: React.CSSProperties
 
@@ -177,6 +182,8 @@ const blockStyleCoreKeys = [
   'cg',
   'hf',
   'wf',
+  'mw',
+  'mh',
   'ce',
   's',
   'cp',
@@ -306,6 +313,8 @@ const getBlockFinalCss = ($sf: BlockStyleFinal): RuleSet => {
       containerType: $sf.ce ? 'inline-size' : undefined,
       height: $sf.hf ? '100%' : undefined,
       width: $sf.wf ? '100%' : undefined,
+      maxHeight: $sf.mh ? $sf.mh : undefined,
+      maxWidth: $sf.mw ? $sf.mw : undefined,
     })}
     ${toCss($sf.s || {})};
     ${!$sf.cp

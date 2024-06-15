@@ -18,12 +18,12 @@ const meta = {
   },
   tags: ['autodocs'],
   argTypes: {
-    background: { control: 'color' },
-    childrenBackground: { control: 'color' },
+    // background: { control: 'color' },
+    // childrenBackground: { control: 'color' },
   },
   args: {
-    background: '#f00',
-    childrenBackground: '#0f0',
+    // background: '#f00',
+    // childrenBackground: '#0f0',
   },
 } satisfies Meta<typeof DividerDemo>
 

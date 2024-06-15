@@ -2,7 +2,7 @@ import type { DividerDefaultAs, DividerMainProps, DividerStyleRoot } from './cle
 import { Divider as DividerClear } from './clear.js'
 import { useColorMode } from '@/lib/colorMode.js'
 import { type As, type AsPropsWithRef, forwardRefIgnoreTypes, type WithoutRef } from '@/utils.js'
-import { type ColorModeName, getColorByMode, type UinityConfig } from '@uinity/core'
+import { type ColorModeName, type UinityConfig } from '@uinity/core'
 import { getDividerConfigFinalProps } from '@uinity/core/dist/components/divider.js'
 
 export type DividerConfiguredSettingsProps = {
@@ -27,13 +27,14 @@ export type DividerConfigured = <TAs extends As = DividerDefaultAs>(
 export const createDivider = ({ uinityConfig }: { uinityConfig: UinityConfig }) => {
   const Divider: DividerConfigured = forwardRefIgnoreTypes(
     ({ variant, color, size, colorMode, $style = {}, ...restProps }: DividerConfiguredPropsWithoutRef, ref: any) => {
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
       const { cm } = useColorMode(colorMode)
       const cfp = getDividerConfigFinalProps(uinityConfig, variant, color, size)
       const $styleConfigured: DividerStyleRoot = {
         ...cfp,
         ...$style,
-        background: getColorByMode(cm, $style.background ?? cfp.background),
-        childrenBackground: getColorByMode(cm, $style.childrenBackground ?? cfp.childrenBackground),
+        // background: getColorByMode(cm, $style.background ?? cfp.background),
+        // childrenBackground: getColorByMode(cm, $style.childrenBackground ?? cfp.childrenBackground),
       }
       return <DividerClear {...(restProps as {})} $style={$styleConfigured} ref={ref} />
     }

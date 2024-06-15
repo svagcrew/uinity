@@ -1,16 +1,14 @@
-import { type ControlIconConfiguredMainProps, createControlIcon } from './configured.js'
+import type { ControlIconConfiguredMainProps } from './configured.js'
+import { createControlIcon } from './configured.js'
+import { Icon } from '@/components/Icon/configured.stories.js'
 import { uinityConfig } from '@/stories/uinity.config.js'
 import { getArgTypeConfigFromObject } from '@/stories/utils.js'
 import type { Meta, StoryObj } from '@storybook/react'
 
-const { ControlIcon } = createControlIcon({ uinityConfig })
+const { ControlIcon } = createControlIcon({ uinityConfig, Icon })
 
-const ControlIconDemo = ({ variant, size, color }: ControlIconConfiguredMainProps) => {
-  return (
-    <ControlIcon variant={variant} size={size} color={color}>
-      ControlIcon
-    </ControlIcon>
-  )
+const ControlIconDemo = ({ ...restProps }: ControlIconConfiguredMainProps) => {
+  return <ControlIcon {...(restProps as any)} />
 }
 
 const meta = {
@@ -21,18 +19,50 @@ const meta = {
   },
   tags: ['autodocs'],
   argTypes: {
-    ...getArgTypeConfigFromObject('variant', uinityConfig.controlIcon.variant, 'radio', true),
+    ...getArgTypeConfigFromObject('variant', uinityConfig.controlIcon.variant),
     ...getArgTypeConfigFromObject('color', uinityConfig.controlIcon.color, 'radio', true),
-    ...getArgTypeConfigFromObject('size', uinityConfig.controlIcon.size, 'radio', true),
+    ...getArgTypeConfigFromObject('size', uinityConfig.controlIcon.size),
+    // iconStart: {
+    //   control: 'radio',
+    //   options: ['icon1', 'icon2', undefined],
+    // },
   },
   args: {
-    variant: undefined,
+    variant: 'primary',
     color: undefined,
     size: undefined,
+    // iconStart: undefined,
   },
 } satisfies Meta<typeof ControlIconDemo>
 
 export default meta
 type Story = StoryObj<typeof ControlIconDemo>
 
-export const Default: Story = {}
+export const Primary: Story = {
+  args: {
+    variant: 'primary',
+    // children: 'ControlIcon',
+  },
+}
+
+export const Secondary: Story = {
+  args: {
+    variant: 'secondary',
+    // children: 'ControlIcon',
+  },
+}
+
+export const Large: Story = {
+  args: {
+    size: 'l',
+    // children: 'ControlIcon',
+  },
+}
+
+export const Small: Story = {
+  args: {
+    size: 'xs',
+    variant: 'primary',
+    // children: 'ControlIcon',
+  },
+}

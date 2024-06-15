@@ -72,16 +72,29 @@ export const Icon: IconType = forwardRefIgnoreTypes(
             ...restProps,
             className: cn(className, gcn, element.props?.className),
             ref,
+            width: $sf.size,
+            height: $sf.size,
           })}
         </>
       )
     } else if (typeof src === 'function') {
-      const component = src as React.ComponentType<{ className?: string; ref?: AsRef<any> }>
+      const component = src as React.ComponentType<{
+        className?: string
+        width?: number | string
+        height?: number | string
+        ref?: AsRef<any>
+      }>
       return (
         <>
           <IconGlobalS $sf={$sf} />
           {React.createElement(component, {
             ...restProps,
+            ...($sf.size
+              ? {
+                  width: $sf.size,
+                  height: $sf.size,
+                }
+              : {}),
             className: cn(className, gcn),
             ref,
           })}

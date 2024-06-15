@@ -44,7 +44,13 @@ const getButtonCoreCss = (sc: ButtonStyleCore) => {
       alignItems: 'center',
       justifyContent: 'center',
       gap: sc.gapHorizontalAccessoryText,
+      padding: '3px 10px',
+      border: 'none',
     })}
+
+    & ${ContentS} {
+      margin-bottom: -3px;
+    }
 
     & ${IconS} {
       ${toCss({
@@ -86,6 +92,7 @@ const getButtonFinalCss = ($sf: ButtonStyleFinal) => {
 }
 
 const IconS = styled(Icon)``
+const ContentS = styled.span``
 const ButtonS = styled.button.attrs(mark('ButtonS'))<{ $sf: ButtonStyleFinal }>`
   ${({ $sf }) => getButtonFinalCss($sf)}
 `
@@ -112,7 +119,7 @@ export const Button: ButtonType = forwardRefIgnoreTypes(
     return (
       <ButtonS {...(restProps as {})} ref={ref} $sf={$sf}>
         {iconStart && <IconS src={iconStart} />}
-        {children}
+        <ContentS>{children}</ContentS>
       </ButtonS>
     )
   }

@@ -69,9 +69,9 @@ export const defaultLayoutConfigInput: LayoutConfigInput = {
   },
   appearence: {
     bodyBackground: '#fff',
-    headerBackground: '#eee',
-    footerBackground: '#eee',
-    modalBackground: '#ddd',
+    headerBackground: '#fff',
+    footerBackground: '#fff',
+    modalBackground: '#fff',
     headerBorderColor: '#ccc',
     footerBorderColor: '#ccc',
     sidebarBorderColor: '#ccc',

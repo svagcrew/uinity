@@ -45,10 +45,14 @@ const getLinkCoreCss = (sc: LinkStyleCore) => {
       color: sc.textColor,
       display: 'flex',
       flexFlow: 'row nowrap',
-      alignItems: 'flex-start',
+      alignItems: 'center',
       justifyContent: 'flex-start',
       gap: sc.gapHorizontalAccessoryText,
     })}
+
+    & ${ContentS} {
+      margin-bottom: -3px;
+    }
 
     & ${IconS} {
       ${toCss({
@@ -104,6 +108,7 @@ const getLinkFinalCss = ($sf: LinkStyleFinal) => {
 }
 
 const IconS = styled(Icon)<{ $sf: LinkStyleFinal }>``
+const ContentS = styled.span.attrs(mark('ContentS'))``
 const LinkS = styled.a.attrs(mark('LinkS'))<{ $sf: LinkStyleFinal }>`
   ${({ $sf }) => getLinkFinalCss($sf)}
 `
@@ -135,7 +140,7 @@ export const Link: LinkType = forwardRefIgnoreTypes(
     return (
       <LinkS {...(restProps as {})} ref={ref} $sf={$sf}>
         {iconStart && <IconS $sf={$sf} src={iconStart} />}
-        {children}
+        <ContentS>{children}</ContentS>
       </LinkS>
     )
   }

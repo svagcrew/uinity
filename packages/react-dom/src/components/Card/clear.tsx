@@ -20,22 +20,13 @@ export type CardPropsWithRef<TAs extends As = CardDefaultAs> = CardMainProps<TAs
 export type CardPropsWithoutRef<TAs extends As = CardDefaultAs> = WithoutRef<CardPropsWithRef<TAs>>
 export type CardType = <TAs extends As = CardDefaultAs>(props: CardPropsWithRef<TAs>) => React.ReactNode
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const getCardCoreCss = ($sf: CardStyleFinal) => {
   return css`
     padding: 10px;
-    ${toCss({
-      width: $sf?.width,
-      height: $sf?.height,
-      background: $sf?.background,
-    })}
-
-    & ${ChildrenS} {
-      ${toCss({
-        width: $sf?.width,
-        height: $sf?.height,
-        background: $sf?.childrenBackground,
-      })}
-    }
+    background: #fff;
+    border: 1px solid #999;
+    ${toCss({})}
   `
 }
 const getCardFinalCss = ($sf: CardStyleFinal) => {

@@ -1,30 +1,53 @@
+import { controlSizeNames, zControlSizeProps } from '@/components/control.js'
+import { zTextFontName, zTextLineHeightName, zTextSizeName, zTextTypeName } from '@/components/text.js'
 import type { UinityConfig } from '@/config/index.js'
 import { zColorValue } from '@/utils/color.js'
 import { zOptionalNumberOrString } from '@/utils/other.js'
 import { $ } from '@/utils/variables.js'
 import { z } from 'zod'
 
-export const controlIconConfigSizesNames = ['xs', 's', 'm', 'l'] as const
+export const controlIconConfigSizesNames = controlSizeNames
 export const zControlIconConfigSizeName = z.enum(controlIconConfigSizesNames)
 export type ControlIconConfigSizeName = z.output<typeof zControlIconConfigSizeName>
 
-export const controlIconConfigVariantNames = ['primary', 'secondary', 'trietary'] as const
+export const controlIconConfigVariantNames = [
+  'primary',
+  'secondary',
+  'trietary',
+  'dangerPrimary',
+  'dangerSecondary',
+  'dangerTrietary',
+] as const
 export const zControlIconConfigVariantName = z.enum(controlIconConfigVariantNames)
 export type ControlIconConfigVariantName = z.output<typeof zControlIconConfigVariantName>
 
-export const controlIconConfigColorNames = ['brand', 'green', 'red'] as const
+export const controlIconConfigColorNames = ['brand', 'gray'] as const
 export const zControlIconConfigColorName = z.enum(controlIconConfigColorNames)
 export type ControlIconConfigColorName = z.output<typeof zControlIconConfigColorName>
 
-export const zControlIconConfigSizeProps = z.object({
-  width: zOptionalNumberOrString,
-  height: zOptionalNumberOrString,
+export const controlIconConfigStatesNames = ['rest', 'hover', 'active', 'focus', 'disabled', 'current'] as const
+export const zControlIconConfigStateName = z.enum(controlIconConfigStatesNames)
+export type ControlIconConfigStateName = z.output<typeof zControlIconConfigStateName>
+
+export const zControlIconConfigSizeProps = zControlSizeProps.extend({
+  textFont: zTextFontName.optional(),
+  textType: zTextTypeName.optional(),
+  textSize: zTextSizeName.optional(),
+  textLineHeight: zTextLineHeightName.optional(),
+  borderWidth: zOptionalNumberOrString,
+  minHeight: zOptionalNumberOrString,
 })
 export type ControlIconConfigSizeProps = z.output<typeof zControlIconConfigSizeProps>
 
 export const zControlIconConfigAppearenceProps = z.object({
+  textFont: zTextFontName.optional(),
+  textType: zTextTypeName.optional(),
+  textSize: zTextSizeName.optional(),
+  textLineHeight: zTextLineHeightName.optional(),
   background: zColorValue.optional(),
-  childrenBackground: zColorValue.optional(),
+  borderColor: zColorValue.optional(),
+  textColor: zColorValue.optional(),
+  iconColor: zColorValue.optional(),
 })
 export type ControlIconConfigAppearenceProps = z.output<typeof zControlIconConfigAppearenceProps>
 
@@ -33,6 +56,17 @@ export type ControlIconConfigFinalProps = z.output<typeof zControlIconConfigFina
 
 export const zControlIconConfigGeneralProps = z.object({})
 export type ControlIconConfigGeneralProps = z.output<typeof zControlIconConfigGeneralProps>
+
+export const zControlIconConfigComplexProps = z.record(
+  z.union([zControlIconConfigColorName, z.literal('any')]),
+  z
+    .record(
+      z.union([zControlIconConfigSizeName, z.literal('any')]),
+      z.record(z.union([zControlIconConfigStateName, z.literal('any')]), zControlIconConfigFinalProps).optional()
+    )
+    .optional()
+)
+export type ControlIconConfigComplexProps = z.output<typeof zControlIconConfigComplexProps>
 
 export const zControlIconConfigVariantProps = z.object({
   color: zControlIconConfigColorName.optional(),
@@ -44,9 +78,19 @@ export const zControlIconConfigInput = z.object({
   variant: z.record(zControlIconConfigVariantName, zControlIconConfigVariantProps).optional(),
   color: z.record(zControlIconConfigColorName, zControlIconConfigAppearenceProps).optional(),
   size: z.record(zControlIconConfigSizeName, zControlIconConfigSizeProps).optional(),
+  state: z.record(zControlIconConfigStateName, zControlIconConfigAppearenceProps).optional(),
+  complex: zControlIconConfigComplexProps.optional(),
 })
 export type ControlIconConfigInput = z.output<typeof zControlIconConfigInput>
 
+const getDefaultSpecificSizeProps = (size: ControlIconConfigSizeName) => ({
+  borderRadius: $.control.size[size].borderRadius,
+  horizontalPaddingEdgeAccessory: $.control.size[size].horizontalPaddingEdgeAccessory,
+  horizontalPaddingEdgeText: $.control.size[size].horizontalPaddingEdgeText,
+  horizontalPaddingAccessoryText: $.control.size[size].horizontalPaddingAccessoryText,
+  minHeight: $.control.size[size].minHeight,
+  iconSize: $.control.size[size].iconSize,
+})
 export const defaultControlIconConfigInput: ControlIconConfigInput = {
   general: {},
   variant: {
@@ -54,65 +98,72 @@ export const defaultControlIconConfigInput: ControlIconConfigInput = {
       color: 'brand',
     },
     secondary: {
-      color: 'green',
+      color: 'gray',
     },
-    trietary: {
-      color: 'red',
-    },
+    trietary: {},
+    dangerPrimary: {},
+    dangerSecondary: {},
+    dangerTrietary: {},
   },
   color: {
     brand: {
-      background: {
+      textColor: {
         light: $.color.core.brand[60],
         dark: $.color.core.brand[60],
       },
-      childrenBackground: {
-        light: $.color.core.brand[50],
-        dark: $.color.core.brand[50],
-      },
     },
-    green: {
-      background: {
-        light: $.color.core.green[60],
-        dark: $.color.core.green[60],
-      },
-      childrenBackground: {
-        light: $.color.core.green[50],
-        dark: $.color.core.green[50],
-      },
+    gray: {
+      background: $.color.semantic.symbol.secondary,
     },
-    red: {
-      background: {
-        light: $.color.core.red[60],
-        dark: $.color.core.red[60],
-      },
-      childrenBackground: {
-        light: $.color.core.red[50],
-        dark: $.color.core.red[50],
+  },
+  size: Object.fromEntries(controlIconConfigSizesNames.map((size) => [size, getDefaultSpecificSizeProps(size)])),
+  state: {
+    rest: {},
+    hover: {},
+    active: {},
+    focus: {},
+    disabled: {},
+    current: {
+      textColor: {
+        light: $.color.core.brand[140],
+        dark: $.color.core.brand[240],
       },
     },
   },
-  size: {
-    xs: {
-      width: 16,
-      height: 16,
-    },
-    s: {
-      width: 24,
-      height: 24,
-    },
-    m: {
-      width: 32,
-      height: 32,
-    },
-    l: {
-      width: 40,
-      height: 40,
+  complex: {
+    brand: {
+      xs: {
+        hover: {
+          textColor: '$.color.core.green.60',
+          iconColor: '$.color.core.green.60',
+        },
+      },
     },
   },
 }
 
 export const normalizeControlIconConfig = (input: ControlIconConfigInput | undefined) => {
+  const complex = {} as ControlIconConfigComplexProps
+  for (const type of [...controlIconConfigColorNames, 'any'] as const) {
+    for (const size of [...controlIconConfigSizesNames, 'any'] as const) {
+      for (const state of [...controlIconConfigStatesNames, 'any'] as const) {
+        const defaultComplexItem = defaultControlIconConfigInput.complex?.[type]?.[size]?.[state]
+        const inputComplexItem = input?.complex?.[type]?.[size]?.[state]
+        const complexItem =
+          !defaultComplexItem && !inputComplexItem ? undefined : { ...defaultComplexItem, ...inputComplexItem }
+        if (complexItem) {
+          complex[type] = {
+            ...complex[type],
+            [size]: {
+              ...complex[type]?.[size],
+              [state]: complexItem,
+            },
+          }
+        }
+      }
+    }
+  }
+
   return {
     general: {},
     variant: {
@@ -127,6 +178,18 @@ export const normalizeControlIconConfig = (input: ControlIconConfigInput | undef
       trietary: {
         ...defaultControlIconConfigInput.variant?.trietary,
         ...input?.variant?.trietary,
+      },
+      dangerPrimary: {
+        ...defaultControlIconConfigInput.variant?.dangerPrimary,
+        ...input?.variant?.dangerPrimary,
+      },
+      dangerSecondary: {
+        ...defaultControlIconConfigInput.variant?.dangerSecondary,
+        ...input?.variant?.dangerSecondary,
+      },
+      dangerTrietary: {
+        ...defaultControlIconConfigInput.variant?.dangerTrietary,
+        ...input?.variant?.dangerTrietary,
       },
     },
     size: {
@@ -152,23 +215,43 @@ export const normalizeControlIconConfig = (input: ControlIconConfigInput | undef
         ...defaultControlIconConfigInput.color?.brand,
         ...input?.color?.brand,
       },
-      green: {
-        ...defaultControlIconConfigInput.color?.green,
-        ...input?.color?.green,
-      },
-      red: {
-        ...defaultControlIconConfigInput.color?.red,
-        ...input?.color?.red,
+      gray: {
+        ...defaultControlIconConfigInput.color?.gray,
+        ...input?.color?.gray,
       },
     },
+    state: {
+      rest: {
+        ...defaultControlIconConfigInput.state?.rest,
+        ...input?.state?.rest,
+      },
+      hover: {
+        ...defaultControlIconConfigInput.state?.hover,
+        ...input?.state?.hover,
+      },
+      active: {
+        ...defaultControlIconConfigInput.state?.active,
+        ...input?.state?.active,
+      },
+      focus: {
+        ...defaultControlIconConfigInput.state?.focus,
+        ...input?.state?.focus,
+      },
+      disabled: {
+        ...defaultControlIconConfigInput.state?.disabled,
+        ...input?.state?.disabled,
+      },
+      current: {
+        ...defaultControlIconConfigInput.state?.current,
+        ...input?.state?.current,
+      },
+    },
+    complex,
   }
 }
 export type ControlIconConfig = ReturnType<typeof normalizeControlIconConfig>
 
-export const normalizeControlIconColorName = (
-  uinityConfig: UinityConfig,
-  color?: ControlIconConfigColorName | null | undefined
-) => {
+export const normalizeControlIconColorName = (uinityConfig: UinityConfig, color?: ControlIconConfigColorName | null | undefined) => {
   if (color && uinityConfig.controlIcon.color[color]) {
     return color
   }
@@ -182,6 +265,13 @@ export const normalizeControlIconSizeName = (uinityConfig: UinityConfig, size?: 
   return 'm'
 }
 
+export const normalizeControlIconStateName = (uinityConfig: UinityConfig, state?: ControlIconConfigStateName | null | undefined) => {
+  if (state && uinityConfig.controlIcon.state[state]) {
+    return state
+  }
+  return 'rest'
+}
+
 export const normalizeControlIconVariantName = (
   uinityConfig: UinityConfig,
   variant?: ControlIconConfigVariantName | null | undefined
@@ -192,10 +282,7 @@ export const normalizeControlIconVariantName = (
   return 'primary'
 }
 
-export const getControlIconVariantProps = (
-  uinityConfig: UinityConfig,
-  variant?: ControlIconConfigVariantName | undefined | null
-) => {
+export const getControlIconVariantProps = (uinityConfig: UinityConfig, variant?: ControlIconConfigVariantName | undefined | null) => {
   variant = normalizeControlIconVariantName(uinityConfig, variant)
   const variantProps = uinityConfig.controlIcon.variant[variant]
   return {
@@ -207,13 +294,25 @@ export const getControlIconConfigFinalProps = (
   uinityConfig: UinityConfig,
   variant?: ControlIconConfigVariantName | undefined | null,
   color?: ControlIconConfigColorName | undefined | null,
-  size?: ControlIconConfigSizeName | undefined | null
+  size?: ControlIconConfigSizeName | undefined | null,
+  state?: ControlIconConfigStateName | undefined | null
 ) => {
+  const c = uinityConfig.controlIcon
   const { variantColor } = getControlIconVariantProps(uinityConfig, variant)
   color = normalizeControlIconColorName(uinityConfig, color || variantColor)
   size = normalizeControlIconSizeName(uinityConfig, size)
+  state = normalizeControlIconStateName(uinityConfig, state)
   return {
-    ...uinityConfig.controlIcon.color[color],
-    ...uinityConfig.controlIcon.size[size],
+    ...(color && c.color?.[color]),
+    ...(size && c.size?.[size]),
+    ...c.state?.[state],
+    ...c.complex?.any?.any?.any,
+    ...c.complex?.any?.any?.[state],
+    ...(size && c.complex?.any?.[size]?.any),
+    ...(size && c.complex?.any?.[size]?.[state]),
+    ...(color && c.complex?.[color]?.any?.any),
+    ...(color && c.complex?.[color]?.any?.[state]),
+    ...(size && color && c.complex?.[color]?.[size]?.any),
+    ...(size && color && c.complex?.[color]?.[size]?.[state]),
   }
 }

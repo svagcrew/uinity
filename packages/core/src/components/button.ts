@@ -107,13 +107,14 @@ export const defaultButtonConfigInput: ButtonConfigInput = {
   },
   color: {
     brand: {
+      textColor: $.color.core.neutral[0],
       background: {
         light: $.color.core.brand[60],
         dark: $.color.core.brand[60],
       },
       iconColor: {
-        dark: $.color.core.neutral[0],
-        light: $.color.core.neutral[250],
+        dark: $.color.core.neutral[250],
+        light: $.color.core.neutral[0],
       },
     },
     gray: {

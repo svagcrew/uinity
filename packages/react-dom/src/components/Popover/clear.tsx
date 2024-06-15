@@ -16,13 +16,14 @@ import {
   useMergeRefs,
   useRole,
 } from '@floating-ui/react'
-import isBoolean from 'lodash/isBoolean.js'
 import type { ReactElement } from 'react'
 import React from 'react'
 
 type UsePopoverProps = {
   opened?: boolean
   setOpened?: (opened: boolean) => void
+  /** controlled by user, prevent default click events */
+  controlled?: boolean
   initialOpened?: boolean
   placement?: Placement
   /** Distance between trigger and popover */
@@ -44,6 +45,7 @@ export type WithPopoverType = (props: WithPopoverPropsWithRef) => ReactElement |
 const usePopover = ({
   initialOpened = false,
   placement = 'bottom-start',
+  controlled = false,
   opened: controlledOpened,
   setOpened: setControlledOpened,
   offset: offsetSize = 5,
@@ -72,7 +74,7 @@ const usePopover = ({
 
   const context = data.context
   const click = useClick(context, {
-    enabled: !isBoolean(controlledOpened),
+    enabled: !controlled,
   })
   const dismiss = useDismiss(context)
   const role = useRole(context)
