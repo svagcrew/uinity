@@ -6,6 +6,7 @@ import { createGrid } from '@/components/Grid/configured.js'
 import type { IconsSources } from '@/components/Icon/configured.js'
 import { createIcon } from '@/components/Icon/configured.js'
 import { createLayout } from '@/components/Layout/configured.js'
+import { createLink } from '@/components/Link/configured.js'
 import { createModal } from '@/components/Modal/configured.js'
 import { createPopover } from '@/components/Popover/configured.js'
 import { createProgressLine } from '@/components/ProgressLine/configured.js'
@@ -31,6 +32,7 @@ export const createComponents = <TIconName extends string>({
     ...createGrid({ uinityConfig }),
     ...createPopover({ uinityConfig }),
     ...createModal({ uinityConfig }),
+    ...createLink({ uinityConfig, Icon }),
     ...createBlank({ uinityConfig }),
   }
 }

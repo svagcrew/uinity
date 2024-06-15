@@ -1,10 +1,4 @@
 {
-  "general": {
-    "colorModes": [
-      "light",
-      "dark"
-    ]
-  },
   "color": {
     "core": {
       "neutral": {
@@ -329,9 +323,6 @@
     }
   },
   "icon": {
-    "general": {
-      "defaultSize": "m"
-    },
     "size": {
       "xs": {
         "size": 12
@@ -352,24 +343,12 @@
   },
   "layout": {
     "general": {
-      "defaultSize": "mobile",
       "sizeByScreenWidth": {
         "mobile": 420,
         "tablet": 1200,
         "desktop": null
       },
-      "hideSidebarOnScreenWidth": 1200,
-      "defaultSizeProps": {
-        "layoutMaxWidth": 1440,
-        "contentMaxWidth": 1440,
-        "textMaxWidth": 800,
-        "sidebarWidth": 240,
-        "sidebarMarginEnd": 32,
-        "headerBorderWidth": 1,
-        "footerBorderWidth": 1,
-        "sidebarBorderWidth": 1,
-        "modalBorderWidth": 1
-      }
+      "hideSidebarOnScreenWidth": 1200
     },
     "appearence": {
       "bodyBackground": "#fff",
@@ -383,7 +362,15 @@
     },
     "size": {
       "mobile": {
-        "layoutPaddingHorizontal": 20,
+        "layoutMaxWidth": 1440,
+        "contentMaxWidth": 1440,
+        "textMaxWidth": 800,
+        "sidebarWidth": 240,
+        "sidebarMarginEnd": 32,
+        "headerBorderWidth": 1,
+        "footerBorderWidth": 1,
+        "sidebarBorderWidth": 1,
+        "modalBorderWidth": 1,
         "headerHeight": 48,
         "contentPaddingTop": 24,
         "contentPaddingBottom": 48,
@@ -438,8 +425,54 @@
     }
   },
   "button": {
-    "general": {
-      "defaultType": "primary"
+    "variant": {
+      "primary": {
+        "color": "brand"
+      },
+      "secondary": {
+        "color": "gray"
+      }
+    }
+  },
+  "link": {
+    "variant": {
+      "primary": {
+        "color": "brand"
+      },
+      "secondary": {
+        "color": "gray"
+      }
+    }
+  },
+  "blank": {
+    "variant": {
+      "primary": {
+        "color": "brand"
+      },
+      "secondary": {
+        "color": "green"
+      },
+      "trietary": {
+        "color": "red"
+      }
+    },
+    "size": {
+      "xs": {
+        "width": 16,
+        "height": 16
+      },
+      "s": {
+        "width": 24,
+        "height": 24
+      },
+      "m": {
+        "width": 32,
+        "height": 32
+      },
+      "l": {
+        "width": 40,
+        "height": 40
+      }
     }
   }
 }

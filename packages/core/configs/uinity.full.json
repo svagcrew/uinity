@@ -1,10 +1,4 @@
 {
-  "general": {
-    "colorModes": [
-      "light",
-      "dark"
-    ]
-  },
   "color": {
     "core": {
       "neutral": {
@@ -379,9 +373,7 @@
     }
   },
   "icon": {
-    "general": {
-      "defaultSize": "m"
-    },
+    "general": {},
     "size": {
       "xs": {
         "size": 12
@@ -402,24 +394,12 @@
   },
   "layout": {
     "general": {
-      "defaultSize": "mobile",
       "sizeByScreenWidth": {
         "mobile": 420,
         "tablet": 1200,
         "desktop": null
       },
-      "hideSidebarOnScreenWidth": 1200,
-      "defaultSizeProps": {
-        "layoutMaxWidth": 1440,
-        "contentMaxWidth": 1440,
-        "textMaxWidth": 800,
-        "sidebarWidth": 240,
-        "sidebarMarginEnd": 32,
-        "headerBorderWidth": 1,
-        "footerBorderWidth": 1,
-        "sidebarBorderWidth": 1,
-        "modalBorderWidth": 1
-      }
+      "hideSidebarOnScreenWidth": 1200
     },
     "appearence": {
       "bodyBackground": "#fff",
@@ -433,15 +413,15 @@
     },
     "size": {
       "mobile": {
-        "layoutMaxWidth": "$.layout.general.defaultSizeProps.layoutMaxWidth",
-        "contentMaxWidth": "$.layout.general.defaultSizeProps.contentMaxWidth",
-        "textMaxWidth": "$.layout.general.defaultSizeProps.textMaxWidth",
-        "sidebarWidth": "$.layout.general.defaultSizeProps.sidebarWidth",
-        "sidebarMarginEnd": "$.layout.general.defaultSizeProps.sidebarMarginEnd",
-        "headerBorderWidth": "$.layout.general.defaultSizeProps.headerBorderWidth",
-        "footerBorderWidth": "$.layout.general.defaultSizeProps.footerBorderWidth",
-        "sidebarBorderWidth": "$.layout.general.defaultSizeProps.sidebarBorderWidth",
-        "layoutPaddingHorizontal": 20,
+        "layoutMaxWidth": 1440,
+        "contentMaxWidth": 1440,
+        "textMaxWidth": 800,
+        "sidebarWidth": 240,
+        "sidebarMarginEnd": 32,
+        "headerBorderWidth": 1,
+        "footerBorderWidth": 1,
+        "sidebarBorderWidth": 1,
+        "modalBorderWidth": 1,
         "headerHeight": 48,
         "contentPaddingTop": 24,
         "contentPaddingBottom": 48,
@@ -453,14 +433,6 @@
         "modalPaddingBottom": "$.layout.size.mobile.contentPaddingTop"
       },
       "tablet": {
-        "layoutMaxWidth": "$.layout.general.defaultSizeProps.layoutMaxWidth",
-        "contentMaxWidth": "$.layout.general.defaultSizeProps.contentMaxWidth",
-        "textMaxWidth": "$.layout.general.defaultSizeProps.textMaxWidth",
-        "sidebarWidth": "$.layout.general.defaultSizeProps.sidebarWidth",
-        "sidebarMarginEnd": "$.layout.general.defaultSizeProps.sidebarMarginEnd",
-        "headerBorderWidth": "$.layout.general.defaultSizeProps.headerBorderWidth",
-        "footerBorderWidth": "$.layout.general.defaultSizeProps.footerBorderWidth",
-        "sidebarBorderWidth": "$.layout.general.defaultSizeProps.sidebarBorderWidth",
         "layoutPaddingHorizontal": 32,
         "headerHeight": 56,
         "contentPaddingTop": 24,
@@ -473,14 +445,6 @@
         "modalPaddingBottom": "$.layout.size.tablet.contentPaddingTop"
       },
       "desktop": {
-        "layoutMaxWidth": "$.layout.general.defaultSizeProps.layoutMaxWidth",
-        "contentMaxWidth": "$.layout.general.defaultSizeProps.contentMaxWidth",
-        "textMaxWidth": "$.layout.general.defaultSizeProps.textMaxWidth",
-        "sidebarWidth": "$.layout.general.defaultSizeProps.sidebarWidth",
-        "sidebarMarginEnd": "$.layout.general.defaultSizeProps.sidebarMarginEnd",
-        "headerBorderWidth": "$.layout.general.defaultSizeProps.headerBorderWidth",
-        "footerBorderWidth": "$.layout.general.defaultSizeProps.footerBorderWidth",
-        "sidebarBorderWidth": "$.layout.general.defaultSizeProps.sidebarBorderWidth",
         "layoutPaddingHorizontal": 48,
         "headerHeight": 64,
         "contentPaddingTop": 24,
@@ -548,15 +512,18 @@
     }
   },
   "button": {
-    "general": {
-      "defaultType": "primary",
-      "defaultSize": "$.control.general.defaultSize",
-      "defaultFinalProps": {
-        "textFont": "$.text.general.defaultFont",
-        "textSize": "$.text.general.defaultSize",
-        "textType": "$.text.general.defaultType",
-        "textLineHeight": "$.text.general.defaultLineHeight"
-      }
+    "general": {},
+    "variant": {
+      "primary": {
+        "color": "brand"
+      },
+      "secondary": {
+        "color": "gray"
+      },
+      "trietary": {},
+      "dangerPrimary": {},
+      "dangerSecondary": {},
+      "dangerTrietary": {}
     },
     "size": {
       "xs": {
@@ -592,8 +559,8 @@
         "iconSize": "$.control.size.l.iconSize"
       }
     },
-    "type": {
-      "primary": {
+    "color": {
+      "brand": {
         "background": {
           "light": "$.color.core.brand.60",
           "dark": "$.color.core.brand.60"
@@ -603,7 +570,7 @@
           "light": "$.color.core.neutral.250"
         }
       },
-      "secondary": {
+      "gray": {
         "background": "$.color.semantic.symbol.secondary"
       }
     },
@@ -615,12 +582,157 @@
       "disabled": {}
     },
     "complex": {
-      "primary": {
+      "brand": {
         "xs": {
           "hover": {
             "textColor": "$.color.core.green.60",
             "iconColor": "$.color.core.green.60"
           }
+        }
+      }
+    }
+  },
+  "link": {
+    "general": {},
+    "variant": {
+      "primary": {
+        "color": "brand"
+      },
+      "secondary": {
+        "color": "gray"
+      },
+      "trietary": {},
+      "dangerPrimary": {},
+      "dangerSecondary": {},
+      "dangerTrietary": {}
+    },
+    "size": {
+      "xs": {
+        "borderRadius": "$.control.size.xs.borderRadius",
+        "horizontalPaddingEdgeAccessory": "$.control.size.xs.horizontalPaddingEdgeAccessory",
+        "horizontalPaddingEdgeText": "$.control.size.xs.horizontalPaddingEdgeText",
+        "horizontalPaddingAccessoryText": "$.control.size.xs.horizontalPaddingAccessoryText",
+        "minHeight": "$.control.size.xs.minHeight",
+        "iconSize": "$.control.size.xs.iconSize"
+      },
+      "s": {
+        "borderRadius": "$.control.size.s.borderRadius",
+        "horizontalPaddingEdgeAccessory": "$.control.size.s.horizontalPaddingEdgeAccessory",
+        "horizontalPaddingEdgeText": "$.control.size.s.horizontalPaddingEdgeText",
+        "horizontalPaddingAccessoryText": "$.control.size.s.horizontalPaddingAccessoryText",
+        "minHeight": "$.control.size.s.minHeight",
+        "iconSize": "$.control.size.s.iconSize"
+      },
+      "m": {
+        "borderRadius": "$.control.size.m.borderRadius",
+        "horizontalPaddingEdgeAccessory": "$.control.size.m.horizontalPaddingEdgeAccessory",
+        "horizontalPaddingEdgeText": "$.control.size.m.horizontalPaddingEdgeText",
+        "horizontalPaddingAccessoryText": "$.control.size.m.horizontalPaddingAccessoryText",
+        "minHeight": "$.control.size.m.minHeight",
+        "iconSize": "$.control.size.m.iconSize"
+      },
+      "l": {
+        "borderRadius": "$.control.size.l.borderRadius",
+        "horizontalPaddingEdgeAccessory": "$.control.size.l.horizontalPaddingEdgeAccessory",
+        "horizontalPaddingEdgeText": "$.control.size.l.horizontalPaddingEdgeText",
+        "horizontalPaddingAccessoryText": "$.control.size.l.horizontalPaddingAccessoryText",
+        "minHeight": "$.control.size.l.minHeight",
+        "iconSize": "$.control.size.l.iconSize"
+      }
+    },
+    "color": {
+      "brand": {
+        "background": {
+          "light": "$.color.core.brand.60",
+          "dark": "$.color.core.brand.60"
+        },
+        "iconColor": {
+          "dark": "$.color.core.neutral.0",
+          "light": "$.color.core.neutral.250"
+        }
+      },
+      "gray": {
+        "background": "$.color.semantic.symbol.secondary"
+      }
+    },
+    "state": {
+      "rest": {},
+      "hover": {},
+      "active": {},
+      "focus": {},
+      "disabled": {}
+    },
+    "complex": {
+      "brand": {
+        "xs": {
+          "hover": {
+            "textColor": "$.color.core.green.60",
+            "iconColor": "$.color.core.green.60"
+          }
+        }
+      }
+    }
+  },
+  "blank": {
+    "general": {},
+    "variant": {
+      "primary": {
+        "color": "brand"
+      },
+      "secondary": {
+        "color": "green"
+      },
+      "trietary": {
+        "color": "red"
+      }
+    },
+    "size": {
+      "xs": {
+        "width": 16,
+        "height": 16
+      },
+      "s": {
+        "width": 24,
+        "height": 24
+      },
+      "m": {
+        "width": 32,
+        "height": 32
+      },
+      "l": {
+        "width": 40,
+        "height": 40
+      }
+    },
+    "color": {
+      "brand": {
+        "background": {
+          "light": "$.color.core.brand.60",
+          "dark": "$.color.core.brand.60"
+        },
+        "childrenBackground": {
+          "light": "$.color.core.brand.50",
+          "dark": "$.color.core.brand.50"
+        }
+      },
+      "green": {
+        "background": {
+          "light": "$.color.core.green.60",
+          "dark": "$.color.core.green.60"
+        },
+        "childrenBackground": {
+          "light": "$.color.core.green.50",
+          "dark": "$.color.core.green.50"
+        }
+      },
+      "red": {
+        "background": {
+          "light": "$.color.core.red.60",
+          "dark": "$.color.core.red.60"
+        },
+        "childrenBackground": {
+          "light": "$.color.core.red.50",
+          "dark": "$.color.core.red.50"
         }
       }
     }

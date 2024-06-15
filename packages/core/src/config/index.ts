@@ -17,6 +17,7 @@ import {
 } from '@/components/field.js'
 import { defaultIconConfigInput, normalizeIconConfig, zIconConfigInput } from '@/components/icon.js'
 import { defaultLayoutConfigInput, normalizeLayoutConfig, zLayoutConfigInput } from '@/components/layout.js'
+import { defaultLinkConfigInput, normalizeLinkConfig, zLinkConfigInput } from '@/components/link.js'
 import { defaultTextUinityConfigInput, normalizeTextUinityConfig, zTextUinityConfigInput } from '@/components/text.js'
 import { getVariableValue, isVariableName } from '@/utils/variables.js'
 import { deepMap } from 'svag-deep-map'
@@ -30,6 +31,7 @@ export const zUinityConfigInput = z.object({
   control: zControlUinityConfigInput.optional(),
   field: zFieldUinityConfigInput.optional(),
   button: zButtonConfigInput.optional(),
+  link: zLinkConfigInput.optional(),
   blank: zBlankConfigInput.optional(),
 })
 export type UinityConfigInput = z.output<typeof zUinityConfigInput>
@@ -42,6 +44,7 @@ export const defaultUinityConfigInput: UinityConfigInput = {
   control: defaultControlUinityConfigInput,
   field: defaultFieldUinityConfigInput,
   button: defaultButtonConfigInput,
+  link: defaultLinkConfigInput,
   blank: defaultBlankConfigInput,
 }
 
@@ -53,6 +56,7 @@ export const normalizeUinityConfig = (input: UinityConfigInput) => {
   const control = normalizeControlUinityConfig(input.control)
   const field = normalizeFieldUinityConfig(input.field)
   const button = normalizeButtonConfig(input.button)
+  const link = normalizeLinkConfig(input.link)
   const blank = normalizeBlankConfig(input.blank)
   const config = {
     color,
@@ -62,6 +66,7 @@ export const normalizeUinityConfig = (input: UinityConfigInput) => {
     control,
     field,
     button,
+    link,
     blank,
   }
   const configWithVariablesAsStringsReferences = deepMap(

@@ -9,6 +9,8 @@ import { css, styled } from 'styled-components'
 import { pick } from 'svag-utils/dist/utils/pick.js'
 
 type BlockStyleCore = {
+  /** display: {value}; */
+  d?: string
   /** display: flex; */
   df?: boolean
   /** display: block; */
@@ -93,8 +95,16 @@ type BlockStyleCore = {
   /** container-type: inline-size; // ce — container element */
   ce?: boolean
 
+  /** height: 100%; // hf — height-full */
+  hf?: boolean
+  /** width: 100%; // wf — width-full */
+  wf?: boolean
+
   /** style: {{ ...cssProperties }}; */
   s?: React.CSSProperties
+
+  /** [blockProps1, blockProps2] & > * { ... }  */
+  cp?: BlockStyleCoreConfig
 }
 type BlockStyleCoreKey = keyof BlockStyleCore
 type BlockStyleCoreConfig = BlockStyleCoreKey | BlockStyleCore | Array<BlockStyleCoreKey | BlockStyleCore>
@@ -107,8 +117,6 @@ type BlockSpecialProps<TAs extends As = BlockDefaultAs> = {
   wsr?: Array<[number, BlockStyleCoreConfig]>
   /** properties by container size in reverse order: [[maxWidth1, blockProps], [maxWidth2, blockProps], ...] */
   csr?: Array<[number, BlockStyleCoreConfig]>
-  /** [blockProps1, blockProps2] & > * { ... }  */
-  cp?: BlockStyleCoreConfig
   /** as which element */
   as?: TAs
   /** children */
@@ -120,7 +128,6 @@ type BlockStyleFinal = BlockStyleCore & {
   cs?: Array<[number, BlockStyleCore]>
   wsr?: Array<[number, BlockStyleCore]>
   csr?: Array<[number, BlockStyleCore]>
-  cp?: BlockStyleCore
 }
 
 type CheckKeys<T, U extends readonly string[]> = U[number] extends keyof T
@@ -128,8 +135,9 @@ type CheckKeys<T, U extends readonly string[]> = U[number] extends keyof T
     ? true
     : never
   : never
-const blockSpecialPropsKeys = ['ws', 'cs', 'wsr', 'csr', 'cp', 'as', 'children'] as const
+const blockSpecialPropsKeys = ['ws', 'cs', 'wsr', 'csr', 'as', 'children'] as const
 const blockStyleCoreKeys = [
+  'd',
   'df',
   'db',
   'di',
@@ -167,8 +175,11 @@ const blockStyleCoreKeys = [
   'g',
   'rg',
   'cg',
+  'hf',
+  'wf',
   'ce',
   's',
+  'cp',
 ] satisfies BlockStyleCoreKey[]
 // Just check that all keys exists in this array
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -200,10 +211,45 @@ const normalizeBlockCorePropsConfig = (corePropsConfig: BlockStyleCoreConfig): B
   return result
 }
 
+const isArrayIncludesSome = <T,>(array1: T[], array2: T[]): boolean => {
+  return array2.some((item) => array1.includes(item))
+}
+
 const getBlockFinalCss = ($sf: BlockStyleFinal): RuleSet => {
+  const keys = Object.keys($sf) as BlockStyleCoreKey[]
   return css`
     ${toCss({
-      display: $sf.df ? 'flex' : $sf.db ? 'block' : $sf.di ? 'inline' : $sf.dn ? 'none' : 'flex',
+      display: $sf.d
+        ? $sf.d
+        : $sf.df
+          ? 'flex'
+          : $sf.db
+            ? 'block'
+            : $sf.di
+              ? 'inline'
+              : $sf.dn
+                ? 'none'
+                : isArrayIncludesSome(
+                      [
+                        'frnw',
+                        'frw',
+                        'fcnw',
+                        'fcw',
+                        'ac',
+                        'afs',
+                        'afe',
+                        'ast',
+                        'jc',
+                        'jfs',
+                        'jfe',
+                        'jsb',
+                        'jsa',
+                        'jst',
+                      ],
+                      keys
+                    )
+                  ? 'flex'
+                  : undefined,
       flexFlow: $sf.frnw
         ? 'row nowrap'
         : $sf.frw
@@ -258,38 +304,38 @@ const getBlockFinalCss = ($sf: BlockStyleFinal): RuleSet => {
       rowGap: $sf.rg ? $sf.rg : undefined,
       columnGap: $sf.cg ? $sf.cg : undefined,
       containerType: $sf.ce ? 'inline-size' : undefined,
+      height: $sf.hf ? '100%' : undefined,
+      width: $sf.wf ? '100%' : undefined,
     })}
     ${toCss($sf.s || {})};
     ${!$sf.cp
       ? ''
       : css`
           & > * {
-            ${getBlockFinalCss($sf.cp)}
+            ${getBlockFinalCss(normalizeBlockCorePropsConfig($sf.cp))}
           }
         `}
-    ${($sf.ws || []).map(([, props], index): RuleSet => {
-      const prevWindowSize = $sf.ws?.[index - 1]?.[0] ?? 0
-      if (prevWindowSize === 0) {
+    ${($sf.ws || []).map(([windowSize, props]): RuleSet => {
+      if (windowSize === 0) {
         return css`
           ${getBlockFinalCss(props)}
         `
       } else {
         return css`
-          @media (min-width: ${prevWindowSize + 1}px) {
+          @media (min-width: ${windowSize + 1}px) {
             ${getBlockFinalCss(props)}
           }
         `
       }
     })}
-    ${($sf.cs || []).map(([, props], index): RuleSet => {
-      const prevContainerSize = $sf.cs?.[index - 1]?.[0] ?? 0
-      if (prevContainerSize === 0) {
+    ${($sf.cs || []).map(([containerSize, props]): RuleSet => {
+      if (containerSize === 0) {
         return css`
           ${getBlockFinalCss(props)}
         `
       } else {
         return css`
-          @container (min-width: ${prevContainerSize + 1}px) {
+          @container (min-width: ${containerSize + 1}px) {
             & {
               ${getBlockFinalCss(props)}
             }

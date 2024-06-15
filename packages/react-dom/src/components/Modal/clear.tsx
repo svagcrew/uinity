@@ -202,18 +202,29 @@ const getModalFinalCss = ($sf: ModalStyleFinal) => {
     ${getModalCoreCss($sf)}
     ${$sf.byWindowSize.map(([, modalStyleFinalCore], index) => {
       const nextWindowSize = $sf.byWindowSize[index - 1]?.[0] ?? 0
-      const coreCss = getModalCoreCss(modalStyleFinalCore)
+      const coreCss = getModalCoreCss({
+        ...modalStyleFinalCore,
+        overlayClassName: $sf.overlayClassName,
+        contentClassName: $sf.contentClassName,
+        supportingSafeJustifyContentFinished: $sf.supportingSafeJustifyContentFinished,
+      })
       if (nextWindowSize === 0) {
         return coreCss
+      } else {
+        return css`
+          @media (min-width: ${nextWindowSize + 1}px) {
+            ${coreCss}
+          }
+        `
       }
-      return css`
-        @media (min-width: ${nextWindowSize + 1}px) {
-          ${coreCss}
-        }
-      `
     })}
   ${$sf.byWindowSizeReverse.map(([windowSize, modalStyleFinalCore]) => {
-      const coreCss = getModalCoreCss(modalStyleFinalCore)
+      const coreCss = getModalCoreCss({
+        ...modalStyleFinalCore,
+        overlayClassName: $sf.overlayClassName,
+        contentClassName: $sf.contentClassName,
+        supportingSafeJustifyContentFinished: $sf.supportingSafeJustifyContentFinished,
+      })
       if (windowSize === Infinity) {
         return coreCss
       }

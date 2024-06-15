@@ -55,39 +55,38 @@ const getGridFinalCss = ($sf: GridStyleFinal): RuleSet => {
       rowGap: $sf.rowGap,
       gridTemplateColumns: $sf.itemsInRow && `repeat(${$sf.itemsInRow}, 1fr)`,
     })}
-    ${$sf.byContainerSize?.map(([, gridProps], index) => {
-      const prevContainerSize = $sf.byContainerSize?.[index - 1]?.[0] ?? 0
+    ${$sf.byContainerSize?.map(([containerSize, gridProps]) => {
       const gridPropsCss = toCss({
         columnGap: gridProps.columnGap ?? gridProps.gap,
         rowGap: gridProps.rowGap ?? gridProps.gap,
         gridTemplateColumns: gridProps.itemsInRow && `repeat(${gridProps.itemsInRow}, 1fr)`,
       })
-      if (prevContainerSize === 0) {
+      if (containerSize === 0) {
         return gridPropsCss
       }
       return css`
-        @container (min-width: ${prevContainerSize + 1}px) {
+        @container (min-width: ${containerSize + 1}px) {
           & {
             ${gridPropsCss}
           }
         }
       `
     })}
-    ${$sf.byWindowSize?.map(([, gridProps], index) => {
-      const prevWindowSize = $sf.byWindowSize?.[index - 1]?.[0] ?? 0
+    ${$sf.byWindowSize?.map(([windowSize, gridProps]) => {
       const gridPropsCss = toCss({
         columnGap: gridProps.columnGap ?? gridProps.gap,
         rowGap: gridProps.rowGap ?? gridProps.gap,
         gridTemplateColumns: gridProps.itemsInRow && `repeat(${gridProps.itemsInRow}, 1fr)`,
       })
-      if (prevWindowSize === 0) {
+      if (windowSize === 0) {
         return gridPropsCss
+      } else {
+        return css`
+          @media (min-width: ${windowSize + 1}px) {
+            ${gridPropsCss}
+          }
+        `
       }
-      return css`
-        @media (min-width: ${prevWindowSize + 1}px) {
-          ${gridPropsCss}
-        }
-      `
     })}
     ${$sf.byContainerSizeReverse?.map(([containerSize, gridProps]) => {
       const gridPropsCss = toCss({
@@ -97,14 +96,15 @@ const getGridFinalCss = ($sf: GridStyleFinal): RuleSet => {
       })
       if (containerSize === Infinity) {
         return gridPropsCss
-      }
-      return css`
-        @container (max-width: ${containerSize}px) {
-          & {
-            ${gridPropsCss}
+      } else {
+        return css`
+          @container (max-width: ${containerSize}px) {
+            & {
+              ${gridPropsCss}
+            }
           }
-        }
-      `
+        `
+      }
     })}
     ${$sf.byWindowSizeReverse?.map(([windowSize, gridProps]) => {
       const gridPropsCss = toCss({
@@ -114,12 +114,13 @@ const getGridFinalCss = ($sf: GridStyleFinal): RuleSet => {
       })
       if (windowSize === Infinity) {
         return gridPropsCss
+      } else {
+        return css`
+          @media (max-width: ${windowSize}px) {
+            ${gridPropsCss}
+          }
+        `
       }
-      return css`
-        @media (max-width: ${windowSize}px) {
-          ${gridPropsCss}
-        }
-      `
     })}
   `
 }

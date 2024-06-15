@@ -239,12 +239,13 @@ const getLayoutFinalCss = ($sf: LayoutStyleFinal) => {
       })
       if (nextWindowSize === 0) {
         return coreCss
+      } else {
+        return css`
+          @media (min-width: ${nextWindowSize + 1}px) {
+            ${coreCss}
+          }
+        `
       }
-      return css`
-        @media (min-width: ${nextWindowSize + 1}px) {
-          ${coreCss}
-        }
-      `
     })}
   ${$sf.byWindowSizeReverse.map(([windowSize, coreStyleProps]) => {
       const coreCss = getLayoutCoreCss({
@@ -252,12 +253,13 @@ const getLayoutFinalCss = ($sf: LayoutStyleFinal) => {
       })
       if (windowSize === Infinity) {
         return coreCss
+      } else {
+        return css`
+          @media (max-width: ${windowSize}px) {
+            ${coreCss}
+          }
+        `
       }
-      return css`
-        @media (max-width: ${windowSize}px) {
-          ${coreCss}
-        }
-      `
     })}
   `
 }
@@ -304,21 +306,20 @@ const getLayoutModalFinalCss = ($sf: LayoutStyleFinal) => {
   return css`
     ${getLayoutModalCoreCss($sf)}
 
-    ${($sf.byWindowSize || []).map(([, coreStyleProps], index) => {
-      const nextWindowSize = $sf.byWindowSize?.[index - 1]?.[0] ?? 0
+    ${($sf.byWindowSize || []).map(([windowSize, coreStyleProps]) => {
       const coreCss = getLayoutModalCoreCss({
         ...coreStyleProps,
       })
-      if (nextWindowSize === 0) {
+      if (windowSize === 0) {
         return coreCss
       }
       return css`
-        @media (min-width: ${nextWindowSize + 1}px) {
+        @media (min-width: ${windowSize + 1}px) {
           ${coreCss}
         }
       `
     })}
-      ${($sf.byWindowSizeReverse || []).map(([windowSize, coreStyleProps]) => {
+    ${($sf.byWindowSizeReverse || []).map(([windowSize, coreStyleProps]) => {
       const coreCss = getLayoutModalCoreCss({
         ...coreStyleProps,
       })

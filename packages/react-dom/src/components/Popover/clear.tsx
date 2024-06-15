@@ -31,6 +31,7 @@ type UsePopoverProps = {
   shiftPadding?: number
   /** Distance between popover and viewport before flip */
   flipPadding?: number
+  zIndex?: number
 }
 export type WithPopoverMainProps = {
   popover: ReactElement
@@ -100,6 +101,7 @@ export const WithPopover: WithPopoverType = forwardRefIgnoreTypes(
       flipPadding,
       offset,
       shiftPadding,
+      zIndex = 10_000,
     }: WithPopoverPropsWithoutRef,
     propRef: any
   ) => {
@@ -118,7 +120,11 @@ export const WithPopover: WithPopoverType = forwardRefIgnoreTypes(
         {popover.context.open && (
           <FloatingPortal>
             <FloatingFocusManager context={popover.context} modal={true}>
-              <div ref={popover.refs.setFloating} style={{ ...popover.floatingStyles }} {...popover.getFloatingProps()}>
+              <div
+                ref={popover.refs.setFloating}
+                style={{ ...popover.floatingStyles, zIndex }}
+                {...popover.getFloatingProps()}
+              >
                 {renderPopover}
               </div>
             </FloatingFocusManager>
