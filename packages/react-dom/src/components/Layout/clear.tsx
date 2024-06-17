@@ -174,7 +174,7 @@ const getLayoutCoreCss = (sc: LayoutStyleCore) => {
               width: sc.sidebarWidth,
               paddingTop: sc.sidebarPaddingTop,
               paddingBottom: sc.sidebarPaddingBottom,
-              containerType: 'inline-size',
+              // containerType: 'inline-size',
             })}
             ${!sc.sidebarFixed
               ? ''
@@ -199,7 +199,7 @@ const getLayoutCoreCss = (sc: LayoutStyleCore) => {
             maxWidth: sc.contentMaxWidth,
             paddingTop: sc.contentPaddingTop,
             paddingBottom: sc.contentPaddingBottom,
-            containerType: 'inline-size',
+            // containerType: 'inline-size',
           })}
         }
       }

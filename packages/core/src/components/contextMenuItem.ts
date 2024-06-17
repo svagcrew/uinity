@@ -1,5 +1,5 @@
 import { controlSizeNames, zControlSizeProps } from '@/components/control.js'
-import { zTextFontName, zTextLineHeightName, zTextSizeName, zTextTypeName } from '@/components/text.js'
+import { zTextFontName, zTextLineHeightName, zTextSizeName, zTextWeightName } from '@/components/text.js'
 import type { UinityConfig } from '@/config/index.js'
 import { zColorValue } from '@/utils/color.js'
 import { zOptionalNumberOrString } from '@/utils/other.js'
@@ -31,7 +31,7 @@ export type ContextMenuItemConfigStateName = z.output<typeof zContextMenuItemCon
 
 export const zContextMenuItemConfigSizeProps = zControlSizeProps.extend({
   textFont: zTextFontName.optional(),
-  textType: zTextTypeName.optional(),
+  textWeight: zTextWeightName.optional(),
   textSize: zTextSizeName.optional(),
   textLineHeight: zTextLineHeightName.optional(),
   borderWidth: zOptionalNumberOrString,
@@ -41,7 +41,7 @@ export type ContextMenuItemConfigSizeProps = z.output<typeof zContextMenuItemCon
 
 export const zContextMenuItemConfigAppearenceProps = z.object({
   textFont: zTextFontName.optional(),
-  textType: zTextTypeName.optional(),
+  textWeight: zTextWeightName.optional(),
   textSize: zTextSizeName.optional(),
   textLineHeight: zTextLineHeightName.optional(),
   background: zColorValue.optional(),
@@ -51,7 +51,9 @@ export const zContextMenuItemConfigAppearenceProps = z.object({
 })
 export type ContextMenuItemConfigAppearenceProps = z.output<typeof zContextMenuItemConfigAppearenceProps>
 
-export const zContextMenuItemConfigFinalProps = zContextMenuItemConfigSizeProps.merge(zContextMenuItemConfigAppearenceProps)
+export const zContextMenuItemConfigFinalProps = zContextMenuItemConfigSizeProps.merge(
+  zContextMenuItemConfigAppearenceProps
+)
 export type ContextMenuItemConfigFinalProps = z.output<typeof zContextMenuItemConfigFinalProps>
 
 export const zContextMenuItemConfigGeneralProps = z.object({})
@@ -62,7 +64,9 @@ export const zContextMenuItemConfigComplexProps = z.record(
   z
     .record(
       z.union([zContextMenuItemConfigSizeName, z.literal('any')]),
-      z.record(z.union([zContextMenuItemConfigStateName, z.literal('any')]), zContextMenuItemConfigFinalProps).optional()
+      z
+        .record(z.union([zContextMenuItemConfigStateName, z.literal('any')]), zContextMenuItemConfigFinalProps)
+        .optional()
     )
     .optional()
 )
@@ -251,21 +255,30 @@ export const normalizeContextMenuItemConfig = (input: ContextMenuItemConfigInput
 }
 export type ContextMenuItemConfig = ReturnType<typeof normalizeContextMenuItemConfig>
 
-export const normalizeContextMenuItemColorName = (uinityConfig: UinityConfig, color?: ContextMenuItemConfigColorName | null | undefined) => {
+export const normalizeContextMenuItemColorName = (
+  uinityConfig: UinityConfig,
+  color?: ContextMenuItemConfigColorName | null | undefined
+) => {
   if (color && uinityConfig.contextMenuItem.color[color]) {
     return color
   }
   return 'brand'
 }
 
-export const normalizeContextMenuItemSizeName = (uinityConfig: UinityConfig, size?: ContextMenuItemConfigSizeName | null | undefined) => {
+export const normalizeContextMenuItemSizeName = (
+  uinityConfig: UinityConfig,
+  size?: ContextMenuItemConfigSizeName | null | undefined
+) => {
   if (size && uinityConfig.contextMenuItem.size[size]) {
     return size
   }
   return 'm'
 }
 
-export const normalizeContextMenuItemStateName = (uinityConfig: UinityConfig, state?: ContextMenuItemConfigStateName | null | undefined) => {
+export const normalizeContextMenuItemStateName = (
+  uinityConfig: UinityConfig,
+  state?: ContextMenuItemConfigStateName | null | undefined
+) => {
   if (state && uinityConfig.contextMenuItem.state[state]) {
     return state
   }
@@ -282,7 +295,10 @@ export const normalizeContextMenuItemVariantName = (
   return 'primary'
 }
 
-export const getContextMenuItemVariantProps = (uinityConfig: UinityConfig, variant?: ContextMenuItemConfigVariantName | undefined | null) => {
+export const getContextMenuItemVariantProps = (
+  uinityConfig: UinityConfig,
+  variant?: ContextMenuItemConfigVariantName | undefined | null
+) => {
   variant = normalizeContextMenuItemVariantName(uinityConfig, variant)
   const variantProps = uinityConfig.contextMenuItem.variant[variant]
   return {

@@ -1,5 +1,5 @@
 import { controlSizeNames, zControlSizeProps } from '@/components/control.js'
-import { zTextFontName, zTextLineHeightName, zTextSizeName, zTextTypeName } from '@/components/text.js'
+import { zTextFontName, zTextLineHeightName, zTextSizeName, zTextWeightName } from '@/components/text.js'
 import type { UinityConfig } from '@/config/index.js'
 import { zColorValue } from '@/utils/color.js'
 import { zOptionalNumberOrString } from '@/utils/other.js'
@@ -31,7 +31,7 @@ export type ButtonConfigStateName = z.output<typeof zButtonConfigStateName>
 
 export const zButtonConfigSizeProps = zControlSizeProps.extend({
   textFont: zTextFontName.optional(),
-  textType: zTextTypeName.optional(),
+  textWeight: zTextWeightName.optional(),
   textSize: zTextSizeName.optional(),
   textLineHeight: zTextLineHeightName.optional(),
   borderWidth: zOptionalNumberOrString,
@@ -41,7 +41,7 @@ export type ButtonConfigSizeProps = z.output<typeof zButtonConfigSizeProps>
 
 export const zButtonConfigAppearenceProps = z.object({
   textFont: zTextFontName.optional(),
-  textType: zTextTypeName.optional(),
+  textWeight: zTextWeightName.optional(),
   textSize: zTextSizeName.optional(),
   textLineHeight: zTextLineHeightName.optional(),
   background: zColorValue.optional(),

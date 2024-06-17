@@ -3,8 +3,8 @@ import { createAvatar } from '@/components/Avatar/configured.js'
 import { createBadge } from '@/components/Badge/configured.js'
 import { createBlank } from '@/components/Blank/configured.js'
 import { createBlock } from '@/components/Block/configured.js'
-import { createButonLikeSelect } from '@/components/ButonLikeSelect/configured.js'
 import { createButton } from '@/components/Button/configured.js'
+import { createButtonLikeSelect } from '@/components/ButtonLikeSelect/configured.js'
 import { createCard } from '@/components/Card/configured.js'
 import { createCheckbox } from '@/components/Checkbox/configured.js'
 import { createContextMenuItem } from '@/components/ContextMenuItem/configured.js'
@@ -45,10 +45,12 @@ export const createComponents = <TIconName extends string>({
   uinityConfig,
   iconsSources,
   blankAvatarSrc,
+  dropdownIconSrc,
 }: {
   uinityConfig: UinityConfig
   iconsSources?: IconsSources<TIconName>
   blankAvatarSrc?: IconSrc
+  dropdownIconSrc?: IconSrc
 }) => {
   const { Icon } = createIcon({ uinityConfig, iconsSources })
   return {
@@ -66,7 +68,7 @@ export const createComponents = <TIconName extends string>({
     ...createText({ uinityConfig }),
     ...createRichText({ uinityConfig }),
     ...createLoader({ uinityConfig }),
-    ...createButonLikeSelect({ uinityConfig }),
+    ...createButtonLikeSelect({ uinityConfig, Icon, dropdownIconSrc }),
     ...createTextfield({ uinityConfig }),
     ...createContextMenuItem({ uinityConfig, Icon }),
     ...createSelect({ uinityConfig }),
@@ -80,7 +82,7 @@ export const createComponents = <TIconName extends string>({
     ...createSegment({ uinityConfig }),
     ...createTable({ uinityConfig }),
     ...createLabeledValue({ uinityConfig }),
-    ...createToggleButton({ uinityConfig }),
+    ...createToggleButton({ uinityConfig, Icon }),
     ...createTab({ uinityConfig }),
     ...createToggleSwitch({ uinityConfig }),
     ...createCheckbox({ uinityConfig }),

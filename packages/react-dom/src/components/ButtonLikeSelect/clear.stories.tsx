@@ -1,8 +1,8 @@
-import { Link } from './clear.js'
+import { ButtonLikeSelect } from './clear.js'
 import SvgIcon from '@/stories/icon1.svg?react'
 import type { Meta, StoryObj } from '@storybook/react'
 
-const LinkClearDemo = (props: {
+const ButtonLikeSelectClearDemo = (props: {
   isDisabled?: boolean
   restBackground?: string
   restTextColor?: string
@@ -15,37 +15,37 @@ const LinkClearDemo = (props: {
   disabledIconColor?: string
 }) => {
   return (
-    <Link
+    <ButtonLikeSelect
       as="a"
       href="#"
       disabled={props.isDisabled}
       $style={{
         rest: {
-          // background: props.restBackground,
-          // textColor: props.restTextColor,
-          // iconColor: props.restIconColor,
+          background: props.restBackground,
+          textColor: props.restTextColor,
+          iconColor: props.restIconColor,
         },
         hover: {
-          // background: props.hoverBackground,
-          // textColor: props.hoverTextColor,
-          // iconColor: props.hoverIconColor,
+          background: props.hoverBackground,
+          textColor: props.hoverTextColor,
+          iconColor: props.hoverIconColor,
         },
         disabled: {
-          // background: props.disabledBackground,
-          // textColor: props.disabledTextColor,
-          // iconColor: props.disabledIconColor,
+          background: props.disabledBackground,
+          textColor: props.disabledTextColor,
+          iconColor: props.disabledIconColor,
         },
       }}
       iconStart={<SvgIcon />}
     >
-      Link
-    </Link>
+      ButtonLikeSelect
+    </ButtonLikeSelect>
   )
 }
 
 const meta = {
-  title: 'Link Clear',
-  component: LinkClearDemo,
+  title: 'ButtonLikeSelect Clear',
+  component: ButtonLikeSelectClearDemo,
   parameters: {
     layout: 'centered',
   },
@@ -94,10 +94,10 @@ const meta = {
     disabledTextColor: '#ccc',
     disabledIconColor: '#ccc',
   },
-} satisfies Meta<typeof LinkClearDemo>
+} satisfies Meta<typeof ButtonLikeSelectClearDemo>
 
 export default meta
-type Story = StoryObj<typeof LinkClearDemo>
+type Story = StoryObj<typeof ButtonLikeSelectClearDemo>
 
 export const Default: Story = {
   args: {},

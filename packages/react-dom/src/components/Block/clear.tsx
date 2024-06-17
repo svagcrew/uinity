@@ -105,6 +105,28 @@ type BlockStyleCore = {
   /** max-height: {value}; */
   mh?: string | number
 
+  /** margin: {value}; */
+  m?: string | number
+  /** margin-top: {value} */
+  mt?: string | number
+  /** margin-right: {value}; (ltr) margin-left: {value}; me — margin-end */
+  me?: string | number
+  /** margin-bottom: {value}; */
+  mb?: string | number
+  /** margin-left: {value}; (ltr) margin-right: {value}; ms — margin-start */
+  ms?: string | number
+
+  /** padding: {value}; */
+  p?: string | number
+  /** padding-top: {value} */
+  pt?: string | number
+  /** padding-right: {value}; (ltr) padding-left: {value}; pe — padding-end */
+  pe?: string | number
+  /** padding-bottom: {value}; */
+  pb?: string | number
+  /** padding-left: {value}; (ltr) padding-right: {value}; ps — padding-start */
+  ps?: string | number
+
   /** style: {{ ...cssProperties }}; */
   s?: React.CSSProperties
 
@@ -184,6 +206,16 @@ const blockStyleCoreKeys = [
   'wf',
   'mw',
   'mh',
+  'm',
+  'mt',
+  'me',
+  'mb',
+  'ms',
+  'p',
+  'pt',
+  'pe',
+  'pb',
+  'ps',
   'ce',
   's',
   'cp',
@@ -202,7 +234,7 @@ export type BlockType = <TAs extends As = BlockDefaultAs>(props: BlockPropsWithR
 
 const normalizeBlockCorePropsConfig = (corePropsConfig: BlockStyleCoreConfig): BlockStyleCore => {
   if (isString(corePropsConfig)) {
-    return { [corePropsConfig]: true } as BlockStyleCore
+    return { [corePropsConfig]: true } as never as BlockStyleCore
   }
   if (!isArray(corePropsConfig)) {
     return corePropsConfig
@@ -315,6 +347,16 @@ const getBlockFinalCss = ($sf: BlockStyleFinal): RuleSet => {
       width: $sf.wf ? '100%' : undefined,
       maxHeight: $sf.mh ? $sf.mh : undefined,
       maxWidth: $sf.mw ? $sf.mw : undefined,
+      margin: $sf.m ? $sf.m : undefined,
+      marginTop: $sf.mt ? $sf.mt : undefined,
+      marginRight: $sf.me ? $sf.me : undefined,
+      marginBottom: $sf.mb ? $sf.mb : undefined,
+      marginLeft: $sf.ms ? $sf.ms : undefined,
+      padding: $sf.p ? $sf.p : undefined,
+      paddingTop: $sf.pt ? $sf.pt : undefined,
+      paddingRight: $sf.pe ? $sf.pe : undefined,
+      paddingBottom: $sf.pb ? $sf.pb : undefined,
+      paddingLeft: $sf.ps ? $sf.ps : undefined,
     })}
     ${toCss($sf.s || {})};
     ${!$sf.cp

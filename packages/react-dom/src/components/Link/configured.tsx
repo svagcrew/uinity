@@ -12,12 +12,16 @@ import { type ColorModeName, getColorByMode } from '@uinity/core/dist/utils/colo
 
 export type LinkConfiguredSettingsProps = {
   variant?: keyof UinityConfig['link']['variant'] | undefined | null
-  color?: keyof UinityConfig['link']['color'] | undefined | null
+  font?: keyof UinityConfig['link']['font'] | undefined | null
+  weight?: keyof UinityConfig['link']['weight'] | undefined | null
   size?: keyof UinityConfig['link']['size'] | undefined | null
+  lineHeight?: keyof UinityConfig['link']['lineHeight'] | undefined | null
+  color?: keyof UinityConfig['link']['color'] | undefined | null
   colorMode?: ColorModeName | undefined | null
 }
 export type LinkConfiguredSpecialProps<TIconName extends string = string> = {
   iconStart?: ConfiguredIconSrc<TIconName>
+  iconEnd?: ConfiguredIconSrc<TIconName>
 }
 export type LinkConfiguredMainProps<
   TAs extends As = LinkDefaultAs,
@@ -47,9 +51,7 @@ const makeLinkStyleCore = ({
   return {
     ...cfp,
     ...sc,
-    background: getColorByMode(cm, sc.background ?? cfp.background),
-    iconColor: getColorByMode(cm, sc.iconColor ?? cfp.iconColor),
-    textColor: getColorByMode(cm, sc.textColor ?? cfp.textColor),
+    color: getColorByMode(cm, sc.color ?? cfp.color),
   }
 }
 
@@ -62,7 +64,19 @@ export const createLink = <TIconName extends string>({
 }) => {
   const Link: LinkConfigured<TIconName> = forwardRefIgnoreTypes(
     (
-      { variant, color, size, iconStart, colorMode, $style = {}, ...restProps }: LinkConfiguredPropsWithoutRef,
+      {
+        variant,
+        font,
+        weight,
+        size,
+        lineHeight,
+        color,
+        iconStart,
+        iconEnd,
+        colorMode,
+        $style = {},
+        ...restProps
+      }: LinkConfiguredPropsWithoutRef,
       ref: any
     ) => {
       const { cm } = useColorMode(colorMode)
@@ -70,28 +84,29 @@ export const createLink = <TIconName extends string>({
         rest: makeLinkStyleCore({
           cm,
           sc: $style.rest,
-          cfp: getLinkConfigFinalProps(uinityConfig, variant, color, size, 'rest'),
+          cfp: getLinkConfigFinalProps(uinityConfig, variant, font, weight, size, lineHeight, color, 'rest'),
         }),
         hover: makeLinkStyleCore({
           cm,
           sc: $style.hover,
-          cfp: getLinkConfigFinalProps(uinityConfig, variant, color, size, 'hover'),
+          cfp: getLinkConfigFinalProps(uinityConfig, variant, font, weight, size, lineHeight, color, 'hover'),
         }),
         current: makeLinkStyleCore({
           cm,
           sc: $style.hover,
-          cfp: getLinkConfigFinalProps(uinityConfig, variant, color, size, 'current'),
+          cfp: getLinkConfigFinalProps(uinityConfig, variant, font, weight, size, lineHeight, color, 'current'),
         }),
         disabled: makeLinkStyleCore({
           cm,
           sc: $style.hover,
-          cfp: getLinkConfigFinalProps(uinityConfig, variant, color, size, 'disabled'),
+          cfp: getLinkConfigFinalProps(uinityConfig, variant, font, weight, size, lineHeight, color, 'disabled'),
         }),
       }
       return (
         <LinkClear
           {...(restProps as {})}
           iconStart={<Icon name={iconStart as any} />}
+          iconEnd={<Icon name={iconEnd as any} />}
           $style={$styleConfigured}
           ref={ref}
         />

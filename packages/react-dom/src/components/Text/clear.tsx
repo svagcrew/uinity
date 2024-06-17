@@ -4,10 +4,11 @@ import { toCss } from '@uinity/core/dist/utils/other.js'
 import { css, styled } from 'styled-components'
 
 export type TextStyleRoot = {
-  width?: number | string | null | undefined
-  height?: number | string | null | undefined
-  background?: string | null | undefined
-  childrenBackground?: string | null | undefined
+  fontFamily?: string | null | undefined
+  fontWeight?: string | null | undefined
+  fontSize?: number | string | null | undefined
+  lineHeight?: number | string | null | undefined
+  color?: string | null | undefined
 }
 export type TextStyleFinal = TextStyleRoot
 export type TextDefaultAs = 'div'
@@ -22,20 +23,13 @@ export type TextType = <TAs extends As = TextDefaultAs>(props: TextPropsWithRef<
 
 const getTextCoreCss = ($sf: TextStyleFinal) => {
   return css`
-    padding: 10px;
     ${toCss({
-      width: $sf?.width,
-      height: $sf?.height,
-      background: $sf?.background,
+      fontFamily: $sf.fontFamily,
+      fontWeight: $sf.fontWeight,
+      fontSize: $sf.fontSize,
+      lineHeight: $sf.lineHeight,
+      color: $sf.color,
     })}
-
-    & ${ChildrenS} {
-      ${toCss({
-        width: $sf?.width,
-        height: $sf?.height,
-        background: $sf?.childrenBackground,
-      })}
-    }
   `
 }
 const getTextFinalCss = ($sf: TextStyleFinal) => {
@@ -44,7 +38,6 @@ const getTextFinalCss = ($sf: TextStyleFinal) => {
   `
 }
 
-const ChildrenS = styled.div.attrs(mark('ChildrenS'))``
 const TextS = styled.div.attrs(mark('TextS'))<{ $sf: TextStyleFinal }>`
   ${({ $sf }) => getTextFinalCss($sf)}
 `
@@ -56,7 +49,7 @@ export const Text: TextType = forwardRefIgnoreTypes(
     }
     return (
       <TextS {...restProps} ref={ref} $sf={$sf}>
-        <ChildrenS>{children}</ChildrenS>
+        {children}
       </TextS>
     )
   }

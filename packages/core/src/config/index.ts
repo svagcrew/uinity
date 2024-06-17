@@ -72,7 +72,7 @@ import { defaultSelectConfigInput, normalizeSelectConfig, zSelectConfigInput } f
 import { defaultSizingConfigInput, normalizeSizingConfig, zSizingConfigInput } from '@/components/sizing.js'
 import { defaultTabConfigInput, normalizeTabConfig, zTabConfigInput } from '@/components/tab.js'
 import { defaultTableConfigInput, normalizeTableConfig, zTableConfigInput } from '@/components/table.js'
-import { defaultTextUinityConfigInput, normalizeTextUinityConfig, zTextUinityConfigInput } from '@/components/text.js'
+import { defaultTextConfigInput, normalizeTextUinityConfig, zTextConfigInput } from '@/components/text.js'
 import { defaultTextareaConfigInput, normalizeTextareaConfig, zTextareaConfigInput } from '@/components/textarea.js'
 import { defaultTextfieldConfigInput, normalizeTextfieldConfig, zTextfieldConfigInput } from '@/components/textfield.js'
 import { defaultToastConfigInput, normalizeToastConfig, zToastConfigInput } from '@/components/toast.js'
@@ -92,7 +92,7 @@ import { z } from 'zod'
 
 export const zUinityConfigInput = z.object({
   color: zColorUinityConfigInput.optional(),
-  text: zTextUinityConfigInput.optional(),
+  text: zTextConfigInput.optional(),
   icon: zIconConfigInput.optional(),
   layout: zLayoutConfigInput.optional(),
   control: zControlUinityConfigInput.optional(),
@@ -136,7 +136,7 @@ export type UinityConfigInput = z.output<typeof zUinityConfigInput>
 
 export const defaultUinityConfigInput: UinityConfigInput = {
   color: defaultColorUinityConfigInput,
-  text: defaultTextUinityConfigInput,
+  text: defaultTextConfigInput,
   icon: defaultIconConfigInput,
   layout: defaultLayoutConfigInput,
   control: defaultControlUinityConfigInput,

@@ -1,5 +1,5 @@
 import { controlSizeNames, zControlSizeProps } from '@/components/control.js'
-import { zTextFontName, zTextLineHeightName, zTextSizeName, zTextTypeName } from '@/components/text.js'
+import { zTextFontName, zTextLineHeightName, zTextSizeName, zTextWeightName } from '@/components/text.js'
 import type { UinityConfig } from '@/config/index.js'
 import { zColorValue } from '@/utils/color.js'
 import { zOptionalNumberOrString } from '@/utils/other.js'
@@ -31,7 +31,7 @@ export type ControlIconConfigStateName = z.output<typeof zControlIconConfigState
 
 export const zControlIconConfigSizeProps = zControlSizeProps.extend({
   textFont: zTextFontName.optional(),
-  textType: zTextTypeName.optional(),
+  textWeight: zTextWeightName.optional(),
   textSize: zTextSizeName.optional(),
   textLineHeight: zTextLineHeightName.optional(),
   borderWidth: zOptionalNumberOrString,
@@ -41,7 +41,7 @@ export type ControlIconConfigSizeProps = z.output<typeof zControlIconConfigSizeP
 
 export const zControlIconConfigAppearenceProps = z.object({
   textFont: zTextFontName.optional(),
-  textType: zTextTypeName.optional(),
+  textWeight: zTextWeightName.optional(),
   textSize: zTextSizeName.optional(),
   textLineHeight: zTextLineHeightName.optional(),
   background: zColorValue.optional(),
@@ -251,21 +251,30 @@ export const normalizeControlIconConfig = (input: ControlIconConfigInput | undef
 }
 export type ControlIconConfig = ReturnType<typeof normalizeControlIconConfig>
 
-export const normalizeControlIconColorName = (uinityConfig: UinityConfig, color?: ControlIconConfigColorName | null | undefined) => {
+export const normalizeControlIconColorName = (
+  uinityConfig: UinityConfig,
+  color?: ControlIconConfigColorName | null | undefined
+) => {
   if (color && uinityConfig.controlIcon.color[color]) {
     return color
   }
   return 'brand'
 }
 
-export const normalizeControlIconSizeName = (uinityConfig: UinityConfig, size?: ControlIconConfigSizeName | null | undefined) => {
+export const normalizeControlIconSizeName = (
+  uinityConfig: UinityConfig,
+  size?: ControlIconConfigSizeName | null | undefined
+) => {
   if (size && uinityConfig.controlIcon.size[size]) {
     return size
   }
   return 'm'
 }
 
-export const normalizeControlIconStateName = (uinityConfig: UinityConfig, state?: ControlIconConfigStateName | null | undefined) => {
+export const normalizeControlIconStateName = (
+  uinityConfig: UinityConfig,
+  state?: ControlIconConfigStateName | null | undefined
+) => {
   if (state && uinityConfig.controlIcon.state[state]) {
     return state
   }
@@ -282,7 +291,10 @@ export const normalizeControlIconVariantName = (
   return 'primary'
 }
 
-export const getControlIconVariantProps = (uinityConfig: UinityConfig, variant?: ControlIconConfigVariantName | undefined | null) => {
+export const getControlIconVariantProps = (
+  uinityConfig: UinityConfig,
+  variant?: ControlIconConfigVariantName | undefined | null
+) => {
   variant = normalizeControlIconVariantName(uinityConfig, variant)
   const variantProps = uinityConfig.controlIcon.variant[variant]
   return {

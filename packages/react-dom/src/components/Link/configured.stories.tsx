@@ -28,7 +28,7 @@ const meta = {
     },
   },
   args: {
-    variant: 'primary',
+    // variant: 'primary',
     color: undefined,
     size: undefined,
     iconStart: undefined,
@@ -40,29 +40,29 @@ type Story = StoryObj<typeof LinkDemo>
 
 export const Primary: Story = {
   args: {
-    variant: 'primary',
+    // variant: 'primary',
     children: 'Link',
   },
 }
 
 export const Secondary: Story = {
   args: {
-    variant: 'secondary',
+    // variant: 'secondary',
     children: 'Link',
   },
 }
 
 export const Large: Story = {
   args: {
-    size: 'l',
+    // size: 'l',
     children: 'Link',
   },
 }
 
 export const Small: Story = {
   args: {
-    size: 'xs',
-    variant: 'primary',
+    // size: 'xs',
+    // variant: 'primary',
     children: 'Link',
   },
 }

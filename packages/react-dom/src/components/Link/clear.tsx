@@ -1,3 +1,4 @@
+import type { IconSrc } from '@/components/Icon/clear.js'
 import { Icon } from '@/components/Icon/clear.js'
 import type { As, AsPropsWithRef, WithoutRef } from '@/utils.js'
 import { forwardRefIgnoreTypes, mark } from '@/utils.js'
@@ -5,12 +6,13 @@ import { toCss } from '@uinity/core/dist/utils/other.js'
 import { css, styled } from 'styled-components'
 
 export type LinkStyleCore = {
-  gapHorizontalAccessoryText?: number | string | null
-  background?: string
-  textColor?: string
-  iconColor?: string
-  iconSize?: number | string | null
-  minHeight?: number | string | null
+  fontFamily?: string | null | undefined
+  fontWeight?: string | null | undefined
+  fontSize?: number | string | null | undefined
+  lineHeight?: number | string | null | undefined
+  color?: string | null | undefined
+  iconSize?: number | string | null | undefined
+  gapAccessoryText?: number | string | null | undefined
 }
 export type LinkStyleStates = {
   rest?: LinkStyleCore
@@ -30,7 +32,8 @@ export type LinkMainProps<TAs extends As = LinkDefaultAs> = {
   as?: TAs
   disabled?: boolean
   current?: boolean
-  iconStart?: JSX.Element | null | false
+  iconStart?: IconSrc
+  iconEnd?: IconSrc
   $style?: LinkStyleRoot
   children?: React.ReactNode
 }
@@ -41,17 +44,20 @@ export type LinkType = <TAs extends As = LinkDefaultAs>(props: LinkPropsWithRef<
 const getLinkCoreCss = (sc: LinkStyleCore) => {
   return css`
     ${toCss({
-      background: sc.background,
-      color: sc.textColor,
+      fontFamily: sc.fontFamily,
+      fontWeight: sc.fontWeight,
+      fontSize: sc.fontSize,
+      lineHeight: sc.lineHeight,
+      color: sc.color,
       display: 'flex',
       flexFlow: 'row nowrap',
       alignItems: 'center',
       justifyContent: 'flex-start',
-      gap: sc.gapHorizontalAccessoryText,
+      gap: sc.gapAccessoryText,
     })}
 
     & ${ContentS} {
-      margin-bottom: -3px;
+      /* margin-bottom: -3px; */
     }
 
     & ${IconS} {
@@ -62,7 +68,7 @@ const getLinkCoreCss = (sc: LinkStyleCore) => {
 
       path {
         ${toCss({
-          fill: sc.iconColor,
+          fill: sc.color,
         })}
       }
     }
@@ -114,7 +120,7 @@ const LinkS = styled.a.attrs(mark('LinkS'))<{ $sf: LinkStyleFinal }>`
 `
 
 export const Link: LinkType = forwardRefIgnoreTypes(
-  ({ iconStart, current, disabled, children, $style = {}, ...restProps }: LinkPropsWithoutRef, ref: any) => {
+  ({ iconStart, iconEnd, current, disabled, children, $style = {}, ...restProps }: LinkPropsWithoutRef, ref: any) => {
     const $sf: LinkStyleFinal = {
       rest: {
         ...$style.rest,
@@ -141,6 +147,7 @@ export const Link: LinkType = forwardRefIgnoreTypes(
       <LinkS {...(restProps as {})} ref={ref} $sf={$sf}>
         {iconStart && <IconS $sf={$sf} src={iconStart} />}
         <ContentS>{children}</ContentS>
+        {iconEnd && <IconS $sf={$sf} src={iconEnd} />}
       </LinkS>
     )
   }

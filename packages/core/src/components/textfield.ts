@@ -18,6 +18,7 @@ export type TextfieldConfigColorName = z.output<typeof zTextfieldConfigColorName
 
 export const zTextfieldConfigSizeProps = z.object({
   width: zOptionalNumberOrString,
+  maxWidth: zOptionalNumberOrString,
   height: zOptionalNumberOrString,
 })
 export type TextfieldConfigSizeProps = z.output<typeof zTextfieldConfigSizeProps>
@@ -94,20 +95,20 @@ export const defaultTextfieldConfigInput: TextfieldConfigInput = {
   },
   size: {
     xs: {
-      width: 16,
       height: 16,
+      maxWidth: 320,
     },
     s: {
-      width: 24,
       height: 24,
+      maxWidth: 320,
     },
     m: {
-      width: 32,
       height: 32,
+      maxWidth: 320,
     },
     l: {
-      width: 40,
       height: 40,
+      maxWidth: 320,
     },
   },
 }
@@ -175,7 +176,10 @@ export const normalizeTextfieldColorName = (
   return 'brand'
 }
 
-export const normalizeTextfieldSizeName = (uinityConfig: UinityConfig, size?: TextfieldConfigSizeName | null | undefined) => {
+export const normalizeTextfieldSizeName = (
+  uinityConfig: UinityConfig,
+  size?: TextfieldConfigSizeName | null | undefined
+) => {
   if (size && uinityConfig.textfield.size[size]) {
     return size
   }

@@ -1,5 +1,5 @@
 import { controlSizeNames, zControlSizeProps } from '@/components/control.js'
-import { zTextFontName, zTextLineHeightName, zTextSizeName, zTextTypeName } from '@/components/text.js'
+import { zTextFontName, zTextLineHeightName, zTextSizeName, zTextWeightName } from '@/components/text.js'
 import type { UinityConfig } from '@/config/index.js'
 import { zColorValue } from '@/utils/color.js'
 import { zOptionalNumberOrString } from '@/utils/other.js'
@@ -31,7 +31,7 @@ export type AvatarConfigStateName = z.output<typeof zAvatarConfigStateName>
 
 export const zAvatarConfigSizeProps = zControlSizeProps.extend({
   textFont: zTextFontName.optional(),
-  textType: zTextTypeName.optional(),
+  textWeight: zTextWeightName.optional(),
   textSize: zTextSizeName.optional(),
   textLineHeight: zTextLineHeightName.optional(),
   borderWidth: zOptionalNumberOrString,
@@ -41,7 +41,7 @@ export type AvatarConfigSizeProps = z.output<typeof zAvatarConfigSizeProps>
 
 export const zAvatarConfigAppearenceProps = z.object({
   textFont: zTextFontName.optional(),
-  textType: zTextTypeName.optional(),
+  textWeight: zTextWeightName.optional(),
   textSize: zTextSizeName.optional(),
   textLineHeight: zTextLineHeightName.optional(),
   background: zColorValue.optional(),
@@ -251,7 +251,10 @@ export const normalizeAvatarConfig = (input: AvatarConfigInput | undefined) => {
 }
 export type AvatarConfig = ReturnType<typeof normalizeAvatarConfig>
 
-export const normalizeAvatarColorName = (uinityConfig: UinityConfig, color?: AvatarConfigColorName | null | undefined) => {
+export const normalizeAvatarColorName = (
+  uinityConfig: UinityConfig,
+  color?: AvatarConfigColorName | null | undefined
+) => {
   if (color && uinityConfig.avatar.color[color]) {
     return color
   }
@@ -265,7 +268,10 @@ export const normalizeAvatarSizeName = (uinityConfig: UinityConfig, size?: Avata
   return 'm'
 }
 
-export const normalizeAvatarStateName = (uinityConfig: UinityConfig, state?: AvatarConfigStateName | null | undefined) => {
+export const normalizeAvatarStateName = (
+  uinityConfig: UinityConfig,
+  state?: AvatarConfigStateName | null | undefined
+) => {
   if (state && uinityConfig.avatar.state[state]) {
     return state
   }
@@ -282,7 +288,10 @@ export const normalizeAvatarVariantName = (
   return 'primary'
 }
 
-export const getAvatarVariantProps = (uinityConfig: UinityConfig, variant?: AvatarConfigVariantName | undefined | null) => {
+export const getAvatarVariantProps = (
+  uinityConfig: UinityConfig,
+  variant?: AvatarConfigVariantName | undefined | null
+) => {
   variant = normalizeAvatarVariantName(uinityConfig, variant)
   const variantProps = uinityConfig.avatar.variant[variant]
   return {

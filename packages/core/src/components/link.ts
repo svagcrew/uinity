@@ -1,224 +1,137 @@
-import { controlSizeNames, zControlSizeProps } from '@/components/control.js'
-import { zTextFontName, zTextLineHeightName, zTextSizeName, zTextTypeName } from '@/components/text.js'
+/* eslint-disable unicorn/prefer-default-parameters */
+import { defaultTextConfigInput } from '@/components/text.js'
 import type { UinityConfig } from '@/config/index.js'
 import { zColorValue } from '@/utils/color.js'
-import { zOptionalNumberOrString } from '@/utils/other.js'
+import { zOptionalNumberOrString, zOptionalString } from '@/utils/other.js'
 import { $ } from '@/utils/variables.js'
 import { z } from 'zod'
 
-export const linkConfigSizesNames = controlSizeNames
-export const zLinkConfigSizeName = z.enum(linkConfigSizesNames)
-export type LinkConfigSizeName = z.output<typeof zLinkConfigSizeName>
+export const linkFonts = ['common', 'special', 'alternate'] as const
+export const zLinkFontName = z.enum(linkFonts)
+export type LinkFontName = z.output<typeof zLinkFontName>
 
-export const linkConfigVariantNames = [
-  'primary',
-  'secondary',
-  'trietary',
-  'dangerPrimary',
-  'dangerSecondary',
-  'dangerTrietary',
-] as const
-export const zLinkConfigVariantName = z.enum(linkConfigVariantNames)
-export type LinkConfigVariantName = z.output<typeof zLinkConfigVariantName>
+export const linkWeights = ['regular', 'medium', 'bold'] as const
+export const zLinkWeightName = z.enum(linkWeights)
+export type LinkWeightName = z.output<typeof zLinkWeightName>
 
-export const linkConfigColorNames = ['brand', 'gray'] as const
-export const zLinkConfigColorName = z.enum(linkConfigColorNames)
-export type LinkConfigColorName = z.output<typeof zLinkConfigColorName>
+export const linkSizes = [20, 30, 40, 50, 60, 70, 80, 90, 100] as const
+// eslint-disable-next-line zod/prefer-enum
+export const zLinkSizeName = z.union([
+  z.literal(20),
+  z.literal(30),
+  z.literal(40),
+  z.literal(50),
+  z.literal(60),
+  z.literal(70),
+  z.literal(80),
+  z.literal(90),
+  z.literal(100),
+])
+export type LinkSizeName = z.output<typeof zLinkSizeName>
 
-export const linkConfigStatesNames = ['rest', 'hover', 'active', 'focus', 'disabled', 'current'] as const
+export const linkLineHeights = ['xs', 's', 'm', 'l'] as const
+export const zLinkLineHeightName = z.enum(linkLineHeights)
+export type LinkLineHeightName = z.output<typeof zLinkLineHeightName>
+
+export const linkColorNames = ['brand', 'primary', 'secondary', 'tertiary', 'quaternary', 'quinary'] as const
+export const zLinkColorName = z.enum(linkColorNames)
+export type LinkColorName = z.output<typeof zLinkColorName>
+
+export const linkConfigStatesNames = ['rest', 'hover', 'active', 'focus', 'current', 'disabled'] as const
 export const zLinkConfigStateName = z.enum(linkConfigStatesNames)
 export type LinkConfigStateName = z.output<typeof zLinkConfigStateName>
 
-export const zLinkConfigSizeProps = zControlSizeProps.extend({
-  textFont: zTextFontName.optional(),
-  textType: zTextTypeName.optional(),
-  textSize: zTextSizeName.optional(),
-  textLineHeight: zTextLineHeightName.optional(),
-  borderWidth: zOptionalNumberOrString,
-  minHeight: zOptionalNumberOrString,
+export const zLinkConfigFinalProps = z.object({
+  fontFamily: zOptionalString,
+  fontWeight: zOptionalString,
+  fontSize: zOptionalNumberOrString,
+  lineHeight: zOptionalNumberOrString,
+  color: zColorValue.optional(),
+  iconSize: zOptionalNumberOrString,
+  gapAccessoryText: zOptionalNumberOrString,
 })
-export type LinkConfigSizeProps = z.output<typeof zLinkConfigSizeProps>
-
-export const zLinkConfigAppearenceProps = z.object({
-  textFont: zTextFontName.optional(),
-  textType: zTextTypeName.optional(),
-  textSize: zTextSizeName.optional(),
-  textLineHeight: zTextLineHeightName.optional(),
-  background: zColorValue.optional(),
-  borderColor: zColorValue.optional(),
-  textColor: zColorValue.optional(),
-  iconColor: zColorValue.optional(),
-})
-export type LinkConfigAppearenceProps = z.output<typeof zLinkConfigAppearenceProps>
-
-export const zLinkConfigFinalProps = zLinkConfigSizeProps.merge(zLinkConfigAppearenceProps)
 export type LinkConfigFinalProps = z.output<typeof zLinkConfigFinalProps>
 
-export const zLinkConfigGeneralProps = z.object({})
-export type LinkConfigGeneralProps = z.output<typeof zLinkConfigGeneralProps>
-
-export const zLinkConfigComplexProps = z.record(
-  z.union([zLinkConfigColorName, z.literal('any')]),
-  z
-    .record(
-      z.union([zLinkConfigSizeName, z.literal('any')]),
-      z.record(z.union([zLinkConfigStateName, z.literal('any')]), zLinkConfigFinalProps).optional()
-    )
-    .optional()
-)
-export type LinkConfigComplexProps = z.output<typeof zLinkConfigComplexProps>
-
-export const zLinkConfigVariantProps = z.object({
-  color: zLinkConfigColorName.optional(),
+export const linkVariantsNames = [
+  'body-xs',
+  'body-s',
+  'body-m',
+  'body-l',
+  'heading-xs',
+  'heading-s',
+  'heading-m',
+  'heading-l',
+] as const
+export const zLinkVariantName = z.enum(linkVariantsNames)
+export type LinkVariantName = z.output<typeof zLinkVariantName>
+export const zLinkVariantProps = z.object({
+  font: zLinkFontName.optional(),
+  weight: zLinkWeightName.optional(),
+  size: zLinkSizeName.optional(),
+  lineHeight: zLinkLineHeightName.optional(),
+  color: zLinkColorName.optional(),
 })
-export type LinkConfigVariantProps = z.output<typeof zLinkConfigVariantProps>
+export type LinkVariantProps = z.output<typeof zLinkVariantProps>
 
 export const zLinkConfigInput = z.object({
-  general: zLinkConfigGeneralProps.optional(),
-  variant: z.record(zLinkConfigVariantName, zLinkConfigVariantProps).optional(),
-  color: z.record(zLinkConfigColorName, zLinkConfigAppearenceProps).optional(),
-  size: z.record(zLinkConfigSizeName, zLinkConfigSizeProps).optional(),
-  state: z.record(zLinkConfigStateName, zLinkConfigAppearenceProps).optional(),
-  complex: zLinkConfigComplexProps.optional(),
+  variant: z.record(zLinkVariantName, zLinkVariantProps).optional(),
+  font: z.record(zLinkFontName, zLinkConfigFinalProps).optional(),
+  weight: z.record(zLinkWeightName, zLinkConfigFinalProps).optional(),
+  size: z.record(zLinkSizeName, zLinkConfigFinalProps).optional(),
+  lineHeight: z.record(zLinkLineHeightName, zLinkConfigFinalProps).optional(),
+  color: z.record(zLinkColorName, zLinkConfigFinalProps).optional(),
+  state: z.record(zLinkConfigStateName, zLinkConfigFinalProps).optional(),
 })
-export type LinkConfigInput = z.output<typeof zLinkConfigInput>
+type LinkUinityConfigInput = z.output<typeof zLinkConfigInput>
 
-const getDefaultSpecificSizeProps = (size: LinkConfigSizeName) => ({
-  borderRadius: $.control.size[size].borderRadius,
-  horizontalPaddingEdgeAccessory: $.control.size[size].horizontalPaddingEdgeAccessory,
-  horizontalPaddingEdgeText: $.control.size[size].horizontalPaddingEdgeText,
-  horizontalPaddingAccessoryText: $.control.size[size].horizontalPaddingAccessoryText,
-  minHeight: $.control.size[size].minHeight,
-  iconSize: $.control.size[size].iconSize,
-})
-export const defaultLinkConfigInput: LinkConfigInput = {
-  general: {},
-  variant: {
-    primary: {
-      color: 'brand',
-    },
-    secondary: {
-      color: 'gray',
-    },
-    trietary: {},
-    dangerPrimary: {},
-    dangerSecondary: {},
-    dangerTrietary: {},
-  },
-  color: {
-    brand: {
-      textColor: {
-        light: $.color.core.brand[60],
-        dark: $.color.core.brand[60],
-      },
-    },
-    gray: {
-      background: $.color.semantic.symbol.secondary,
-    },
-  },
-  size: Object.fromEntries(linkConfigSizesNames.map((size) => [size, getDefaultSpecificSizeProps(size)])),
+export const defaultLinkConfigInput: LinkUinityConfigInput = {
+  variant: defaultTextConfigInput.variant,
+  font: defaultTextConfigInput.font,
+  weight: defaultTextConfigInput.weight,
+  size: Object.fromEntries(
+    Object.entries(defaultTextConfigInput.size || {}).map(([key, value]) => [
+      key,
+      { ...value, iconSize: value.fontSize, gapAccessoryText: 4 },
+    ])
+  ),
+  lineHeight: defaultTextConfigInput.lineHeight,
+  color: defaultTextConfigInput.color,
   state: {
     rest: {},
-    hover: {},
+    hover: {
+      color: $.color.core.brand[180],
+    },
     active: {},
     focus: {},
     disabled: {},
     current: {
-      textColor: {
-        light: $.color.core.brand[140],
-        dark: $.color.core.brand[240],
-      },
-    },
-  },
-  complex: {
-    brand: {
-      xs: {
-        hover: {
-          textColor: '$.color.core.green.60',
-          iconColor: '$.color.core.green.60',
-        },
-      },
+      color: $.color.core.brand[250],
     },
   },
 }
 
-export const normalizeLinkConfig = (input: LinkConfigInput | undefined) => {
-  const complex = {} as LinkConfigComplexProps
-  for (const type of [...linkConfigColorNames, 'any'] as const) {
-    for (const size of [...linkConfigSizesNames, 'any'] as const) {
-      for (const state of [...linkConfigStatesNames, 'any'] as const) {
-        const defaultComplexItem = defaultLinkConfigInput.complex?.[type]?.[size]?.[state]
-        const inputComplexItem = input?.complex?.[type]?.[size]?.[state]
-        const complexItem =
-          !defaultComplexItem && !inputComplexItem ? undefined : { ...defaultComplexItem, ...inputComplexItem }
-        if (complexItem) {
-          complex[type] = {
-            ...complex[type],
-            [size]: {
-              ...complex[type]?.[size],
-              [state]: complexItem,
-            },
-          }
-        }
-      }
-    }
-  }
-
+export const normalizeLinkConfig = (input: LinkUinityConfigInput | undefined) => {
   return {
-    general: {},
     variant: {
-      primary: {
-        ...defaultLinkConfigInput.variant?.primary,
-        ...input?.variant?.primary,
-      },
-      secondary: {
-        ...defaultLinkConfigInput.variant?.secondary,
-        ...input?.variant?.secondary,
-      },
-      trietary: {
-        ...defaultLinkConfigInput.variant?.trietary,
-        ...input?.variant?.trietary,
-      },
-      dangerPrimary: {
-        ...defaultLinkConfigInput.variant?.dangerPrimary,
-        ...input?.variant?.dangerPrimary,
-      },
-      dangerSecondary: {
-        ...defaultLinkConfigInput.variant?.dangerSecondary,
-        ...input?.variant?.dangerSecondary,
-      },
-      dangerTrietary: {
-        ...defaultLinkConfigInput.variant?.dangerTrietary,
-        ...input?.variant?.dangerTrietary,
-      },
+      ...defaultLinkConfigInput.variant,
+      ...input?.variant,
+    },
+    font: input?.font ?? defaultLinkConfigInput.font,
+    weight: {
+      ...defaultLinkConfigInput.weight,
+      ...input?.weight,
     },
     size: {
-      xs: {
-        ...defaultLinkConfigInput.size?.xs,
-        ...input?.size?.xs,
-      },
-      s: {
-        ...defaultLinkConfigInput.size?.s,
-        ...input?.size?.s,
-      },
-      m: {
-        ...defaultLinkConfigInput.size?.m,
-        ...input?.size?.m,
-      },
-      l: {
-        ...defaultLinkConfigInput.size?.l,
-        ...input?.size?.l,
-      },
+      ...defaultLinkConfigInput.size,
+      ...input?.size,
+    },
+    lineHeight: {
+      ...defaultLinkConfigInput.lineHeight,
+      ...input?.lineHeight,
     },
     color: {
-      brand: {
-        ...defaultLinkConfigInput.color?.brand,
-        ...input?.color?.brand,
-      },
-      gray: {
-        ...defaultLinkConfigInput.color?.gray,
-        ...input?.color?.gray,
-      },
+      ...defaultLinkConfigInput.color,
+      ...input?.color,
     },
     state: {
       rest: {
@@ -237,82 +150,43 @@ export const normalizeLinkConfig = (input: LinkConfigInput | undefined) => {
         ...defaultLinkConfigInput.state?.focus,
         ...input?.state?.focus,
       },
-      disabled: {
-        ...defaultLinkConfigInput.state?.disabled,
-        ...input?.state?.disabled,
-      },
       current: {
         ...defaultLinkConfigInput.state?.current,
         ...input?.state?.current,
       },
+      disabled: {
+        ...defaultLinkConfigInput.state?.disabled,
+        ...input?.state?.disabled,
+      },
     },
-    complex,
   }
 }
-export type LinkConfig = ReturnType<typeof normalizeLinkConfig>
-
-export const normalizeLinkColorName = (uinityConfig: UinityConfig, color?: LinkConfigColorName | null | undefined) => {
-  if (color && uinityConfig.link.color[color]) {
-    return color
-  }
-  return 'brand'
-}
-
-export const normalizeLinkSizeName = (uinityConfig: UinityConfig, size?: LinkConfigSizeName | null | undefined) => {
-  if (size && uinityConfig.link.size[size]) {
-    return size
-  }
-  return 'm'
-}
-
-export const normalizeLinkStateName = (uinityConfig: UinityConfig, state?: LinkConfigStateName | null | undefined) => {
-  if (state && uinityConfig.link.state[state]) {
-    return state
-  }
-  return 'rest'
-}
-
-export const normalizeLinkVariantName = (
-  uinityConfig: UinityConfig,
-  variant?: LinkConfigVariantName | null | undefined
-) => {
-  if (variant && uinityConfig.link.variant[variant]) {
-    return variant
-  }
-  return 'primary'
-}
-
-export const getLinkVariantProps = (uinityConfig: UinityConfig, variant?: LinkConfigVariantName | undefined | null) => {
-  variant = normalizeLinkVariantName(uinityConfig, variant)
-  const variantProps = uinityConfig.link.variant[variant]
-  return {
-    variantColor: variantProps.color,
-  }
-}
+export type LinkUinityConfig = ReturnType<typeof normalizeLinkConfig>
 
 export const getLinkConfigFinalProps = (
   uinityConfig: UinityConfig,
-  variant?: LinkConfigVariantName | undefined | null,
-  color?: LinkConfigColorName | undefined | null,
-  size?: LinkConfigSizeName | undefined | null,
-  state?: LinkConfigStateName | undefined | null
+  variant: LinkVariantName | undefined | null,
+  font: LinkFontName | undefined | null,
+  weight: LinkWeightName | undefined | null,
+  size: LinkSizeName | undefined | null,
+  lineHeight: LinkLineHeightName | undefined | null,
+  color: LinkColorName | undefined | null,
+  state: LinkConfigStateName | undefined | null
 ) => {
-  const c = uinityConfig.link
-  const { variantColor } = getLinkVariantProps(uinityConfig, variant)
-  color = normalizeLinkColorName(uinityConfig, color || variantColor)
-  size = normalizeLinkSizeName(uinityConfig, size)
-  state = normalizeLinkStateName(uinityConfig, state)
+  const linkConfig = uinityConfig.link
+  const variantProps = variant && linkConfig.variant?.[variant]
+  font = variantProps?.font || font
+  weight = variantProps?.weight || weight
+  size = variantProps?.size || size
+  lineHeight = variantProps?.lineHeight || lineHeight
+  color = variantProps?.color || color
+  state = state || 'rest'
   return {
-    ...(color && c.color?.[color]),
-    ...(size && c.size?.[size]),
-    ...c.state?.[state],
-    ...c.complex?.any?.any?.any,
-    ...c.complex?.any?.any?.[state],
-    ...(size && c.complex?.any?.[size]?.any),
-    ...(size && c.complex?.any?.[size]?.[state]),
-    ...(color && c.complex?.[color]?.any?.any),
-    ...(color && c.complex?.[color]?.any?.[state]),
-    ...(size && color && c.complex?.[color]?.[size]?.any),
-    ...(size && color && c.complex?.[color]?.[size]?.[state]),
+    ...(font && linkConfig.font?.[font]),
+    ...(weight && linkConfig.weight?.[weight]),
+    ...(size && linkConfig.size?.[size]),
+    ...(lineHeight && linkConfig.lineHeight?.[lineHeight]),
+    ...(color && linkConfig.color?.[color]),
+    ...(state && linkConfig.state?.[state]),
   }
 }
