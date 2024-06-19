@@ -67,6 +67,11 @@ export const zTextVariantProps = z.object({
 })
 export type TextVariantProps = z.output<typeof zTextVariantProps>
 
+export const zTextGetterProps = zTextVariantProps.extend({
+  variant: zTextVariantName.optional(),
+})
+export type TextGetterProps = z.output<typeof zTextGetterProps>
+
 export const zTextConfigInput = z.object({
   variant: z.record(zTextVariantName, zTextVariantProps).optional(),
   font: z.record(zTextFontName, zTextConfigFinalProps).optional(),

@@ -1,7 +1,7 @@
+import { getTextConfigFinalProps, zTextGetterProps } from '@/components/text.js'
 import type { UinityConfig } from '@/config/index.js'
 import { zColorValue } from '@/utils/color.js'
-import { zOptionalNumberOrString } from '@/utils/other.js'
-import { $ } from '@/utils/variables.js'
+import { zOptionalNumberOrString, zOptionalString } from '@/utils/other.js'
 import { z } from 'zod'
 
 export const segmentConfigSizesNames = ['xs', 's', 'm', 'l'] as const
@@ -16,19 +16,24 @@ export const segmentConfigColorNames = ['brand', 'green', 'red'] as const
 export const zSegmentConfigColorName = z.enum(segmentConfigColorNames)
 export type SegmentConfigColorName = z.output<typeof zSegmentConfigColorName>
 
-export const zSegmentConfigSizeProps = z.object({
-  width: zOptionalNumberOrString,
-  height: zOptionalNumberOrString,
+export const zSegmentConfigFinalProps = z.object({
+  titleText: zTextGetterProps.optional(),
+  titleFontFamily: zOptionalString,
+  titleFontWeight: zOptionalString,
+  titleFontSize: zOptionalNumberOrString,
+  titleLineHeight: zOptionalNumberOrString,
+  titleColor: zColorValue.optional(),
+  gapTitleDesc: zOptionalNumberOrString,
+  gapHeadingContent: zOptionalNumberOrString,
+  siblingsGapHorizontal: zOptionalNumberOrString,
+  siblingsGapVertical: zOptionalNumberOrString,
+  descText: zTextGetterProps.optional(),
+  descFontFamily: zOptionalString,
+  descFontWeight: zOptionalString,
+  descFontSize: zOptionalNumberOrString,
+  descLineHeight: zOptionalNumberOrString,
+  descColor: zColorValue.optional(),
 })
-export type SegmentConfigSizeProps = z.output<typeof zSegmentConfigSizeProps>
-
-export const zSegmentConfigAppearenceProps = z.object({
-  background: zColorValue.optional(),
-  childrenBackground: zColorValue.optional(),
-})
-export type SegmentConfigAppearenceProps = z.output<typeof zSegmentConfigAppearenceProps>
-
-export const zSegmentConfigFinalProps = zSegmentConfigSizeProps.merge(zSegmentConfigAppearenceProps)
 export type SegmentConfigFinalProps = z.output<typeof zSegmentConfigFinalProps>
 
 export const zSegmentConfigGeneralProps = z.object({})
@@ -42,72 +47,39 @@ export type SegmentConfigVariantProps = z.output<typeof zSegmentConfigVariantPro
 export const zSegmentConfigInput = z.object({
   general: zSegmentConfigGeneralProps.optional(),
   variant: z.record(zSegmentConfigVariantName, zSegmentConfigVariantProps).optional(),
-  color: z.record(zSegmentConfigColorName, zSegmentConfigAppearenceProps).optional(),
-  size: z.record(zSegmentConfigSizeName, zSegmentConfigSizeProps).optional(),
+  color: z.record(zSegmentConfigColorName, zSegmentConfigFinalProps).optional(),
+  size: z.record(zSegmentConfigSizeName, zSegmentConfigFinalProps).optional(),
 })
 export type SegmentConfigInput = z.output<typeof zSegmentConfigInput>
 
 export const defaultSegmentConfigInput: SegmentConfigInput = {
   general: {},
-  variant: {
-    primary: {
-      color: 'brand',
-    },
-    secondary: {
-      color: 'green',
-    },
-    trietary: {
-      color: 'red',
-    },
-  },
-  color: {
-    brand: {
-      background: {
-        light: $.color.core.brand[60],
-        dark: $.color.core.brand[60],
-      },
-      childrenBackground: {
-        light: $.color.core.brand[50],
-        dark: $.color.core.brand[50],
-      },
-    },
-    green: {
-      background: {
-        light: $.color.core.green[60],
-        dark: $.color.core.green[60],
-      },
-      childrenBackground: {
-        light: $.color.core.green[50],
-        dark: $.color.core.green[50],
-      },
-    },
-    red: {
-      background: {
-        light: $.color.core.red[60],
-        dark: $.color.core.red[60],
-      },
-      childrenBackground: {
-        light: $.color.core.red[50],
-        dark: $.color.core.red[50],
-      },
-    },
-  },
+  variant: {},
+  color: {},
   size: {
     xs: {
-      width: 16,
-      height: 16,
+      titleText: {
+        variant: 'heading-xs',
+      },
+      gapHeadingContent: 6,
     },
     s: {
-      width: 24,
-      height: 24,
+      titleText: {
+        variant: 'heading-s',
+      },
+      gapHeadingContent: 6,
     },
     m: {
-      width: 32,
-      height: 32,
+      titleText: {
+        variant: 'heading-m',
+      },
+      gapHeadingContent: 10,
     },
     l: {
-      width: 40,
-      height: 40,
+      titleText: {
+        variant: 'heading-l',
+      },
+      gapHeadingContent: 16,
     },
   },
 }
@@ -175,7 +147,10 @@ export const normalizeSegmentColorName = (
   return 'brand'
 }
 
-export const normalizeSegmentSizeName = (uinityConfig: UinityConfig, size?: SegmentConfigSizeName | null | undefined) => {
+export const normalizeSegmentSizeName = (
+  uinityConfig: UinityConfig,
+  size?: SegmentConfigSizeName | null | undefined
+) => {
   if (size && uinityConfig.segment.size[size]) {
     return size
   }
@@ -212,8 +187,41 @@ export const getSegmentConfigFinalProps = (
   const { variantColor } = getSegmentVariantProps(uinityConfig, variant)
   color = normalizeSegmentColorName(uinityConfig, color || variantColor)
   size = normalizeSegmentSizeName(uinityConfig, size)
-  return {
+  const result = {
     ...uinityConfig.segment.color[color],
     ...uinityConfig.segment.size[size],
   }
+  if (result.titleText) {
+    const titleTextConfigFinalProps = getTextConfigFinalProps(
+      uinityConfig,
+      result.titleText.variant,
+      result.titleText.font,
+      result.titleText.weight,
+      result.titleText.size,
+      result.titleText.lineHeight,
+      result.titleText.color
+    )
+    result.titleFontFamily = result.titleFontFamily ?? titleTextConfigFinalProps.fontFamily
+    result.titleFontWeight = result.titleFontWeight ?? titleTextConfigFinalProps.fontWeight
+    result.titleFontSize = result.titleFontSize ?? titleTextConfigFinalProps.fontSize
+    result.titleLineHeight = result.titleLineHeight ?? titleTextConfigFinalProps.lineHeight
+    result.titleColor = result.titleColor ?? titleTextConfigFinalProps.color
+  }
+  if (result.descText) {
+    const descTextConfigFinalProps = getTextConfigFinalProps(
+      uinityConfig,
+      result.descText.variant,
+      result.descText.font,
+      result.descText.weight,
+      result.descText.size,
+      result.descText.lineHeight,
+      result.descText.color
+    )
+    result.descFontFamily = result.descFontFamily ?? descTextConfigFinalProps.fontFamily
+    result.descFontWeight = result.descFontWeight ?? descTextConfigFinalProps.fontWeight
+    result.descFontSize = result.descFontSize ?? descTextConfigFinalProps.fontSize
+    result.descLineHeight = result.descLineHeight ?? descTextConfigFinalProps.lineHeight
+    result.descColor = result.descColor ?? descTextConfigFinalProps.color
+  }
+  return result
 }

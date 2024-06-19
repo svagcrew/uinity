@@ -1,4 +1,4 @@
-import { createFormItem,type FormItemConfiguredMainProps } from './configured.js'
+import { createFormItem, type FormItemConfiguredMainProps } from './configured.js'
 import { uinityConfig } from '@/stories/uinity.config.js'
 import { getArgTypeConfigFromObject } from '@/stories/utils.js'
 import type { Meta, StoryObj } from '@storybook/react'

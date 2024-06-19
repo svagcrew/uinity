@@ -1,5 +1,5 @@
 import type { FormItemDefaultAs, FormItemMainProps, FormItemStyleRoot } from './clear.js'
-import { FormItem as FormItemClear } from './clear.js'
+import { FormItem as FormItemClear, FormItems } from './clear.js'
 import { useColorMode } from '@/lib/colorMode.js'
 import { type As, type AsPropsWithRef, forwardRefIgnoreTypes, type WithoutRef } from '@/utils.js'
 import { type ColorModeName, getColorByMode, type UinityConfig } from '@uinity/core'
@@ -32,13 +32,15 @@ export const createFormItem = ({ uinityConfig }: { uinityConfig: UinityConfig })
       const $styleConfigured: FormItemStyleRoot = {
         ...cfp,
         ...$style,
-        background: getColorByMode(cm, $style.background ?? cfp.background),
-        childrenBackground: getColorByMode(cm, $style.childrenBackground ?? cfp.childrenBackground),
+        labelColor: getColorByMode(cm, $style.labelColor ?? cfp.labelColor),
+        errorColor: getColorByMode(cm, $style.hintColor ?? cfp.errorColor),
+        hintColor: getColorByMode(cm, $style.hintColor ?? cfp.hintColor),
       }
       return <FormItemClear {...(restProps as {})} $style={$styleConfigured} ref={ref} />
     }
   )
   return {
     FormItem,
+    FormItems,
   }
 }

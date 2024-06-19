@@ -15,8 +15,10 @@ export type TextfieldDefaultAs = 'input'
 export type TextfieldMainProps<TAs extends As = TextfieldDefaultAs> = {
   as?: TAs
   children?: React.ReactNode
+  value?: string | number
+  onChange?: (e: React.ChangeEvent<HTMLInputElement>) => any
+  onBlur?: () => any
   placeholder?: string
-  labelOuter?: string
   labelInner?: string
   labelPlaceholder?: string
   $style?: TextfieldStyleRoot

@@ -32,8 +32,8 @@ export const createSegment = ({ uinityConfig }: { uinityConfig: UinityConfig }) 
       const $styleConfigured: SegmentStyleRoot = {
         ...cfp,
         ...$style,
-        background: getColorByMode(cm, $style.background ?? cfp.background),
-        childrenBackground: getColorByMode(cm, $style.childrenBackground ?? cfp.childrenBackground),
+        titleColor: getColorByMode(cm, $style.titleColor ?? cfp.titleColor),
+        descColor: getColorByMode(cm, $style.descColor ?? cfp.descColor),
       }
       return <SegmentClear {...(restProps as {})} $style={$styleConfigured} ref={ref} />
     }

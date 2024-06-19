@@ -25,6 +25,7 @@ export type ButtonDefaultAs = 'button'
 export type ButtonMainProps<TAs extends As = ButtonDefaultAs> = {
   as?: TAs
   disabled?: boolean
+  type?: 'button' | 'submit' | 'reset'
   iconStart?: JSX.Element | null | false
   $style?: ButtonStyleRoot
   children?: React.ReactNode

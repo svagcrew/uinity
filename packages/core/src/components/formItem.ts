@@ -1,6 +1,7 @@
+import { getTextConfigFinalProps, zTextGetterProps } from '@/components/text.js'
 import type { UinityConfig } from '@/config/index.js'
 import { zColorValue } from '@/utils/color.js'
-import { zOptionalNumberOrString } from '@/utils/other.js'
+import { zOptionalNumberOrString, zOptionalString } from '@/utils/other.js'
 import { $ } from '@/utils/variables.js'
 import { z } from 'zod'
 
@@ -12,23 +13,35 @@ export const formItemConfigVariantNames = ['primary', 'secondary', 'trietary'] a
 export const zFormItemConfigVariantName = z.enum(formItemConfigVariantNames)
 export type FormItemConfigVariantName = z.output<typeof zFormItemConfigVariantName>
 
-export const formItemConfigColorNames = ['brand', 'green', 'red'] as const
+export const formItemConfigColorNames = ['default'] as const
 export const zFormItemConfigColorName = z.enum(formItemConfigColorNames)
 export type FormItemConfigColorName = z.output<typeof zFormItemConfigColorName>
 
-export const zFormItemConfigSizeProps = z.object({
-  width: zOptionalNumberOrString,
-  height: zOptionalNumberOrString,
+export const zFormItemConfigFinalProps = z.object({
+  labelText: zTextGetterProps.optional(),
+  labelFontFamily: zOptionalString,
+  labelFontWeight: zOptionalString,
+  labelFontSize: zOptionalNumberOrString,
+  labelLineHeight: zOptionalNumberOrString,
+  labelColor: zColorValue.optional(),
+  gapLabelContent: zOptionalNumberOrString,
+  gapContentFooter: zOptionalNumberOrString,
+  gapErrorHint: zOptionalNumberOrString,
+  siblingsGapHorizontal: zOptionalNumberOrString,
+  siblingsGapVertical: zOptionalNumberOrString,
+  errorText: zTextGetterProps.optional(),
+  errorFontFamily: zOptionalString,
+  errorFontWeight: zOptionalString,
+  errorFontSize: zOptionalNumberOrString,
+  errorLineHeight: zOptionalNumberOrString,
+  errorColor: zColorValue.optional(),
+  hintText: zTextGetterProps.optional(),
+  hintFontFamily: zOptionalString,
+  hintFontWeight: zOptionalString,
+  hintFontSize: zOptionalNumberOrString,
+  hintLineHeight: zOptionalNumberOrString,
+  hintColor: zColorValue.optional(),
 })
-export type FormItemConfigSizeProps = z.output<typeof zFormItemConfigSizeProps>
-
-export const zFormItemConfigAppearenceProps = z.object({
-  background: zColorValue.optional(),
-  childrenBackground: zColorValue.optional(),
-})
-export type FormItemConfigAppearenceProps = z.output<typeof zFormItemConfigAppearenceProps>
-
-export const zFormItemConfigFinalProps = zFormItemConfigSizeProps.merge(zFormItemConfigAppearenceProps)
 export type FormItemConfigFinalProps = z.output<typeof zFormItemConfigFinalProps>
 
 export const zFormItemConfigGeneralProps = z.object({})
@@ -42,72 +55,65 @@ export type FormItemConfigVariantProps = z.output<typeof zFormItemConfigVariantP
 export const zFormItemConfigInput = z.object({
   general: zFormItemConfigGeneralProps.optional(),
   variant: z.record(zFormItemConfigVariantName, zFormItemConfigVariantProps).optional(),
-  color: z.record(zFormItemConfigColorName, zFormItemConfigAppearenceProps).optional(),
-  size: z.record(zFormItemConfigSizeName, zFormItemConfigSizeProps).optional(),
+  color: z.record(zFormItemConfigColorName, zFormItemConfigFinalProps).optional(),
+  size: z.record(zFormItemConfigSizeName, zFormItemConfigFinalProps).optional(),
 })
 export type FormItemConfigInput = z.output<typeof zFormItemConfigInput>
 
 export const defaultFormItemConfigInput: FormItemConfigInput = {
   general: {},
-  variant: {
-    primary: {
-      color: 'brand',
-    },
-    secondary: {
-      color: 'green',
-    },
-    trietary: {
-      color: 'red',
-    },
-  },
+  variant: {},
   color: {
-    brand: {
-      background: {
-        light: $.color.core.brand[60],
-        dark: $.color.core.brand[60],
-      },
-      childrenBackground: {
-        light: $.color.core.brand[50],
-        dark: $.color.core.brand[50],
-      },
-    },
-    green: {
-      background: {
-        light: $.color.core.green[60],
-        dark: $.color.core.green[60],
-      },
-      childrenBackground: {
-        light: $.color.core.green[50],
-        dark: $.color.core.green[50],
-      },
-    },
-    red: {
-      background: {
-        light: $.color.core.red[60],
-        dark: $.color.core.red[60],
-      },
-      childrenBackground: {
-        light: $.color.core.red[50],
-        dark: $.color.core.red[50],
-      },
+    default: {
+      labelColor: $.color.semantic.symbol.primary,
+      hintColor: $.color.semantic.symbol.tertiary,
+      errorColor: $.color.core.red[50],
     },
   },
   size: {
     xs: {
-      width: 16,
-      height: 16,
+      labelText: {
+        variant: 'body-xs',
+      },
+      errorText: {
+        variant: 'body-xs',
+      },
+      hintText: {
+        variant: 'body-xs',
+      },
     },
     s: {
-      width: 24,
-      height: 24,
+      labelText: {
+        variant: 'body-s',
+      },
+      errorText: {
+        variant: 'body-s',
+      },
+      hintText: {
+        variant: 'body-s',
+      },
     },
     m: {
-      width: 32,
-      height: 32,
+      labelText: {
+        variant: 'body-m',
+      },
+      errorText: {
+        variant: 'body-m',
+      },
+      hintText: {
+        variant: 'body-m',
+      },
     },
     l: {
-      width: 40,
-      height: 40,
+      labelText: {
+        variant: 'body-l',
+      },
+      errorText: {
+        variant: 'body-l',
+      },
+      hintText: {
+        variant: 'body-l',
+      },
     },
   },
 }
@@ -148,17 +154,9 @@ export const normalizeFormItemConfig = (input: FormItemConfigInput | undefined) 
       },
     },
     color: {
-      brand: {
-        ...defaultFormItemConfigInput.color?.brand,
-        ...input?.color?.brand,
-      },
-      green: {
-        ...defaultFormItemConfigInput.color?.green,
-        ...input?.color?.green,
-      },
-      red: {
-        ...defaultFormItemConfigInput.color?.red,
-        ...input?.color?.red,
+      default: {
+        ...defaultFormItemConfigInput.color?.default,
+        ...input?.color?.default,
       },
     },
   }
@@ -172,10 +170,13 @@ export const normalizeFormItemColorName = (
   if (color && uinityConfig.formItem.color[color]) {
     return color
   }
-  return 'brand'
+  return 'default'
 }
 
-export const normalizeFormItemSizeName = (uinityConfig: UinityConfig, size?: FormItemConfigSizeName | null | undefined) => {
+export const normalizeFormItemSizeName = (
+  uinityConfig: UinityConfig,
+  size?: FormItemConfigSizeName | null | undefined
+) => {
   if (size && uinityConfig.formItem.size[size]) {
     return size
   }
@@ -212,8 +213,57 @@ export const getFormItemConfigFinalProps = (
   const { variantColor } = getFormItemVariantProps(uinityConfig, variant)
   color = normalizeFormItemColorName(uinityConfig, color || variantColor)
   size = normalizeFormItemSizeName(uinityConfig, size)
-  return {
+  const result = {
     ...uinityConfig.formItem.color[color],
     ...uinityConfig.formItem.size[size],
   }
+  if (result.labelText) {
+    const labelTextConfigFinalProps = getTextConfigFinalProps(
+      uinityConfig,
+      result.labelText.variant,
+      result.labelText.font,
+      result.labelText.weight,
+      result.labelText.size,
+      result.labelText.lineHeight,
+      result.labelText.color
+    )
+    result.labelFontFamily = result.labelFontFamily ?? labelTextConfigFinalProps.fontFamily
+    result.labelFontWeight = result.labelFontWeight ?? labelTextConfigFinalProps.fontWeight
+    result.labelFontSize = result.labelFontSize ?? labelTextConfigFinalProps.fontSize
+    result.labelLineHeight = result.labelLineHeight ?? labelTextConfigFinalProps.lineHeight
+    result.labelColor = result.labelColor ?? labelTextConfigFinalProps.color
+  }
+  if (result.errorText) {
+    const errorTextConfigFinalProps = getTextConfigFinalProps(
+      uinityConfig,
+      result.errorText.variant,
+      result.errorText.font,
+      result.errorText.weight,
+      result.errorText.size,
+      result.errorText.lineHeight,
+      result.errorText.color
+    )
+    result.errorFontFamily = result.errorFontFamily ?? errorTextConfigFinalProps.fontFamily
+    result.errorFontWeight = result.errorFontWeight ?? errorTextConfigFinalProps.fontWeight
+    result.errorFontSize = result.errorFontSize ?? errorTextConfigFinalProps.fontSize
+    result.errorLineHeight = result.errorLineHeight ?? errorTextConfigFinalProps.lineHeight
+    result.errorColor = result.errorColor ?? errorTextConfigFinalProps.color
+  }
+  if (result.hintText) {
+    const hintTextConfigFinalProps = getTextConfigFinalProps(
+      uinityConfig,
+      result.hintText.variant,
+      result.hintText.font,
+      result.hintText.weight,
+      result.hintText.size,
+      result.hintText.lineHeight,
+      result.hintText.color
+    )
+    result.hintFontFamily = result.hintFontFamily ?? hintTextConfigFinalProps.fontFamily
+    result.hintFontWeight = result.hintFontWeight ?? hintTextConfigFinalProps.fontWeight
+    result.hintFontSize = result.hintFontSize ?? hintTextConfigFinalProps.fontSize
+    result.hintLineHeight = result.hintLineHeight ?? hintTextConfigFinalProps.lineHeight
+    result.hintColor = result.hintColor ?? hintTextConfigFinalProps.color
+  }
+  return result
 }
