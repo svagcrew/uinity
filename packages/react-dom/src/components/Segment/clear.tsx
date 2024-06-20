@@ -107,7 +107,7 @@ const SegmentsS = styled.div.attrs(mark('SegmentsS'))<{ $sf: SegmentsStyleFinal 
   ${({ $sf }) => css`
     ${toCss({
       display: 'flex',
-      alignItems: 'stretch',
+      alignItems: 'flex-start',
       flexFlow: $sf.direction === 'row' ? 'row nowrap' : 'column nowrap',
       gap: '30px',
     })}
