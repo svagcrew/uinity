@@ -1,5 +1,5 @@
 import type { SegmentDefaultAs, SegmentMainProps, SegmentStyleRoot } from './clear.js'
-import { Segment as SegmentClear } from './clear.js'
+import { Segment as SegmentClear, Segments } from './clear.js'
 import { useColorMode } from '@/lib/colorMode.js'
 import { type As, type AsPropsWithRef, forwardRefIgnoreTypes, type WithoutRef } from '@/utils.js'
 import { type ColorModeName, getColorByMode, type UinityConfig } from '@uinity/core'
@@ -40,5 +40,6 @@ export const createSegment = ({ uinityConfig }: { uinityConfig: UinityConfig }) 
   )
   return {
     Segment,
+    Segments,
   }
 }

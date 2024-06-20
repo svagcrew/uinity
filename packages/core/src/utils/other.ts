@@ -117,7 +117,7 @@ export const toCss = (
 export const maybeNumberToPx = (value: string | number | undefined | null): string | null => {
   if (typeof value === 'number') {
     if (value === 0) {
-      return '0'
+      return '0px'
     } else {
       return `${value}px`
     }

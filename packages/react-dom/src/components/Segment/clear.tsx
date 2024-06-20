@@ -102,3 +102,41 @@ export const Segment: SegmentType = forwardRefIgnoreTypes(
     )
   }
 )
+
+const SegmentsS = styled.div.attrs(mark('SegmentsS'))<{ $sf: SegmentsStyleFinal }>`
+  ${({ $sf }) => css`
+    ${toCss({
+      display: 'flex',
+      alignItems: 'stretch',
+      flexFlow: $sf.direction === 'row' ? 'row nowrap' : 'column nowrap',
+      gap: '30px',
+    })}
+
+    & > ${SegmentS} {
+    }
+  `}
+`
+export type SegmentsStyleFinal = {
+  direction: 'row' | 'column'
+}
+export type SegmentsDefaultAs = 'div'
+export type SegmentsMainProps<TAs extends As = SegmentsDefaultAs> = {
+  as?: TAs
+  direction?: 'row' | 'column'
+  children?: React.ReactNode
+}
+export type SegmentsPropsWithRef<TAs extends As = SegmentsDefaultAs> = SegmentsMainProps<TAs> & AsPropsWithRef<TAs>
+export type SegmentsPropsWithoutRef<TAs extends As = SegmentsDefaultAs> = WithoutRef<SegmentsPropsWithRef<TAs>>
+export type SegmentsType = <TAs extends As = SegmentsDefaultAs>(props: SegmentsPropsWithRef<TAs>) => React.ReactNode
+export const Segments: SegmentsType = forwardRefIgnoreTypes(
+  ({ direction, children, ...restProps }: SegmentsPropsWithoutRef, ref: any) => {
+    const $sf: SegmentsStyleFinal = {
+      direction: direction ?? 'column',
+    }
+    return (
+      <SegmentsS {...(restProps as {})} ref={ref} $sf={$sf}>
+        {children}
+      </SegmentsS>
+    )
+  }
+)

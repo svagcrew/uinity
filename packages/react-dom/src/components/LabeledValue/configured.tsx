@@ -1,44 +1,47 @@
-import type { LabeledValueDefaultAs, LabeledValueMainProps, LabeledValueStyleRoot } from './clear.js'
-import { LabeledValue as LabeledValueClear } from './clear.js'
+import type { LabeledValuesDefaultAs, LabeledValuesMainProps, LabeledValueStyleRoot } from './clear.js'
+import { LabeledValues as LabeledValuesClear } from './clear.js'
 import { useColorMode } from '@/lib/colorMode.js'
 import { type As, type AsPropsWithRef, forwardRefIgnoreTypes, type WithoutRef } from '@/utils.js'
 import { type ColorModeName, getColorByMode, type UinityConfig } from '@uinity/core'
 import { getLabeledValueConfigFinalProps } from '@uinity/core/dist/components/labeledValue.js'
 
-export type LabeledValueConfiguredSettingsProps = {
+export type LabeledValuesConfiguredSettingsProps = {
   variant?: keyof UinityConfig['labeledValue']['variant'] | undefined | null
   color?: keyof UinityConfig['labeledValue']['color'] | undefined | null
   size?: keyof UinityConfig['labeledValue']['size'] | undefined | null
   colorMode?: ColorModeName | undefined | null
 }
-export type LabeledValueConfiguredSpecialProps = {}
-export type LabeledValueConfiguredMainProps<TAs extends As = LabeledValueDefaultAs> = LabeledValueConfiguredSettingsProps &
-  LabeledValueConfiguredSpecialProps &
-  LabeledValueMainProps<TAs>
-export type LabeledValueConfiguredPropsWithRef<TAs extends As = LabeledValueDefaultAs> = LabeledValueConfiguredMainProps<TAs> &
-  AsPropsWithRef<TAs>
-export type LabeledValueConfiguredPropsWithoutRef<TAs extends As = LabeledValueDefaultAs> = WithoutRef<
-  LabeledValueConfiguredPropsWithRef<TAs>
+export type LabeledValuesConfiguredSpecialProps = {}
+export type LabeledValuesConfiguredMainProps<TAs extends As = LabeledValuesDefaultAs> =
+  LabeledValuesConfiguredSettingsProps & LabeledValuesConfiguredSpecialProps & LabeledValuesMainProps<TAs>
+export type LabeledValuesConfiguredPropsWithRef<TAs extends As = LabeledValuesDefaultAs> =
+  LabeledValuesConfiguredMainProps<TAs> & AsPropsWithRef<TAs>
+export type LabeledValuesConfiguredPropsWithoutRef<TAs extends As = LabeledValuesDefaultAs> = WithoutRef<
+  LabeledValuesConfiguredPropsWithRef<TAs>
 >
-export type LabeledValueConfigured = <TAs extends As = LabeledValueDefaultAs>(
-  props: LabeledValueConfiguredPropsWithRef<TAs>
+export type LabeledValuesConfigured = <TAs extends As = LabeledValuesDefaultAs>(
+  props: LabeledValuesConfiguredPropsWithRef<TAs>
 ) => React.ReactNode
 
 export const createLabeledValue = ({ uinityConfig }: { uinityConfig: UinityConfig }) => {
-  const LabeledValue: LabeledValueConfigured = forwardRefIgnoreTypes(
-    ({ variant, color, size, colorMode, $style = {}, ...restProps }: LabeledValueConfiguredPropsWithoutRef, ref: any) => {
+  const LabeledValues: LabeledValuesConfigured = forwardRefIgnoreTypes(
+    (
+      { variant, color, size, colorMode, $style = {}, ...restProps }: LabeledValuesConfiguredPropsWithoutRef,
+      ref: any
+    ) => {
       const { cm } = useColorMode(colorMode)
       const cfp = getLabeledValueConfigFinalProps(uinityConfig, variant, color, size)
       const $styleConfigured: LabeledValueStyleRoot = {
         ...cfp,
         ...$style,
-        background: getColorByMode(cm, $style.background ?? cfp.background),
-        childrenBackground: getColorByMode(cm, $style.childrenBackground ?? cfp.childrenBackground),
+        labelColor: getColorByMode(cm, $style.labelColor ?? cfp.labelColor),
+        valueColor: getColorByMode(cm, $style.hintColor ?? cfp.valueColor),
+        hintColor: getColorByMode(cm, $style.hintColor ?? cfp.hintColor),
       }
-      return <LabeledValueClear {...(restProps as {})} $style={$styleConfigured} ref={ref} />
+      return <LabeledValuesClear {...(restProps as {})} $style={$styleConfigured} ref={ref} />
     }
   )
   return {
-    LabeledValue,
+    LabeledValues,
   }
 }

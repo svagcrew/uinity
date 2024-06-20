@@ -182,7 +182,7 @@ const getLayoutCoreCss = (sc: LayoutStyleCore) => {
                   overflowY: 'auto',
                   position: 'fixed',
                   zIndex: 900,
-                  height: `calc(100% - ${maybeNumberToPx(sc.headerFixed ? sc.headerHeight : 0)})`,
+                  height: `calc(100% - ${maybeNumberToPx(sc.headerFixed ? sc.headerHeight || 0 : 0)})`,
                 })}
           }
         }

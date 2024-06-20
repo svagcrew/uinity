@@ -1,6 +1,7 @@
+import { getTextConfigFinalProps, zTextGetterProps } from '@/components/text.js'
 import type { UinityConfig } from '@/config/index.js'
 import { zColorValue } from '@/utils/color.js'
-import { zOptionalNumberOrString } from '@/utils/other.js'
+import { zOptionalNumberOrString, zOptionalString } from '@/utils/other.js'
 import { $ } from '@/utils/variables.js'
 import { z } from 'zod'
 
@@ -12,23 +13,34 @@ export const labeledValueConfigVariantNames = ['primary', 'secondary', 'trietary
 export const zLabeledValueConfigVariantName = z.enum(labeledValueConfigVariantNames)
 export type LabeledValueConfigVariantName = z.output<typeof zLabeledValueConfigVariantName>
 
-export const labeledValueConfigColorNames = ['brand', 'green', 'red'] as const
+export const labeledValueConfigColorNames = ['default'] as const
 export const zLabeledValueConfigColorName = z.enum(labeledValueConfigColorNames)
 export type LabeledValueConfigColorName = z.output<typeof zLabeledValueConfigColorName>
 
-export const zLabeledValueConfigSizeProps = z.object({
-  width: zOptionalNumberOrString,
-  height: zOptionalNumberOrString,
+export const zLabeledValueConfigFinalProps = z.object({
+  labelText: zTextGetterProps.optional(),
+  labelFontFamily: zOptionalString,
+  labelFontWeight: zOptionalString,
+  labelFontSize: zOptionalNumberOrString,
+  labelLineHeight: zOptionalNumberOrString,
+  labelColor: zColorValue.optional(),
+  gapLabelValue: zOptionalNumberOrString,
+  gapValueHint: zOptionalNumberOrString,
+  siblingsGapHorizontal: zOptionalNumberOrString,
+  siblingsGapVertical: zOptionalNumberOrString,
+  valueText: zTextGetterProps.optional(),
+  valueFontFamily: zOptionalString,
+  valueFontWeight: zOptionalString,
+  valueFontSize: zOptionalNumberOrString,
+  valueLineHeight: zOptionalNumberOrString,
+  valueColor: zColorValue.optional(),
+  hintText: zTextGetterProps.optional(),
+  hintFontFamily: zOptionalString,
+  hintFontWeight: zOptionalString,
+  hintFontSize: zOptionalNumberOrString,
+  hintLineHeight: zOptionalNumberOrString,
+  hintColor: zColorValue.optional(),
 })
-export type LabeledValueConfigSizeProps = z.output<typeof zLabeledValueConfigSizeProps>
-
-export const zLabeledValueConfigAppearenceProps = z.object({
-  background: zColorValue.optional(),
-  childrenBackground: zColorValue.optional(),
-})
-export type LabeledValueConfigAppearenceProps = z.output<typeof zLabeledValueConfigAppearenceProps>
-
-export const zLabeledValueConfigFinalProps = zLabeledValueConfigSizeProps.merge(zLabeledValueConfigAppearenceProps)
 export type LabeledValueConfigFinalProps = z.output<typeof zLabeledValueConfigFinalProps>
 
 export const zLabeledValueConfigGeneralProps = z.object({})
@@ -42,72 +54,65 @@ export type LabeledValueConfigVariantProps = z.output<typeof zLabeledValueConfig
 export const zLabeledValueConfigInput = z.object({
   general: zLabeledValueConfigGeneralProps.optional(),
   variant: z.record(zLabeledValueConfigVariantName, zLabeledValueConfigVariantProps).optional(),
-  color: z.record(zLabeledValueConfigColorName, zLabeledValueConfigAppearenceProps).optional(),
-  size: z.record(zLabeledValueConfigSizeName, zLabeledValueConfigSizeProps).optional(),
+  color: z.record(zLabeledValueConfigColorName, zLabeledValueConfigFinalProps).optional(),
+  size: z.record(zLabeledValueConfigSizeName, zLabeledValueConfigFinalProps).optional(),
 })
 export type LabeledValueConfigInput = z.output<typeof zLabeledValueConfigInput>
 
 export const defaultLabeledValueConfigInput: LabeledValueConfigInput = {
   general: {},
-  variant: {
-    primary: {
-      color: 'brand',
-    },
-    secondary: {
-      color: 'green',
-    },
-    trietary: {
-      color: 'red',
-    },
-  },
+  variant: {},
   color: {
-    brand: {
-      background: {
-        light: $.color.core.brand[60],
-        dark: $.color.core.brand[60],
-      },
-      childrenBackground: {
-        light: $.color.core.brand[50],
-        dark: $.color.core.brand[50],
-      },
-    },
-    green: {
-      background: {
-        light: $.color.core.green[60],
-        dark: $.color.core.green[60],
-      },
-      childrenBackground: {
-        light: $.color.core.green[50],
-        dark: $.color.core.green[50],
-      },
-    },
-    red: {
-      background: {
-        light: $.color.core.red[60],
-        dark: $.color.core.red[60],
-      },
-      childrenBackground: {
-        light: $.color.core.red[50],
-        dark: $.color.core.red[50],
-      },
+    default: {
+      labelColor: $.color.semantic.symbol.secondary,
+      valueColor: $.color.semantic.symbol.primary,
+      hintColor: $.color.semantic.symbol.tertiary,
     },
   },
   size: {
     xs: {
-      width: 16,
-      height: 16,
+      labelText: {
+        variant: 'body-xs',
+      },
+      valueText: {
+        variant: 'body-xs',
+      },
+      hintText: {
+        variant: 'body-xs',
+      },
     },
     s: {
-      width: 24,
-      height: 24,
+      labelText: {
+        variant: 'body-s',
+      },
+      valueText: {
+        variant: 'body-s',
+      },
+      hintText: {
+        variant: 'body-s',
+      },
     },
     m: {
-      width: 32,
-      height: 32,
+      labelText: {
+        variant: 'body-m',
+      },
+      valueText: {
+        variant: 'body-l',
+      },
+      hintText: {
+        variant: 'body-xs',
+      },
     },
     l: {
-      width: 40,
-      height: 40,
+      labelText: {
+        variant: 'body-l',
+      },
+      valueText: {
+        variant: 'body-l',
+      },
+      hintText: {
+        variant: 'body-l',
+      },
     },
   },
 }
@@ -148,17 +153,9 @@ export const normalizeLabeledValueConfig = (input: LabeledValueConfigInput | und
       },
     },
     color: {
-      brand: {
-        ...defaultLabeledValueConfigInput.color?.brand,
-        ...input?.color?.brand,
-      },
-      green: {
-        ...defaultLabeledValueConfigInput.color?.green,
-        ...input?.color?.green,
-      },
-      red: {
-        ...defaultLabeledValueConfigInput.color?.red,
-        ...input?.color?.red,
+      default: {
+        ...defaultLabeledValueConfigInput.color?.default,
+        ...input?.color?.default,
       },
     },
   }
@@ -172,10 +169,13 @@ export const normalizeLabeledValueColorName = (
   if (color && uinityConfig.labeledValue.color[color]) {
     return color
   }
-  return 'brand'
+  return 'default'
 }
 
-export const normalizeLabeledValueSizeName = (uinityConfig: UinityConfig, size?: LabeledValueConfigSizeName | null | undefined) => {
+export const normalizeLabeledValueSizeName = (
+  uinityConfig: UinityConfig,
+  size?: LabeledValueConfigSizeName | null | undefined
+) => {
   if (size && uinityConfig.labeledValue.size[size]) {
     return size
   }
@@ -212,8 +212,57 @@ export const getLabeledValueConfigFinalProps = (
   const { variantColor } = getLabeledValueVariantProps(uinityConfig, variant)
   color = normalizeLabeledValueColorName(uinityConfig, color || variantColor)
   size = normalizeLabeledValueSizeName(uinityConfig, size)
-  return {
+  const result = {
     ...uinityConfig.labeledValue.color[color],
     ...uinityConfig.labeledValue.size[size],
   }
+  if (result.labelText) {
+    const labelTextConfigFinalProps = getTextConfigFinalProps(
+      uinityConfig,
+      result.labelText.variant,
+      result.labelText.font,
+      result.labelText.weight,
+      result.labelText.size,
+      result.labelText.lineHeight,
+      result.labelText.color
+    )
+    result.labelFontFamily = result.labelFontFamily ?? labelTextConfigFinalProps.fontFamily
+    result.labelFontWeight = result.labelFontWeight ?? labelTextConfigFinalProps.fontWeight
+    result.labelFontSize = result.labelFontSize ?? labelTextConfigFinalProps.fontSize
+    result.labelLineHeight = result.labelLineHeight ?? labelTextConfigFinalProps.lineHeight
+    result.labelColor = result.labelColor ?? labelTextConfigFinalProps.color
+  }
+  if (result.valueText) {
+    const valueTextConfigFinalProps = getTextConfigFinalProps(
+      uinityConfig,
+      result.valueText.variant,
+      result.valueText.font,
+      result.valueText.weight,
+      result.valueText.size,
+      result.valueText.lineHeight,
+      result.valueText.color
+    )
+    result.valueFontFamily = result.valueFontFamily ?? valueTextConfigFinalProps.fontFamily
+    result.valueFontWeight = result.valueFontWeight ?? valueTextConfigFinalProps.fontWeight
+    result.valueFontSize = result.valueFontSize ?? valueTextConfigFinalProps.fontSize
+    result.valueLineHeight = result.valueLineHeight ?? valueTextConfigFinalProps.lineHeight
+    result.valueColor = result.valueColor ?? valueTextConfigFinalProps.color
+  }
+  if (result.hintText) {
+    const hintTextConfigFinalProps = getTextConfigFinalProps(
+      uinityConfig,
+      result.hintText.variant,
+      result.hintText.font,
+      result.hintText.weight,
+      result.hintText.size,
+      result.hintText.lineHeight,
+      result.hintText.color
+    )
+    result.hintFontFamily = result.hintFontFamily ?? hintTextConfigFinalProps.fontFamily
+    result.hintFontWeight = result.hintFontWeight ?? hintTextConfigFinalProps.fontWeight
+    result.hintFontSize = result.hintFontSize ?? hintTextConfigFinalProps.fontSize
+    result.hintLineHeight = result.hintLineHeight ?? hintTextConfigFinalProps.lineHeight
+    result.hintColor = result.hintColor ?? hintTextConfigFinalProps.color
+  }
+  return result
 }

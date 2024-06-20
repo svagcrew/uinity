@@ -1,13 +1,12 @@
 import type { LabeledValueMainProps, LabeledValueStyleRoot } from './clear.js'
-import { LabeledValue } from './clear.js'
 import type { Meta, StoryObj } from '@storybook/react'
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const LabeledValueDemo = ({ as, ...restProps }: LabeledValueStyleRoot & LabeledValueMainProps) => {
-  return (
-    <LabeledValue $style={restProps} as={as}>
-      LabeledValue
-    </LabeledValue>
-  )
+  return null
+  // <LabeledValue $style={restProps} as={as}>
+  //   LabeledValue
+  // </LabeledValue>
 }
 
 const meta = {
@@ -18,12 +17,12 @@ const meta = {
   },
   tags: ['autodocs'],
   argTypes: {
-    background: { control: 'color' },
-    childrenBackground: { control: 'color' },
+    // background: { control: 'color' },
+    // childrenBackground: { control: 'color' },
   },
   args: {
-    background: '#f00',
-    childrenBackground: '#0f0',
+    // background: '#f00',
+    // childrenBackground: '#0f0',
   },
 } satisfies Meta<typeof LabeledValueDemo>
 

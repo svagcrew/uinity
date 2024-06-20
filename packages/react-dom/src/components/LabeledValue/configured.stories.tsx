@@ -1,16 +1,16 @@
-import { createLabeledValue,type LabeledValueConfiguredMainProps } from './configured.js'
+import { type LabeledValuesConfiguredMainProps } from './configured.js'
 import { uinityConfig } from '@/stories/uinity.config.js'
 import { getArgTypeConfigFromObject } from '@/stories/utils.js'
 import type { Meta, StoryObj } from '@storybook/react'
 
-const { LabeledValue } = createLabeledValue({ uinityConfig })
+// const { LabeledValue } = createLabeledValue({ uinityConfig })
 
-const LabeledValueDemo = ({ variant, size, color }: LabeledValueConfiguredMainProps) => {
-  return (
-    <LabeledValue variant={variant} size={size} color={color}>
-      LabeledValue
-    </LabeledValue>
-  )
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+const LabeledValueDemo = ({ variant, size, color }: LabeledValuesConfiguredMainProps) => {
+  return null
+  // <LabeledValue variant={variant} size={size} color={color}>
+  //   LabeledValue
+  // </LabeledValue>
 }
 
 const meta = {

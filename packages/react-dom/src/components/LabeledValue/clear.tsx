@@ -1,63 +1,206 @@
+/* eslint-disable lodash/prefer-is-nil */
 import type { As, AsPropsWithRef, WithoutRef } from '@/utils.js'
 import { forwardRefIgnoreTypes, mark } from '@/utils.js'
 import { toCss } from '@uinity/core/dist/utils/other.js'
 import { css, styled } from 'styled-components'
 
 export type LabeledValueStyleRoot = {
-  width?: number | string | null | undefined
-  height?: number | string | null | undefined
-  background?: string | null | undefined
-  childrenBackground?: string | null | undefined
+  labelFontFamily?: string | null | undefined
+  labelFontWeight?: string | null | undefined
+  labelFontSize?: number | string | null | undefined
+  labelLineHeight?: number | string | null | undefined
+  labelColor?: string | null | undefined
+  gapLabelValue?: number | string | null | undefined
+  gapValueHint?: number | string | null | undefined
+  siblingsGapHorizontal?: number | string | null | undefined
+  siblingsGapVertical?: number | string | null | undefined
+  valueFontFamily?: string | null | undefined
+  valueFontWeight?: string | null | undefined
+  valueFontSize?: number | string | null | undefined
+  valueLineHeight?: number | string | null | undefined
+  valueColor?: string | null | undefined
+  hintFontFamily?: string | null | undefined
+  hintFontWeight?: string | null | undefined
+  hintFontSize?: number | string | null | undefined
+  hintLineHeight?: number | string | null | undefined
+  hintColor?: string | null | undefined
 }
 export type LabeledValueStyleFinal = LabeledValueStyleRoot
 export type LabeledValueDefaultAs = 'div'
 export type LabeledValueMainProps<TAs extends As = LabeledValueDefaultAs> = {
   as?: TAs
-  children?: React.ReactNode
+  label?: React.ReactNode
+  value?: React.ReactNode
+  hint?: React.ReactNode
   $style?: LabeledValueStyleRoot
 }
-export type LabeledValuePropsWithRef<TAs extends As = LabeledValueDefaultAs> = LabeledValueMainProps<TAs> & AsPropsWithRef<TAs>
-export type LabeledValuePropsWithoutRef<TAs extends As = LabeledValueDefaultAs> = WithoutRef<LabeledValuePropsWithRef<TAs>>
-export type LabeledValueType = <TAs extends As = LabeledValueDefaultAs>(props: LabeledValuePropsWithRef<TAs>) => React.ReactNode
+export type LabeledValuePropsWithRef<TAs extends As = LabeledValueDefaultAs> = LabeledValueMainProps<TAs> &
+  AsPropsWithRef<TAs>
+export type LabeledValuePropsWithoutRef<TAs extends As = LabeledValueDefaultAs> = WithoutRef<
+  LabeledValuePropsWithRef<TAs>
+>
+export type LabeledValueType = <TAs extends As = LabeledValueDefaultAs>(
+  props: LabeledValuePropsWithRef<TAs>
+) => React.ReactNode
 
-const getLabeledValueCoreCss = ($sf: LabeledValueStyleFinal) => {
+const getLabeledValueFinalCss = ($sf: LabeledValueStyleFinal) => {
   return css`
-    padding: 10px;
-    ${toCss({
-      width: $sf?.width,
-      height: $sf?.height,
-      background: $sf?.background,
-    })}
+    display: flex;
+    flex-flow: column nowrap;
 
-    & ${ChildrenS} {
+    & > ${LabelS} {
       ${toCss({
-        width: $sf?.width,
-        height: $sf?.height,
-        background: $sf?.childrenBackground,
+        fontFamily: $sf.labelFontFamily,
+        fontWeight: $sf.labelFontWeight,
+        fontSize: $sf.labelFontSize,
+        lineHeight: $sf.labelLineHeight,
+        color: $sf.labelColor,
+        marginBottom: $sf.gapLabelValue,
+      })}
+    }
+
+    & > ${ValueS} {
+      ${toCss({
+        fontFamily: $sf.valueFontFamily,
+        fontWeight: $sf.valueFontWeight,
+        fontSize: $sf.valueFontSize,
+        lineHeight: $sf.valueLineHeight,
+        color: $sf.valueColor,
+      })}
+    }
+
+    & > ${HintS} {
+      ${toCss({
+        marginTop: $sf.gapValueHint,
+        fontFamily: $sf.hintFontFamily,
+        fontWeight: $sf.hintFontWeight,
+        fontSize: $sf.hintFontSize,
+        lineHeight: $sf.hintLineHeight,
+        color: $sf.hintColor,
       })}
     }
   `
 }
-const getLabeledValueFinalCss = ($sf: LabeledValueStyleFinal) => {
-  return css`
-    ${getLabeledValueCoreCss($sf)}
-  `
-}
 
-const ChildrenS = styled.div.attrs(mark('ChildrenS'))``
+const LabelS = styled.div.attrs(mark('LabelS'))``
+const ValueS = styled.div.attrs(mark('ValueS'))``
+const HintS = styled.div.attrs(mark('HintS'))``
 const LabeledValueS = styled.div.attrs(mark('LabeledValueS'))<{ $sf: LabeledValueStyleFinal }>`
   ${({ $sf }) => getLabeledValueFinalCss($sf)}
 `
 
 export const LabeledValue: LabeledValueType = forwardRefIgnoreTypes(
-  ({ $style = {}, children, ...restProps }: LabeledValuePropsWithoutRef, ref: any) => {
+  ({ $style = {}, label, value, hint, ...restProps }: LabeledValuePropsWithoutRef, ref: any) => {
     const $sf: LabeledValueStyleFinal = {
       ...$style,
     }
     return (
       <LabeledValueS {...restProps} ref={ref} $sf={$sf}>
-        <ChildrenS>{children}</ChildrenS>
+        {label && <LabelS>{label}</LabelS>}
+        {value && <ValueS>{value}</ValueS>}
+        {hint && <HintS>{hint}</HintS>}
       </LabeledValueS>
+    )
+  }
+)
+
+const LabeledValuesS = styled.div.attrs(mark('LabeledValuesS'))<{ $sf: LabeledValuesStyleFinal }>`
+  ${({ $sf }) => css`
+    ${toCss({
+      display: 'flex',
+      alignItems: 'flex-start',
+      flexFlow: $sf.direction === 'row' ? 'row wrap' : 'column nowrap',
+      gap: '20px',
+    })}
+
+    & > ${LabeledValueS} {
+    }
+  `}
+`
+type ItemFull = {
+  label: React.ReactNode
+  value: React.ReactNode
+  hint?: React.ReactNode
+}
+type ItemShort = [React.ReactNode, React.ReactNode, React.ReactNode?]
+type ItemAny = ItemFull | ItemShort
+type ItemAnyNullable = ItemAny | null | false | undefined
+type ValuesEmptyPolicy = 'replace' | 'hide'
+export type LabeledValuesStyleFinal = {
+  direction: 'row' | 'column'
+}
+export type LabeledValuesDefaultAs = 'div'
+export type LabeledValuesMainProps<TAs extends As = LabeledValuesDefaultAs> = {
+  as?: TAs
+  direction?: 'row' | 'column'
+  children?: React.ReactNode
+  items?: ItemAnyNullable[]
+  valuesEmptyPolicy?: ValuesEmptyPolicy
+  valuesEmptyReplacer?: React.ReactNode
+  valuesTrueReplacer?: React.ReactNode
+  valuesFalseReplacer?: React.ReactNode
+  $style?: LabeledValueStyleRoot
+}
+export type LabeledValuesPropsWithRef<TAs extends As = LabeledValuesDefaultAs> = LabeledValuesMainProps<TAs> &
+  AsPropsWithRef<TAs>
+export type LabeledValuesPropsWithoutRef<TAs extends As = LabeledValuesDefaultAs> = WithoutRef<
+  LabeledValuesPropsWithRef<TAs>
+>
+export type LabeledValuesType = <TAs extends As = LabeledValuesDefaultAs>(
+  props: LabeledValuesPropsWithRef<TAs>
+) => React.ReactNode
+export const LabeledValues: LabeledValuesType = forwardRefIgnoreTypes(
+  (
+    {
+      direction = 'row',
+      children,
+      valuesEmptyPolicy = 'replace',
+      valuesEmptyReplacer = '—',
+      valuesFalseReplacer = '❌',
+      valuesTrueReplacer = '✅',
+      ...restProps
+    }: LabeledValuesPropsWithoutRef,
+    ref: any
+  ) => {
+    const $sf: LabeledValuesStyleFinal = {
+      direction,
+    }
+    children = !restProps.items
+      ? children || null
+      : restProps.items
+          .map((item, i) => {
+            if (!item) {
+              return null
+            }
+            const { label, value, hint } = (() => {
+              if (Array.isArray(item)) {
+                return { label: item[0], value: item[1], hint: item[2] }
+              } else {
+                return {
+                  label: item.label,
+                  value: item.value,
+                  hint: item.hint,
+                }
+              }
+            })()
+            const isValueEmpty = value === null || value === undefined || value === ''
+            if (isValueEmpty && valuesEmptyPolicy === 'hide') {
+              return null
+            }
+            const nonEmptyValue = isValueEmpty ? valuesEmptyReplacer : value
+            const nonBooleanValue =
+              typeof nonEmptyValue === 'boolean'
+                ? nonEmptyValue
+                  ? valuesTrueReplacer
+                  : valuesFalseReplacer
+                : nonEmptyValue
+            return <LabeledValue key={i} label={label} value={nonBooleanValue} hint={hint} {...(restProps as {})} />
+          })
+          .filter(Boolean)
+    return (
+      <LabeledValuesS {...(restProps as {})} ref={ref} $sf={$sf}>
+        {children}
+      </LabeledValuesS>
     )
   }
 )
