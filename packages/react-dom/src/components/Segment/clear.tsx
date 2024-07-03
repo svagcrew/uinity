@@ -44,6 +44,7 @@ const getSegmentFinalCss = ($sf: SegmentStyleFinal) => {
     & > ${HeadingS} {
       display: flex;
       flex-flow: column nowrap;
+      align-items: flex-start;
       ${toCss({
         gap: $sf.gapTitleDesc,
       })}
