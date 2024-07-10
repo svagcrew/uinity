@@ -18,6 +18,7 @@ export type TextfieldMainProps<TAs extends As = TextfieldDefaultAs> = {
   value?: string | number
   onChange?: (e: React.ChangeEvent<HTMLInputElement>) => any
   onBlur?: () => any
+  type?: 'text' | 'password'
   placeholder?: string
   labelInner?: string
   labelPlaceholder?: string
@@ -56,10 +57,10 @@ const TextfieldS = styled.input.attrs(mark('TextfieldS'))<{ $sf: TextfieldStyleF
 
 export const Textfield: TextfieldType = forwardRefIgnoreTypes(
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  ({ $style = {}, placeholder, children, ...restProps }: TextfieldPropsWithoutRef, ref: any) => {
+  ({ $style = {}, placeholder, children, type = 'text', ...restProps }: TextfieldPropsWithoutRef, ref: any) => {
     const $sf: TextfieldStyleFinal = {
       ...$style,
     }
-    return <TextfieldS {...restProps} ref={ref} $sf={$sf} placeholder={placeholder} />
+    return <TextfieldS {...restProps} type={type} ref={ref} $sf={$sf} placeholder={placeholder} />
   }
 )
