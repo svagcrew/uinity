@@ -3,11 +3,7 @@ import { Radiobutton } from './clear.js'
 import type { Meta, StoryObj } from '@storybook/react'
 
 const RadiobuttonDemo = ({ as, ...restProps }: RadiobuttonStyleRoot & RadiobuttonMainProps) => {
-  return (
-    <Radiobutton $style={restProps} as={as}>
-      Radiobutton
-    </Radiobutton>
-  )
+  return <Radiobutton $style={restProps} as={as} label="Radiobutton" />
 }
 
 const meta = {
@@ -18,12 +14,12 @@ const meta = {
   },
   tags: ['autodocs'],
   argTypes: {
-    background: { control: 'color' },
-    childrenBackground: { control: 'color' },
+    // background: { control: 'color' },
+    // childrenBackground: { control: 'color' },
   },
   args: {
-    background: '#f00',
-    childrenBackground: '#0f0',
+    // background: '#f00',
+    // childrenBackground: '#0f0',
   },
 } satisfies Meta<typeof RadiobuttonDemo>
 

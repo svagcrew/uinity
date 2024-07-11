@@ -402,6 +402,7 @@
       "headerBorderColor": "#ccc",
       "footerBorderColor": "#ccc",
       "sidebarBorderColor": "#ccc",
+      "sidebarBackgroundColor": "#000",
       "modalBorderColor": "#ccc"
     },
     "size": {
@@ -898,33 +899,50 @@
     }
   },
   "formItem": {
-    "variant": {
-      "primary": {
-        "color": "brand"
-      },
-      "secondary": {
-        "color": "green"
-      },
-      "trietary": {
-        "color": "red"
-      }
-    },
     "size": {
       "xs": {
-        "width": 16,
-        "height": 16
+        "labelText": {
+          "variant": "body-xs"
+        },
+        "errorText": {
+          "variant": "body-xs"
+        },
+        "hintText": {
+          "variant": "body-xs"
+        }
       },
       "s": {
-        "width": 24,
-        "height": 24
+        "labelText": {
+          "variant": "body-s"
+        },
+        "errorText": {
+          "variant": "body-s"
+        },
+        "hintText": {
+          "variant": "body-s"
+        }
       },
       "m": {
-        "width": 32,
-        "height": 32
+        "labelText": {
+          "variant": "body-m"
+        },
+        "errorText": {
+          "variant": "body-m"
+        },
+        "hintText": {
+          "variant": "body-m"
+        }
       },
       "l": {
-        "width": 40,
-        "height": 40
+        "labelText": {
+          "variant": "body-l"
+        },
+        "errorText": {
+          "variant": "body-l"
+        },
+        "hintText": {
+          "variant": "body-l"
+        }
       }
     }
   },
@@ -1129,22 +1147,26 @@
       "xs": {
         "titleText": {
           "variant": "heading-xs"
-        }
+        },
+        "gapHeadingContent": 6
       },
       "s": {
         "titleText": {
           "variant": "heading-s"
-        }
+        },
+        "gapHeadingContent": 6
       },
       "m": {
         "titleText": {
           "variant": "heading-m"
-        }
+        },
+        "gapHeadingContent": 10
       },
       "l": {
         "titleText": {
           "variant": "heading-l"
-        }
+        },
+        "gapHeadingContent": 16
       }
     }
   },
@@ -1180,33 +1202,50 @@
     }
   },
   "labeledValue": {
-    "variant": {
-      "primary": {
-        "color": "brand"
-      },
-      "secondary": {
-        "color": "green"
-      },
-      "trietary": {
-        "color": "red"
-      }
-    },
     "size": {
       "xs": {
-        "width": 16,
-        "height": 16
+        "labelText": {
+          "variant": "body-xs"
+        },
+        "valueText": {
+          "variant": "body-xs"
+        },
+        "hintText": {
+          "variant": "body-xs"
+        }
       },
       "s": {
-        "width": 24,
-        "height": 24
+        "labelText": {
+          "variant": "body-s"
+        },
+        "valueText": {
+          "variant": "body-s"
+        },
+        "hintText": {
+          "variant": "body-s"
+        }
       },
       "m": {
-        "width": 32,
-        "height": 32
+        "labelText": {
+          "variant": "body-m"
+        },
+        "valueText": {
+          "variant": "body-l"
+        },
+        "hintText": {
+          "variant": "body-xs"
+        }
       },
       "l": {
-        "width": 40,
-        "height": 40
+        "labelText": {
+          "variant": "body-l"
+        },
+        "valueText": {
+          "variant": "body-l"
+        },
+        "hintText": {
+          "variant": "body-l"
+        }
       }
     }
   },

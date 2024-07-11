@@ -1,4 +1,4 @@
-import { createRadiobutton,type RadiobuttonConfiguredMainProps } from './configured.js'
+import { createRadiobutton, type RadiobuttonConfiguredMainProps } from './configured.js'
 import { uinityConfig } from '@/stories/uinity.config.js'
 import { getArgTypeConfigFromObject } from '@/stories/utils.js'
 import type { Meta, StoryObj } from '@storybook/react'
@@ -6,11 +6,7 @@ import type { Meta, StoryObj } from '@storybook/react'
 const { Radiobutton } = createRadiobutton({ uinityConfig })
 
 const RadiobuttonDemo = ({ variant, size, color }: RadiobuttonConfiguredMainProps) => {
-  return (
-    <Radiobutton variant={variant} size={size} color={color}>
-      Radiobutton
-    </Radiobutton>
-  )
+  return <Radiobutton variant={variant} size={size} color={color} label="Radiobutton" />
 }
 
 const meta = {

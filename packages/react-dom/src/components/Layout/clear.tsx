@@ -34,6 +34,7 @@ export type LayoutStyleCore = {
   headerBorderColor?: string | null | undefined
   footerBorderColor?: string | null | undefined
   sidebarBorderColor?: string | null | undefined
+  sidebarBackgroundColor?: string | null | undefined
   modalBorderColor?: string | null | undefined
 
   headerFixed?: boolean
@@ -166,24 +167,51 @@ const getLayoutCoreCss = (sc: LayoutStyleCore) => {
             flexBasis: sc.sidebarWidth,
             width: sc.sidebarWidth,
             marginRight: sc.sidebarMarginEnd,
-            borderRight: borderPropsToCssValue(sc.sidebarBorderWidth, sc.sidebarBorderColor),
           })}
 
           ${SidebarS} {
             ${toCss({
               width: sc.sidebarWidth,
-              paddingTop: sc.sidebarPaddingTop,
-              paddingBottom: sc.sidebarPaddingBottom,
+              borderRight: borderPropsToCssValue(sc.sidebarBorderWidth, sc.sidebarBorderColor),
+              background: sc.sidebarBackgroundColor,
               // containerType: 'inline-size',
             })}
+            &:before {
+              content: '';
+              background: ${sc.sidebarBackgroundColor};
+              ${toCss({
+                display: 'block',
+                width: 99_999,
+                height: '100%',
+                background: sc.sidebarBackgroundColor,
+                // background: '#000',
+                position: 'absolute',
+                top: 0,
+                right: '100%',
+              })}
+            }
             ${!sc.sidebarFixed
               ? ''
-              : toCss({
-                  overflowY: 'auto',
-                  position: 'fixed',
-                  zIndex: 900,
-                  height: `calc(100% - ${maybeNumberToPx(sc.headerFixed ? sc.headerHeight || 0 : 0)})`,
-                })}
+              : css`
+                  ${toCss({
+                    // overflowY: 'auto',
+                    position: 'fixed',
+                    zIndex: 900,
+                    height: `calc(100% - ${maybeNumberToPx(sc.headerFixed ? sc.headerHeight || 0 : 0)})`,
+                  })}
+
+                  ${SidebarContentS} {
+                    overflow-y: auto;
+                  }
+                `}
+
+            ${SidebarContentS} {
+              ${toCss({
+                paddingTop: sc.sidebarPaddingTop,
+                paddingBottom: sc.sidebarPaddingBottom,
+                height: '100%',
+              })}
+            }
           }
         }
 
@@ -269,6 +297,7 @@ const HeaderS = styled.div.attrs(mark('HeaderS'))``
 const HeaderPlaceS = styled.div.attrs(mark('HeaderPlaceS'))``
 const SidebarPlaceS = styled.div.attrs(mark('SidebarPlaceS'))``
 const SidebarS = styled.div.attrs(mark('SidebarS'))``
+const SidebarContentS = styled.div.attrs(mark('SidebarContentS'))``
 const ContentS = styled.div.attrs(mark('ContentS'))``
 const SidebarAndContentS = styled.div.attrs(mark('SidebarAndContentS'))``
 const FooterS = styled.div.attrs(mark('FooterS'))``
@@ -378,7 +407,9 @@ export const Layout: LayoutType = forwardRefIgnoreTypes(
             <LayoutSectionS>
               {sidebarRender && (
                 <SidebarPlaceS>
-                  <SidebarS>{sidebarRender}</SidebarS>
+                  <SidebarS>
+                    <SidebarContentS>{sidebarRender}</SidebarContentS>
+                  </SidebarS>
                 </SidebarPlaceS>
               )}
               <ContentS>{children}</ContentS>

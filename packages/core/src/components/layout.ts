@@ -38,6 +38,7 @@ export const zLayoutConfigAppearenceProps = z.object({
   headerBorderColor: zOptionalString,
   footerBorderColor: zOptionalString,
   sidebarBorderColor: zOptionalString,
+  sidebarBackgroundColor: zOptionalString,
   modalBorderColor: zOptionalString,
 })
 export type LayoutConfigAppearenceProps = z.output<typeof zLayoutConfigAppearenceProps>
@@ -75,6 +76,7 @@ export const defaultLayoutConfigInput: LayoutConfigInput = {
     headerBorderColor: '#ccc',
     footerBorderColor: '#ccc',
     sidebarBorderColor: '#ccc',
+    sidebarBackgroundColor: '#fff',
     modalBorderColor: '#ccc',
   },
   size: {

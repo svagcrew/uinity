@@ -4,13 +4,14 @@ import { forwardRefIgnoreTypes, mark } from '@/utils.js'
 import { toCss } from '@uinity/core/dist/utils/other.js'
 import isArray from 'lodash/isArray.js'
 import isString from 'lodash/isString.js'
+import type { CSSProperties } from 'react'
 import type { RuleSet } from 'styled-components'
 import { css, styled } from 'styled-components'
 import { pick } from 'svag-utils/dist/utils/pick.js'
 
 type BlockStyleCore = {
   /** display: {value}; */
-  d?: string
+  d?: CSSProperties['display']
   /** display: flex; */
   df?: boolean
   /** display: block; */
@@ -19,6 +20,37 @@ type BlockStyleCore = {
   di?: boolean
   /** display: none; */
   dn?: boolean
+
+  /** overflow: {value}; */
+  o?: CSSProperties['overflow']
+  /** overflow: hidden; */
+  oh?: boolean
+  /** overflow: visible; */
+  ov?: boolean
+  /** overflow: scroll; */
+  os?: boolean
+  /** overflow: auto; */
+  oa?: boolean
+  /** overflow-x: {value}; */
+  ox?: CSSProperties['overflowX']
+  /** overflow-x: hidden; */
+  oxh?: boolean
+  /** overflow-x: visible; */
+  oxv?: boolean
+  /** overflow-x: scroll; */
+  oxs?: boolean
+  /** overflow-x: auto; */
+  oxa?: boolean
+  /** overflow-y: {value}; */
+  oy?: CSSProperties['overflowY']
+  /** overflow-y: hidden; */
+  oyh?: boolean
+  /** overflow-y: visible; */
+  oyv?: boolean
+  /** overflow-y: scroll; */
+  oys?: boolean
+  /** overflow-y: auto; */
+  oya?: boolean
 
   /** flex-flow: row nowrap; */
   frnw?: boolean
@@ -61,7 +93,7 @@ type BlockStyleCore = {
   f00?: boolean
 
   /** flex-basis: {value}; */
-  fb?: string | number
+  fb?: CSSProperties['flexBasis']
   /** flex-basis: 100% */
   fb100?: boolean
   /** flex-basis: auto */
@@ -169,6 +201,21 @@ const blockStyleCoreKeys = [
   'db',
   'di',
   'dn',
+  'o',
+  'oh',
+  'ov',
+  'os',
+  'oa',
+  'ox',
+  'oxh',
+  'oxv',
+  'oxs',
+  'oxa',
+  'oy',
+  'oyh',
+  'oyv',
+  'oys',
+  'oya',
   'frnw',
   'frw',
   'fcnw',
@@ -289,6 +336,39 @@ const getBlockFinalCss = ($sf: BlockStyleFinal): RuleSet => {
                     )
                   ? 'flex'
                   : undefined,
+      overflow: $sf.o
+        ? $sf.o
+        : $sf.oh
+          ? 'hidden'
+          : $sf.ov
+            ? 'visible'
+            : $sf.os
+              ? 'scroll'
+              : $sf.oa
+                ? 'auto'
+                : undefined,
+      overflowX: $sf.ox
+        ? $sf.ox
+        : $sf.oxh
+          ? 'hidden'
+          : $sf.oxv
+            ? 'visible'
+            : $sf.oxs
+              ? 'scroll'
+              : $sf.oxa
+                ? 'auto'
+                : undefined,
+      overflowY: $sf.oy
+        ? $sf.oy
+        : $sf.oyh
+          ? 'hidden'
+          : $sf.oyv
+            ? 'visible'
+            : $sf.oys
+              ? 'scroll'
+              : $sf.oya
+                ? 'auto'
+                : undefined,
       flexFlow: $sf.frnw
         ? 'row nowrap'
         : $sf.frw

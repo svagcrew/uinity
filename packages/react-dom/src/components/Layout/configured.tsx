@@ -35,6 +35,7 @@ const makeLayoutStyleCore = ({
     headerBorderColor: getColorByMode(cm, sc.headerBorderColor ?? cfp.headerBorderColor),
     footerBorderColor: getColorByMode(cm, sc.footerBorderColor ?? cfp.footerBorderColor),
     sidebarBorderColor: getColorByMode(cm, sc.sidebarBorderColor ?? cfp.sidebarBorderColor),
+    sidebarBackgroundColor: getColorByMode(cm, sc.sidebarBackgroundColor ?? cfp.sidebarBackgroundColor),
     modalBorderColor: getColorByMode(cm, sc.modalBorderColor ?? cfp.modalBorderColor),
   }
 }

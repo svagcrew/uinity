@@ -121,7 +121,7 @@ const FormItemsS = styled.div.attrs(mark('FormItemsS'))<{ $sf: FormItemsStyleFin
   ${({ $sf }) => css`
     ${toCss({
       display: 'flex',
-      alignItems: 'flex-start',
+      alignItems: 'stretch',
       flexFlow: $sf.direction === 'row' ? 'row nowrap' : 'column nowrap',
       gap: '10px',
     })}
