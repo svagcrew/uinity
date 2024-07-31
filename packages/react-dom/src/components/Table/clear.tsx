@@ -2,6 +2,7 @@
 import type { As, AsPropsWithRef, WithoutRef } from '@/utils.js'
 import { forwardRefIgnoreTypes, mark } from '@/utils.js'
 import { toCss } from '@uinity/core/dist/utils/other.js'
+import InfiniteScroll from 'react-infinite-scroller'
 import { css, styled } from 'styled-components'
 
 type AnyRecord = Record<string, any>
@@ -23,6 +24,9 @@ export type TableMainProps<TAs extends As = TableDefaultAs, TRecord extends AnyR
   href?: (record: TRecord) => string
   onClick?: (record: TRecord) => void
   $style?: TableStyleRoot
+  threshold?: number
+  loadMore?: () => void
+  hasMore?: boolean
 }
 export type TablePropsWithRef<TAs extends As = TableDefaultAs, TRecord extends AnyRecord = AnyRecord> = TableMainProps<
   TAs,
@@ -120,10 +124,38 @@ const TableS = styled.div.attrs(mark('TableS'))<{ $sf: TableStyleFinal }>`
 `
 
 export const Table: TableType = forwardRefIgnoreTypes(
-  ({ $style = {}, children, records, columns, onClick, href, ...restProps }: TablePropsWithoutRef, ref: any) => {
+  (
+    {
+      $style = {},
+      children,
+      records,
+      columns,
+      onClick,
+      href,
+      hasMore,
+      threshold = 250,
+      loadMore,
+      ...restProps
+    }: TablePropsWithoutRef,
+    ref: any
+  ) => {
     const $sf: TableStyleFinal = {
       ...$style,
     }
+    const recordRender =
+      (records &&
+        columns &&
+        records.map((record, i) => (
+          <RowS key={i} as={href ? 'a' : 'div'} href={href?.(record)} onClick={onClick && (() => onClick?.(record))}>
+            {columns.map((column, j) => (
+              <CellS key={j} style={{ width: column.width }}>
+                {column.body(record)}
+              </CellS>
+            ))}
+          </RowS>
+        ))) ||
+      null
+    const totalWidth = columns?.reduce((acc, column) => acc + Number(column.width), 0) || 0
     children =
       !records || !columns ? (
         children
@@ -138,22 +170,25 @@ export const Table: TableType = forwardRefIgnoreTypes(
               ))}
             </RowS>
           </HeaderS>
-          <BodyS>
-            {records.map((record, i) => (
-              <RowS
-                key={i}
-                as={href ? 'a' : 'div'}
-                href={href?.(record)}
-                onClick={onClick && (() => onClick?.(record))}
-              >
-                {columns.map((column, j) => (
-                  <CellS key={j} style={{ width: column.width }}>
-                    {column.body(record)}
-                  </CellS>
-                ))}
-              </RowS>
-            ))}
-          </BodyS>
+          {loadMore ? (
+            <InfiniteScroll
+              threshold={threshold}
+              loadMore={loadMore}
+              className={BodyS.styledComponentId}
+              hasMore={hasMore}
+              loader={
+                hasMore ? (
+                  <RowS key="loader" as="div">
+                    <CellS style={{ width: totalWidth }}>Loading...</CellS>
+                  </RowS>
+                ) : undefined
+              }
+            >
+              {recordRender}
+            </InfiniteScroll>
+          ) : (
+            <BodyS>{recordRender}</BodyS>
+          )}
         </>
       )
     return (

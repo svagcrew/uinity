@@ -220,6 +220,7 @@ const getLayoutCoreCss = (sc: LayoutStyleCore) => {
           flex-flow: column nowrap;
           align-items: flex-start;
           justify-content: stretch;
+          min-width: 0;
           ${toCss({
             flexGrow: 1,
             flexShrink: 1,

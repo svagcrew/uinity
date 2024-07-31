@@ -2,6 +2,7 @@
 import type { As, AsPropsWithRef, WithoutRef } from '@/utils.js'
 import { forwardRefIgnoreTypes, mark } from '@/utils.js'
 import { toCss } from '@uinity/core/dist/utils/other.js'
+import isNil from 'lodash/isNil.js'
 import { css, styled } from 'styled-components'
 
 export type LabeledValueStyleRoot = {
@@ -96,9 +97,9 @@ export const LabeledValue: LabeledValueType = forwardRefIgnoreTypes(
     }
     return (
       <LabeledValueS {...restProps} ref={ref} $sf={$sf}>
-        {label && <LabelS>{label}</LabelS>}
-        {value && <ValueS>{value}</ValueS>}
-        {hint && <HintS>{hint}</HintS>}
+        {!isNil(label) && <LabelS>{label}</LabelS>}
+        {!isNil(value) && <ValueS>{value}</ValueS>}
+        {!isNil(hint) && <HintS>{hint}</HintS>}
       </LabeledValueS>
     )
   }
@@ -124,7 +125,7 @@ type ItemFull = {
 }
 type ItemShort = [React.ReactNode, React.ReactNode, React.ReactNode?]
 type ItemAny = ItemFull | ItemShort
-type ItemAnyNullable = ItemAny | null | false | undefined
+export type LabeledValuesItem = ItemAny | null | false | undefined
 type ValuesEmptyPolicy = 'replace' | 'hide'
 export type LabeledValuesStyleFinal = {
   direction: 'row' | 'column'
@@ -134,7 +135,7 @@ export type LabeledValuesMainProps<TAs extends As = LabeledValuesDefaultAs> = {
   as?: TAs
   direction?: 'row' | 'column'
   children?: React.ReactNode
-  items?: ItemAnyNullable[]
+  items?: LabeledValuesItem[]
   valuesEmptyPolicy?: ValuesEmptyPolicy
   valuesEmptyReplacer?: React.ReactNode
   valuesTrueReplacer?: React.ReactNode
