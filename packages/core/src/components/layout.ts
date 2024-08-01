@@ -84,7 +84,7 @@ export const defaultLayoutConfigInput: LayoutConfigInput = {
       layoutMaxWidth: 1_440,
       contentMaxWidth: 1_440,
       textMaxWidth: 800,
-      sidebarWidth: 240,
+      sidebarWidth: 280,
       sidebarMarginEnd: 32,
       headerBorderWidth: 1,
       footerBorderWidth: 1,

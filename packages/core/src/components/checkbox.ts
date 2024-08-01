@@ -175,7 +175,10 @@ export const normalizeCheckboxColorName = (
   return 'brand'
 }
 
-export const normalizeCheckboxSizeName = (uinityConfig: UinityConfig, size?: CheckboxConfigSizeName | null | undefined) => {
+export const normalizeCheckboxSizeName = (
+  uinityConfig: UinityConfig,
+  size?: CheckboxConfigSizeName | null | undefined
+) => {
   if (size && uinityConfig.checkbox.size[size]) {
     return size
   }

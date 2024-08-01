@@ -6,11 +6,7 @@ import type { Meta, StoryObj } from '@storybook/react'
 const { Checkbox } = createCheckbox({ uinityConfig })
 
 const CheckboxDemo = ({ variant, size, color }: CheckboxConfiguredMainProps) => {
-  return (
-    <Checkbox variant={variant} size={size} color={color}>
-      Checkbox
-    </Checkbox>
-  )
+  return <Checkbox variant={variant} size={size} color={color} label="Checkbox" />
 }
 
 const meta = {

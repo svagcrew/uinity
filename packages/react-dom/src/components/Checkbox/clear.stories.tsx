@@ -3,11 +3,7 @@ import { Checkbox } from './clear.js'
 import type { Meta, StoryObj } from '@storybook/react'
 
 const CheckboxDemo = ({ as, ...restProps }: CheckboxStyleRoot & CheckboxMainProps) => {
-  return (
-    <Checkbox $style={restProps} as={as}>
-      Checkbox
-    </Checkbox>
-  )
+  return <Checkbox $style={restProps} as={as} label="Checkbox" />
 }
 
 const meta = {
@@ -18,12 +14,12 @@ const meta = {
   },
   tags: ['autodocs'],
   argTypes: {
-    background: { control: 'color' },
-    childrenBackground: { control: 'color' },
+    // background: { control: 'color' },
+    // childrenBackground: { control: 'color' },
   },
   args: {
-    background: '#f00',
-    childrenBackground: '#0f0',
+    // background: '#f00',
+    // childrenBackground: '#0f0',
   },
 } satisfies Meta<typeof CheckboxDemo>
 
