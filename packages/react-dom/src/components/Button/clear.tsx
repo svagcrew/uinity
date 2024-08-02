@@ -20,11 +20,14 @@ export type ButtonStyleStates = {
   disabled?: ButtonStyleCore
 }
 export type ButtonStyleRoot = ButtonStyleStates
-export type ButtonStyleFinal = Required<ButtonStyleStates>
+export type ButtonStyleFinal = Required<ButtonStyleStates> & {
+  loading: boolean
+}
 export type ButtonDefaultAs = 'button'
 export type ButtonMainProps<TAs extends As = ButtonDefaultAs> = {
   as?: TAs
   disabled?: boolean
+  loading?: boolean
   type?: 'button' | 'submit' | 'reset'
   iconStart?: JSX.Element | null | false
   $style?: ButtonStyleRoot
@@ -72,6 +75,24 @@ const getButtonFinalCss = ($sf: ButtonStyleFinal) => {
     cursor: pointer;
     ${getButtonCoreCss($sf.rest)}
 
+    ${$sf.loading
+      ? css`
+          color: transparent;
+          &::before {
+            content: 'Loading';
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.5);
+            z-index: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #000;
+          }
+        `
+      : ''}
+
     &:hover {
       ${getButtonCoreCss($sf.hover)}
     }
@@ -99,8 +120,9 @@ const ButtonS = styled.button.attrs(mark('ButtonS'))<{ $sf: ButtonStyleFinal }>`
 `
 
 export const Button: ButtonType = forwardRefIgnoreTypes(
-  ({ iconStart, children, $style = {}, ...restProps }: ButtonPropsWithoutRef, ref: any) => {
+  ({ iconStart, children, disabled, loading, $style = {}, ...restProps }: ButtonPropsWithoutRef, ref: any) => {
     const $sf: ButtonStyleFinal = {
+      loading: !!loading,
       rest: {
         ...$style.rest,
       },
@@ -118,7 +140,7 @@ export const Button: ButtonType = forwardRefIgnoreTypes(
       },
     }
     return (
-      <ButtonS {...(restProps as {})} ref={ref} $sf={$sf}>
+      <ButtonS {...(restProps as {})} disabled={disabled || loading} ref={ref} $sf={$sf}>
         {iconStart && <IconS src={iconStart} />}
         <ContentS>{children}</ContentS>
       </ButtonS>
