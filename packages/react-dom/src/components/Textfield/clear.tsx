@@ -9,6 +9,7 @@ export type TextfieldStyleRoot = {
   height?: number | string | null | undefined
   background?: string | null | undefined
   childrenBackground?: string | null | undefined
+  disabled?: boolean
 }
 export type TextfieldStyleFinal = TextfieldStyleRoot
 export type TextfieldDefaultAs = 'input'
@@ -22,6 +23,7 @@ export type TextfieldMainProps<TAs extends As = TextfieldDefaultAs> = {
   placeholder?: string
   labelInner?: string
   labelPlaceholder?: string
+  disabled?: boolean
   $style?: TextfieldStyleRoot
 }
 export type TextfieldPropsWithRef<TAs extends As = TextfieldDefaultAs> = TextfieldMainProps<TAs> & AsPropsWithRef<TAs>
@@ -38,6 +40,8 @@ const getTextfieldCoreCss = ($sf: TextfieldStyleFinal) => {
       width: $sf.width,
       maxWidth: $sf.maxWidth,
     })}
+
+    ${$sf.disabled && toCss({ opacity: 0.5, pointerEvents: 'none' })}
 
     & ${ChildrenS} {
       ${toCss({})}
@@ -56,11 +60,11 @@ const TextfieldS = styled.input.attrs(mark('TextfieldS'))<{ $sf: TextfieldStyleF
 `
 
 export const Textfield: TextfieldType = forwardRefIgnoreTypes(
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  ({ $style = {}, placeholder, children, type = 'text', ...restProps }: TextfieldPropsWithoutRef, ref: any) => {
+  ({ $style = {}, disabled, placeholder, type = 'text', ...restProps }: TextfieldPropsWithoutRef, ref: any) => {
     const $sf: TextfieldStyleFinal = {
       ...$style,
+      disabled: !!disabled,
     }
-    return <TextfieldS {...restProps} type={type} ref={ref} $sf={$sf} placeholder={placeholder} />
+    return <TextfieldS disabled={disabled} {...restProps} type={type} ref={ref} $sf={$sf} placeholder={placeholder} />
   }
 )

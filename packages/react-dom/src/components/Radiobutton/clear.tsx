@@ -3,13 +3,16 @@ import { forwardRefIgnoreTypes, mark } from '@/utils.js'
 import { toCss } from '@uinity/core/dist/utils/other.js'
 import { css, styled } from 'styled-components'
 
-export type RadiobuttonStyleRoot = {}
+export type RadiobuttonStyleRoot = {
+  disabled?: boolean
+}
 export type RadiobuttonStyleFinal = RadiobuttonStyleRoot
 export type RadiobuttonDefaultAs = 'div'
 export type RadiobuttonMainProps<TAs extends As = RadiobuttonDefaultAs> = {
   as?: TAs
   label?: React.ReactNode
   checked?: boolean
+  disabled?: boolean
   onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void
   $style?: RadiobuttonStyleRoot
 }
@@ -21,7 +24,7 @@ export type RadiobuttonType = <TAs extends As = RadiobuttonDefaultAs>(
 ) => React.ReactNode
 
 // const getRadiobuttonCoreCss = ($sf: RadiobuttonStyleFinal) => {
-const getRadiobuttonCoreCss = () => {
+const getRadiobuttonCoreCss = ($sf: RadiobuttonStyleFinal) => {
   return css`
     display: flex;
     align-items: center;
@@ -33,6 +36,8 @@ const getRadiobuttonCoreCss = () => {
       // height: $sf?.height,
       // background: $sf?.background,
     })}
+
+    ${$sf.disabled && toCss({ opacity: 0.5, pointerEvents: 'none' })}
 
     & ${RadiobuttonInputS} {
       ${toCss({
@@ -51,27 +56,27 @@ const getRadiobuttonCoreCss = () => {
     }
   `
 }
-// const getRadiobuttonFinalCss = ($sf: RadiobuttonStyleFinal) => {
-const getRadiobuttonFinalCss = () => {
+const getRadiobuttonFinalCss = ($sf: RadiobuttonStyleFinal) => {
   return css`
-    ${getRadiobuttonCoreCss()}
+    ${getRadiobuttonCoreCss($sf)}
   `
 }
 
 const RadiobuttonInputS = styled.input.attrs(mark('RadiobuttonInputS'))``
 const RadiobuttonLabelS = styled.div.attrs(mark('RadiobuttonLabelS'))``
 const RadiobuttonS = styled.label.attrs(mark('RadiobuttonS'))<{ $sf: RadiobuttonStyleFinal }>`
-  ${() => getRadiobuttonFinalCss()}
+  ${({ $sf }) => getRadiobuttonFinalCss($sf)}
 `
 
 export const Radiobutton: RadiobuttonType = forwardRefIgnoreTypes(
-  ({ $style = {}, label, checked, onChange, ...restProps }: RadiobuttonPropsWithoutRef, ref: any) => {
+  ({ $style = {}, label, checked, disabled, onChange, ...restProps }: RadiobuttonPropsWithoutRef, ref: any) => {
     const $sf: RadiobuttonStyleFinal = {
       ...$style,
+      disabled: !!disabled,
     }
     return (
       <RadiobuttonS {...restProps} ref={ref} $sf={$sf}>
-        <RadiobuttonInputS checked={checked} type="radio" onChange={onChange} />
+        <RadiobuttonInputS disabled={disabled} checked={checked} type="radio" onChange={onChange} />
         <RadiobuttonLabelS>{label}</RadiobuttonLabelS>
       </RadiobuttonS>
     )
@@ -87,17 +92,21 @@ const RadiobuttonsS = styled.div.attrs(mark('RadiobuttonsS'))<{ $sf: Radiobutton
       gap: '10px',
     })}
 
+    ${$sf.disabled && toCss({ opacity: 0.5, pointerEvents: 'none' })}
+
     & > ${RadiobuttonS} {
     }
   `}
 `
 export type RadiobuttonsStyleFinal = {
   direction: 'row' | 'column'
+  disabled: boolean
 }
 export type RadiobuttonsDefaultAs = 'div'
 export type RadiobuttonsMainProps<TAs extends As = RadiobuttonsDefaultAs> = {
   as?: TAs
   direction?: 'row' | 'column'
+  disabled?: boolean
   children?: React.ReactNode
 }
 export type RadiobuttonsPropsWithRef<TAs extends As = RadiobuttonsDefaultAs> = RadiobuttonsMainProps<TAs> &
@@ -109,9 +118,10 @@ export type RadiobuttonsType = <TAs extends As = RadiobuttonsDefaultAs>(
   props: RadiobuttonsPropsWithRef<TAs>
 ) => React.ReactNode
 export const Radiobuttons: RadiobuttonsType = forwardRefIgnoreTypes(
-  ({ direction, children, ...restProps }: RadiobuttonsPropsWithoutRef, ref: any) => {
+  ({ direction, children, disabled, ...restProps }: RadiobuttonsPropsWithoutRef, ref: any) => {
     const $sf: RadiobuttonsStyleFinal = {
       direction: direction ?? 'column',
+      disabled: !!disabled,
     }
     return (
       <RadiobuttonsS {...(restProps as {})} ref={ref} $sf={$sf}>

@@ -159,6 +159,7 @@ export const LabeledValues: LabeledValuesType = forwardRefIgnoreTypes(
       valuesEmptyReplacer = '—',
       valuesFalseReplacer = '❌',
       valuesTrueReplacer = '✅',
+      items,
       ...restProps
     }: LabeledValuesPropsWithoutRef,
     ref: any
@@ -166,9 +167,9 @@ export const LabeledValues: LabeledValuesType = forwardRefIgnoreTypes(
     const $sf: LabeledValuesStyleFinal = {
       direction,
     }
-    children = !restProps.items
+    children = !items
       ? children || null
-      : restProps.items
+      : items
           .map((item, i) => {
             if (!item) {
               return null

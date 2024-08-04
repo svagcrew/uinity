@@ -3,13 +3,16 @@ import { forwardRefIgnoreTypes, mark } from '@/utils.js'
 import { toCss } from '@uinity/core/dist/utils/other.js'
 import { css, styled } from 'styled-components'
 
-export type CheckboxStyleRoot = {}
+export type CheckboxStyleRoot = {
+  disabled?: boolean
+}
 export type CheckboxStyleFinal = CheckboxStyleRoot
 export type CheckboxDefaultAs = 'div'
 export type CheckboxMainProps<TAs extends As = CheckboxDefaultAs> = {
   as?: TAs
   label?: React.ReactNode
   checked?: boolean
+  disabled?: boolean
   onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void
   $style?: CheckboxStyleRoot
 }
@@ -17,8 +20,7 @@ export type CheckboxPropsWithRef<TAs extends As = CheckboxDefaultAs> = CheckboxM
 export type CheckboxPropsWithoutRef<TAs extends As = CheckboxDefaultAs> = WithoutRef<CheckboxPropsWithRef<TAs>>
 export type CheckboxType = <TAs extends As = CheckboxDefaultAs>(props: CheckboxPropsWithRef<TAs>) => React.ReactNode
 
-// const getCheckboxCoreCss = ($sf: CheckboxStyleFinal) => {
-const getCheckboxCoreCss = () => {
+const getCheckboxCoreCss = ($sf: CheckboxStyleFinal) => {
   return css`
     display: flex;
     align-items: center;
@@ -30,6 +32,8 @@ const getCheckboxCoreCss = () => {
       // height: $sf?.height,
       // background: $sf?.background,
     })}
+
+    ${$sf.disabled && toCss({ opacity: 0.5, pointerEvents: 'none' })}
 
     & ${CheckboxInputS} {
       ${toCss({
@@ -48,27 +52,27 @@ const getCheckboxCoreCss = () => {
     }
   `
 }
-// const getCheckboxFinalCss = ($sf: CheckboxStyleFinal) => {
-const getCheckboxFinalCss = () => {
+const getCheckboxFinalCss = ($sf: CheckboxStyleFinal) => {
   return css`
-    ${getCheckboxCoreCss()}
+    ${getCheckboxCoreCss($sf)}
   `
 }
 
 const CheckboxInputS = styled.input.attrs(mark('CheckboxInputS'))``
 const CheckboxLabelS = styled.div.attrs(mark('CheckboxLabelS'))``
 const CheckboxS = styled.label.attrs(mark('CheckboxS'))<{ $sf: CheckboxStyleFinal }>`
-  ${() => getCheckboxFinalCss()}
+  ${({ $sf }) => getCheckboxFinalCss($sf)}
 `
 
 export const Checkbox: CheckboxType = forwardRefIgnoreTypes(
-  ({ $style = {}, label, checked, onChange, ...restProps }: CheckboxPropsWithoutRef, ref: any) => {
+  ({ $style = {}, disabled, label, checked, onChange, ...restProps }: CheckboxPropsWithoutRef, ref: any) => {
     const $sf: CheckboxStyleFinal = {
       ...$style,
+      disabled: !!disabled,
     }
     return (
       <CheckboxS {...restProps} ref={ref} $sf={$sf}>
-        <CheckboxInputS checked={checked} type="checkbox" onChange={onChange} />
+        <CheckboxInputS checked={checked} type="checkbox" disabled={disabled} onChange={onChange} />
         <CheckboxLabelS>{label}</CheckboxLabelS>
       </CheckboxS>
     )
@@ -90,11 +94,13 @@ const CheckboxesS = styled.div.attrs(mark('CheckboxesS'))<{ $sf: CheckboxesStyle
 `
 export type CheckboxesStyleFinal = {
   direction: 'row' | 'column'
+  disabled: boolean
 }
 export type CheckboxesDefaultAs = 'div'
 export type CheckboxesMainProps<TAs extends As = CheckboxesDefaultAs> = {
   as?: TAs
   direction?: 'row' | 'column'
+  disabled?: boolean
   children?: React.ReactNode
 }
 export type CheckboxesPropsWithRef<TAs extends As = CheckboxesDefaultAs> = CheckboxesMainProps<TAs> &
@@ -104,9 +110,10 @@ export type CheckboxesType = <TAs extends As = CheckboxesDefaultAs>(
   props: CheckboxesPropsWithRef<TAs>
 ) => React.ReactNode
 export const Checkboxes: CheckboxesType = forwardRefIgnoreTypes(
-  ({ direction, children, ...restProps }: CheckboxesPropsWithoutRef, ref: any) => {
+  ({ direction, disabled, children, ...restProps }: CheckboxesPropsWithoutRef, ref: any) => {
     const $sf: CheckboxesStyleFinal = {
       direction: direction ?? 'column',
+      disabled: !!disabled,
     }
     return (
       <CheckboxesS {...(restProps as {})} ref={ref} $sf={$sf}>
