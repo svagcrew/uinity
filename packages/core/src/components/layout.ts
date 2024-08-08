@@ -81,7 +81,7 @@ export const defaultLayoutConfigInput: LayoutConfigInput = {
   },
   size: {
     desktop: {
-      layoutMaxWidth: 1_440,
+      layoutMaxWidth: Infinity,
       contentMaxWidth: 1_440,
       textMaxWidth: 800,
       sidebarWidth: 280,
