@@ -1,5 +1,5 @@
 import type { ButtonDefaultAs, ButtonStyleCore, ButtonStyleRoot } from './clear.js'
-import { Button as ButtonClear } from './clear.js'
+import { Button as ButtonClear, Buttons } from './clear.js'
 import type { ButtonMainProps } from '@/components/Button/clear.js'
 import type { ConfiguredIconSrc, IconConfigured } from '@/components/Icon/configured.js'
 import { useColorMode } from '@/lib/colorMode.js'
@@ -90,5 +90,6 @@ export const createButton = <TIconName extends string>({
   )
   return {
     Button,
+    Buttons,
   }
 }

@@ -73,6 +73,11 @@ const getButtonCoreCss = (sc: ButtonStyleCore) => {
 const getButtonFinalCss = ($sf: ButtonStyleFinal) => {
   return css`
     cursor: pointer;
+    position: relative;
+    border-radius: 4px;
+    user-select: none;
+    font-weight: bold;
+    font-size: 16px;
     ${getButtonCoreCss($sf.rest)}
 
     ${$sf.loading
@@ -144,6 +149,49 @@ export const Button: ButtonType = forwardRefIgnoreTypes(
         {iconStart && <IconS src={iconStart} />}
         <ContentS>{children}</ContentS>
       </ButtonS>
+    )
+  }
+)
+
+const ButtonsS = styled.div.attrs(mark('ButtonsS'))<{ $sf: ButtonsStyleFinal }>`
+  ${({ $sf }) => css`
+    ${toCss({
+      display: 'flex',
+      alignItems: 'flex-start',
+      flexFlow: $sf.direction === 'row' ? 'row nowrap' : 'column nowrap',
+      gap: '10px',
+    })}
+
+    ${$sf.disabled && toCss({ opacity: 0.5, pointerEvents: 'none' })}
+
+    & > ${ButtonS} {
+    }
+  `}
+`
+export type ButtonsStyleFinal = {
+  direction: 'row' | 'column'
+  disabled: boolean
+}
+export type ButtonsDefaultAs = 'div'
+export type ButtonsMainProps<TAs extends As = ButtonsDefaultAs> = {
+  as?: TAs
+  direction?: 'row' | 'column'
+  disabled?: boolean
+  children?: React.ReactNode
+}
+export type ButtonsPropsWithRef<TAs extends As = ButtonsDefaultAs> = ButtonsMainProps<TAs> & AsPropsWithRef<TAs>
+export type ButtonsPropsWithoutRef<TAs extends As = ButtonsDefaultAs> = WithoutRef<ButtonsPropsWithRef<TAs>>
+export type ButtonsType = <TAs extends As = ButtonsDefaultAs>(props: ButtonsPropsWithRef<TAs>) => React.ReactNode
+export const Buttons: ButtonsType = forwardRefIgnoreTypes(
+  ({ direction, children, disabled, ...restProps }: ButtonsPropsWithoutRef, ref: any) => {
+    const $sf: ButtonsStyleFinal = {
+      direction: direction ?? 'row',
+      disabled: !!disabled,
+    }
+    return (
+      <ButtonsS {...(restProps as {})} ref={ref} $sf={$sf}>
+        {children}
+      </ButtonsS>
     )
   }
 )

@@ -35,6 +35,7 @@ export const createTextarea = ({ uinityConfig }: { uinityConfig: UinityConfig })
         background: getColorByMode(cm, $style.background ?? cfp.background),
         childrenBackground: getColorByMode(cm, $style.childrenBackground ?? cfp.childrenBackground),
       }
+
       return <TextareaClear {...(restProps as {})} $style={$styleConfigured} ref={ref} />
     }
   )

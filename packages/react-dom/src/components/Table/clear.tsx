@@ -21,7 +21,7 @@ export type TableMainProps<TAs extends As = TableDefaultAs, TRecord extends AnyR
   children?: React.ReactNode
   records?: TRecord[]
   columns?: Array<ColumnDefinition<TRecord>>
-  href?: (record: TRecord) => string
+  href?: (record: TRecord) => string | undefined | null | false
   onClick?: (record: TRecord) => void
   $style?: TableStyleRoot
   threshold?: number
@@ -146,7 +146,12 @@ export const Table: TableType = forwardRefIgnoreTypes(
       (records &&
         columns &&
         records.map((record, i) => (
-          <RowS key={i} as={href ? 'a' : 'div'} href={href?.(record)} onClick={onClick && (() => onClick?.(record))}>
+          <RowS
+            key={i}
+            as={href ? 'a' : 'div'}
+            href={href?.(record) || undefined}
+            onClick={onClick && (() => onClick?.(record))}
+          >
             {columns.map((column, j) => (
               <CellS key={j} style={{ width: column.width }}>
                 {column.body(record)}

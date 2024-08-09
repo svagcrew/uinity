@@ -18,6 +18,7 @@ export type TextareaConfigColorName = z.output<typeof zTextareaConfigColorName>
 
 export const zTextareaConfigSizeProps = z.object({
   width: zOptionalNumberOrString,
+  maxWidth: zOptionalNumberOrString,
   height: zOptionalNumberOrString,
 })
 export type TextareaConfigSizeProps = z.output<typeof zTextareaConfigSizeProps>
@@ -94,20 +95,20 @@ export const defaultTextareaConfigInput: TextareaConfigInput = {
   },
   size: {
     xs: {
-      width: 16,
       height: 16,
+      maxWidth: 800,
     },
     s: {
-      width: 24,
       height: 24,
+      maxWidth: 800,
     },
     m: {
-      width: 32,
       height: 32,
+      maxWidth: 800,
     },
     l: {
-      width: 40,
       height: 40,
+      maxWidth: 800,
     },
   },
 }
@@ -175,7 +176,10 @@ export const normalizeTextareaColorName = (
   return 'brand'
 }
 
-export const normalizeTextareaSizeName = (uinityConfig: UinityConfig, size?: TextareaConfigSizeName | null | undefined) => {
+export const normalizeTextareaSizeName = (
+  uinityConfig: UinityConfig,
+  size?: TextareaConfigSizeName | null | undefined
+) => {
   if (size && uinityConfig.textarea.size[size]) {
     return size
   }
