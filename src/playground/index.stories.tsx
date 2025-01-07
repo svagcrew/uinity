@@ -1,7 +1,11 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-/* eslint-disable no-console */
+ 
+import { Button } from '@/components/Button/react.clear.js'
+import { Buttons } from '@/components/Buttons/react.clear.js'
 import { Icon } from '@/components/Icon/react.clear.js'
+import { createIcon } from '@/components/Icon/react.configured.js'
 import SvgIcon from '@/stories/icon1.svg?react'
+import { iconsSources } from '@/stories/uinity.config.js'
 import type { Meta, StoryObj } from '@storybook/react'
 import { forwardRef, useEffect, useRef } from 'react'
 
@@ -12,23 +16,79 @@ const SimpleIcon = forwardRef<SVGSVGElement>((props, ref) => (
 ))
 
 const Playground = () => {
-  const ref = useRef(undefined)
+  const ref = useRef(null)
   useEffect(() => {
-    console.log(ref.current)
+    console.log('REF', ref.current)
   }, [ref])
+  const { Icon: IconConfigured } = createIcon({
+    uinityConfig: {
+      icon: {
+        general: {
+          size: 48,
+          color: '#00ff00',
+        },
+        settings: {
+          xcolor: {
+            red: {
+              color: '#ff0000',
+            },
+            blue: {
+              color: '#0000ff',
+            },
+          },
+          xsize: {
+            small: {
+              size: 24,
+            },
+            big: {
+              size: 96,
+            },
+          },
+        },
+        variants: {
+          redBig: {
+            settings: {
+              xcolor: 'red',
+              xsize: 'big',
+            },
+          },
+          blueSmall: {
+            settings: {
+              xcolor: 'blue',
+              xsize: 'small',
+            },
+          },
+        },
+      },
+    },
+    iconsSources,
+  })
   return (
     <>
+      <IconConfigured name="icon1" variant="redBig" />
+      <Buttons direction="column" ref={ref}>
+        {/* <button ref={}>Button0</button> */}
+        <Button $style={{ rest: { background: 'red' } }} as="button">
+          Button1
+        </Button>
+        <Button $style={{ rest: { background: 'blue' } }}>Button2</Button>
+      </Buttons>
+      <Buttons direction="row">
+        <Button $style={{ rest: { background: 'red' } }}>Button1</Button>
+        <Button $style={{ rest: { background: 'blue' } }}>Button2</Button>
+      </Buttons>
       <Icon
         $style={{
           color: '#0000ff',
           size: 100,
         }}
+        ref={ref}
         src={SvgIcon}
         // src={<SvgIcon />}
         // src={SimpleIcon}
         // src={<SimpleIcon />}
         // src={'https://www.svgrepo.com/show/19461/url-link.svg'}
-        ref={ref}
+        // ref={ref}
       />
       {/* <Icon
         $style={{

@@ -1,5 +1,6 @@
+import type { IconStyleRoot } from '@/components/Icon/config.js'
 import { Icon } from './react.clear.js'
-import type { IconMainProps, IconStyleRoot } from '@/components/Icon/react.clear.js'
+import type { IconMainProps } from '@/components/Icon/react.clear.js'
 import SvgIcon from '@/stories/icon1.svg?react'
 import type { Meta, StoryObj } from '@storybook/react'
 

@@ -21,7 +21,7 @@ export default [
   {
     ...general,
     rules: {
-      'no-console': 'error',
+      'no-console': 'off',
       '@typescript-eslint/consistent-type-definitions': ['error', 'type'],
       '@typescript-eslint/explicit-function-return-type': 'off',
       '@typescript-eslint/strict-boolean-expressions': 'off',
@@ -46,6 +46,7 @@ export default [
       complexity: 'off',
       'eslint-comments/require-description': 'off',
       '@typescript-eslint/max-params': 'off',
+      '@typescript-eslint/no-duplicate-type-constituents': 'off',
     },
   },
 ]

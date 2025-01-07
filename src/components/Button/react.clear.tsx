@@ -1,7 +1,9 @@
 import { Icon, type IconSrc } from '@/components/Icon/react.clear.js'
-import { forwardRefIgnoreTypes, mark, toCss, type As, type AsPropsWithRef, type WithoutRef } from '@/lib/other.js'
+import { mark, syncRefs, toCss, type As, type AsPropsWithRef, type WithoutRef } from '@/lib/other.js'
+import { forwardRef } from 'react'
 import { css, styled } from 'styled-components'
 
+// Type for each state in $style prop
 export type ButtonStyleCore = {
   gapHorizontalAccessoryText?: number | string | null
   background?: string
@@ -10,6 +12,8 @@ export type ButtonStyleCore = {
   iconSize?: number | string | null
   minHeight?: number | string | null
 }
+
+// Type for part of $style prop based on states
 export type ButtonStyleStates = {
   rest?: ButtonStyleCore
   hover?: ButtonStyleCore
@@ -17,10 +21,16 @@ export type ButtonStyleStates = {
   focus?: ButtonStyleCore
   disabled?: ButtonStyleCore
 }
+
+// Type for $style prop
 export type ButtonStyleRoot = ButtonStyleStates
+
+// Props for real style generation
 export type ButtonStyleFinal = Required<ButtonStyleStates> & {
   loading: boolean
 }
+
+// Component props
 export type ButtonDefaultAs = 'button'
 export type ButtonMainProps<TAs extends As = ButtonDefaultAs> = {
   as?: TAs
@@ -31,10 +41,13 @@ export type ButtonMainProps<TAs extends As = ButtonDefaultAs> = {
   $style?: ButtonStyleRoot
   children?: React.ReactNode
 }
+
+// Rest types
 export type ButtonPropsWithRef<TAs extends As = ButtonDefaultAs> = ButtonMainProps<TAs> & AsPropsWithRef<TAs>
 export type ButtonPropsWithoutRef<TAs extends As = ButtonDefaultAs> = WithoutRef<ButtonPropsWithRef<TAs>>
 export type ButtonType = <TAs extends As = ButtonDefaultAs>(props: ButtonPropsWithRef<TAs>) => React.ReactNode
 
+// Css for one of states
 const getButtonCoreCss = (sc: ButtonStyleCore) => {
   return css`
     ${toCss({
@@ -68,6 +81,8 @@ const getButtonCoreCss = (sc: ButtonStyleCore) => {
     }
   `
 }
+
+// Final css
 const getButtonFinalCss = ($sf: ButtonStyleFinal) => {
   return css`
     cursor: pointer;
@@ -116,14 +131,31 @@ const getButtonFinalCss = ($sf: ButtonStyleFinal) => {
   `
 }
 
+// TODO: add global classes to each styled component and remove mark
+// TODO: make nice import per each component
+// TODO: add stories for each component
+// TODO: add text component
+// TODO: create real style props and css for each component
+// TODO: add configured compnents
+// TODO: add colors and texts configs
+// TODO: add textinput
+// TODO: add textareac components
+// TODO: ws, wsr, cs, csr everywhere
+
+// TODO: create docs static website
+// TODO: generate docs website by components
+// TODO: create zod schema and type for common uinity config
+
+// Styled components
 const IconS = styled(Icon)``
 const ContentS = styled.span``
-const ButtonS = styled.button.attrs(mark('ButtonS'))<{ $sf: ButtonStyleFinal }>`
+export const ButtonS = styled.button.attrs(mark('ButtonS'))<{ $sf: ButtonStyleFinal }>`
   ${({ $sf }) => getButtonFinalCss($sf)}
 `
 
-export const Button: ButtonType = forwardRefIgnoreTypes(
-  ({ iconStart, children, disabled, loading, $style = {}, ...restProps }: ButtonPropsWithoutRef, ref: any) => {
+// Component
+export const Button: ButtonType = forwardRef<any, ButtonPropsWithoutRef<any>>(
+  ({ iconStart, children, disabled, loading, $style = {}, ...restProps }, ref) => {
     const $sf: ButtonStyleFinal = {
       loading: !!loading,
       rest: {
@@ -143,53 +175,10 @@ export const Button: ButtonType = forwardRefIgnoreTypes(
       },
     }
     return (
-      <ButtonS {...(restProps as {})} disabled={disabled || loading} ref={ref} $sf={$sf}>
+      <ButtonS {...restProps} disabled={disabled || loading} ref={syncRefs(ref)} $sf={$sf}>
         {iconStart && <IconS src={iconStart} />}
         <ContentS>{children}</ContentS>
       </ButtonS>
-    )
-  }
-)
-
-const ButtonsS = styled.div.attrs(mark('ButtonsS'))<{ $sf: ButtonsStyleFinal }>`
-  ${({ $sf }) => css`
-    ${toCss({
-      display: 'flex',
-      alignItems: 'flex-start',
-      flexFlow: $sf.direction === 'row' ? 'row nowrap' : 'column nowrap',
-      gap: '10px',
-    })}
-
-    ${$sf.disabled && toCss({ opacity: 0.5, pointerEvents: 'none' })}
-
-    & > ${ButtonS} {
-    }
-  `}
-`
-export type ButtonsStyleFinal = {
-  direction: 'row' | 'column'
-  disabled: boolean
-}
-export type ButtonsDefaultAs = 'div'
-export type ButtonsMainProps<TAs extends As = ButtonsDefaultAs> = {
-  as?: TAs
-  direction?: 'row' | 'column'
-  disabled?: boolean
-  children?: React.ReactNode
-}
-export type ButtonsPropsWithRef<TAs extends As = ButtonsDefaultAs> = ButtonsMainProps<TAs> & AsPropsWithRef<TAs>
-export type ButtonsPropsWithoutRef<TAs extends As = ButtonsDefaultAs> = WithoutRef<ButtonsPropsWithRef<TAs>>
-export type ButtonsType = <TAs extends As = ButtonsDefaultAs>(props: ButtonsPropsWithRef<TAs>) => React.ReactNode
-export const Buttons: ButtonsType = forwardRefIgnoreTypes(
-  ({ direction, children, disabled, ...restProps }: ButtonsPropsWithoutRef, ref: any) => {
-    const $sf: ButtonsStyleFinal = {
-      direction: direction ?? 'row',
-      disabled: !!disabled,
-    }
-    return (
-      <ButtonsS {...(restProps as {})} ref={ref} $sf={$sf}>
-        {children}
-      </ButtonsS>
     )
   }
 )

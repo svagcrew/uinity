@@ -1,5 +1,4 @@
-/* eslint-disable @typescript-eslint/no-unsafe-type-assertion */
-
+import type { IconStyleRoot } from '@/components/Icon/config.js'
 import { type AsPropsWithRef, getGlobalClassName, syncRefs, toCss, type WithoutRef } from '@/lib/other.js'
 import cn from 'classnames'
 import type { JSX } from 'react'
@@ -16,12 +15,6 @@ export type IconSrc =
   | null
   | false
   | undefined
-
-// Type for $style prop
-export type IconStyleRoot = {
-  color?: string | null
-  size?: number | string | null
-}
 
 // Props for real style generation
 export type IconStyleFinal = IconStyleRoot
@@ -83,7 +76,13 @@ export const Icon: IconType = forwardRef<any, IconPropsWithoutRef>(
         </>
       )
     } else if (React.isValidElement(src)) {
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-type-assertion
       const element = src as React.ReactElement<Record<string, any>>
+      const isForwardRef =
+        typeof element.type === 'object' &&
+        '$$typeof' in element.type &&
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-type-assertion
+        (element.type as any).$$typeof === Symbol.for('react.forward_ref')
       return (
         <>
           <IconGlobalS $sf={$sf} />
@@ -91,19 +90,22 @@ export const Icon: IconType = forwardRef<any, IconPropsWithoutRef>(
             ...element.props,
             ...restProps,
             className: cn(className, gcn, element.props.className),
-            ref: syncRefs(ref),
+            ...(isForwardRef ? { ref: syncRefs(ref) } : {}),
             width: $sf.size,
             height: $sf.size,
           })}
         </>
       )
     } else if (typeof src === 'function' || (typeof src === 'object' && src !== null)) {
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-type-assertion
       const component = src as React.ComponentType<{
         className?: string
         width?: number | string
         height?: number | string
         ref?: any
       }>
+      const isForwardRef =
+        typeof src === 'object' && '$$typeof' in src && src.$$typeof === Symbol.for('react.forward_ref')
       return (
         <>
           <IconGlobalS $sf={$sf} />
@@ -116,7 +118,7 @@ export const Icon: IconType = forwardRef<any, IconPropsWithoutRef>(
                 }
               : {}),
             className: cn(className, gcn),
-            ref: syncRefs(ref),
+            ...(isForwardRef ? { ref: syncRefs(ref) } : {}),
           })}
         </>
       )
