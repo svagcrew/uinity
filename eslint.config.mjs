@@ -41,6 +41,11 @@ export default [
       '@typescript-eslint/no-empty-function': 'off',
       '@typescript-eslint/no-empty-object-type': 'off',
       '@typescript-eslint/triple-slash-reference': 'off',
+      'arrow-body-style': 'off',
+      '@typescript-eslint/no-inferrable-types': 'off',
+      complexity: 'off',
+      'eslint-comments/require-description': 'off',
+      '@typescript-eslint/max-params': 'off',
     },
   },
 ]
