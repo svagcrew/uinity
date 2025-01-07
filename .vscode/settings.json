@@ -1,10 +1,1 @@
-{
-  "eslint.workingDirectories": [
-    "packages/core",
-    "packages/react-dom",
-    "packages/cli",
-    "packages/scripts"
-  ],
-  "eslint.experimental.useFlatConfig": true,
-  "typescript.preferences.importModuleSpecifier": "non-relative"
-}
+{}
