@@ -1,10 +1,9 @@
 import {
-  getIconStyleRootClearByConfigured,
-  getIconStyleRootConfigured,
+  getIconStyleRootClear,
   type IconConfiguredCommonProps,
   type IconUinityConfig,
 } from '@/components/Icon/config.js'
-import type { AsPropsWithRef, WithoutRef } from '@/lib/other.js'
+import { extractSettingsFromProps, type AsPropsWithRef, type WithoutRef } from '@/lib/other.js'
 import { forwardRef } from 'react'
 import type { IconClearMainProps, IconClearSrc } from './react.clear.js'
 import { Icon as IconClear } from './react.clear.js'
@@ -45,21 +44,27 @@ export const createIcon = <TIconUinityConfig extends IconUinityConfig, TIconName
 }) => {
   const Icon: IconConfigured<TIconUinityConfig, TIconName> = forwardRef<any, any>(
     (
-      { variant, $style, name, src, ...restProps }: IconConfiguredPropsWithoutRef<IconUinityConfig, string>,
+      {
+        variant: variantName,
+        $style: styleRootConfiguredOverrides,
+        name,
+        src,
+        ...restProps
+      }: IconConfiguredPropsWithoutRef<IconUinityConfig, string>,
       ref: any
     ) => {
-      const styleRootConfigured = getIconStyleRootConfigured({
-        uinityConfig,
-        variantName: variant,
-        settings: restProps,
-        $style,
+      const { restPropsWithoutSettings, settings } = extractSettingsFromProps({
+        config: uinityConfig.icon,
+        restProps,
       })
-      const styleRootClear = getIconStyleRootClearByConfigured({
+      const styleRootClear = getIconStyleRootClear({
         uinityConfig,
-        styleRootConfigured,
+        variantName,
+        settings,
+        styleRootConfiguredOverrides,
       })
       const srcNormalized = iconsSources && name && name in iconsSources ? (iconsSources as any)[name] : src
-      return <IconClear {...restProps} src={srcNormalized} $style={styleRootClear} ref={ref} />
+      return <IconClear {...restPropsWithoutSettings} src={srcNormalized} $style={styleRootClear} ref={ref} />
     }
   )
   return {

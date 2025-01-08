@@ -1,8 +1,4 @@
-import {
-  getIconStyleRootClearByConfigured,
-  getIconStyleRootConfigured,
-  type IconConfig,
-} from '@/components/Icon/config.js'
+import { getIconStyleRootClear, type IconConfig } from '@/components/Icon/config.js'
 import {
   type ColorModeName,
   getColorByMode,
@@ -54,19 +50,14 @@ export const getButtonStyleCoreClearByConfigured = ({
   if (!styleCoreConfigured) {
     return {}
   }
-  const iconStyleRootConfigured = getIconStyleRootConfigured({
+  const iconStyleRootClear = getIconStyleRootClear({
     uinityConfig,
-    $style: {
+    styleRootConfiguredOverrides: {
       color: getColorByMode(colorMode, styleCoreConfigured.iconColor),
       size: styleCoreConfigured.iconSize,
     },
     settings: styleCoreConfigured.iconSettings,
     variantName: styleCoreConfigured.iconVariant,
-  })
-  const iconStyleRootClear = getIconStyleRootClearByConfigured({
-    uinityConfig,
-    styleRootConfigured: iconStyleRootConfigured,
-    colorMode,
   })
   return {
     ...omit(styleCoreConfigured, [
@@ -105,7 +96,7 @@ export type ButtonStyleRootConfigured = z.output<typeof zButtonStyleRootConfigur
 export type ButtonStyleRootClearNormalized = ButtonStyleStatesClear
 export type ButtonStyleRootClearInput = Partial<ButtonStyleRootClearNormalized>
 export const zButtonConfig = getZAnyConfig({
-  zStyleRoot: zButtonStyleRootConfigured,
+  zStyleRootConfigured: zButtonStyleRootConfigured,
 })
 
 export type ButtonConfig = AnyConfig<ButtonStyleRootConfigured>

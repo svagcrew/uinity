@@ -345,12 +345,12 @@ export const getGetAnyStyleRoot = <
     uinityConfig,
     variantName,
     settings,
-    $style,
+    styleRootConfiguredOverrides,
   }: {
     uinityConfig: TPartialUinityConfig
     variantName: string | undefined | null
     settings: Record<string, any> | undefined | null
-    $style: TStyleRootConfigured | undefined | null
+    styleRootConfiguredOverrides: TStyleRootConfigured | undefined | null
   }): TStyleRootConfigured => {
     const c = uinityConfig[componentName]
     const result: TStyleRootConfigured = {} as never
@@ -396,23 +396,29 @@ export const getGetAnyStyleRoot = <
       const settingStyleRoot = c.settings[settingName][settingValue]
       assignStyleRootConfigured(result, settingStyleRoot)
     }
-    assignStyleRootConfigured(result, $style)
+    // TODO:ASAP simplify
+    assignStyleRootConfigured(result, styleRootConfiguredOverrides)
     return result
   }
   const getStyleRootClear = ({
     uinityConfig,
     variantName,
     settings,
-    $style,
+    styleRootConfiguredOverrides,
     colorMode,
   }: {
     uinityConfig: TPartialUinityConfig
     variantName: string | undefined | null
     settings: Record<string, any> | undefined | null
-    $style: TStyleRootConfigured | undefined | null
+    styleRootConfiguredOverrides: TStyleRootConfigured | undefined | null
     colorMode?: ColorModeName
   }): TStyleRootClearNormalized => {
-    const styleRootConfigured = getStyleRootConfigured({ uinityConfig, variantName, settings, $style })
+    const styleRootConfigured = getStyleRootConfigured({
+      uinityConfig,
+      variantName,
+      settings,
+      styleRootConfiguredOverrides,
+    })
     return getStyleRootClearByConfigured({ uinityConfig, styleRootConfigured, colorMode })
   }
   return {
@@ -423,19 +429,19 @@ export const getGetAnyStyleRoot = <
 }
 
 export const getZAnyConfig = <TZodSchema extends z.ZodObject<any, any, any>>({
-  zStyleRoot,
+  zStyleRootConfigured,
 }: {
-  zStyleRoot: TZodSchema
+  zStyleRootConfigured: TZodSchema
 }) => {
   return z.object({
-    general: zStyleRoot.optional().nullable(),
-    settings: z.record(z.record(zStyleRoot)).optional().nullable(),
+    general: zStyleRootConfigured.optional().nullable(),
+    settings: z.record(z.record(zStyleRootConfigured)).optional().nullable(),
     variants: z
       .record(
         z.object({
           // seme keys as settings above
           settings: z.record(z.string()).optional().nullable(),
-          overrides: z.record(zStyleRoot).optional().nullable(),
+          overrides: z.record(zStyleRootConfigured).optional().nullable(),
         })
       )
       .optional()
@@ -470,4 +476,26 @@ export const getZAnyConfig = <TZodSchema extends z.ZodObject<any, any, any>>({
   //     }
   //   }
   // })
+}
+
+export const extractSettingsFromProps = <TConfig extends AnyConfig<any, any>, TProps extends {}>({
+  config,
+  restProps,
+}: {
+  config: TConfig
+  restProps: TProps
+}): {
+  settings: Record<string, string>
+  restPropsWithoutSettings: Omit<TProps, keyof TConfig['settings']>
+} => {
+  const settings: Record<string, string> = {}
+  const restPropsWithoutSettings = { ...restProps }
+  for (const settingName of Object.keys(config.settings ?? {})) {
+    if (settingName in restProps) {
+      settings[settingName] = (restProps as any)[settingName] as string
+      // eslint-disable-next-line @typescript-eslint/no-dynamic-delete
+      delete (restPropsWithoutSettings as any)[settingName]
+    }
+  }
+  return { settings, restPropsWithoutSettings }
 }

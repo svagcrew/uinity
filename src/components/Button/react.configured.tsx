@@ -1,11 +1,10 @@
 import {
-  getButtonStyleRootClearByConfigured,
-  getButtonStyleRootConfigured,
+  getButtonStyleRootClear,
   type ButtonConfiguredCommonProps,
   type ButtonUinityConfig,
 } from '@/components/Button/config.js'
 import type { IconConfigured, IconConfiguredSpecialProps } from '@/components/Icon/react.configured.js'
-import { omit, type AsPropsWithRef, type WithoutRef } from '@/lib/other.js'
+import { extractSettingsFromProps, type AsPropsWithRef, type WithoutRef } from '@/lib/other.js'
 import { forwardRef } from 'react'
 import type { ButtonClearMainProps } from './react.clear.js'
 import { Button as ButtonClear } from './react.clear.js'
@@ -45,25 +44,24 @@ export const createButton = <TButtonUinityConfig extends ButtonUinityConfig, TIc
   const Button: ButtonConfigured<TButtonUinityConfig, TIconName> = forwardRef<any, any>(
     (
       {
-        variant,
-        $style,
+        variant: variantName,
+        $style: styleRootConfiguredOverrides,
         iconStart,
         iconStartSrc,
         ...restProps
       }: ButtonConfiguredPropsWithoutRef<ButtonUinityConfig, string>,
       ref: any
     ) => {
-      const styleRootConfigured = getButtonStyleRootConfigured({
-        uinityConfig,
-        variantName: variant,
-        settings: restProps,
-        $style,
+      const { restPropsWithoutSettings, settings } = extractSettingsFromProps({
+        config: uinityConfig.button,
+        restProps,
       })
-      const styleRootClear = getButtonStyleRootClearByConfigured({
+      const styleRootClear = getButtonStyleRootClear({
         uinityConfig,
-        styleRootConfigured,
+        variantName,
+        settings,
+        styleRootConfiguredOverrides,
       })
-      const restPropsWithoutSettings = omit(restProps, Object.keys(uinityConfig.button.settings || ({} as any)) as any)
       return (
         <ButtonClear
           {...restPropsWithoutSettings}

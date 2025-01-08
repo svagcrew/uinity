@@ -116,7 +116,6 @@ const getButtonFinalCss = ($sf: ButtonClearStyleFinal) => {
 }
 
 // TODO: reuse Icon css parts
-// TODO: generic UinityConfig ut not ComponentConfig
 // TODO: Вынести основные типы функций мерджа
 // TODO: Сеттинги варианта пусть просто парсятся в сеттинги, а оверрайд пусть просто оверрайдится в долларстайл
 // TODO: add global classes to each styled component and remove mark

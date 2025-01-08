@@ -40,7 +40,7 @@ export const getIconStyleRootClearByConfigured = ({
 export type IconStyleRootClearNormalized = ReturnType<typeof getIconStyleRootClearByConfigured>
 export type IconStyleRootClearInput = IconStyleRootClearNormalized
 export const zIconConfig = getZAnyConfig({
-  zStyleRoot: zIconStyleRootConfigured,
+  zStyleRootConfigured: zIconStyleRootConfigured,
 })
 
 export type IconConfig = AnyConfig<IconStyleRootConfigured>
