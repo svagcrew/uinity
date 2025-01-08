@@ -21,7 +21,8 @@ export default [
   {
     ...general,
     rules: {
-      'no-console': 'off',
+      '@typescript-eslint/no-unsafe-type-assertion': 'off',
+      'no-console': ['error', { allow: ['warn', 'error', 'info'] }],
       '@typescript-eslint/consistent-type-definitions': ['error', 'type'],
       '@typescript-eslint/explicit-function-return-type': 'off',
       '@typescript-eslint/strict-boolean-expressions': 'off',

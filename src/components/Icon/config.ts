@@ -3,14 +3,15 @@ import {
   type AnyConfiguredCommonProps,
   getGetAnyConfiguredStyleRoot,
   getZAnyConfig,
-  zOptionalNumberOrString,
-  zOptionalString,
+  objectAssignExceptUndefined,
+  zNumberOrStringOptionalNullable,
+  zStringOptionalNullable,
 } from '@/lib/other.js'
 import { z } from 'zod'
 
 export const zIconStyleRoot = z.object({
-  color: zOptionalString,
-  size: zOptionalNumberOrString,
+  color: zStringOptionalNullable,
+  size: zNumberOrStringOptionalNullable,
 })
 export type IconStyleRoot = z.output<typeof zIconStyleRoot>
 export const zIconConfig = getZAnyConfig({
@@ -18,8 +19,11 @@ export const zIconConfig = getZAnyConfig({
 })
 
 export type IconConfig = AnyConfig<IconStyleRoot>
-export type IconUinityConfig<TIconConfig extends IconConfig = {}> = { icon: TIconConfig }
-export type IconConfiguredCommonProps<TIconConfig extends IconConfig = {}> = AnyConfiguredCommonProps<TIconConfig>
+export type IconUinityConfig<TIconConfig extends IconConfig = IconConfig> = { icon: TIconConfig }
+export type IconConfiguredCommonProps<TIconConfig extends IconConfig = IconConfig> = AnyConfiguredCommonProps<
+  TIconConfig,
+  IconStyleRoot
+>
 
 export const getIconConfiguredStyleRoot = getGetAnyConfiguredStyleRoot<IconUinityConfig, IconStyleRoot>({
   componentName: 'icon',
@@ -29,7 +33,7 @@ export const getIconConfiguredStyleRoot = getGetAnyConfiguredStyleRoot<IconUinit
       if (!styleRoot) {
         continue
       }
-      Object.assign(result, styleRoot)
+      objectAssignExceptUndefined(result, styleRoot)
     }
     return result
   },

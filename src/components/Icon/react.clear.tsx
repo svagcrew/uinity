@@ -76,12 +76,10 @@ export const Icon: IconType = forwardRef<any, IconPropsWithoutRef>(
         </>
       )
     } else if (React.isValidElement(src)) {
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-type-assertion
       const element = src as React.ReactElement<Record<string, any>>
       const isForwardRef =
         typeof element.type === 'object' &&
         '$$typeof' in element.type &&
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-type-assertion
         (element.type as any).$$typeof === Symbol.for('react.forward_ref')
       return (
         <>
@@ -97,7 +95,6 @@ export const Icon: IconType = forwardRef<any, IconPropsWithoutRef>(
         </>
       )
     } else if (typeof src === 'function' || (typeof src === 'object' && src !== null)) {
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-type-assertion
       const component = src as React.ComponentType<{
         className?: string
         width?: number | string

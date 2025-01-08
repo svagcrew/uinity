@@ -41,11 +41,15 @@ export const createIcon = <TIconConfig extends IconConfig, TIconName extends str
   iconsSources?: IconsSources<TIconName>
 }) => {
   const Icon: IconConfigured<TIconConfig, TIconName> = forwardRef<any, any>(
-    ({ variant, $style, name, src, ...restProps }: IconConfiguredPropsWithoutRef<{}, string>, ref: any) => {
-      const $clearStyle = getIconConfiguredStyleRoot(uinityConfig, variant, restProps, $style)
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-type-assertion
+    ({ variant, $style, name, src, ...restProps }: IconConfiguredPropsWithoutRef<IconConfig, string>, ref: any) => {
+      const $clearStyle = getIconConfiguredStyleRoot({
+        uinityConfig,
+        variantName: variant,
+        settings: restProps,
+        $style,
+      })
       const srcNormalized = iconsSources && name && name in iconsSources ? (iconsSources as any)[name] : src
-      return <IconClear {...(restProps as {})} src={srcNormalized} $style={$clearStyle} ref={ref} />
+      return <IconClear {...restProps} src={srcNormalized} $style={$clearStyle} ref={ref} />
     }
   )
   return {

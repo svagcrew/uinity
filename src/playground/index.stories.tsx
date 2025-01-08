@@ -1,9 +1,11 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
- 
+
 import { Button } from '@/components/Button/react.clear.js'
+import { createButton } from '@/components/Button/react.configured.js'
 import { Buttons } from '@/components/Buttons/react.clear.js'
 import { Icon } from '@/components/Icon/react.clear.js'
 import { createIcon } from '@/components/Icon/react.configured.js'
+import type { UinityConfigFull } from '@/lib/config.js'
 import SvgIcon from '@/stories/icon1.svg?react'
 import { iconsSources } from '@/stories/uinity.config.js'
 import type { Meta, StoryObj } from '@storybook/react'
@@ -15,67 +17,163 @@ const SimpleIcon = forwardRef<SVGSVGElement>((props, ref) => (
   </svg>
 ))
 
-const Playground = () => {
-  const ref = useRef(null)
-  useEffect(() => {
-    console.log('REF', ref.current)
-  }, [ref])
-  const { Icon: IconConfigured } = createIcon({
-    uinityConfig: {
-      icon: {
-        general: {
-          size: 48,
+const uinityConfig = {
+  icon: {
+    general: {
+      // size: 48,
+      // color: '#00ff00',
+    },
+    settings: {
+      xcolor: {
+        red: {
+          color: '#ff0000',
+        },
+        blue: {
+          color: '#0000ff',
+        },
+        green: {
           color: '#00ff00',
         },
+      },
+      xsize: {
+        small: {
+          size: 24,
+        },
+        big: {
+          size: 96,
+        },
+      },
+    },
+    variants: {
+      redBig: {
         settings: {
-          xcolor: {
-            red: {
-              color: '#ff0000',
-            },
-            blue: {
-              color: '#0000ff',
-            },
+          xcolor: 'red',
+          xsize: 'big',
+        },
+      },
+      greenBig: {
+        settings: {
+          xcolor: 'green',
+          xsize: 'big',
+        },
+      },
+      blueSmall: {
+        settings: {
+          xcolor: 'blue',
+          xsize: 'small',
+        },
+      },
+    },
+  },
+  button: {
+    general: {
+      rest: {
+        textColor: '#fff',
+      },
+    },
+    settings: {
+      xxcolor: {
+        red: {
+          rest: {
+            backgroundColor: '#ff0000',
           },
-          xsize: {
-            small: {
-              size: 24,
-            },
-            big: {
-              size: 96,
-            },
+          hover: {
+            backgroundColor: '#aa0000',
           },
         },
-        variants: {
-          redBig: {
-            settings: {
-              xcolor: 'red',
-              xsize: 'big',
-            },
+        blue: {
+          rest: {
+            backgroundColor: '#0000ff',
           },
-          blueSmall: {
-            settings: {
-              xcolor: 'blue',
-              xsize: 'small',
-            },
+          hover: {
+            backgroundColor: '#0000aa',
+          },
+        },
+      },
+      xxsize: {
+        small: {
+          rest: {
+            textSize: 24,
+            iconSize: 24,
+          },
+        },
+        big: {
+          rest: {
+            textSize: 96,
+            iconSize: 96,
           },
         },
       },
     },
+    variants: {
+      bigRedWithBlueSmallIcon: {
+        // settings: {
+        //   xxcolor: 'red',
+        //   xxsize: 'big',
+        // },
+        overrides: {
+          rest: {
+            iconVariant: 'blueSmall',
+            backgroundColor: '#ff0000',
+            textSize: 96,
+          },
+        },
+      },
+      smallBlueWithRedBigIcon: {
+        // settings: {
+        //   xxcolor: 'blue',
+        //   xxsize: 'small',
+        // },
+        overrides: {
+          rest: {
+            iconVariant: 'redBig',
+            backgroundColor: '#0000ff',
+            textSize: 24,
+          },
+          hover: {
+            iconVariant: 'greenBig',
+          },
+        },
+      },
+    },
+  },
+} satisfies UinityConfigFull
+
+const Playground = () => {
+  const ref = useRef(null)
+  useEffect(() => {
+    console.info('REF', ref.current)
+  }, [ref])
+  const { Icon: IconConfigured } = createIcon({
+    uinityConfig,
     iconsSources,
+  })
+  const { Button: ButtonConfigured } = createButton({
+    uinityConfig,
+    Icon: IconConfigured,
   })
   return (
     <>
       <IconConfigured name="icon1" variant="redBig" />
       <Buttons direction="column" ref={ref}>
         {/* <button ref={}>Button0</button> */}
-        <Button $style={{ rest: { background: 'red' } }} as="button">
+        <Button $style={{ rest: { backgroundColor: 'red' } }} as="button">
           Button1
         </Button>
-        <Button $style={{ rest: { background: 'blue' } }}>Button2</Button>
+        <ButtonConfigured iconStart="icon1" xxcolor="blue" xxsize="small">
+          ButtonX
+        </ButtonConfigured>
+        <ButtonConfigured iconStart="icon1" variant="bigRedWithBlueSmallIcon">
+          bigRedWithBlueSmallIcon
+        </ButtonConfigured>
+        <ButtonConfigured iconStart="icon1" variant="smallBlueWithRedBigIcon">
+          smallBlueWithRedBigIcon
+        </ButtonConfigured>
+        <Button $style={{ rest: { backgroundColor: 'blue' } }}>Button2</Button>
       </Buttons>
       <Buttons direction="row">
-        <Button $style={{ rest: { background: 'red' } }}>Button1</Button>
-        <Button $style={{ rest: { background: 'blue' } }}>Button2</Button>
+        <Button $style={{ rest: { backgroundColor: 'red' } }}>Button1</Button>
+        <Button $style={{ rest: { backgroundColor: 'blue' } }}>Button2</Button>
       </Buttons>
       <Icon
         $style={{

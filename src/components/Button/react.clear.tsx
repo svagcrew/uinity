@@ -1,58 +1,64 @@
+import type {
+  ButtonStyleCoreClear,
+  ButtonStyleRootClear,
+  ButtonStyleRootClearInput,
+} from '@/components/Button/config.js'
 import { Icon, type IconSrc } from '@/components/Icon/react.clear.js'
 import { mark, syncRefs, toCss, type As, type AsPropsWithRef, type WithoutRef } from '@/lib/other.js'
 import { forwardRef } from 'react'
 import { css, styled } from 'styled-components'
 
 // Type for each state in $style prop
-export type ButtonStyleCore = {
-  gapHorizontalAccessoryText?: number | string | null
-  background?: string
-  textColor?: string
-  iconColor?: string
-  iconSize?: number | string | null
-  minHeight?: number | string | null
-}
+// export type ButtonStyleCore = {
+//   gapHorizontalAccessoryText?: number | string | null
+//   background?: string
+//   textColor?: string
+//   iconColor?: string
+//   iconSize?: number | string | null
+//   minHeight?: number | string | null
+// }
 
 // Type for part of $style prop based on states
-export type ButtonStyleStates = {
-  rest?: ButtonStyleCore
-  hover?: ButtonStyleCore
-  active?: ButtonStyleCore
-  focus?: ButtonStyleCore
-  disabled?: ButtonStyleCore
-}
+// export type ButtonStyleStates = {
+//   rest?: ButtonStyleCore
+//   hover?: ButtonStyleCore
+//   active?: ButtonStyleCore
+//   focus?: ButtonStyleCore
+//   disabled?: ButtonStyleCore
+// }
 
 // Type for $style prop
-export type ButtonStyleRoot = ButtonStyleStates
+// export type ButtonStyleRoot = ButtonStyleStates
 
 // Props for real style generation
-export type ButtonStyleFinal = Required<ButtonStyleStates> & {
+export type ButtonStyleFinal = ButtonStyleRootClear & {
   loading: boolean
 }
 
 // Component props
 export type ButtonDefaultAs = 'button'
-export type ButtonMainProps<TAs extends As = ButtonDefaultAs> = {
+export type ButtonClearMainProps<TAs extends As = ButtonDefaultAs> = {
   as?: TAs
   disabled?: boolean
   loading?: boolean
   type?: 'button' | 'submit' | 'reset'
   iconStart?: IconSrc
-  $style?: ButtonStyleRoot
+  $style?: ButtonStyleRootClearInput
   children?: React.ReactNode
 }
 
 // Rest types
-export type ButtonPropsWithRef<TAs extends As = ButtonDefaultAs> = ButtonMainProps<TAs> & AsPropsWithRef<TAs>
-export type ButtonPropsWithoutRef<TAs extends As = ButtonDefaultAs> = WithoutRef<ButtonPropsWithRef<TAs>>
-export type ButtonType = <TAs extends As = ButtonDefaultAs>(props: ButtonPropsWithRef<TAs>) => React.ReactNode
+export type ButtonClearPropsWithRef<TAs extends As = ButtonDefaultAs> = ButtonClearMainProps<TAs> & AsPropsWithRef<TAs>
+export type ButtonClearPropsWithoutRef<TAs extends As = ButtonDefaultAs> = WithoutRef<ButtonClearPropsWithRef<TAs>>
+export type ButtonClearType = <TAs extends As = ButtonDefaultAs>(props: ButtonClearPropsWithRef<TAs>) => React.ReactNode
 
 // Css for one of states
-const getButtonCoreCss = (sc: ButtonStyleCore) => {
+const getButtonCoreCss = (sc: ButtonStyleCoreClear) => {
   return css`
     ${toCss({
-      background: sc.background,
+      backgroundColor: sc.backgroundColor,
       color: sc.textColor,
+      fontSize: sc.textSize,
       minHeight: sc.minHeight,
       display: 'flex',
       flexFlow: 'row nowrap',
@@ -131,6 +137,9 @@ const getButtonFinalCss = ($sf: ButtonStyleFinal) => {
   `
 }
 
+// TODO: generic UinityConfig ut not ComponentConfig
+// TODO: Вынести основные типы функций мерджа
+// TODO: Сеттинги варианта пусть просто парсятся в сеттинги, а оверрайд пусть просто оверрайдится в долларстайл
 // TODO: add global classes to each styled component and remove mark
 // TODO: make nice import per each component
 // TODO: add stories for each component
@@ -140,6 +149,7 @@ const getButtonFinalCss = ($sf: ButtonStyleFinal) => {
 // TODO: add colors and texts configs
 // TODO: add textinput
 // TODO: add textareac components
+// TODO: add colors theme
 // TODO: ws, wsr, cs, csr everywhere
 
 // TODO: create docs static website
@@ -154,7 +164,7 @@ export const ButtonS = styled.button.attrs(mark('ButtonS'))<{ $sf: ButtonStyleFi
 `
 
 // Component
-export const Button: ButtonType = forwardRef<any, ButtonPropsWithoutRef<any>>(
+export const Button: ButtonClearType = forwardRef<any, ButtonClearPropsWithoutRef<any>>(
   ({ iconStart, children, disabled, loading, $style = {}, ...restProps }, ref) => {
     const $sf: ButtonStyleFinal = {
       loading: !!loading,

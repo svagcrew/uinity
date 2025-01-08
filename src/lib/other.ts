@@ -1,13 +1,25 @@
-/* eslint-disable @typescript-eslint/no-unnecessary-condition */
-/* eslint-disable @typescript-eslint/no-unnecessary-type-assertion */
-/* eslint-disable @typescript-eslint/no-unsafe-type-assertion */
-
 import { getHash } from '@/lib/getHash.js'
 import isNil from 'lodash/isNil.js'
 import kebabify from 'lodash/kebabCase.js'
+import lodashOmit from 'lodash/omit.js'
+import lodashPick from 'lodash/pick.js'
 import type { CSSProperties, JSX } from 'react'
-import React from 'react'
+import type React from 'react'
 import { z } from 'zod'
+
+export const omit = <TObject extends {}, TKeys extends keyof TObject>(
+  obj: TObject,
+  keys: TKeys[]
+): Omit<TObject, TKeys> => {
+  return lodashOmit(obj, keys)
+}
+
+export const pick = <TObject extends {}, TKeys extends keyof TObject>(
+  obj: TObject,
+  keys: TKeys[]
+): Pick<TObject, TKeys> => {
+  return lodashPick(obj, keys)
+}
 
 // TODO: split to files
 // TODO: remove unused code
@@ -55,12 +67,8 @@ export const syncRefs = <T>(...refs: Array<React.Ref<T>>) => {
   }
 }
 
-export const forwardRefIgnoreTypes = (Component: any): any => {
-  return React.forwardRef(Component as any) as any
-}
-
 export const mark = (componentName: string): {} => {
-  // eslint-disable-next-line n/no-process-env
+  // eslint-disable-next-line n/no-process-env, @typescript-eslint/no-unnecessary-condition
   return typeof process !== 'undefined' && process?.env?.NODE_ENV === 'development'
     ? {
         'data-x': componentName,
@@ -130,15 +138,16 @@ export const parseSpacing = (
   }
 }
 
-export const zOptionalString = z.string().min(1).optional().nullable()
-export const zRequiredString = z.string().min(1)
-export const zOptionalNumber = z.number().optional().nullable()
-export const zRequiredNumber = z.number().min(1)
-export const zOptionalNumberOrString = z
+export const zStringOptionalNullable = z.string().min(1).optional().nullable()
+export const zStringRequired = z.string().min(1)
+export const zNumberOptionalNullable = z.number().optional().nullable()
+export const zNumberRequired = z.number().min(1)
+export const zNumberOrStringOptionalNullable = z
   .union([z.number(), z.string().min(1)])
   .optional()
   .nullable()
-export const zRequiredNumberOrString = z.union([z.number(), z.string().min(1)])
+export const zNumberOrStringRequired = z.union([z.number(), z.string().min(1)])
+export const zRecordOfStringsOptionalNullable = z.record(z.string().min(1)).optional().nullable()
 
 export const getFirst = <TProp extends string, TObj extends Partial<Record<TProp, TObj[TProp]>>>(
   objs: TObj[],
@@ -175,6 +184,7 @@ export const toCss = (
 ): string => {
   return Object.entries(obj)
     .map(([key, value]) => {
+      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
       if (value === null || value === undefined) {
         return null
       }
@@ -280,11 +290,38 @@ export type AnyConfig<
   settings?: TSettings
   variants?: AnyConfigVariants<TStyleRoot, TSettings>
 }
-export type AnyConfiguredCommonProps<TConfig extends AnyConfig> = {
+export type AnyConfiguredCommonProps<TConfig extends AnyConfig<TStyleRoot>, TStyleRoot extends {}> = {
   variant?: keyof TConfig['variants']
 } & {
   [key in AnyConfigSettingsItemName<TConfig>]?: AnyConfigSettingsItemValue<TConfig, key>
-} & { $style?: TConfig['general'] }
+} & { $style?: TStyleRoot }
+
+export const objectAssignExceptUndefined = (
+  ...objects: Array<Record<string, any> | undefined | null>
+): Record<string, any> => {
+  const result = objects[0] || {}
+  for (const object of objects.slice(1)) {
+    if (object === undefined) {
+      continue
+    }
+    if (object === null) {
+      // result = {}
+      Object.keys(result).forEach((key) => {
+        if (result[key] === undefined) {
+          // eslint-disable-next-line @typescript-eslint/no-dynamic-delete
+          delete result[key]
+        }
+      })
+      continue
+    }
+    for (const [key, value] of Object.entries(object)) {
+      if (value !== undefined) {
+        result[key] = value
+      }
+    }
+  }
+  return result
+}
 
 export const getGetAnyConfiguredStyleRoot = <
   // eslint-disable-next-line @typescript-eslint/no-unnecessary-type-parameters
@@ -297,17 +334,22 @@ export const getGetAnyConfiguredStyleRoot = <
   componentName: string
   assignStyleRoot: (...stylesRoot: Array<TStyleRoot | undefined | null>) => TStyleRoot
 }) => {
-  return (
-    uinityConfig: TPartialUinityConfig,
-    variantName: string | undefined | null,
-    settings: Record<string, any>,
+  return ({
+    uinityConfig,
+    variantName,
+    settings,
+    $style,
+  }: {
+    uinityConfig: TPartialUinityConfig
+    variantName: string | undefined | null
+    settings: Record<string, any> | undefined | null
     $style: TStyleRoot | undefined | null
-  ): TStyleRoot => {
-    const c = uinityConfig.icon
+  }): TStyleRoot => {
+    const c = uinityConfig[componentName]
     const result: TStyleRoot = {} as never
     // get only thouse settings which exists in config
     settings = Object.fromEntries(
-      Object.entries(settings).filter(([settingName]) => c.settings && settingName in c.settings)
+      Object.entries(settings || {}).filter(([settingName]) => c.settings && settingName in c.settings)
     )
     assignStyleRoot(result, c.general)
     if (variantName) {
@@ -328,8 +370,9 @@ export const getGetAnyConfiguredStyleRoot = <
           }
 
           const settingStyleRoot = c.settings[settingName][settingValue as string]
-          assignStyleRoot(result, settingStyleRoot, variant.overrides)
+          assignStyleRoot(result, settingStyleRoot)
         }
+        assignStyleRoot(result, variant.overrides)
       }
     }
     for (const [settingName, settingValue] of Object.entries(settings)) {
