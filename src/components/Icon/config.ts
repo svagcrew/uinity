@@ -7,7 +7,7 @@ import {
 import {
   type AnyConfig,
   type AnyConfiguredCommonProps,
-  getGetAnyConfiguredStyleRoot,
+  getGetAnyStyleRoot,
   getZAnyConfig,
   objectAssignExceptUndefined,
   omit,
@@ -50,18 +50,18 @@ export type IconConfiguredCommonProps<TIconUinityConfig extends IconUinityConfig
   IconStyleRootConfigured
 >
 
-export const getIconStyleRootConfigured = getGetAnyConfiguredStyleRoot<IconUinityConfig, IconStyleRootConfigured>({
-  componentName: 'icon',
-  assignStyleRoot: (...stylesRoot) => {
-    const result: IconStyleRootConfigured = stylesRoot[0] || {}
-    for (const styleRoot of stylesRoot) {
-      if (!styleRoot) {
-        continue
+export const { getStyleRootClear: getIconStyleRootClear, getStyleRootConfigured: getIconStyleRootConfigured } =
+  getGetAnyStyleRoot<IconUinityConfig, IconStyleRootConfigured, IconStyleRootClearNormalized>({
+    componentName: 'icon',
+    assignStyleRootConfigured: (...stylesRoot) => {
+      const result: IconStyleRootConfigured = stylesRoot[0] || {}
+      for (const styleRoot of stylesRoot) {
+        if (!styleRoot) {
+          continue
+        }
+        objectAssignExceptUndefined(result, styleRoot)
       }
-      objectAssignExceptUndefined(result, styleRoot)
-    }
-    return result
-  },
-})
-// TODO:ASAP
-// export const getIconStyleRootClear =
+      return result
+    },
+    getStyleRootClearByConfigured: getIconStyleRootClearByConfigured,
+  })

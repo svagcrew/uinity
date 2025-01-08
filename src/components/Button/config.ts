@@ -12,7 +12,7 @@ import {
 import {
   type AnyConfig,
   type AnyConfiguredCommonProps,
-  getGetAnyConfiguredStyleRoot,
+  getGetAnyStyleRoot,
   getZAnyConfig,
   objectAssignExceptUndefined,
   omit,
@@ -121,66 +121,59 @@ export type ButtonConfiguredCommonProps<TButtonUinityConfig extends ButtonUinity
   ButtonStyleRootConfigured
 >
 
-export const getButtonStyleRootConfigured = getGetAnyConfiguredStyleRoot<ButtonUinityConfig, ButtonStyleRootConfigured>(
-  {
-    componentName: 'button',
-    assignStyleRoot: (...stylesRoot) => {
-      const result: ButtonStyleRootConfigured = stylesRoot[0] || {}
-      result.rest ||= {}
-      result.hover ||= {}
-      result.active ||= {}
-      result.focus ||= {}
-      result.disabled ||= {}
+export const {
+  getStyleRootClear: getButtonStyleRootClear,
+  getStyleRootClearByConfigured: getButtonStyleRootClearByConfigured,
+  getStyleRootConfigured: getButtonStyleRootConfigured,
+} = getGetAnyStyleRoot<ButtonUinityConfig, ButtonStyleRootConfigured, ButtonStyleRootClearNormalized>({
+  componentName: 'button',
+  assignStyleRootConfigured: (...stylesRoot) => {
+    const result: ButtonStyleRootConfigured = stylesRoot[0] || {}
+    result.rest ||= {}
+    result.hover ||= {}
+    result.active ||= {}
+    result.focus ||= {}
+    result.disabled ||= {}
 
-      for (const styleRoot of stylesRoot) {
-        if (!styleRoot) {
-          continue
-        }
-        objectAssignExceptUndefined(result.rest, styleRoot.rest)
-        objectAssignExceptUndefined(result.hover, styleRoot.hover)
-        objectAssignExceptUndefined(result.active, styleRoot.active)
-        objectAssignExceptUndefined(result.focus, styleRoot.focus)
-        objectAssignExceptUndefined(result.disabled, styleRoot.disabled)
+    for (const styleRoot of stylesRoot) {
+      if (!styleRoot) {
+        continue
       }
-      return result
-    },
-  }
-)
-// TODO:ASAP generate getButtonStyleRootClear
-export const getButtonStyleRootClearByConfigured = ({
-  uinityConfig,
-  styleRootConfigured,
-  colorMode,
-}: {
-  uinityConfig: ButtonUinityConfig
-  styleRootConfigured: ButtonStyleRootConfigured
-  colorMode?: ColorModeName
-}) => {
-  return {
-    rest: getButtonStyleCoreClearByConfigured({
-      uinityConfig,
-      styleCoreConfigured: styleRootConfigured.rest,
-      colorMode,
-    }),
-    hover: getButtonStyleCoreClearByConfigured({
-      uinityConfig,
-      styleCoreConfigured: styleRootConfigured.hover,
-      colorMode,
-    }),
-    active: getButtonStyleCoreClearByConfigured({
-      uinityConfig,
-      styleCoreConfigured: styleRootConfigured.active,
-      colorMode,
-    }),
-    focus: getButtonStyleCoreClearByConfigured({
-      uinityConfig,
-      styleCoreConfigured: styleRootConfigured.focus,
-      colorMode,
-    }),
-    disabled: getButtonStyleCoreClearByConfigured({
-      uinityConfig,
-      styleCoreConfigured: styleRootConfigured.disabled,
-      colorMode,
-    }),
-  }
-}
+      objectAssignExceptUndefined(result.rest, styleRoot.rest)
+      objectAssignExceptUndefined(result.hover, styleRoot.hover)
+      objectAssignExceptUndefined(result.active, styleRoot.active)
+      objectAssignExceptUndefined(result.focus, styleRoot.focus)
+      objectAssignExceptUndefined(result.disabled, styleRoot.disabled)
+    }
+    return result
+  },
+  getStyleRootClearByConfigured: ({ uinityConfig, styleRootConfigured, colorMode }) => {
+    return {
+      rest: getButtonStyleCoreClearByConfigured({
+        uinityConfig,
+        styleCoreConfigured: styleRootConfigured?.rest,
+        colorMode,
+      }),
+      hover: getButtonStyleCoreClearByConfigured({
+        uinityConfig,
+        styleCoreConfigured: styleRootConfigured?.hover,
+        colorMode,
+      }),
+      active: getButtonStyleCoreClearByConfigured({
+        uinityConfig,
+        styleCoreConfigured: styleRootConfigured?.active,
+        colorMode,
+      }),
+      focus: getButtonStyleCoreClearByConfigured({
+        uinityConfig,
+        styleCoreConfigured: styleRootConfigured?.focus,
+        colorMode,
+      }),
+      disabled: getButtonStyleCoreClearByConfigured({
+        uinityConfig,
+        styleCoreConfigured: styleRootConfigured?.disabled,
+        colorMode,
+      }),
+    }
+  },
+})

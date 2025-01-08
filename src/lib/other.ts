@@ -1,10 +1,11 @@
+import type { ColorModeName } from '@/lib/color.js'
 import { getHash } from '@/lib/getHash.js'
 import isNil from 'lodash/isNil.js'
 import kebabify from 'lodash/kebabCase.js'
 import lodashOmit from 'lodash/omit.js'
 import lodashPick from 'lodash/pick.js'
-import type { CSSProperties, JSX } from 'react'
 import type React from 'react'
+import type { CSSProperties, JSX } from 'react'
 import { z } from 'zod'
 
 export const omit = <TObject extends {}, TKeys extends keyof TObject>(
@@ -323,18 +324,24 @@ export const objectAssignExceptUndefined = (
   return result
 }
 
-export const getGetAnyConfiguredStyleRoot = <
-  // eslint-disable-next-line @typescript-eslint/no-unnecessary-type-parameters
+export const getGetAnyStyleRoot = <
   TPartialUinityConfig extends Record<string, AnyConfig<any, any>>,
-  TStyleRoot extends {},
+  TStyleRootConfigured extends {},
+  TStyleRootClearNormalized extends {} = {},
 >({
   componentName,
-  assignStyleRoot,
+  assignStyleRootConfigured,
+  getStyleRootClearByConfigured,
 }: {
   componentName: string
-  assignStyleRoot: (...stylesRoot: Array<TStyleRoot | undefined | null>) => TStyleRoot
+  assignStyleRootConfigured: (...stylesRoot: Array<TStyleRootConfigured | undefined | null>) => TStyleRootConfigured
+  getStyleRootClearByConfigured: (props: {
+    uinityConfig: TPartialUinityConfig
+    styleRootConfigured: TStyleRootConfigured | undefined | null
+    colorMode?: ColorModeName
+  }) => TStyleRootClearNormalized
 }) => {
-  return ({
+  const getStyleRootConfigured = ({
     uinityConfig,
     variantName,
     settings,
@@ -343,15 +350,15 @@ export const getGetAnyConfiguredStyleRoot = <
     uinityConfig: TPartialUinityConfig
     variantName: string | undefined | null
     settings: Record<string, any> | undefined | null
-    $style: TStyleRoot | undefined | null
-  }): TStyleRoot => {
+    $style: TStyleRootConfigured | undefined | null
+  }): TStyleRootConfigured => {
     const c = uinityConfig[componentName]
-    const result: TStyleRoot = {} as never
+    const result: TStyleRootConfigured = {} as never
     // get only thouse settings which exists in config
     settings = Object.fromEntries(
       Object.entries(settings || {}).filter(([settingName]) => c.settings && settingName in c.settings)
     )
-    assignStyleRoot(result, c.general)
+    assignStyleRootConfigured(result, c.general)
     if (variantName) {
       const variant = c.variants?.[variantName]
       if (!variant) {
@@ -370,9 +377,9 @@ export const getGetAnyConfiguredStyleRoot = <
           }
 
           const settingStyleRoot = c.settings[settingName][settingValue as string]
-          assignStyleRoot(result, settingStyleRoot)
+          assignStyleRootConfigured(result, settingStyleRoot)
         }
-        assignStyleRoot(result, variant.overrides)
+        assignStyleRootConfigured(result, variant.overrides)
       }
     }
     for (const [settingName, settingValue] of Object.entries(settings)) {
@@ -387,10 +394,31 @@ export const getGetAnyConfiguredStyleRoot = <
         continue
       }
       const settingStyleRoot = c.settings[settingName][settingValue]
-      assignStyleRoot(result, settingStyleRoot)
+      assignStyleRootConfigured(result, settingStyleRoot)
     }
-    assignStyleRoot(result, $style)
+    assignStyleRootConfigured(result, $style)
     return result
+  }
+  const getStyleRootClear = ({
+    uinityConfig,
+    variantName,
+    settings,
+    $style,
+    colorMode,
+  }: {
+    uinityConfig: TPartialUinityConfig
+    variantName: string | undefined | null
+    settings: Record<string, any> | undefined | null
+    $style: TStyleRootConfigured | undefined | null
+    colorMode?: ColorModeName
+  }): TStyleRootClearNormalized => {
+    const styleRootConfigured = getStyleRootConfigured({ uinityConfig, variantName, settings, $style })
+    return getStyleRootClearByConfigured({ uinityConfig, styleRootConfigured, colorMode })
+  }
+  return {
+    getStyleRootConfigured,
+    getStyleRootClearByConfigured,
+    getStyleRootClear,
   }
 }
 
