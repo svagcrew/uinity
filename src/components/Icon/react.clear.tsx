@@ -1,5 +1,7 @@
 import type { IconStyleRootClearInput, IconStyleRootClearNormalized } from '@/components/Icon/config.js'
-import { type AsPropsWithRef, getGlobalClassName, syncRefs, toCss, type WithoutRef } from '@/lib/other.js'
+import { type AsPropsWithRef, syncRefs, type WithoutRef } from '@/lib/asRef.js'
+import { getGlobalClassName } from '@/lib/classes.js'
+import { toCss } from '@/lib/css.js'
 import cn from 'classnames'
 import type { JSX } from 'react'
 import React, { forwardRef } from 'react'

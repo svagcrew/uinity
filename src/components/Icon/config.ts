@@ -1,18 +1,12 @@
+import { type AnyConfig, type AnyConfiguredCommonProps, getGetAnyStyleRoot, getZAnyConfig } from '@/lib/anyConfig.js'
 import {
   type ColorModeName,
   getColorByMode,
   type WithColorsClearPartial,
   zColorValueOptionalNullable,
 } from '@/lib/color.js'
-import {
-  type AnyConfig,
-  type AnyConfiguredCommonProps,
-  getGetAnyStyleRoot,
-  getZAnyConfig,
-  objectAssignExceptUndefined,
-  omit,
-  zNumberOrStringOptionalNullable,
-} from '@/lib/other.js'
+import { objectAssignExceptUndefined, omit } from '@/lib/utils.js'
+import { zNumberOrStringOptionalNullable } from '@/lib/zod.js'
 import { z } from 'zod'
 
 export const zIconStyleRootConfigured = z.object({

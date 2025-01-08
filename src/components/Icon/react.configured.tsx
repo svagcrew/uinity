@@ -3,7 +3,8 @@ import {
   type IconConfiguredCommonProps,
   type IconUinityConfig,
 } from '@/components/Icon/config.js'
-import { extractSettingsFromProps, type AsPropsWithRef, type WithoutRef } from '@/lib/other.js'
+import { extractSettingsFromProps } from '@/lib/anyConfig.js'
+import type { AsPropsWithRef, WithoutRef } from '@/lib/asRef.js'
 import { forwardRef } from 'react'
 import type { IconClearMainProps, IconClearSrc } from './react.clear.js'
 import { Icon as IconClear } from './react.clear.js'

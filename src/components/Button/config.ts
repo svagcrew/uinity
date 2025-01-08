@@ -1,21 +1,17 @@
 import { getIconStyleRootClear, type IconConfig } from '@/components/Icon/config.js'
+import { type AnyConfig, type AnyConfiguredCommonProps, getGetAnyStyleRoot, getZAnyConfig } from '@/lib/anyConfig.js'
 import {
   type ColorModeName,
   getColorByMode,
   type WithColorsClearPartial,
   zColorValueOptionalNullable,
 } from '@/lib/color.js'
+import { objectAssignExceptUndefined, omit } from '@/lib/utils.js'
 import {
-  type AnyConfig,
-  type AnyConfiguredCommonProps,
-  getGetAnyStyleRoot,
-  getZAnyConfig,
-  objectAssignExceptUndefined,
-  omit,
   zNumberOrStringOptionalNullable,
   zRecordOfStringsOptionalNullable,
   zStringOptionalNullable,
-} from '@/lib/other.js'
+} from '@/lib/zod.js'
 import { z } from 'zod'
 
 export const zButtonStyleCoreConfigured = z.object({

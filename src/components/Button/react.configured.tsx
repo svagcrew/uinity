@@ -4,7 +4,8 @@ import {
   type ButtonUinityConfig,
 } from '@/components/Button/config.js'
 import type { IconConfigured, IconConfiguredSpecialProps } from '@/components/Icon/react.configured.js'
-import { extractSettingsFromProps, type AsPropsWithRef, type WithoutRef } from '@/lib/other.js'
+import { extractSettingsFromProps } from '@/lib/anyConfig.js'
+import type { AsPropsWithRef, WithoutRef } from '@/lib/asRef.js'
 import { forwardRef } from 'react'
 import type { ButtonClearMainProps } from './react.clear.js'
 import { Button as ButtonClear } from './react.clear.js'

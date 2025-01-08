@@ -1,4 +1,4 @@
-import { zStringOptionalNullable, zStringRequired } from '@/lib/other.js'
+import { zStringOptionalNullable, zStringRequired } from '@/lib/zod.js'
 import { z } from 'zod'
 
 export const zColorModeName = zStringRequired

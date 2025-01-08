@@ -1,5 +1,7 @@
 import { ButtonS } from '@/components/Button/react.clear.js'
-import { mark, syncRefs, toCss, type As, type AsPropsWithRef, type WithoutRef } from '@/lib/other.js'
+import { syncRefs, type As, type AsPropsWithRef, type WithoutRef } from '@/lib/asRef.js'
+import { mark } from '@/lib/classes.js'
+import { toCss } from '@/lib/css.js'
 import { forwardRef } from 'react'
 import { css, styled } from 'styled-components'
 

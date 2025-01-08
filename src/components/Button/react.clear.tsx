@@ -1,10 +1,12 @@
 import type {
   ButtonStyleCoreClear,
-  ButtonStyleRootClearNormalized,
   ButtonStyleRootClearInput,
+  ButtonStyleRootClearNormalized,
 } from '@/components/Button/config.js'
 import { Icon, type IconClearSrc } from '@/components/Icon/react.clear.js'
-import { mark, syncRefs, toCss, type As, type AsPropsWithRef, type WithoutRef } from '@/lib/other.js'
+import { syncRefs, type As, type AsPropsWithRef, type WithoutRef } from '@/lib/asRef.js'
+import { mark } from '@/lib/classes.js'
+import { toCss } from '@/lib/css.js'
 import { forwardRef } from 'react'
 import { css, styled } from 'styled-components'
 
@@ -116,23 +118,36 @@ const getButtonFinalCss = ($sf: ButtonClearStyleFinal) => {
 }
 
 // TODO: reuse Icon css parts
-// TODO: Вынести основные типы функций мерджа
-// TODO: Сеттинги варианта пусть просто парсятся в сеттинги, а оверрайд пусть просто оверрайдится в долларстайл
+// TODO: buttons
 // TODO: add global classes to each styled component and remove mark
-// TODO: make nice import per each component
-// TODO: add stories for each component
+
+// TODO: add colors config
+// TODO: add colors modes
+
+// TODO: add uinity config variables and normalizer
+// TODO: add uinity config validator
+
+// TODO: ws, wsr, cs, csr in button, text, icon
+
 // TODO: add text component
-// TODO: create real style props and css for each component
-// TODO: add configured compnents
-// TODO: add colors and texts configs
+// TODO: use text component in button
+
+// TODO: create real style props and css button, text, icon
+
 // TODO: add textinput
-// TODO: add textareac components
-// TODO: add colors theme
-// TODO: ws, wsr, cs, csr everywhere
+// TODO: add textarea components
+
+// TODO: make nice import per each component
+// TODO: Вынести основные типы функций мерджа
+
+// TODO: (D) add stories for each component
 
 // TODO: create docs static website
 // TODO: generate docs website by components
-// TODO: create zod schema and type for common uinity config
+
+// TODO: create zod schema and type for standard uinity config
+
+// TODO: add AI for uinity config generation and modification
 
 // Styled components
 const IconS = styled(Icon)``
