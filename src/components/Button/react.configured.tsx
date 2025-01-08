@@ -9,6 +9,7 @@ import type { AsPropsWithRef, WithoutRef } from '@/lib/asRef.js'
 import { forwardRef } from 'react'
 import type { ButtonClearMainProps } from './react.clear.js'
 import { Button as ButtonClear } from './react.clear.js'
+import { getMainClassName } from '@/lib/classes.js'
 
 // Special props for configured component
 export type ButtonConfiguredSpecialProps<TIconName extends string = string> = {
@@ -49,6 +50,7 @@ export const createButton = <TButtonUinityConfig extends ButtonUinityConfig, TIc
         $style: styleRootConfiguredOverrides,
         iconStart,
         iconStartSrc,
+        className: providedClassName,
         ...restProps
       }: ButtonConfiguredPropsWithoutRef<ButtonUinityConfig, string>,
       ref: any
@@ -57,16 +59,22 @@ export const createButton = <TButtonUinityConfig extends ButtonUinityConfig, TIc
         config: uinityConfig.button,
         restProps,
       })
-      const styleRootClear = getButtonStyleRootClear({
-        uinityConfig,
-        variantName,
-        settings,
-        styleRootConfiguredOverrides,
-      })
       return (
         <ButtonClear
           {...restPropsWithoutSettings}
-          $style={styleRootClear}
+          className={getMainClassName({
+            componentName: 'button',
+            isConfigured: true,
+            variantName,
+            settings,
+            providedClassName,
+          })}
+          $style={getButtonStyleRootClear({
+            uinityConfig,
+            variantName,
+            settings,
+            styleRootConfiguredOverrides,
+          })}
           ref={ref}
           iconStart={<Icon name={iconStart as any} src={iconStartSrc as any} />}
         />

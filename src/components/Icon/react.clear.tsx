@@ -1,6 +1,6 @@
 import type { IconStyleRootClearInput, IconStyleRootClearNormalized } from '@/components/Icon/config.js'
 import { type AsPropsWithRef, syncRefs, type WithoutRef } from '@/lib/asRef.js'
-import { getGlobalClassName } from '@/lib/classes.js'
+import { getGetClassName, getGlobalClassName } from '@/lib/classes.js'
 import { toCss } from '@/lib/css.js'
 import cn from 'classnames'
 import type { JSX } from 'react'
@@ -34,7 +34,7 @@ export type IconClearPropsWithoutRef = WithoutRef<IconClearPropsWithRef>
 export type IconClearType = (props: IconClearPropsWithRef) => React.ReactNode
 
 // Css for one of states
-const getIconCoreCss = ($sf: IconClearStyleFinal) => {
+export const getIconCoreCss = ($sf: IconClearStyleFinal) => {
   return css`
     ${toCss({
       width: $sf.size,
@@ -64,6 +64,7 @@ const IconGlobalS = createGlobalStyle<{ $sf: IconClearStyleFinal }>`
 `
 
 // Component
+const { getMainClassName } = getGetClassName({ componentName: 'icon' })
 export const Icon: IconClearType = forwardRef<any, IconClearPropsWithoutRef>(
   ({ $style = {}, className, src, ...restProps }, ref) => {
     const gcn = getGlobalClassName($style)
@@ -74,7 +75,12 @@ export const Icon: IconClearType = forwardRef<any, IconClearPropsWithoutRef>(
       return (
         <>
           <IconGlobalS $sf={$sf} />
-          <img className={cn(className, gcn)} src={src} ref={syncRefs(ref)} {...(restProps as {})} />
+          <img
+            className={getMainClassName({ providedClassName: cn(className, gcn) })}
+            src={src}
+            ref={syncRefs(ref)}
+            {...(restProps as {})}
+          />
         </>
       )
     } else if (React.isValidElement(src)) {
@@ -89,7 +95,7 @@ export const Icon: IconClearType = forwardRef<any, IconClearPropsWithoutRef>(
           {React.cloneElement(element, {
             ...element.props,
             ...restProps,
-            className: cn(className, gcn, element.props.className),
+            className: getMainClassName({ providedClassName: cn(className, gcn, element.props.className) }),
             ...(isForwardRef ? { ref: syncRefs(ref) } : {}),
             width: $sf.size,
             height: $sf.size,
@@ -116,7 +122,7 @@ export const Icon: IconClearType = forwardRef<any, IconClearPropsWithoutRef>(
                   height: $sf.size,
                 }
               : {}),
-            className: cn(className, gcn),
+            className: getMainClassName({ providedClassName: cn(className, gcn) }),
             ...(isForwardRef ? { ref: syncRefs(ref) } : {}),
           })}
         </>

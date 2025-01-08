@@ -8,6 +8,7 @@ import type { AsPropsWithRef, WithoutRef } from '@/lib/asRef.js'
 import { forwardRef } from 'react'
 import type { IconClearMainProps, IconClearSrc } from './react.clear.js'
 import { Icon as IconClear } from './react.clear.js'
+import { getMainClassName } from '@/lib/classes.js'
 
 // Special props for configured component
 export type IconConfiguredSpecialProps<TIconName extends string = string> = {
@@ -50,6 +51,7 @@ export const createIcon = <TIconUinityConfig extends IconUinityConfig, TIconName
         $style: styleRootConfiguredOverrides,
         name,
         src,
+        className: providedClassName,
         ...restProps
       }: IconConfiguredPropsWithoutRef<IconUinityConfig, string>,
       ref: any
@@ -58,14 +60,26 @@ export const createIcon = <TIconUinityConfig extends IconUinityConfig, TIconName
         config: uinityConfig.icon,
         restProps,
       })
-      const styleRootClear = getIconStyleRootClear({
-        uinityConfig,
-        variantName,
-        settings,
-        styleRootConfiguredOverrides,
-      })
-      const srcNormalized = iconsSources && name && name in iconsSources ? (iconsSources as any)[name] : src
-      return <IconClear {...restPropsWithoutSettings} src={srcNormalized} $style={styleRootClear} ref={ref} />
+      return (
+        <IconClear
+          {...restPropsWithoutSettings}
+          className={getMainClassName({
+            componentName: 'icon',
+            isConfigured: true,
+            variantName,
+            settings,
+            providedClassName,
+          })}
+          src={iconsSources && name && name in iconsSources ? (iconsSources as any)[name] : src}
+          $style={getIconStyleRootClear({
+            uinityConfig,
+            variantName,
+            settings,
+            styleRootConfiguredOverrides,
+          })}
+          ref={ref}
+        />
+      )
     }
   )
   return {

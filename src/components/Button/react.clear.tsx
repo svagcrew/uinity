@@ -3,9 +3,9 @@ import type {
   ButtonStyleRootClearInput,
   ButtonStyleRootClearNormalized,
 } from '@/components/Button/config.js'
-import { Icon, type IconClearSrc } from '@/components/Icon/react.clear.js'
+import { getIconCoreCss, Icon, type IconClearSrc } from '@/components/Icon/react.clear.js'
 import { syncRefs, type As, type AsPropsWithRef, type WithoutRef } from '@/lib/asRef.js'
-import { mark } from '@/lib/classes.js'
+import { getGetClassName, mark } from '@/lib/classes.js'
 import { toCss } from '@/lib/css.js'
 import { forwardRef } from 'react'
 import { css, styled } from 'styled-components'
@@ -54,16 +54,10 @@ const getButtonCoreCss = (sc: ButtonStyleCoreClear) => {
     }
 
     & ${IconS} {
-      ${toCss({
-        width: sc.iconSize,
-        height: sc.iconSize,
+      ${getIconCoreCss({
+        color: sc.iconColor,
+        size: sc.iconSize,
       })}
-
-      path {
-        ${toCss({
-          fill: sc.iconColor,
-        })}
-      }
     }
   `
 }
@@ -117,9 +111,7 @@ const getButtonFinalCss = ($sf: ButtonClearStyleFinal) => {
   `
 }
 
-// TODO: reuse Icon css parts
 // TODO: buttons
-// TODO: add global classes to each styled component and remove mark
 
 // TODO: add colors config
 // TODO: add colors modes
@@ -151,14 +143,15 @@ const getButtonFinalCss = ($sf: ButtonClearStyleFinal) => {
 
 // Styled components
 const IconS = styled(Icon)``
-const ContentS = styled.span``
+const ContentS = styled.span.attrs(mark('ContentS'))``
 export const ButtonS = styled.button.attrs(mark('ButtonS'))<{ $sf: ButtonClearStyleFinal }>`
   ${({ $sf }) => getButtonFinalCss($sf)}
 `
 
 // Component
+const { getMainClassName, getSubClassName } = getGetClassName({ componentName: 'button' })
 export const Button: ButtonClearType = forwardRef<any, ButtonClearPropsWithoutRef<any>>(
-  ({ iconStart, children, disabled, loading, $style = {}, ...restProps }, ref) => {
+  ({ iconStart, children, disabled, loading, className: providedClassName, $style = {}, ...restProps }, ref) => {
     const $sf: ButtonClearStyleFinal = {
       loading: !!loading,
       rest: {
@@ -178,9 +171,17 @@ export const Button: ButtonClearType = forwardRef<any, ButtonClearPropsWithoutRe
       },
     }
     return (
-      <ButtonS {...restProps} disabled={disabled || loading} ref={syncRefs(ref)} $sf={$sf}>
-        {iconStart && <IconS src={iconStart} />}
-        <ContentS>{children}</ContentS>
+      <ButtonS
+        {...restProps}
+        className={getMainClassName({ providedClassName })}
+        disabled={disabled || loading}
+        ref={syncRefs(ref)}
+        $sf={$sf}
+      >
+        {iconStart && (
+          <IconS src={iconStart} className={getSubClassName({ subComponentName: 'icon', modKey: 'start' })} />
+        )}
+        <ContentS className={getSubClassName({ subComponentName: 'content' })}>{children}</ContentS>
       </ButtonS>
     )
   }

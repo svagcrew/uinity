@@ -4,7 +4,10 @@ import type { JSX } from 'react'
 export type As = keyof JSX.IntrinsicElements
 // export type AsProps<T extends As | undefined> = T extends As ? JSX.IntrinsicElements[T] : { [key: string]: any }
 export type AsProps<T extends As | undefined> = T extends undefined
-  ? {}
+  ? {
+      className?: string
+      style?: React.CSSProperties
+    }
   : {
       onClick?: React.MouseEventHandler<any>
       className?: string
