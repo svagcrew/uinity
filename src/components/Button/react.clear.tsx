@@ -1,37 +1,15 @@
 import type {
   ButtonStyleCoreClear,
-  ButtonStyleRootClear,
+  ButtonStyleRootClearNormalized,
   ButtonStyleRootClearInput,
 } from '@/components/Button/config.js'
-import { Icon, type IconSrc } from '@/components/Icon/react.clear.js'
+import { Icon, type IconClearSrc } from '@/components/Icon/react.clear.js'
 import { mark, syncRefs, toCss, type As, type AsPropsWithRef, type WithoutRef } from '@/lib/other.js'
 import { forwardRef } from 'react'
 import { css, styled } from 'styled-components'
 
-// Type for each state in $style prop
-// export type ButtonStyleCore = {
-//   gapHorizontalAccessoryText?: number | string | null
-//   background?: string
-//   textColor?: string
-//   iconColor?: string
-//   iconSize?: number | string | null
-//   minHeight?: number | string | null
-// }
-
-// Type for part of $style prop based on states
-// export type ButtonStyleStates = {
-//   rest?: ButtonStyleCore
-//   hover?: ButtonStyleCore
-//   active?: ButtonStyleCore
-//   focus?: ButtonStyleCore
-//   disabled?: ButtonStyleCore
-// }
-
-// Type for $style prop
-// export type ButtonStyleRoot = ButtonStyleStates
-
 // Props for real style generation
-export type ButtonStyleFinal = ButtonStyleRootClear & {
+export type ButtonClearStyleFinal = ButtonStyleRootClearNormalized & {
   loading: boolean
 }
 
@@ -42,7 +20,7 @@ export type ButtonClearMainProps<TAs extends As = ButtonDefaultAs> = {
   disabled?: boolean
   loading?: boolean
   type?: 'button' | 'submit' | 'reset'
-  iconStart?: IconSrc
+  iconStart?: IconClearSrc
   $style?: ButtonStyleRootClearInput
   children?: React.ReactNode
 }
@@ -89,7 +67,7 @@ const getButtonCoreCss = (sc: ButtonStyleCoreClear) => {
 }
 
 // Final css
-const getButtonFinalCss = ($sf: ButtonStyleFinal) => {
+const getButtonFinalCss = ($sf: ButtonClearStyleFinal) => {
   return css`
     cursor: pointer;
     position: relative;
@@ -137,6 +115,7 @@ const getButtonFinalCss = ($sf: ButtonStyleFinal) => {
   `
 }
 
+// TODO: reuse Icon css parts
 // TODO: generic UinityConfig ut not ComponentConfig
 // TODO: Вынести основные типы функций мерджа
 // TODO: Сеттинги варианта пусть просто парсятся в сеттинги, а оверрайд пусть просто оверрайдится в долларстайл
@@ -159,14 +138,14 @@ const getButtonFinalCss = ($sf: ButtonStyleFinal) => {
 // Styled components
 const IconS = styled(Icon)``
 const ContentS = styled.span``
-export const ButtonS = styled.button.attrs(mark('ButtonS'))<{ $sf: ButtonStyleFinal }>`
+export const ButtonS = styled.button.attrs(mark('ButtonS'))<{ $sf: ButtonClearStyleFinal }>`
   ${({ $sf }) => getButtonFinalCss($sf)}
 `
 
 // Component
 export const Button: ButtonClearType = forwardRef<any, ButtonClearPropsWithoutRef<any>>(
   ({ iconStart, children, disabled, loading, $style = {}, ...restProps }, ref) => {
-    const $sf: ButtonStyleFinal = {
+    const $sf: ButtonClearStyleFinal = {
       loading: !!loading,
       rest: {
         ...$style.rest,

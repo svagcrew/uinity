@@ -1,34 +1,59 @@
 import {
+  type ColorModeName,
+  getColorByMode,
+  type WithColorsClearPartial,
+  zColorValueOptionalNullable,
+} from '@/lib/color.js'
+import {
   type AnyConfig,
   type AnyConfiguredCommonProps,
   getGetAnyConfiguredStyleRoot,
   getZAnyConfig,
   objectAssignExceptUndefined,
+  omit,
   zNumberOrStringOptionalNullable,
-  zStringOptionalNullable,
 } from '@/lib/other.js'
 import { z } from 'zod'
 
-export const zIconStyleRoot = z.object({
-  color: zStringOptionalNullable,
+export const zIconStyleRootConfigured = z.object({
+  color: zColorValueOptionalNullable,
   size: zNumberOrStringOptionalNullable,
 })
-export type IconStyleRoot = z.output<typeof zIconStyleRoot>
+export type IconStyleRootConfigured = z.output<typeof zIconStyleRootConfigured>
+export const getIconStyleRootClearByConfigured = ({
+  uinityConfig,
+  styleRootConfigured,
+  colorMode,
+}: {
+  uinityConfig: IconUinityConfig
+  styleRootConfigured: IconStyleRootConfigured | undefined | null
+  colorMode?: ColorModeName
+}): Omit<WithColorsClearPartial<IconStyleRootConfigured, 'color'>, never> => {
+  if (!styleRootConfigured) {
+    return {}
+  }
+  return {
+    ...omit(styleRootConfigured, ['color']),
+    color: getColorByMode(colorMode, styleRootConfigured.color),
+  }
+}
+export type IconStyleRootClearNormalized = ReturnType<typeof getIconStyleRootClearByConfigured>
+export type IconStyleRootClearInput = IconStyleRootClearNormalized
 export const zIconConfig = getZAnyConfig({
-  zStyleRoot: zIconStyleRoot,
+  zStyleRoot: zIconStyleRootConfigured,
 })
 
-export type IconConfig = AnyConfig<IconStyleRoot>
+export type IconConfig = AnyConfig<IconStyleRootConfigured>
 export type IconUinityConfig<TIconConfig extends IconConfig = IconConfig> = { icon: TIconConfig }
-export type IconConfiguredCommonProps<TIconConfig extends IconConfig = IconConfig> = AnyConfiguredCommonProps<
-  TIconConfig,
-  IconStyleRoot
+export type IconConfiguredCommonProps<TIconUinityConfig extends IconUinityConfig> = AnyConfiguredCommonProps<
+  TIconUinityConfig['icon'],
+  IconStyleRootConfigured
 >
 
-export const getIconConfiguredStyleRoot = getGetAnyConfiguredStyleRoot<IconUinityConfig, IconStyleRoot>({
+export const getIconStyleRootConfigured = getGetAnyConfiguredStyleRoot<IconUinityConfig, IconStyleRootConfigured>({
   componentName: 'icon',
   assignStyleRoot: (...stylesRoot) => {
-    const result: IconStyleRoot = stylesRoot[0] || {}
+    const result: IconStyleRootConfigured = stylesRoot[0] || {}
     for (const styleRoot of stylesRoot) {
       if (!styleRoot) {
         continue
@@ -38,3 +63,5 @@ export const getIconConfiguredStyleRoot = getGetAnyConfiguredStyleRoot<IconUinit
     return result
   },
 })
+// TODO:ASAP
+// export const getIconStyleRootClear =

@@ -1,4 +1,4 @@
-import type { IconStyleRoot } from '@/components/Icon/config.js'
+import type { IconStyleRootClearInput, IconStyleRootClearNormalized } from '@/components/Icon/config.js'
 import { type AsPropsWithRef, getGlobalClassName, syncRefs, toCss, type WithoutRef } from '@/lib/other.js'
 import cn from 'classnames'
 import type { JSX } from 'react'
@@ -6,7 +6,7 @@ import React, { forwardRef } from 'react'
 import { createGlobalStyle, css } from 'styled-components'
 
 // Specific types
-export type IconSrc =
+export type IconClearSrc =
   | string
   | JSX.Element
   | React.ReactElement
@@ -17,22 +17,22 @@ export type IconSrc =
   | undefined
 
 // Props for real style generation
-export type IconStyleFinal = IconStyleRoot
+export type IconClearStyleFinal = IconStyleRootClearNormalized
 
 // Component props
-export type IconMainProps = {
-  $style?: IconStyleRoot
+export type IconClearMainProps = {
+  $style?: IconStyleRootClearInput
   className?: string
-  src: IconSrc
+  src: IconClearSrc
 }
 
 // Rest types
-export type IconPropsWithRef = IconMainProps & AsPropsWithRef<undefined>
-export type IconPropsWithoutRef = WithoutRef<IconPropsWithRef>
-export type IconType = (props: IconPropsWithRef) => React.ReactNode
+export type IconClearPropsWithRef = IconClearMainProps & AsPropsWithRef<undefined>
+export type IconClearPropsWithoutRef = WithoutRef<IconClearPropsWithRef>
+export type IconClearType = (props: IconClearPropsWithRef) => React.ReactNode
 
 // Css for one of states
-const getIconCoreCss = ($sf: IconStyleFinal) => {
+const getIconCoreCss = ($sf: IconClearStyleFinal) => {
   return css`
     ${toCss({
       width: $sf.size,
@@ -48,7 +48,7 @@ const getIconCoreCss = ($sf: IconStyleFinal) => {
 }
 
 // Final css
-export const getIconFinalCss = ($sf: IconStyleFinal) => {
+export const getIconFinalCss = ($sf: IconClearStyleFinal) => {
   return css`
     .${getGlobalClassName($sf)} {
       ${getIconCoreCss($sf)}
@@ -57,15 +57,15 @@ export const getIconFinalCss = ($sf: IconStyleFinal) => {
 }
 
 // Global style
-const IconGlobalS = createGlobalStyle<{ $sf: IconStyleFinal }>`
+const IconGlobalS = createGlobalStyle<{ $sf: IconClearStyleFinal }>`
   ${({ $sf }) => getIconFinalCss($sf)}
 `
 
 // Component
-export const Icon: IconType = forwardRef<any, IconPropsWithoutRef>(
+export const Icon: IconClearType = forwardRef<any, IconClearPropsWithoutRef>(
   ({ $style = {}, className, src, ...restProps }, ref) => {
     const gcn = getGlobalClassName($style)
-    const $sf: IconStyleFinal = {
+    const $sf: IconClearStyleFinal = {
       ...$style,
     }
     if (typeof src === 'string') {

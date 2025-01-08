@@ -1,12 +1,9 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import {
-  getButtonStyleRootClear,
+  getButtonStyleRootClearByConfigured,
   getButtonStyleRootConfigured,
-  type ButtonConfig,
   type ButtonConfiguredCommonProps,
   type ButtonUinityConfig,
 } from '@/components/Button/config.js'
-import type { IconConfig } from '@/components/Icon/config.js'
 import type { IconConfigured, IconConfiguredSpecialProps } from '@/components/Icon/react.configured.js'
 import { omit, type AsPropsWithRef, type WithoutRef } from '@/lib/other.js'
 import { forwardRef } from 'react'
@@ -21,40 +18,31 @@ export type ButtonConfiguredSpecialProps<TIconName extends string = string> = {
 
 // Rest types
 export type ButtonConfiguredMainProps<
-  TButtonConfig extends ButtonConfig,
-  TIconConfig extends IconConfig,
+  TButtonUinityConfig extends ButtonUinityConfig,
   TIconName extends string,
 > = ButtonConfiguredSpecialProps<TIconName> &
-  ButtonConfiguredCommonProps<TButtonConfig> &
+  ButtonConfiguredCommonProps<TButtonUinityConfig> &
   Omit<ButtonClearMainProps, 'iconStart' | '$style'>
 export type ButtonConfiguredPropsWithRef<
-  TButtonConfig extends ButtonConfig,
-  TIconConfig extends IconConfig,
+  TButtonUinityConfig extends ButtonUinityConfig,
   TIconName extends string,
-> = ButtonConfiguredMainProps<TButtonConfig, TIconConfig, TIconName> & AsPropsWithRef<undefined>
+> = ButtonConfiguredMainProps<TButtonUinityConfig, TIconName> & AsPropsWithRef<undefined>
 export type ButtonConfiguredPropsWithoutRef<
-  TButtonConfig extends ButtonConfig,
-  TIconConfig extends IconConfig,
+  TButtonUinityConfig extends ButtonUinityConfig,
   TIconName extends string,
-> = WithoutRef<ButtonConfiguredPropsWithRef<TButtonConfig, TIconConfig, TIconName>>
-export type ButtonConfigured<
-  TButtonConfig extends ButtonConfig,
-  TIconConfig extends IconConfig,
-  TIconName extends string,
-> = (props: ButtonConfiguredPropsWithRef<TButtonConfig, TIconConfig, TIconName>) => React.ReactNode
+> = WithoutRef<ButtonConfiguredPropsWithRef<TButtonUinityConfig, TIconName>>
+export type ButtonConfigured<TButtonUinityConfig extends ButtonUinityConfig, TIconName extends string> = (
+  props: ButtonConfiguredPropsWithRef<TButtonUinityConfig, TIconName>
+) => React.ReactNode
 
-export const createButton = <
-  TButtonConfig extends ButtonConfig,
-  TIconConfig extends IconConfig,
-  TIconName extends string,
->({
+export const createButton = <TButtonUinityConfig extends ButtonUinityConfig, TIconName extends string>({
   uinityConfig,
   Icon,
 }: {
-  uinityConfig: ButtonUinityConfig<TButtonConfig, TIconConfig>
-  Icon: IconConfigured<TIconConfig, TIconName>
+  uinityConfig: TButtonUinityConfig
+  Icon: IconConfigured<TButtonUinityConfig, TIconName>
 }) => {
-  const Button: ButtonConfigured<TButtonConfig, TIconConfig, TIconName> = forwardRef<any, any>(
+  const Button: ButtonConfigured<TButtonUinityConfig, TIconName> = forwardRef<any, any>(
     (
       {
         variant,
@@ -62,7 +50,7 @@ export const createButton = <
         iconStart,
         iconStartSrc,
         ...restProps
-      }: ButtonConfiguredPropsWithoutRef<ButtonConfig, IconConfig, string>,
+      }: ButtonConfiguredPropsWithoutRef<ButtonUinityConfig, string>,
       ref: any
     ) => {
       const styleRootConfigured = getButtonStyleRootConfigured({
@@ -71,7 +59,7 @@ export const createButton = <
         settings: restProps,
         $style,
       })
-      const styleRootClear = getButtonStyleRootClear({
+      const styleRootClear = getButtonStyleRootClearByConfigured({
         uinityConfig,
         styleRootConfigured,
       })

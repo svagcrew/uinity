@@ -1,4 +1,8 @@
-import { getIconConfiguredStyleRoot, type IconConfig } from '@/components/Icon/config.js'
+import {
+  getIconStyleRootClearByConfigured,
+  getIconStyleRootConfigured,
+  type IconConfig,
+} from '@/components/Icon/config.js'
 import {
   type ColorModeName,
   getColorByMode,
@@ -16,7 +20,6 @@ import {
   zRecordOfStringsOptionalNullable,
   zStringOptionalNullable,
 } from '@/lib/other.js'
-
 import { z } from 'zod'
 
 export const zButtonStyleCoreConfigured = z.object({
@@ -51,7 +54,7 @@ export const getButtonStyleCoreClearByConfigured = ({
   if (!styleCoreConfigured) {
     return {}
   }
-  const iconStyleRoot = getIconConfiguredStyleRoot({
+  const iconStyleRootConfigured = getIconStyleRootConfigured({
     uinityConfig,
     $style: {
       color: getColorByMode(colorMode, styleCoreConfigured.iconColor),
@@ -59,6 +62,11 @@ export const getButtonStyleCoreClearByConfigured = ({
     },
     settings: styleCoreConfigured.iconSettings,
     variantName: styleCoreConfigured.iconVariant,
+  })
+  const iconStyleRootClear = getIconStyleRootClearByConfigured({
+    uinityConfig,
+    styleRootConfigured: iconStyleRootConfigured,
+    colorMode,
   })
   return {
     ...omit(styleCoreConfigured, [
@@ -71,9 +79,9 @@ export const getButtonStyleCoreClearByConfigured = ({
     ]),
     textColor: getColorByMode(colorMode, styleCoreConfigured.textColor),
     backgroundColor: getColorByMode(colorMode, styleCoreConfigured.backgroundColor),
-    iconColor: iconStyleRoot.color,
+    iconColor: iconStyleRootClear.color,
     borderColor: getColorByMode(colorMode, styleCoreConfigured.borderColor),
-    iconSize: iconStyleRoot.size,
+    iconSize: iconStyleRootClear.size,
   }
 }
 export type ButtonStyleCoreClear = ReturnType<typeof getButtonStyleCoreClearByConfigured>
@@ -94,8 +102,8 @@ export type ButtonStyleStatesClear = {
 }
 export const zButtonStyleRootConfigured = zButtonStyleStatesConfigured
 export type ButtonStyleRootConfigured = z.output<typeof zButtonStyleRootConfigured>
-export type ButtonStyleRootClear = ButtonStyleStatesClear
-export type ButtonStyleRootClearInput = Partial<ButtonStyleRootClear>
+export type ButtonStyleRootClearNormalized = ButtonStyleStatesClear
+export type ButtonStyleRootClearInput = Partial<ButtonStyleRootClearNormalized>
 export const zButtonConfig = getZAnyConfig({
   zStyleRoot: zButtonStyleRootConfigured,
 })
@@ -108,8 +116,8 @@ export type ButtonUinityConfig<
   button: TButtonConfig
   icon: TIconConfig
 }
-export type ButtonConfiguredCommonProps<TButtonConfig extends ButtonConfig = ButtonConfig> = AnyConfiguredCommonProps<
-  TButtonConfig,
+export type ButtonConfiguredCommonProps<TButtonUinityConfig extends ButtonUinityConfig> = AnyConfiguredCommonProps<
+  TButtonUinityConfig['button'],
   ButtonStyleRootConfigured
 >
 
@@ -138,7 +146,8 @@ export const getButtonStyleRootConfigured = getGetAnyConfiguredStyleRoot<ButtonU
     },
   }
 )
-export const getButtonStyleRootClear = ({
+// TODO:ASAP generate getButtonStyleRootClear
+export const getButtonStyleRootClearByConfigured = ({
   uinityConfig,
   styleRootConfigured,
   colorMode,

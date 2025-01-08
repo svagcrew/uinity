@@ -1,55 +1,65 @@
 import {
-  getIconConfiguredStyleRoot,
-  type IconConfig,
+  getIconStyleRootClearByConfigured,
+  getIconStyleRootConfigured,
   type IconConfiguredCommonProps,
   type IconUinityConfig,
 } from '@/components/Icon/config.js'
 import type { AsPropsWithRef, WithoutRef } from '@/lib/other.js'
 import { forwardRef } from 'react'
-import type { IconMainProps, IconSrc } from './react.clear.js'
+import type { IconClearMainProps, IconClearSrc } from './react.clear.js'
 import { Icon as IconClear } from './react.clear.js'
 
 // Special props for configured component
 export type IconConfiguredSpecialProps<TIconName extends string = string> = {
   name?: TIconName
-  src?: IconSrc
+  src?: IconClearSrc
 }
 
 // Rest types
 export type IconConfiguredMainProps<
-  TIconConfig extends IconConfig,
+  TIconUinityConfig extends IconUinityConfig,
   TIconName extends string,
-> = IconConfiguredSpecialProps<TIconName> & IconConfiguredCommonProps<TIconConfig> & Omit<IconMainProps, 'src'>
+> = IconConfiguredSpecialProps<TIconName> &
+  IconConfiguredCommonProps<TIconUinityConfig> &
+  Omit<IconClearMainProps, 'src'>
 export type IconConfiguredPropsWithRef<
-  TIconConfig extends IconConfig,
+  TIconUinityConfig extends IconUinityConfig,
   TIconName extends string,
-> = IconConfiguredMainProps<TIconConfig, TIconName> & AsPropsWithRef<undefined>
-export type IconConfiguredPropsWithoutRef<TIconConfig extends IconConfig, TIconName extends string> = WithoutRef<
-  IconConfiguredPropsWithRef<TIconConfig, TIconName>
->
-export type IconConfigured<TIconConfig extends IconConfig, TIconName extends string> = (
-  props: IconConfiguredPropsWithRef<TIconConfig, TIconName>
+> = IconConfiguredMainProps<TIconUinityConfig, TIconName> & AsPropsWithRef<undefined>
+export type IconConfiguredPropsWithoutRef<
+  TIconUinityConfig extends IconUinityConfig,
+  TIconName extends string,
+> = WithoutRef<IconConfiguredPropsWithRef<TIconUinityConfig, TIconName>>
+export type IconConfigured<TIconUinityConfig extends IconUinityConfig, TIconName extends string> = (
+  props: IconConfiguredPropsWithRef<TIconUinityConfig, TIconName>
 ) => React.ReactNode
 
-export type IconsSources<TIconName extends string> = Record<TIconName, IconSrc>
+export type IconsSources<TIconName extends string> = Record<TIconName, IconClearSrc>
 
-export const createIcon = <TIconConfig extends IconConfig, TIconName extends string>({
+export const createIcon = <TIconUinityConfig extends IconUinityConfig, TIconName extends string>({
   uinityConfig,
   iconsSources,
 }: {
-  uinityConfig: IconUinityConfig<TIconConfig>
+  uinityConfig: TIconUinityConfig
   iconsSources?: IconsSources<TIconName>
 }) => {
-  const Icon: IconConfigured<TIconConfig, TIconName> = forwardRef<any, any>(
-    ({ variant, $style, name, src, ...restProps }: IconConfiguredPropsWithoutRef<IconConfig, string>, ref: any) => {
-      const $clearStyle = getIconConfiguredStyleRoot({
+  const Icon: IconConfigured<TIconUinityConfig, TIconName> = forwardRef<any, any>(
+    (
+      { variant, $style, name, src, ...restProps }: IconConfiguredPropsWithoutRef<IconUinityConfig, string>,
+      ref: any
+    ) => {
+      const styleRootConfigured = getIconStyleRootConfigured({
         uinityConfig,
         variantName: variant,
         settings: restProps,
         $style,
       })
+      const styleRootClear = getIconStyleRootClearByConfigured({
+        uinityConfig,
+        styleRootConfigured,
+      })
       const srcNormalized = iconsSources && name && name in iconsSources ? (iconsSources as any)[name] : src
-      return <IconClear {...restProps} src={srcNormalized} $style={$clearStyle} ref={ref} />
+      return <IconClear {...restProps} src={srcNormalized} $style={styleRootClear} ref={ref} />
     }
   )
   return {

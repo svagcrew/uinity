@@ -163,7 +163,7 @@ const Playground = () => {
         <ButtonConfigured iconStart="icon1" xxcolor="blue" xxsize="small">
           ButtonX
         </ButtonConfigured>
-        <ButtonConfigured iconStart="icon1" variant="bigRedWithBlueSmallIcon">
+        <ButtonConfigured iconStart="icon2" variant="bigRedWithBlueSmallIcon">
           bigRedWithBlueSmallIcon
         </ButtonConfigured>
         <ButtonConfigured iconStart="icon1" variant="smallBlueWithRedBigIcon">
@@ -178,7 +178,7 @@ const Playground = () => {
       <Icon
         $style={{
           color: '#0000ff',
-          size: 100,
+          size: 50,
         }}
         ref={ref}
         src={SvgIcon}
