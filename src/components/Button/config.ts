@@ -1,12 +1,19 @@
 import { getIconStyleRootClear, type IconConfig } from '@/components/Icon/config.js'
-import { type AnyConfig, type AnyConfiguredCommonProps, getGetAnyStyleRoot, getZAnyConfig } from '@/lib/anyConfig.js'
-import type { BreakSizes } from '@/lib/bySize.js'
 import {
-  type ColorModeName,
-  getColorByMode,
-  type WithColorsClearPartial,
-  zColorValueOptionalNullable,
-} from '@/lib/color.js'
+  type AnyConfig,
+  type AnyConfiguredCommonProps,
+  getGetAnyStyleRoot,
+  getZAnyConfig,
+  type StyleConfiguredToClear,
+} from '@/lib/anyConfig.js'
+import {
+  type BreakSizes,
+  type ByAllSizesClearOptionalNullable,
+  type ByAllSizesConfiguredOptionalNullable,
+  bySizeKeys,
+  getZPartByAllSizesConfiguredOptionalNullable,
+} from '@/lib/bySize.js'
+import { type ColorModeName, getColorByMode, zColorValueOptionalNullable } from '@/lib/color.js'
 import { objectAssignExceptUndefined, omit } from '@/lib/utils.js'
 import {
   zNumberOrStringOptionalNullable,
@@ -32,6 +39,7 @@ export const zButtonStyleCoreConfigured = z.object({
   iconVariant: zStringOptionalNullable,
 })
 export type ButtonStyleCoreConfigured = z.output<typeof zButtonStyleCoreConfigured>
+
 export const getButtonStyleCoreClearByConfigured = ({
   uinityConfig,
   styleCoreConfigured,
@@ -40,15 +48,14 @@ export const getButtonStyleCoreClearByConfigured = ({
   uinityConfig: ButtonUinityConfig
   styleCoreConfigured: ButtonStyleCoreConfigured | undefined | null
   colorMode?: ColorModeName
-}): Omit<
-  WithColorsClearPartial<ButtonStyleCoreConfigured, 'textColor' | 'backgroundColor' | 'iconColor' | 'borderColor'>,
-  'iconSettings' | 'iconVariant'
+}): StyleConfiguredToClear<
+  ButtonStyleCoreConfigured,
+  'iconSettings' | 'iconVariant',
+  'textColor' | 'backgroundColor' | 'iconColor' | 'borderColor'
 > => {
   if (!styleCoreConfigured) {
     return {}
   }
-  // TODO:ASAP add wsr for button
-  // TODO:ASAP remove wsr from icon
   const iconStyleRootClear = getIconStyleRootClear({
     uinityConfig,
     styleRootConfiguredOverrides: {
@@ -75,6 +82,9 @@ export const getButtonStyleCoreClearByConfigured = ({
   }
 }
 export type ButtonStyleCoreClear = ReturnType<typeof getButtonStyleCoreClearByConfigured>
+
+export const buttonStatesKeys = ['rest', 'hover', 'active', 'focus', 'disabled'] as const
+export type ButtonStateKey = (typeof buttonStatesKeys)[number]
 export const zButtonStyleStatesConfigured = z.object({
   rest: zButtonStyleCoreConfigured.optional().nullable(),
   hover: zButtonStyleCoreConfigured.optional().nullable(),
@@ -83,22 +93,24 @@ export const zButtonStyleStatesConfigured = z.object({
   disabled: zButtonStyleCoreConfigured.optional().nullable(),
 })
 export type ButtonStyleStatesConfigured = z.output<typeof zButtonStyleStatesConfigured>
-export type ButtonStyleStatesClear = {
-  rest: ButtonStyleCoreClear
-  hover: ButtonStyleCoreClear
-  active: ButtonStyleCoreClear
-  focus: ButtonStyleCoreClear
-  disabled: ButtonStyleCoreClear
-}
-export const zButtonStyleRootConfigured = zButtonStyleStatesConfigured
-export type ButtonStyleRootConfigured = z.output<typeof zButtonStyleRootConfigured>
-export type ButtonStyleRootClearNormalized = ButtonStyleStatesClear
-export type ButtonStyleRootClearInput = Partial<ButtonStyleRootClearNormalized>
+export type ButtonStyleStatesClear = Partial<Record<ButtonStateKey, ButtonStyleCoreClear | null | undefined>>
+
+export const zButtonStyleRootConfiguredWithoutBySize = zButtonStyleStatesConfigured
+export type ButtonStyleRootConfiguredWithoutBySize = z.output<typeof zButtonStyleRootConfiguredWithoutBySize>
+
+export const zButtonStyleRootConfigured = zButtonStyleRootConfiguredWithoutBySize.extend(
+  getZPartByAllSizesConfiguredOptionalNullable({ zStyle: zButtonStyleRootConfiguredWithoutBySize })
+) as z.ZodObject<any, any, any> // becourse of typescript overloading
+export type ButtonStyleRootConfigured = ByAllSizesConfiguredOptionalNullable<ButtonStyleRootConfiguredWithoutBySize>
+
+export type ButtonStyleRootClearWithoutBySize = ButtonStyleStatesClear
+export type ButtonStyleRootClear = ByAllSizesClearOptionalNullable<ButtonStyleRootClearWithoutBySize>
+
 export const zButtonConfig = getZAnyConfig({
   zStyleRootConfigured: zButtonStyleRootConfigured,
-})
-
+}) as z.ZodObject<any, any, any> // becourse of typescript overloading
 export type ButtonConfig = AnyConfig<ButtonStyleRootConfigured>
+
 export type ButtonUinityConfig<
   TButtonConfig extends ButtonConfig = ButtonConfig,
   TBreakSizes extends BreakSizes = BreakSizes,
@@ -108,38 +120,39 @@ export type ButtonUinityConfig<
   breakSizes: TBreakSizes
   icon: TIconConfig
 }
+
 export type ButtonConfiguredCommonProps<TButtonUinityConfig extends ButtonUinityConfig> = AnyConfiguredCommonProps<
   TButtonUinityConfig['button'],
   ButtonStyleRootConfigured
 >
 
 export const {
-  getStyleRootClear: getButtonStyleRootClear,
-  getStyleRootClearByConfigured: getButtonStyleRootClearByConfigured,
-  getStyleRootConfigured: getButtonStyleRootConfigured,
-} = getGetAnyStyleRoot<ButtonUinityConfig, ButtonStyleRootConfigured, ButtonStyleRootClearNormalized>({
+  getStyleRootClearWithBySize: getButtonStyleRootClear,
+  getStyleRootConfiguredWithBySize: getButtonStyleRootConfigured,
+} = getGetAnyStyleRoot<ButtonUinityConfig, ButtonStyleRootConfigured, ButtonStyleRootClear>({
   componentName: 'button',
   assignStyleRootConfigured: (...stylesRoot) => {
     const result: ButtonStyleRootConfigured = stylesRoot[0] || {}
-    result.rest ||= {}
-    result.hover ||= {}
-    result.active ||= {}
-    result.focus ||= {}
-    result.disabled ||= {}
-
+    for (const buttonStateKey of buttonStatesKeys) {
+      result[buttonStateKey] ||= {}
+    }
+    for (const bySizeKey of bySizeKeys) {
+      result[bySizeKey] ||= []
+    }
     for (const styleRoot of stylesRoot) {
       if (!styleRoot) {
         continue
       }
-      objectAssignExceptUndefined(result.rest, styleRoot.rest)
-      objectAssignExceptUndefined(result.hover, styleRoot.hover)
-      objectAssignExceptUndefined(result.active, styleRoot.active)
-      objectAssignExceptUndefined(result.focus, styleRoot.focus)
-      objectAssignExceptUndefined(result.disabled, styleRoot.disabled)
+      for (const buttonStateKey of buttonStatesKeys) {
+        objectAssignExceptUndefined(result[buttonStateKey], styleRoot[buttonStateKey])
+      }
+      for (const bySizeKey of bySizeKeys) {
+        ;(result as any)[bySizeKey].push(...(styleRoot[bySizeKey] || []))
+      }
     }
     return result
   },
-  getStyleRootClearByConfigured: ({ uinityConfig, styleRootConfigured, colorMode }) => {
+  getStyleRootClearByConfiguredWithoutBySize: ({ uinityConfig, styleRootConfigured, colorMode }) => {
     return {
       rest: getButtonStyleCoreClearByConfigured({
         uinityConfig,

@@ -1,6 +1,5 @@
-import type { IconStyleRootClearInput, IconStyleRootClearNormalized } from '@/components/Icon/config.js'
+import type { IconStyleRootClear } from '@/components/Icon/config.js'
 import { type AsPropsWithRef, syncRefs, type WithoutRef } from '@/lib/asRef.js'
-import { getBySizeCss } from '@/lib/bySize.js'
 import { getGetClassName, getGlobalClassName } from '@/lib/classes.js'
 import { toCss } from '@/lib/css.js'
 import cn from 'classnames'
@@ -20,11 +19,11 @@ export type IconClearSrc =
   | undefined
 
 // Props for real style generation
-export type IconClearStyleFinal = IconStyleRootClearNormalized
+export type IconClearStyleFinal = IconStyleRootClear
 
 // Component props
 export type IconClearMainProps = {
-  $style?: IconStyleRootClearInput
+  $style?: IconStyleRootClear
   className?: string
   src: IconClearSrc
 }
@@ -52,7 +51,6 @@ export const getIconCoreCssBase = ($sf: IconClearStyleFinal) => {
 export const getIconCoreCss = ($sf: IconClearStyleFinal) => {
   return css`
     ${getIconCoreCssBase($sf)}
-    ${getBySizeCss({ $sf, getCssBase: getIconCoreCssBase })}
   `
 }
 

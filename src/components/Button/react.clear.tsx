@@ -1,17 +1,14 @@
-import type {
-  ButtonStyleCoreClear,
-  ButtonStyleRootClearInput,
-  ButtonStyleRootClearNormalized,
-} from '@/components/Button/config.js'
+import type { ButtonStyleCoreClear, ButtonStyleRootClear } from '@/components/Button/config.js'
 import { getIconCoreCss, Icon, type IconClearSrc } from '@/components/Icon/react.clear.js'
 import { syncRefs, type As, type AsPropsWithRef, type WithoutRef } from '@/lib/asRef.js'
+import { getBySizeCss } from '@/lib/bySize.js'
 import { getGetClassName, mark } from '@/lib/classes.js'
 import { toCss } from '@/lib/css.js'
 import { forwardRef } from 'react'
 import { css, styled } from 'styled-components'
 
 // Props for real style generation
-export type ButtonClearStyleFinal = ButtonStyleRootClearNormalized & {
+export type ButtonClearStyleFinal = ButtonStyleRootClear & {
   loading: boolean
 }
 
@@ -23,7 +20,7 @@ export type ButtonClearMainProps<TAs extends As = ButtonDefaultAs> = {
   loading?: boolean
   type?: 'button' | 'submit' | 'reset'
   iconStart?: IconClearSrc
-  $style?: ButtonStyleRootClearInput
+  $style?: ButtonStyleRootClear
   children?: React.ReactNode
 }
 
@@ -33,7 +30,8 @@ export type ButtonClearPropsWithoutRef<TAs extends As = ButtonDefaultAs> = Witho
 export type ButtonClearType = <TAs extends As = ButtonDefaultAs>(props: ButtonClearPropsWithRef<TAs>) => React.ReactNode
 
 // Css for one of states
-const getButtonCoreCss = (sc: ButtonStyleCoreClear) => {
+const getButtonCoreCss = (sc: ButtonStyleCoreClear | undefined | null) => {
+  sc ||= {}
   return css`
     ${toCss({
       backgroundColor: sc.backgroundColor,
@@ -63,6 +61,28 @@ const getButtonCoreCss = (sc: ButtonStyleCoreClear) => {
 }
 
 // Final css
+const getButtonFinalCssBase = ($sf: ButtonClearStyleFinal) => {
+  return css`
+    ${getButtonCoreCss($sf.rest)}
+
+    &:hover {
+      ${getButtonCoreCss($sf.hover)}
+    }
+
+    &:active {
+      ${getButtonCoreCss($sf.active)}
+    }
+
+    &:focus {
+      ${getButtonCoreCss($sf.focus)}
+    }
+
+    &:disabled,
+    &[disabled] {
+      ${getButtonCoreCss($sf.disabled)}
+    }
+  `
+}
 const getButtonFinalCss = ($sf: ButtonClearStyleFinal) => {
   return css`
     cursor: pointer;
@@ -71,7 +91,6 @@ const getButtonFinalCss = ($sf: ButtonClearStyleFinal) => {
     user-select: none;
     font-weight: bold;
     font-size: 16px;
-    ${getButtonCoreCss($sf.rest)}
 
     ${$sf.loading
       ? css`
@@ -91,27 +110,16 @@ const getButtonFinalCss = ($sf: ButtonClearStyleFinal) => {
         `
       : ''}
 
-    &:hover {
-      ${getButtonCoreCss($sf.hover)}
-    }
-
-    &:active {
-      ${getButtonCoreCss($sf.active)}
-    }
-
-    &:focus {
-      ${getButtonCoreCss($sf.focus)}
-    }
-
     &:disabled,
     &[disabled] {
-      ${getButtonCoreCss($sf.disabled)}
       pointer-events: none;
     }
+
+    ${getButtonFinalCssBase($sf)}
+    ${getBySizeCss({ $sf, getCssBase: getButtonFinalCssBase })}
   `
 }
 
-// TODO: wsr etc for button
 // TODO: autocompletion for wsr, autocompletion for nested settings, autocompletion for nested variants
 
 // TODO: buttons
@@ -160,21 +168,7 @@ export const Button: ButtonClearType = forwardRef<any, ButtonClearPropsWithoutRe
   ({ iconStart, children, disabled, loading, className: providedClassName, $style = {}, ...restProps }, ref) => {
     const $sf: ButtonClearStyleFinal = {
       loading: !!loading,
-      rest: {
-        ...$style.rest,
-      },
-      hover: {
-        ...$style.hover,
-      },
-      active: {
-        ...$style.active,
-      },
-      focus: {
-        ...$style.focus,
-      },
-      disabled: {
-        ...$style.disabled,
-      },
+      ...$style,
     }
     return (
       <ButtonS

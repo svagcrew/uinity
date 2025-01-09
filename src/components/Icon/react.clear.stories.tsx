@@ -1,11 +1,11 @@
-import type { IconStyleRootClearInput } from '@/components/Icon/config.js'
+import type { IconStyleRootClear } from '@/components/Icon/config.js'
 import type { IconClearMainProps } from '@/components/Icon/react.clear.js'
 import SvgIcon from '@/stories/icon1.svg?react'
 import type { Meta, StoryObj } from '@storybook/react'
 import { Icon } from './react.clear.js'
 
 const IconClearDemo = (
-  props: IconStyleRootClearInput &
+  props: IconStyleRootClear &
     IconClearMainProps & {
       mode: 'element' | 'src' | 'component'
     }

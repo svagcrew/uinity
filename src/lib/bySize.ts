@@ -46,11 +46,16 @@ export const bySizeKeys = [
   'byContainerWidth',
   'byContainerWidthReverse',
 ] as const
-export type BySizeKey = keyof ReturnType<typeof getZPartByAllSizesConfiguredOptionalNullable>
+export type BySizeKey = (typeof bySizeKeys)[number]
 export type ConfiguredBySizePartial<TConfiguredStyle extends {}, TBreakSizes extends BreakSizes> = Partial<
   Record<BySizeKey, [keyof TBreakSizes | number, TConfiguredStyle][] | null>
 >
 export type ClearBySizePartial<TClearStyle extends {}> = Partial<Record<BySizeKey, [number, TClearStyle][] | null>>
+export type ByAllSizesConfiguredOptionalNullable<TStyleWithoutBySize extends {}> = TStyleWithoutBySize &
+  Partial<Record<BySizeKey, [keyof BreakSizes | number, TStyleWithoutBySize][] | null | undefined>>
+export type ByAllSizesClearOptionalNullable<TStyleWithoutBySize extends {}> = TStyleWithoutBySize &
+  Partial<Record<BySizeKey, [number, TStyleWithoutBySize][] | null | undefined>>
+export type OmitBySize<TStyle extends {}> = Omit<TStyle, BySizeKey>
 
 export const getClearBySizeByConfigured = <TClearStyle extends {}>({
   getStyleRootClearByConfiguredWithoutBySize,

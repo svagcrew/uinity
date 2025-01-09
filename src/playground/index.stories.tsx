@@ -41,21 +41,21 @@ const uinityConfig = {
       },
       xsize: {
         small: {
-          // size: 24,
-          byWindowWidth: [
-            [0, { size: 12 }],
-            [1000, { size: 24 }],
-            [1200, { size: 32 }],
-          ],
+          size: 24,
+          // byWindowWidth: [
+          //   [0, { size: 12 }],
+          //   [1000, { size: 24 }],
+          //   [1200, { size: 32 }],
+          // ],
         },
         big: {
-          // size: 150,
-          byWindowWidthReverse: [
-            [Infinity, { size: 96 }],
-            // [1200, { size: 48 }],
-            ['big', { size: 48 }],
-            [1000, { size: 12 }],
-          ],
+          size: 150,
+          // byWindowWidthReverse: [
+          //   [Infinity, { size: 96 }],
+          //   // [1200, { size: 48 }],
+          //   ['big', { size: 48 }],
+          //   [1000, { size: 12 }],
+          // ],
         },
       },
     },
@@ -117,6 +117,12 @@ const uinityConfig = {
             textSize: 96,
             iconSize: 96,
           },
+          byWindowWidthReverse: [
+            [Infinity, { rest: { textSize: 96, iconSize: 96 } }],
+            // [1200, { size: 48 }],
+            ['big', { rest: { textSize: 48, iconSize: 48 } }],
+            [1000, { rest: { textSize: 12, iconSize: 12 } }],
+          ],
         },
       },
     },
@@ -130,8 +136,14 @@ const uinityConfig = {
           rest: {
             iconVariant: 'blueSmall',
             backgroundColor: '#ff0000',
-            textSize: 96,
+            textSize: 98,
           },
+          byWindowWidthReverse: [
+            [Infinity, { rest: { textSize: 97, iconSize: 96 } }],
+            // [1200, { size: 48 }],
+            ['big', { rest: { textSize: 48, iconSize: 48 } }],
+            [1000, { rest: { textSize: 12, iconSize: 12 } }],
+          ],
         },
       },
       smallBlueWithRedBigIcon: {
@@ -167,6 +179,11 @@ const Playground = () => {
     uinityConfig,
     Icon: IconConfigured,
   })
+  // return (
+  //   <ButtonConfigured iconStart="icon2" variant="bigRedWithBlueSmallIcon">
+  //     bigRedWithBlueSmallIcon
+  //   </ButtonConfigured>
+  // )
   return (
     <>
       <IconConfigured name="icon1" xsize="small" />
@@ -174,12 +191,12 @@ const Playground = () => {
       <IconConfigured
         name="icon1"
         variant="redBig"
-        $style={{
-          byWindowWidthReverse: [
-            [Infinity, { size: 200 }],
-            [1200, { size: 50 }],
-          ],
-        }}
+        // $style={{
+        //   byWindowWidthReverse: [
+        //     [Infinity, { size: 200 }],
+        //     [1200, { size: 50 }],
+        //   ],
+        // }}
       />
       <Buttons direction="column" ref={ref}>
         {/* <button ref={}>Button0</button> */}

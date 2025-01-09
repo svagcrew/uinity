@@ -1,5 +1,12 @@
-import type { BySizeKey, ClearBySizePartial } from '@/lib/bySize.js'
+import {
+  bySizeKeys,
+  getClearBySizeByConfigured,
+  type BySizeKey,
+  type ClearBySizePartial,
+  type OmitBySize,
+} from '@/lib/bySize.js'
 import type { ColorModeName, ColorsClearPartial, OmitColors } from '@/lib/color.js'
+import omitLodash from 'lodash/omit.js'
 import { z } from 'zod'
 
 export type AnyConfigSettings<TStyleRoot extends {}> = Record<string, Record<string, TStyleRoot>>
@@ -44,21 +51,21 @@ export type PartialUinityConfig = Record<string, AnyConfig<any, any>>
 export const getGetAnyStyleRoot = <
   TPartialUinityConfig extends PartialUinityConfig,
   TStyleRootConfigured extends {},
-  TStyleRootClearNormalized extends {} = {},
+  TStyleRootClear extends {} = {},
 >({
   componentName,
   assignStyleRootConfigured,
-  getStyleRootClearByConfigured,
+  getStyleRootClearByConfiguredWithoutBySize,
 }: {
   componentName: string
   assignStyleRootConfigured: (...stylesRoot: Array<TStyleRootConfigured | undefined | null>) => TStyleRootConfigured
-  getStyleRootClearByConfigured: (props: {
+  getStyleRootClearByConfiguredWithoutBySize: (props: {
     uinityConfig: TPartialUinityConfig
     styleRootConfigured: TStyleRootConfigured | undefined | null
     colorMode?: ColorModeName
-  }) => TStyleRootClearNormalized
+  }) => TStyleRootClear
 }) => {
-  const getStyleRootConfigured = ({
+  const getStyleRootConfiguredWithBySize = ({
     uinityConfig,
     variantName,
     settings,
@@ -132,7 +139,28 @@ export const getGetAnyStyleRoot = <
     )
     return result
   }
-  const getStyleRootClear = ({
+
+  const getStyleRootConfiguredWithoutBySize = ({
+    uinityConfig,
+    variantName,
+    settings,
+    styleRootConfiguredOverrides,
+  }: {
+    uinityConfig: TPartialUinityConfig
+    variantName: string | undefined | null
+    settings: Record<string, any> | undefined | null
+    styleRootConfiguredOverrides: TStyleRootConfigured | undefined | null
+  }): OmitBySize<TStyleRootConfigured> => {
+    const styleRootConfigured = getStyleRootConfiguredWithBySize({
+      uinityConfig,
+      variantName,
+      settings,
+      styleRootConfiguredOverrides,
+    })
+    return omitLodash(styleRootConfigured, [...bySizeKeys]) as never
+  }
+
+  const getStyleRootClearWithoutBySize = ({
     uinityConfig,
     variantName,
     settings,
@@ -144,19 +172,56 @@ export const getGetAnyStyleRoot = <
     settings: Record<string, any> | undefined | null
     styleRootConfiguredOverrides: TStyleRootConfigured | undefined | null
     colorMode?: ColorModeName
-  }): TStyleRootClearNormalized => {
-    const styleRootConfigured = getStyleRootConfigured({
+  }): OmitBySize<TStyleRootClear> => {
+    const styleRootConfigured = getStyleRootConfiguredWithoutBySize({
+      uinityConfig,
+      variantName,
+      settings,
+      styleRootConfiguredOverrides,
+    }) as never
+    return getStyleRootClearByConfiguredWithoutBySize({ uinityConfig, styleRootConfigured, colorMode })
+  }
+
+  const getStyleRootClearWithBySize = ({
+    uinityConfig,
+    variantName,
+    settings,
+    styleRootConfiguredOverrides,
+    colorMode,
+  }: {
+    uinityConfig: TPartialUinityConfig
+    variantName: string | undefined | null
+    settings: Record<string, any> | undefined | null
+    styleRootConfiguredOverrides: TStyleRootConfigured | undefined | null
+    colorMode?: ColorModeName
+  }): TStyleRootClear => {
+    const styleRootConfigured = getStyleRootConfiguredWithBySize({
       uinityConfig,
       variantName,
       settings,
       styleRootConfiguredOverrides,
     })
-    return getStyleRootClearByConfigured({ uinityConfig, styleRootConfigured, colorMode })
+    const styleRootClearWithoutBySize = getStyleRootClearByConfiguredWithoutBySize({
+      uinityConfig,
+      styleRootConfigured,
+      colorMode,
+    })
+    return {
+      ...styleRootClearWithoutBySize,
+      ...getClearBySizeByConfigured({
+        uinityConfig,
+        styleRootConfigured,
+        colorMode,
+        getStyleRootClearByConfiguredWithoutBySize: getStyleRootClearByConfiguredWithoutBySize as never,
+      }),
+    }
   }
   return {
-    getStyleRootConfigured,
-    getStyleRootClearByConfigured,
-    getStyleRootClear,
+    getStyleRootConfiguredWithBySize,
+    getStyleRootConfiguredWithoutBySize,
+    getStyleRootClearByConfiguredWithoutBySize,
+    getStyleRootClearWithoutBySize,
+    getStyleRootClearWithBySize,
   }
 }
 

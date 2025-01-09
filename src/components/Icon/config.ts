@@ -4,28 +4,19 @@ import {
   getGetAnyStyleRoot,
   getZAnyConfig,
   type StyleConfiguredToClear,
-  type StyleConfiguredToClearWithBySize,
 } from '@/lib/anyConfig.js'
-import {
-  type BreakSizes,
-  getClearBySizeByConfigured,
-  getZPartByAllSizesConfiguredOptionalNullable,
-} from '@/lib/bySize.js'
 import { type ColorModeName, getColorByMode, zColorValueOptionalNullable } from '@/lib/color.js'
 import { objectAssignExceptUndefined, omit } from '@/lib/utils.js'
 import { zNumberOrStringOptionalNullable } from '@/lib/zod.js'
 import { z } from 'zod'
 
-export const zIconStyleRootConfiguredWithoutBySize = z.object({
+export const zIconStyleRootConfigured = z.object({
   color: zColorValueOptionalNullable,
   size: zNumberOrStringOptionalNullable,
 })
-export type IconStyleRootConfiguredWithoutBySize = z.output<typeof zIconStyleRootConfiguredWithoutBySize>
-export const zIconStyleRootConfigured = zIconStyleRootConfiguredWithoutBySize.extend(
-  getZPartByAllSizesConfiguredOptionalNullable({ zStyle: zIconStyleRootConfiguredWithoutBySize })
-)
 export type IconStyleRootConfigured = z.output<typeof zIconStyleRootConfigured>
-export const getIconStyleRootClearByConfiguredWithoutBySize = ({
+
+export const getIconStyleRootClearByConfigured = ({
   uinityConfig,
   styleRootConfigured,
   colorMode,
@@ -42,53 +33,34 @@ export const getIconStyleRootClearByConfiguredWithoutBySize = ({
     color: getColorByMode(colorMode, styleRootConfigured.color),
   }
 }
-export const getIconStyleRootClearByConfigured = ({
-  uinityConfig,
-  styleRootConfigured,
-  colorMode,
-}: {
-  uinityConfig: IconUinityConfig
-  styleRootConfigured: IconStyleRootConfigured | undefined | null
-  colorMode?: ColorModeName
-}): StyleConfiguredToClearWithBySize<IconStyleRootConfigured, never, 'color'> => {
-  return {
-    ...getIconStyleRootClearByConfiguredWithoutBySize({ uinityConfig, styleRootConfigured, colorMode }),
-    ...getClearBySizeByConfigured({
-      uinityConfig,
-      styleRootConfigured,
-      colorMode,
-      getStyleRootClearByConfiguredWithoutBySize: getIconStyleRootClearByConfiguredWithoutBySize,
-    }),
-  }
-}
-export type IconStyleRootClearNormalized = ReturnType<typeof getIconStyleRootClearByConfigured>
-export type IconStyleRootClearInput = IconStyleRootClearNormalized
+export type IconStyleRootClear = ReturnType<typeof getIconStyleRootClearByConfigured>
+
 export const zIconConfig = getZAnyConfig({
   zStyleRootConfigured: zIconStyleRootConfigured,
 })
-
 export type IconConfig = AnyConfig<IconStyleRootConfigured>
-export type IconUinityConfig<
-  TIconConfig extends IconConfig = IconConfig,
-  TBreakSizes extends BreakSizes = BreakSizes,
-> = { icon: TIconConfig; breakSizes: TBreakSizes }
+
+export type IconUinityConfig<TIconConfig extends IconConfig = IconConfig> = { icon: TIconConfig }
+
 export type IconConfiguredCommonProps<TIconUinityConfig extends IconUinityConfig> = AnyConfiguredCommonProps<
   TIconUinityConfig['icon'],
   IconStyleRootConfigured
 >
 
-export const { getStyleRootClear: getIconStyleRootClear, getStyleRootConfigured: getIconStyleRootConfigured } =
-  getGetAnyStyleRoot<IconUinityConfig, IconStyleRootConfigured, IconStyleRootClearNormalized>({
-    componentName: 'icon',
-    assignStyleRootConfigured: (...stylesRoot) => {
-      const result: IconStyleRootConfigured = stylesRoot[0] || {}
-      for (const styleRoot of stylesRoot) {
-        if (!styleRoot) {
-          continue
-        }
-        objectAssignExceptUndefined(result, styleRoot)
+export const {
+  getStyleRootClearWithoutBySize: getIconStyleRootClear,
+  getStyleRootConfiguredWithoutBySize: getIconStyleRootConfigured,
+} = getGetAnyStyleRoot<IconUinityConfig, IconStyleRootConfigured, IconStyleRootClear>({
+  componentName: 'icon',
+  assignStyleRootConfigured: (...stylesRoot) => {
+    const result: IconStyleRootConfigured = stylesRoot[0] || {}
+    for (const styleRoot of stylesRoot) {
+      if (!styleRoot) {
+        continue
       }
-      return result
-    },
-    getStyleRootClearByConfigured: getIconStyleRootClearByConfigured,
-  })
+      objectAssignExceptUndefined(result, styleRoot)
+    }
+    return result
+  },
+  getStyleRootClearByConfiguredWithoutBySize: getIconStyleRootClearByConfigured,
+})
