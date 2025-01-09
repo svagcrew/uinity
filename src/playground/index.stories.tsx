@@ -141,7 +141,7 @@ const uinityConfig = {
           byWindowWidthReverse: [
             [Infinity, { rest: { textSize: 97, iconSize: 96 } }],
             // [1200, { size: 48 }],
-            ['big', { rest: { textSize: 48, iconSize: 48 } }],
+            ['big', { rest: { iconVariant: 'greenBig', textSize: 48 } }],
             [1000, { rest: { textSize: 12, iconSize: 12 } }],
           ],
         },
