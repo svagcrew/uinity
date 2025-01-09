@@ -5,7 +5,7 @@ import { createButton } from '@/components/button/react.configured.js'
 import { Buttons } from '@/components/buttons/react.clear.js'
 import { Icon } from '@/components/icon/react.clear.js'
 import { createIcon } from '@/components/icon/react.configured.js'
-import type { UinityConfigFull } from '@/lib/unintyConfig.js'
+import { parseUinityConfig, type UinityConfigFull } from '@/lib/unintyConfig.js'
 import SvgIcon from '@/stories/icon1.svg?react'
 import { iconsSources } from '@/stories/uinity.config.js'
 import type { Meta, StoryObj } from '@storybook/react'
@@ -17,10 +17,45 @@ const SimpleIcon = forwardRef<SVGSVGElement>((props, ref) => (
   </svg>
 ))
 
-const uinityConfig = {
+const uinityConfig = parseUinityConfig({
   breakSizes: {
     big: 1200,
     small: 1000,
+  },
+  colors: {
+    base: {
+      neutral: {
+        50: { light: '#999999', dark: '#dddddd' },
+        70: { light: '#cccccc', dark: '#eeeeee' },
+        100: { light: '#000000', dark: '#ffffff' },
+      },
+      red: {
+        50: '#990000',
+        70: '#cc0000',
+        100: '#ff0000',
+      },
+      blue: {
+        50: '#000099',
+        70: '#0000cc',
+        100: '#0000ff',
+      },
+      green: {
+        50: '#009900',
+        70: '#00cc00',
+        100: '#00ff00',
+      },
+    },
+    semantic: {
+      x: {
+        nice: '#ff0000',
+        bad: '#00ff00',
+      },
+      y: {
+        strong: { pointer: '$.colors.base.red.100' as const },
+        medium: { pointer: '$.colors.base.neutral.100' as const },
+        weak: '#ff00ff',
+      },
+    },
   },
   icon: {
     general: {
@@ -164,7 +199,11 @@ const uinityConfig = {
       },
     },
   },
-} satisfies UinityConfigFull
+})
+
+const x = uinityConfig.colors.semantic.y.medium
+const y = uinityConfig.colors.semantic.y.weak
+const z = uinityConfig.colors.semantic.y.strong
 
 const Playground = () => {
   const ref = useRef(null)

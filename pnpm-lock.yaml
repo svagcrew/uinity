@@ -23,6 +23,9 @@ importers:
       styled-components:
         specifier: ^6.1.14
         version: 6.1.14(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
+      svag-deep-map:
+        specifier: ^0.1.14
+        version: 0.1.14
       uuid-by-string:
         specifier: ^4.0.0
         version: 4.0.0
@@ -3274,6 +3277,9 @@ packages:
 
   svag-cli-utils@0.1.71:
     resolution: {integrity: sha512-NtHf9JRou0gmX1JUfNRGnjOKeKFzdxv9J3RiQu+TtHTCdrT+6FeAtHyWhIwSS8CNYCF+ANVBEUptv3XbB/ovTQ==}
+
+  svag-deep-map@0.1.14:
+    resolution: {integrity: sha512-6f9gBoh2Pg413AHbjfhEB4d6U/P2gfVsvaEB6pboRUXe0SvDf11VYF/82kroqYwL9ttLAsfEw7uTnQjd1dOPMg==}
 
   svag-husky@0.1.53:
     resolution: {integrity: sha512-MCNEaYtfz4tLmQnhM1a3QCgkSOV9v1/QSB5BB1IVoAS33fSMfh9ne8T4nfBM3I7NySlCKZR+oBvq2hiklHMWsQ==}
@@ -7214,6 +7220,10 @@ snapshots:
       - '@swc/wasm'
       - '@types/node'
       - babel-plugin-macros
+
+  svag-deep-map@0.1.14:
+    dependencies:
+      lodash: 4.17.21
 
   svag-husky@0.1.53(@types/node@20.14.2):
     dependencies:

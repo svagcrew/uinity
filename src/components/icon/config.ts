@@ -40,6 +40,9 @@ export const zIconConfig = getZAnyConfig({
 })
 export type IconConfig = AnyConfig<IconStyleRootConfigured>
 
+export const zIconUinityConfig = z.object({
+  icon: zIconConfig,
+})
 export type IconUinityConfig<TIconConfig extends IconConfig = IconConfig> = { icon: TIconConfig }
 
 export type IconConfiguredCommonProps<TIconUinityConfig extends IconUinityConfig> = AnyConfiguredCommonProps<

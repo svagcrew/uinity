@@ -9,4 +9,4 @@ export const zNumberOrStringOptionalNullable = z
   .optional()
   .nullable()
 export const zNumberOrStringRequired = z.union([z.number(), z.string().min(1)])
-export const zRecordOfStringsOptionalNullable = z.record(z.string().min(1)).optional().nullable()
+export const zRecordOfStringsOptionalNullable = z.record(z.string(), z.string().min(1)).optional().nullable()

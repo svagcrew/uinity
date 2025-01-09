@@ -1,4 +1,5 @@
-import { getIconStyleRootClear, type IconConfig } from '@/components/icon/config.js'
+import { zBreakSizesConfig } from '@/components/breakSizes/config.js'
+import { getIconStyleRootClear, zIconConfig, type IconConfig } from '@/components/icon/config.js'
 import {
   type AnyConfig,
   type AnyConfiguredCommonProps,
@@ -111,6 +112,11 @@ export const zButtonConfig = getZAnyConfig({
 }) as z.ZodObject<any, any, any> // becourse of typescript overloading
 export type ButtonConfig = AnyConfig<ButtonStyleRootConfigured>
 
+export const zButtonUinityConfig = z.object({
+  button: zButtonConfig,
+  breakSizes: zBreakSizesConfig,
+  icon: zIconConfig,
+})
 export type ButtonUinityConfig<
   TButtonConfig extends ButtonConfig = ButtonConfig,
   TBreakSizes extends BreakSizes = BreakSizes,

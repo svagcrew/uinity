@@ -120,11 +120,13 @@ const getButtonFinalCss = ($sf: ButtonClearStyleFinal) => {
   `
 }
 
-// TODO: add colors config
+// TODO: refactor types of config, may be I do not need anything except variants and settings, all other can be getted just from base UinityConfig
 // TODO: add colors modes
 
-// TODO: add uinity config variables and normalizer
-// TODO: add uinity config validator
+// TODO: add uinity config foxy validator
+
+// TODO: uinity config provider
+// TODO: color mode provider
 
 // TODO: buttons
 

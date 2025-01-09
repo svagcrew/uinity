@@ -232,13 +232,14 @@ export const getZAnyConfig = <TZodSchema extends z.ZodObject<any, any, any>>({
 }) => {
   return z.object({
     general: zStyleRootConfigured.optional().nullable(),
-    settings: z.record(z.record(zStyleRootConfigured)).optional().nullable(),
+    settings: z.record(z.string(), z.record(z.string(), zStyleRootConfigured)).optional().nullable(),
     variants: z
       .record(
+        z.string(),
         z.object({
           // seme keys as settings above
-          settings: z.record(z.string()).optional().nullable(),
-          overrides: z.record(zStyleRootConfigured).optional().nullable(),
+          settings: z.record(z.string(), z.string()).optional().nullable(),
+          overrides: zStyleRootConfigured.optional().nullable(),
         })
       )
       .optional()
