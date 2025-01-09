@@ -1,4 +1,5 @@
-import type { ColorModeName } from '@/lib/color.js'
+import type { BySizeKey, ClearBySizePartial } from '@/lib/bySize.js'
+import type { ColorModeName, ColorsClearPartial, OmitColors } from '@/lib/color.js'
 import { z } from 'zod'
 
 export type AnyConfigSettings<TStyleRoot extends {}> = Record<string, Record<string, TStyleRoot>>
@@ -38,8 +39,10 @@ export type AnyConfiguredCommonProps<TConfig extends AnyConfig<TStyleRoot>, TSty
   [key in AnyConfigSettingsItemName<TConfig>]?: AnyConfigSettingsItemValue<TConfig, key>
 } & { $style?: TStyleRoot }
 
+export type PartialUinityConfig = Record<string, AnyConfig<any, any>>
+
 export const getGetAnyStyleRoot = <
-  TPartialUinityConfig extends Record<string, AnyConfig<any, any>>,
+  TPartialUinityConfig extends PartialUinityConfig,
   TStyleRootConfigured extends {},
   TStyleRootClearNormalized extends {} = {},
 >({
@@ -227,3 +230,15 @@ export const extractSettingsFromProps = <TConfig extends AnyConfig<any, any>, TP
   }
   return { settings, restPropsWithoutSettings }
 }
+
+export type StyleConfiguredToClear<
+  TStyleConfigured extends {},
+  TOmitKeys extends keyof TStyleConfigured,
+  TColorKeys extends keyof TStyleConfigured,
+> = Omit<OmitColors<TStyleConfigured, TColorKeys>, TOmitKeys | BySizeKey> & ColorsClearPartial<TColorKeys>
+export type StyleConfiguredToClearWithBySize<
+  TStyleConfigured extends {},
+  TOmitKeys extends keyof TStyleConfigured,
+  TColorKeys extends keyof TStyleConfigured,
+> = StyleConfiguredToClear<TStyleConfigured, TOmitKeys, TColorKeys> &
+  ClearBySizePartial<StyleConfiguredToClear<TStyleConfigured, TOmitKeys, TColorKeys>>

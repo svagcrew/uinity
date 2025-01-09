@@ -21,6 +21,7 @@ export default [
   {
     ...general,
     rules: {
+      '@typescript-eslint/array-type': 'off',
       '@typescript-eslint/no-dynamic-delete': 'off',
       '@typescript-eslint/no-unsafe-type-assertion': 'off',
       'no-console': ['error', { allow: ['warn', 'error', 'info'] }],

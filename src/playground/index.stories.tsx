@@ -5,7 +5,7 @@ import { createButton } from '@/components/Button/react.configured.js'
 import { Buttons } from '@/components/Buttons/react.clear.js'
 import { Icon } from '@/components/Icon/react.clear.js'
 import { createIcon } from '@/components/Icon/react.configured.js'
-import type { UinityConfigFull } from '@/lib/config.js'
+import type { UinityConfigFull } from '@/lib/unintyConfig.js'
 import SvgIcon from '@/stories/icon1.svg?react'
 import { iconsSources } from '@/stories/uinity.config.js'
 import type { Meta, StoryObj } from '@storybook/react'
@@ -37,10 +37,20 @@ const uinityConfig = {
       },
       xsize: {
         small: {
-          size: 24,
+          // size: 24,
+          byWindowWidth: [
+            [0, { size: 12 }],
+            [1000, { size: 24 }],
+            [1200, { size: 32 }],
+          ],
         },
         big: {
-          size: 96,
+          // size: 150,
+          byWindowWidthReverse: [
+            [Infinity, { size: 96 }],
+            [1200, { size: 48 }],
+            [1000, { size: 12 }],
+          ],
         },
       },
     },
@@ -154,7 +164,18 @@ const Playground = () => {
   })
   return (
     <>
-      <IconConfigured name="icon1" variant="redBig" />
+      <IconConfigured name="icon1" xsize="small" />
+      <IconConfigured name="icon1" xsize="big" />
+      <IconConfigured
+        name="icon1"
+        variant="redBig"
+        $style={{
+          byWindowWidthReverse: [
+            [Infinity, { size: 200 }],
+            [1200, { size: 50 }],
+          ],
+        }}
+      />
       <Buttons direction="column" ref={ref}>
         {/* <button ref={}>Button0</button> */}
         <Button $style={{ rest: { backgroundColor: 'red' } }} as="button">

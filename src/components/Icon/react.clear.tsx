@@ -1,5 +1,6 @@
 import type { IconStyleRootClearInput, IconStyleRootClearNormalized } from '@/components/Icon/config.js'
 import { type AsPropsWithRef, syncRefs, type WithoutRef } from '@/lib/asRef.js'
+import { getBySizeCss } from '@/lib/bySize.js'
 import { getGetClassName, getGlobalClassName } from '@/lib/classes.js'
 import { toCss } from '@/lib/css.js'
 import cn from 'classnames'
@@ -34,7 +35,7 @@ export type IconClearPropsWithoutRef = WithoutRef<IconClearPropsWithRef>
 export type IconClearType = (props: IconClearPropsWithRef) => React.ReactNode
 
 // Css for one of states
-export const getIconCoreCss = ($sf: IconClearStyleFinal) => {
+export const getIconCoreCssBase = ($sf: IconClearStyleFinal) => {
   return css`
     ${toCss({
       width: $sf.size,
@@ -46,6 +47,12 @@ export const getIconCoreCss = ($sf: IconClearStyleFinal) => {
         fill: $sf.color,
       })}
     }
+  `
+}
+export const getIconCoreCss = ($sf: IconClearStyleFinal) => {
+  return css`
+    ${getIconCoreCssBase($sf)}
+    ${getBySizeCss({ $sf, getCssBase: getIconCoreCssBase })}
   `
 }
 

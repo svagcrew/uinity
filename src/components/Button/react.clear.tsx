@@ -111,6 +111,8 @@ const getButtonFinalCss = ($sf: ButtonClearStyleFinal) => {
   `
 }
 
+// TODO: ws, wsr, cs, csr clear
+// TODO: ws, wsr, cs, csr configured
 // TODO: buttons
 
 // TODO: add colors config
@@ -118,8 +120,6 @@ const getButtonFinalCss = ($sf: ButtonClearStyleFinal) => {
 
 // TODO: add uinity config variables and normalizer
 // TODO: add uinity config validator
-
-// TODO: ws, wsr, cs, csr in button, text, icon
 
 // TODO: add text component
 // TODO: use text component in button
@@ -132,10 +132,15 @@ const getButtonFinalCss = ($sf: ButtonClearStyleFinal) => {
 // TODO: make nice import per each component
 // TODO: Вынести основные типы функций мерджа
 
-// TODO: (D) add stories for each component
+// TODO: create perfect story for clear
+// TODO: create perfect story for configured
 
 // TODO: create docs static website
 // TODO: generate docs website by components
+
+// TODO: create all difficult components
+// TODO: (D) create all simple components
+// TODO: (D) add stories for each component
 
 // TODO: create zod schema and type for standard uinity config
 
