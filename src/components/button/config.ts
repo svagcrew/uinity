@@ -1,4 +1,4 @@
-import { getIconStyleRootClear, type IconConfig } from '@/components/Icon/config.js'
+import { getIconStyleRootClear, type IconConfig } from '@/components/icon/config.js'
 import {
   type AnyConfig,
   type AnyConfiguredCommonProps,

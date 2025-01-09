@@ -2,7 +2,7 @@ import {
   getIconStyleRootClear,
   type IconConfiguredCommonProps,
   type IconUinityConfig,
-} from '@/components/Icon/config.js'
+} from '@/components/icon/config.js'
 import { extractSettingsFromProps } from '@/lib/anyConfig.js'
 import type { AsPropsWithRef, WithoutRef } from '@/lib/asRef.js'
 import { forwardRef } from 'react'

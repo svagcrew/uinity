@@ -1,10 +1,10 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 
-import { Button } from '@/components/Button/react.clear.js'
-import { createButton } from '@/components/Button/react.configured.js'
-import { Buttons } from '@/components/Buttons/react.clear.js'
-import { Icon } from '@/components/Icon/react.clear.js'
-import { createIcon } from '@/components/Icon/react.configured.js'
+import { Button } from '@/components/button/react.clear.js'
+import { createButton } from '@/components/button/react.configured.js'
+import { Buttons } from '@/components/buttons/react.clear.js'
+import { Icon } from '@/components/icon/react.clear.js'
+import { createIcon } from '@/components/icon/react.configured.js'
 import type { UinityConfigFull } from '@/lib/unintyConfig.js'
 import SvgIcon from '@/stories/icon1.svg?react'
 import { iconsSources } from '@/stories/uinity.config.js'

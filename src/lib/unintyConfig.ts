@@ -1,5 +1,5 @@
-import { zButtonConfig, type ButtonUinityConfig } from '@/components/Button/config.js'
-import { zIconConfig, type IconUinityConfig } from '@/components/Icon/config.js'
+import { zButtonConfig, type ButtonUinityConfig } from '@/components/button/config.js'
+import { zIconConfig, type IconUinityConfig } from '@/components/icon/config.js'
 
 export type UinityConfigFull = IconUinityConfig & ButtonUinityConfig
 

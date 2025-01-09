@@ -1,4 +1,4 @@
-import type { IconStyleRootClear } from '@/components/Icon/config.js'
+import type { IconStyleRootClear } from '@/components/icon/config.js'
 import { type AsPropsWithRef, syncRefs, type WithoutRef } from '@/lib/asRef.js'
 import { getGetClassName, getGlobalClassName } from '@/lib/classes.js'
 import { toCss } from '@/lib/css.js'

@@ -2,8 +2,8 @@ import {
   getButtonStyleRootClear,
   type ButtonConfiguredCommonProps,
   type ButtonUinityConfig,
-} from '@/components/Button/config.js'
-import type { IconConfigured, IconConfiguredSpecialProps } from '@/components/Icon/react.configured.js'
+} from '@/components/button/config.js'
+import type { IconConfigured, IconConfiguredSpecialProps } from '@/components/icon/react.configured.js'
 import { extractSettingsFromProps } from '@/lib/anyConfig.js'
 import type { AsPropsWithRef, WithoutRef } from '@/lib/asRef.js'
 import { getMainClassName } from '@/lib/classes.js'

@@ -1,5 +1,5 @@
-import type { ButtonStyleCoreClear, ButtonStyleRootClear } from '@/components/Button/config.js'
-import { getIconCoreCss, Icon, type IconClearSrc } from '@/components/Icon/react.clear.js'
+import type { ButtonStyleCoreClear, ButtonStyleRootClear } from '@/components/button/config.js'
+import { getIconCoreCss, Icon, type IconClearSrc } from '@/components/icon/react.clear.js'
 import { syncRefs, type As, type AsPropsWithRef, type WithoutRef } from '@/lib/asRef.js'
 import { getBySizeCss } from '@/lib/bySize.js'
 import { getGetClassName, mark } from '@/lib/classes.js'
@@ -120,15 +120,13 @@ const getButtonFinalCss = ($sf: ButtonClearStyleFinal) => {
   `
 }
 
-// TODO: autocompletion for wsr, autocompletion for nested settings, autocompletion for nested variants
-
-// TODO: buttons
-
 // TODO: add colors config
 // TODO: add colors modes
 
 // TODO: add uinity config variables and normalizer
 // TODO: add uinity config validator
+
+// TODO: buttons
 
 // TODO: add text component
 // TODO: use text component in button
@@ -153,6 +151,7 @@ const getButtonFinalCss = ($sf: ButtonClearStyleFinal) => {
 
 // TODO: create zod schema and type for standard uinity config
 
+// TODO: browser editor for uinityConfig special for web-designers
 // TODO: add AI for uinity config generation and modification
 
 // Styled components
