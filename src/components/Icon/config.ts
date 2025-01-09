@@ -6,7 +6,11 @@ import {
   type StyleConfiguredToClear,
   type StyleConfiguredToClearWithBySize,
 } from '@/lib/anyConfig.js'
-import { getClearBySizeByConfigured, getZPartByAllSizesOptionalNullable } from '@/lib/bySize.js'
+import {
+  type BreakSizes,
+  getClearBySizeByConfigured,
+  getZPartByAllSizesConfiguredOptionalNullable,
+} from '@/lib/bySize.js'
 import { type ColorModeName, getColorByMode, zColorValueOptionalNullable } from '@/lib/color.js'
 import { objectAssignExceptUndefined, omit } from '@/lib/utils.js'
 import { zNumberOrStringOptionalNullable } from '@/lib/zod.js'
@@ -18,7 +22,7 @@ export const zIconStyleRootConfiguredWithoutBySize = z.object({
 })
 export type IconStyleRootConfiguredWithoutBySize = z.output<typeof zIconStyleRootConfiguredWithoutBySize>
 export const zIconStyleRootConfigured = zIconStyleRootConfiguredWithoutBySize.extend(
-  getZPartByAllSizesOptionalNullable({ zStyle: zIconStyleRootConfiguredWithoutBySize })
+  getZPartByAllSizesConfiguredOptionalNullable({ zStyle: zIconStyleRootConfiguredWithoutBySize })
 )
 export type IconStyleRootConfigured = z.output<typeof zIconStyleRootConfigured>
 export const getIconStyleRootClearByConfiguredWithoutBySize = ({
@@ -64,7 +68,10 @@ export const zIconConfig = getZAnyConfig({
 })
 
 export type IconConfig = AnyConfig<IconStyleRootConfigured>
-export type IconUinityConfig<TIconConfig extends IconConfig = IconConfig> = { icon: TIconConfig }
+export type IconUinityConfig<
+  TIconConfig extends IconConfig = IconConfig,
+  TBreakSizes extends BreakSizes = BreakSizes,
+> = { icon: TIconConfig; breakSizes: TBreakSizes }
 export type IconConfiguredCommonProps<TIconUinityConfig extends IconUinityConfig> = AnyConfiguredCommonProps<
   TIconUinityConfig['icon'],
   IconStyleRootConfigured

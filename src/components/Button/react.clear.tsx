@@ -111,8 +111,9 @@ const getButtonFinalCss = ($sf: ButtonClearStyleFinal) => {
   `
 }
 
-// TODO: ws, wsr, cs, csr clear
-// TODO: ws, wsr, cs, csr configured
+// TODO: wsr etc for button
+// TODO: autocompletion for wsr, autocompletion for nested settings, autocompletion for nested variants
+
 // TODO: buttons
 
 // TODO: add colors config

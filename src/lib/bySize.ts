@@ -1,40 +1,38 @@
 import type { ColorModeName } from '@/lib/color.js'
+import { zNumberOrStringRequired } from '@/lib/zod.js'
 import { css, type RuleSet } from 'styled-components'
 import { z } from 'zod'
 
 // byUsual: if >= size, then apply. We scale screen width from small to big, and when we reach size, we apply
 // byReverse: if <= size, then apply. We scale screen width from big to small, and when we reach size, we apply
 
-// TODO:ASAP remove unused fns
-export const getZBySize = <TZodSchema extends z.ZodObject<any, any, any>>({ zStyle }: { zStyle: TZodSchema }) => {
-  return z.array(z.tuple([z.number(), zStyle]))
-}
+export type BreakSizes = Record<string, number>
 
-export const getZBySizeOptionalNullable = <TZodSchema extends z.ZodObject<any, any, any>>({
+export const getZBySizeConfiguredOptionalNullable = <TZodSchema extends z.ZodObject<any, any, any>>({
   zStyle,
 }: {
   zStyle: TZodSchema
 }) => {
   return z
-    .array(z.tuple([z.number(), zStyle]))
+    .array(z.tuple([zNumberOrStringRequired, zStyle]))
     .optional()
     .nullable()
 }
 
-export const getZPartByAllSizesOptionalNullable = <TZodSchema extends z.ZodObject<any, any, any>>({
+export const getZPartByAllSizesConfiguredOptionalNullable = <TZodSchema extends z.ZodObject<any, any, any>>({
   zStyle,
 }: {
   zStyle: TZodSchema
 }) => {
   return {
-    byWindowWidth: getZBySizeOptionalNullable({ zStyle }),
-    byWindowWidthReverse: getZBySizeOptionalNullable({ zStyle }),
-    byWindowHeight: getZBySizeOptionalNullable({ zStyle }),
-    byWindowHeightReverse: getZBySizeOptionalNullable({ zStyle }),
-    byContainerWidth: getZBySizeOptionalNullable({ zStyle }),
-    byContainerWidthReverse: getZBySizeOptionalNullable({ zStyle }),
-    byContainerHeight: getZBySizeOptionalNullable({ zStyle }),
-    byContainerHeightReverse: getZBySizeOptionalNullable({ zStyle }),
+    byWindowWidth: getZBySizeConfiguredOptionalNullable({ zStyle }),
+    byWindowWidthReverse: getZBySizeConfiguredOptionalNullable({ zStyle }),
+    byWindowHeight: getZBySizeConfiguredOptionalNullable({ zStyle }),
+    byWindowHeightReverse: getZBySizeConfiguredOptionalNullable({ zStyle }),
+    byContainerWidth: getZBySizeConfiguredOptionalNullable({ zStyle }),
+    byContainerWidthReverse: getZBySizeConfiguredOptionalNullable({ zStyle }),
+    byContainerHeight: getZBySizeConfiguredOptionalNullable({ zStyle }),
+    byContainerHeightReverse: getZBySizeConfiguredOptionalNullable({ zStyle }),
   }
 }
 
@@ -47,8 +45,11 @@ export const bySizeKeys = [
   'byContainerHeightReverse',
   'byContainerWidth',
   'byContainerWidthReverse',
-]
-export type BySizeKey = keyof ReturnType<typeof getZPartByAllSizesOptionalNullable>
+] as const
+export type BySizeKey = keyof ReturnType<typeof getZPartByAllSizesConfiguredOptionalNullable>
+export type ConfiguredBySizePartial<TConfiguredStyle extends {}, TBreakSizes extends BreakSizes> = Partial<
+  Record<BySizeKey, [keyof TBreakSizes | number, TConfiguredStyle][] | null>
+>
 export type ClearBySizePartial<TClearStyle extends {}> = Partial<Record<BySizeKey, [number, TClearStyle][] | null>>
 
 export const getClearBySizeByConfigured = <TClearStyle extends {}>({
@@ -68,18 +69,31 @@ export const getClearBySizeByConfigured = <TClearStyle extends {}>({
 }) => {
   const result = {} as ClearBySizePartial<TClearStyle>
   for (const bySizeKey of bySizeKeys) {
-    const bySizeValue = styleRootConfigured?.[bySizeKey] as [number, Record<string, any>][] | undefined | null
-    if (!bySizeValue) {
+    const bySizeConfiguredValue = styleRootConfigured?.[bySizeKey] as ConfiguredBySizePartial<any, any>[BySizeKey]
+    if (!bySizeConfiguredValue) {
       continue
     }
-    ;(result as any)[bySizeKey] = bySizeValue.map(([size, styleRootConfiguredBySizePart]) => [
-      size,
-      getStyleRootClearByConfiguredWithoutBySize({
-        uinityConfig,
-        styleRootConfigured: styleRootConfiguredBySizePart,
-        colorMode,
-      }),
-    ])
+    ;(result as any)[bySizeKey] = bySizeConfiguredValue
+      .map(([configuredSize, styleRootConfiguredBySizePart]) => {
+        if (typeof configuredSize === 'symbol') {
+          return null
+        }
+        const clearSize: number | undefined =
+          typeof configuredSize === 'number' ? configuredSize : uinityConfig.breakSizes[configuredSize]
+        if (clearSize === undefined) {
+          console.error(`Break size "${configuredSize}" is not defined in "uinityConfig.breakSizes"`)
+          return null
+        }
+        return [
+          clearSize,
+          getStyleRootClearByConfiguredWithoutBySize({
+            uinityConfig,
+            styleRootConfigured: styleRootConfiguredBySizePart,
+            colorMode,
+          }),
+        ]
+      })
+      .filter(Boolean)
   }
   return result
 }
@@ -189,3 +203,21 @@ export const getBySizeCss = <TSF extends ClearBySizePartial<any>>({
     })}
   `
 }
+
+// export const mapBySizeProps = <TClearStyle extends {}, TMappedClearStyle extends {}>({
+//   bySizeProps,
+//   mapFn,
+// }: {
+//   bySizeProps: ClearBySizePartial<TClearStyle>
+//   mapFn: (props: TClearStyle) => TMappedClearStyle
+// }) => {
+//   const result = {} as ClearBySizePartial<TMappedClearStyle>
+//   for (const bySizeKey of bySizeKeys) {
+//     const bySizeValue = bySizeProps[bySizeKey]
+//     if (!bySizeValue) {
+//       continue
+//     }
+//     result[bySizeKey] = bySizeValue.map(([size, $style]) => [size, mapFn($style)])
+//   }
+//   return result
+// }

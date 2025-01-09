@@ -18,6 +18,10 @@ const SimpleIcon = forwardRef<SVGSVGElement>((props, ref) => (
 ))
 
 const uinityConfig = {
+  breakSizes: {
+    big: 1200,
+    small: 1000,
+  },
   icon: {
     general: {
       // size: 48,
@@ -48,7 +52,8 @@ const uinityConfig = {
           // size: 150,
           byWindowWidthReverse: [
             [Infinity, { size: 96 }],
-            [1200, { size: 48 }],
+            // [1200, { size: 48 }],
+            ['big', { size: 48 }],
             [1000, { size: 12 }],
           ],
         },

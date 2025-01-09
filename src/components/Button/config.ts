@@ -1,5 +1,6 @@
 import { getIconStyleRootClear, type IconConfig } from '@/components/Icon/config.js'
 import { type AnyConfig, type AnyConfiguredCommonProps, getGetAnyStyleRoot, getZAnyConfig } from '@/lib/anyConfig.js'
+import type { BreakSizes } from '@/lib/bySize.js'
 import {
   type ColorModeName,
   getColorByMode,
@@ -46,6 +47,8 @@ export const getButtonStyleCoreClearByConfigured = ({
   if (!styleCoreConfigured) {
     return {}
   }
+  // TODO:ASAP add wsr for button
+  // TODO:ASAP remove wsr from icon
   const iconStyleRootClear = getIconStyleRootClear({
     uinityConfig,
     styleRootConfiguredOverrides: {
@@ -98,9 +101,11 @@ export const zButtonConfig = getZAnyConfig({
 export type ButtonConfig = AnyConfig<ButtonStyleRootConfigured>
 export type ButtonUinityConfig<
   TButtonConfig extends ButtonConfig = ButtonConfig,
+  TBreakSizes extends BreakSizes = BreakSizes,
   TIconConfig extends IconConfig = IconConfig,
 > = {
   button: TButtonConfig
+  breakSizes: TBreakSizes
   icon: TIconConfig
 }
 export type ButtonConfiguredCommonProps<TButtonUinityConfig extends ButtonUinityConfig> = AnyConfiguredCommonProps<
