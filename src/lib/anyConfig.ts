@@ -40,10 +40,10 @@ export type AnyConfig<
   variants?: AnyConfigVariants<TStyleRoot, TSettings>
 }
 
-export type AnyConfiguredCommonProps<TConfig extends AnyConfig<TStyleRoot>, TStyleRoot extends {}> = {
-  variant?: keyof TConfig['variants']
+export type AnyConfiguredCommonProps<TConfig extends AnyConfig<TStyleRoot> | undefined, TStyleRoot extends {}> = {
+  variant?: keyof NonNullable<TConfig>['variants']
 } & {
-  [key in AnyConfigSettingsItemName<TConfig>]?: AnyConfigSettingsItemValue<TConfig, key>
+  [key in AnyConfigSettingsItemName<NonNullable<TConfig>>]?: AnyConfigSettingsItemValue<NonNullable<TConfig>, key>
 } & { $style?: TStyleRoot }
 
 export type PartialUinityConfig = Record<string, AnyConfig<any, any>>
@@ -276,7 +276,7 @@ export const getZAnyConfig = <TZodSchema extends z.ZodObject<any, any, any>>({
   // })
 }
 
-export const extractSettingsFromProps = <TConfig extends AnyConfig<any, any>, TProps extends {}>({
+export const extractSettingsFromProps = <TConfig extends AnyConfig<any, any> | undefined, TProps extends {}>({
   config,
   restProps,
 }: {
@@ -284,11 +284,11 @@ export const extractSettingsFromProps = <TConfig extends AnyConfig<any, any>, TP
   restProps: TProps
 }): {
   settings: Record<string, string>
-  restPropsWithoutSettings: Omit<TProps, keyof TConfig['settings']>
+  restPropsWithoutSettings: Omit<TProps, keyof NonNullable<TConfig>['settings']>
 } => {
   const settings: Record<string, string> = {}
   const restPropsWithoutSettings = { ...restProps }
-  for (const settingName of Object.keys(config.settings ?? {})) {
+  for (const settingName of Object.keys(config?.settings || {})) {
     if (settingName in restProps) {
       settings[settingName] = (restProps as any)[settingName] as string
       delete (restPropsWithoutSettings as any)[settingName]

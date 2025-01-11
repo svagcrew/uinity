@@ -41,7 +41,7 @@ export const createButton = <TButtonUinityConfig extends ButtonUinityConfig, TIc
   Icon,
 }: {
   uinityConfig: TButtonUinityConfig
-  Icon: IconConfigured<TButtonUinityConfig, TIconName>
+  Icon: IconConfigured<any, TIconName>
 }) => {
   const Button: ButtonConfigured<TButtonUinityConfig, TIconName> = forwardRef<any, any>(
     (

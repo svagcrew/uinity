@@ -1,5 +1,4 @@
-import { zBreakSizesConfig } from '@/components/breakSizes/config.js'
-import { getIconStyleRootClear, zIconConfig, type IconConfig } from '@/components/icon/config.js'
+import { getIconStyleRootClear } from '@/components/icon/config.js'
 import {
   type AnyConfig,
   type AnyConfiguredCommonProps,
@@ -8,7 +7,6 @@ import {
   type StyleConfiguredToClear,
 } from '@/lib/anyConfig.js'
 import {
-  type BreakSizes,
   type ByAllSizesClearOptionalNullable,
   type ByAllSizesConfiguredOptionalNullable,
   bySizeKeys,
@@ -58,7 +56,7 @@ export const getButtonStyleCoreClearByConfigured = ({
     return {}
   }
   const iconStyleRootClear = getIconStyleRootClear({
-    uinityConfig,
+    uinityConfig: uinityConfig as never,
     styleRootConfiguredOverrides: {
       color: getColorByMode(colorMode, styleCoreConfigured.iconColor),
       size: styleCoreConfigured.iconSize,
@@ -113,18 +111,10 @@ export const zButtonConfig = getZAnyConfig({
 export type ButtonConfig = AnyConfig<ButtonStyleRootConfigured>
 
 export const zButtonUinityConfig = z.object({
-  button: zButtonConfig,
-  breakSizes: zBreakSizesConfig,
-  icon: zIconConfig,
+  button: zButtonConfig.optional(),
 })
-export type ButtonUinityConfig<
-  TButtonConfig extends ButtonConfig = ButtonConfig,
-  TBreakSizes extends BreakSizes = BreakSizes,
-  TIconConfig extends IconConfig = IconConfig,
-> = {
-  button: TButtonConfig
-  breakSizes: TBreakSizes
-  icon: TIconConfig
+export type ButtonUinityConfig<TButtonConfig extends ButtonConfig = ButtonConfig> = {
+  button?: TButtonConfig
 }
 
 export type ButtonConfiguredCommonProps<TButtonUinityConfig extends ButtonUinityConfig> = AnyConfiguredCommonProps<

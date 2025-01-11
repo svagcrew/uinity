@@ -17,8 +17,8 @@ export const zColorsConfig = z.union([
 export type ColorsConfig = z.output<typeof zColorsConfig>
 
 export const zColorsUinityConfig = z.object({
-  colors: zColorsConfig,
+  colors: zColorsConfig.optional(),
 })
 export type ColorsUinityConfig<TColorsConfig extends ColorsConfig = ColorsConfig> = {
-  colors: TColorsConfig
+  colors?: TColorsConfig
 }
