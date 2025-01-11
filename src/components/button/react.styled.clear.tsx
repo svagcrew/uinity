@@ -1,5 +1,5 @@
 import type { ButtonStyleCoreClear, ButtonStyleRootClear } from '@/components/button/config.js'
-import { getIconCoreCss, Icon, type IconClearSrc } from '@/components/icon/react.clear.js'
+import { getIconCoreCss, Icon, type IconClearSrc } from '@/components/icon/react.styled.clear.js'
 import { syncRefs, type As, type AsPropsWithRef, type WithoutRef } from '@/lib/asRef.js'
 import { getBySizeCss } from '@/lib/bySize.js'
 import { getGetClassName, mark } from '@/lib/classes.js'
@@ -119,51 +119,6 @@ const getButtonFinalCss = ($sf: ButtonClearStyleFinal) => {
     ${getBySizeCss({ $sf, getCssBase: getButtonFinalCssBase })}
   `
 }
-
-// TODO: Выпилить не нужные генерики из конфига, раз валидацией конфига занимается расширение
-// TODO: Разделить конфиг с переменными и готовый конфиг. Собирать конфиг по команде из скрипта
-// TODO: add uinity config foxy validator
-
-// TODO: В юнити сделать комплекс поле конфига
-// TODO: К иконке добавить вср и передавать вариант иконки из кнопки в иконку
-// TODO: add colors modes
-
-// TODO: uinity config provider
-// TODO: color mode provider
-
-// TODO: buttons
-
-// TODO: add text component
-// TODO: use text component in button
-
-// TODO: create real style props and css button, text, icon
-
-// TODO: add textinput
-// TODO: add textarea components
-
-// TODO: make nice import per each component
-// TODO: Вынести основные типы функций мерджа
-
-// TODO: create perfect story for clear
-// TODO: create perfect story for configured
-
-// TODO: create docs static website
-// TODO: generate docs website by components
-
-// TODO: create all difficult components
-// TODO: (D) create all simple components
-// TODO: (D) add stories for each component
-
-// TODO: standard uinity config: create zod schema, validator and type for
-
-// TODO: vscode ext
-// TODO: figma ext
-// TODO: ai generator
-
-// TODO: подписка одна на все опенсорсы на сайте свага
-
-// TODO: передавать стили или прямо css для каждого отдельного компонента
-// TODO: react-native
 
 // Styled components
 const IconS = styled(Icon)``

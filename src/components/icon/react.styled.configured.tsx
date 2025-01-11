@@ -6,8 +6,8 @@ import {
 import { extractSettingsFromProps } from '@/lib/anyConfig.js'
 import type { AsPropsWithRef, WithoutRef } from '@/lib/asRef.js'
 import { forwardRef } from 'react'
-import type { IconClearMainProps, IconClearSrc } from './react.clear.js'
-import { Icon as IconClear } from './react.clear.js'
+import type { IconClearMainProps, IconClearSrc } from './react.styled.clear.js'
+import { Icon as IconClear } from './react.styled.clear.js'
 import { getMainClassName } from '@/lib/classes.js'
 
 // Special props for configured component

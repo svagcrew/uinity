@@ -1,0 +1,48 @@
+
+Разделить конфиг с переменными и готовый конфиг. Собирать конфиг по команде из скрипта
+add uinity config foxy validator
+
+классам обозвать сразу стайлерд компоненты и использовать их из обхекта, чтобы его потом же использовать в доке
+
+В юнити сделать комплекс поле конфига
+К иконке добавить вср и передавать вариант иконки из кнопки в иконку
+add colors modes
+
+uinity config provider
+color mode provider
+
+buttons
+
+add text component
+use text component in button
+
+create real style props and css button, text, icon
+
+add textinput
+add textarea components
+
+make nice import per each component
+Вынести основные типы функций мерджа
+
+create perfect story for clear
+create perfect story for configured
+
+create docs static website
+generate docs website by components
+
+create all difficult components
+(D) create all simple components
+(D) add stories for each component
+
+standard uinity config: create zod schema, validator and type for
+
+vscode ext
+figma ext
+ai generator
+
+подписка одна на все опенсорсы на сайте свага
+
+generate css components and css itself
+generate css-in-js components and css-in-js itself
+передавать стили или прямо css для каждого отдельного компонента
+react-native

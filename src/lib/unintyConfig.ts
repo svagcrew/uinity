@@ -1,58 +1,70 @@
 import { zBreakSizesUinityConfig, type BreakSizesUinityConfig } from '@/components/breakSizes/config.js'
 import { zButtonUinityConfig, type ButtonUinityConfig } from '@/components/button/config.js'
-import { type ColorsUinityConfig, zColorsUinityConfig } from '@/components/colors/config.js'
+import { zColorsUinityConfig, type ColorsUinityConfig } from '@/components/colors/config.js'
 import { zIconUinityConfig, type IconUinityConfig } from '@/components/icon/config.js'
-import {
-  type DeepWithoutVariablesPointers,
-  getVariableValue,
-  isVariablePointer,
-  type DeepWithVariablesPointers,
-} from '@/lib/variables.js'
+import { getValueByPointer, isPointer } from '@/lib/pointers.js'
 import { deepMap } from 'svag-deep-map'
 
-export const zUinityConfigFull = zBreakSizesUinityConfig
+export const zUinityConfig = zBreakSizesUinityConfig
   .merge(zColorsUinityConfig)
   .merge(zIconUinityConfig)
   .merge(zButtonUinityConfig)
-export type UinityConfigFull = BreakSizesUinityConfig & ColorsUinityConfig & IconUinityConfig & ButtonUinityConfig
-export type UinityConfigFullWithVariables = DeepWithVariablesPointers<UinityConfigFull>
-export type UinityConfigFullWithoutVariables = DeepWithoutVariablesPointers<UinityConfigFull>
+export type UinityConfig = BreakSizesUinityConfig & ColorsUinityConfig & IconUinityConfig & ButtonUinityConfig
 
-export const zUinityConfigPartial = zUinityConfigFull.partial()
-export type UinityConfigPartial = Partial<UinityConfigFull>
-export type UinityConfigPartialWithVariables = DeepWithVariablesPointers<UinityConfigPartial>
-export type UinityConfigPartialWithoutVariables = DeepWithoutVariablesPointers<UinityConfigPartial>
-
-export const variablifyUinityConfig = <TUinityConfigPartialWithVariables extends UinityConfigPartialWithVariables>(
-  config: TUinityConfigPartialWithVariables
-): DeepWithoutVariablesPointers<TUinityConfigPartialWithVariables> => {
-  const configWithVariablesAsValues = deepMap(
-    config,
+export const variablifyUinityConfigSource = ({
+  uinityConfigSource,
+}: {
+  uinityConfigSource: Record<string, any>
+}): Record<string, any> => {
+  return deepMap(
+    uinityConfigSource,
     ({ value }) => {
-      if (isVariablePointer(value)) {
-        const variableValue = getVariableValue(config, value)
-        return variableValue
+      if (isPointer(value)) {
+        return getValueByPointer({ uinityConfigSource, pointer: value })
       }
       return value
     },
     {
       clone: false,
-      maxSeenCount: 0,
+      maxSeenCount: 100,
     }
   )
-  return configWithVariablesAsValues as DeepWithoutVariablesPointers<TUinityConfigPartialWithVariables>
 }
 
-export const validateUinityConfig = <TUinityConfigPartial extends UinityConfigPartial>(
-  config: TUinityConfigPartial
-): TUinityConfigPartial => {
-  return zUinityConfigPartial.parse(config) as TUinityConfigPartial
+export const infinitifyUinityConfig = ({
+  uinityConfigRaw,
+}: {
+  uinityConfigRaw: Record<string, any>
+}): Record<string, any> => {
+  return deepMap(
+    uinityConfigRaw,
+    ({ value }) => {
+      if (value === 'Infinity') {
+        return Infinity
+      }
+      return value
+    },
+    {
+      clone: false,
+      maxSeenCount: 100,
+    }
+  )
 }
 
-export const parseUinityConfig = <TUinityConfigPartialWithVariables extends UinityConfigPartialWithVariables>(
-  config: TUinityConfigPartialWithVariables
-): DeepWithoutVariablesPointers<TUinityConfigPartialWithVariables> => {
-  const variablifiedUinityConfig = variablifyUinityConfig(config)
-  const validatedUinityConfig = validateUinityConfig(variablifiedUinityConfig as UinityConfigPartial)
-  return validatedUinityConfig as DeepWithoutVariablesPointers<TUinityConfigPartialWithVariables>
+export const validateUinityConfig = <TUinityConfig extends UinityConfig>({
+  uinityConfig,
+}: {
+  uinityConfig: TUinityConfig
+}): TUinityConfig => {
+  return zUinityConfig.parse(uinityConfig) as TUinityConfig
+}
+
+export const parseUinityConfig = <TUinityConfig extends UinityConfig>({
+  uinityConfigRaw,
+}: {
+  uinityConfigRaw: TUinityConfig
+}): TUinityConfig => {
+  const uinityConfigInfinitified = infinitifyUinityConfig({ uinityConfigRaw })
+  const uinityConfig = validateUinityConfig({ uinityConfig: uinityConfigInfinitified })
+  return uinityConfig as TUinityConfig
 }

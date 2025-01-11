@@ -1,0 +1,129 @@
+breakSizes:
+  big: 1200
+  small: 1000
+colors:
+  base:
+    neutral:
+      '50':
+        light: '#999999'
+        dark: '#dddddd'
+      '70':
+        light: '#cccccc'
+        dark: '#eeeeee'
+      '100':
+        light: '#000000'
+        dark: '#ffffff'
+    red:
+      '50': '#990000'
+      '70': '#cc0000'
+      '100': '#ff0000'
+    blue:
+      '50': '#000099'
+      '70': '#0000cc'
+      '100': '#0000ff'
+    green:
+      '50': '#009900'
+      '70': '#00cc00'
+      '100': '#00ff00'
+  semantic:
+    x:
+      nice: '#ff0000'
+      bad: '#00ff00'
+    'y':
+      strong: $.colors.base.red.100
+      medium: $.colors.base.neutral.100
+      weak: '#ff00ff'
+icon:
+  general: {}
+  settings:
+    xcolor:
+      red:
+        color: '#ff0000'
+      blue:
+        color: '#0000ff'
+      green:
+        color: '#00ff00'
+    xsize:
+      small:
+        size: 24
+      big:
+        size: 150
+  variants:
+    redBig:
+      settings:
+        xcolor: red
+        xsize: big
+    greenBig:
+      settings:
+        xcolor: green
+        xsize: big
+    blueSmall:
+      settings:
+        xcolor: blue
+        xsize: small
+button:
+  general:
+    rest:
+      textColor: '#fff'
+  settings:
+    xxcolor:
+      red:
+        rest:
+          backgroundColor: '#ff0000'
+        hover:
+          backgroundColor: '#aa0000'
+      blue:
+        rest:
+          backgroundColor: '#0000ff'
+        hover:
+          backgroundColor: '#0000aa'
+    xxsize:
+      small:
+        rest:
+          textSize: 24
+          iconSize: 24
+      big:
+        rest:
+          textSize: 96
+          iconSize: 96
+        byWindowWidthReverse:
+          - - Infinity
+            - rest:
+                textSize: 96
+                iconSize: 96
+          - - big
+            - rest:
+                textSize: 48
+                iconSize: 48
+          - - 1000
+            - rest:
+                textSize: 12
+                iconSize: 12
+  variants:
+    bigRedWithBlueSmallIcon:
+      overrides:
+        rest:
+          iconVariant: blueSmall
+          backgroundColor: $.colors.semantic.y.medium
+          textSize: 98
+        byWindowWidthReverse:
+          - - Infinity
+            - rest:
+                textSize: 97
+                iconSize: 96
+          - - big
+            - rest:
+                iconVariant: greenBig
+                textSize: 48
+          - - 1000
+            - rest:
+                textSize: 12
+                iconSize: 12
+    smallBlueWithRedBigIcon:
+      overrides:
+        rest:
+          iconVariant: redBig
+          backgroundColor: '#0000ff'
+          textSize: 24
+        hover:
+          iconVariant: greenBig

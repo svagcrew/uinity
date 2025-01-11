@@ -48,13 +48,29 @@ export const bySizeKeys = [
 ] as const
 export type BySizeKey = (typeof bySizeKeys)[number]
 export type ConfiguredBySizePartial<TConfiguredStyle extends {}, TBreakSizes extends BreakSizes> = Partial<
-  Record<BySizeKey, [keyof TBreakSizes | number, TConfiguredStyle][] | null>
+  // Record<BySizeKey, [keyof TBreakSizes | number, TConfiguredStyle][] | null>
+  // we should simplify it to array, not tuple, because when import config from json it will be parsed as array
+  Record<BySizeKey, Array<Array<(keyof TBreakSizes | number) | TConfiguredStyle>> | null>
 >
-export type ClearBySizePartial<TClearStyle extends {}> = Partial<Record<BySizeKey, [number, TClearStyle][] | null>>
+
+// export type ClearBySizePartial<TClearStyle extends {}> = Partial<Record<BySizeKey, [number, TClearStyle][] | null>>
+// we should simplify it to array, not tuple, because when import config from json it will be parsed as array
+export type ClearBySizePartial<TClearStyle extends {}> = Partial<
+  Record<BySizeKey, Array<Array<number | TClearStyle>> | null>
+>
+
+// export type ByAllSizesConfiguredOptionalNullable<TStyleWithoutBySize extends {}> = TStyleWithoutBySize &
+//   Partial<Record<BySizeKey, [keyof BreakSizes | number, TStyleWithoutBySize][] | null | undefined>>
+// we should simplify it to array, not tuple, because when import config from json it will be parsed as array
 export type ByAllSizesConfiguredOptionalNullable<TStyleWithoutBySize extends {}> = TStyleWithoutBySize &
-  Partial<Record<BySizeKey, [keyof BreakSizes | number, TStyleWithoutBySize][] | null | undefined>>
+  Partial<Record<BySizeKey, Array<Array<(keyof BreakSizes | number) | TStyleWithoutBySize>> | null | undefined>>
+
+// export type ByAllSizesClearOptionalNullable<TStyleWithoutBySize extends {}> = TStyleWithoutBySize &
+//   Partial<Record<BySizeKey, [number, TStyleWithoutBySize][] | null | undefined>>
+// we should simplify it to array, not tuple, because when import config from json it will be parsed as array
 export type ByAllSizesClearOptionalNullable<TStyleWithoutBySize extends {}> = TStyleWithoutBySize &
-  Partial<Record<BySizeKey, [number, TStyleWithoutBySize][] | null | undefined>>
+  Partial<Record<BySizeKey, Array<Array<number | TStyleWithoutBySize>> | null | undefined>>
+
 export type OmitBySize<TStyle extends {}> = Omit<TStyle, BySizeKey>
 
 export const getClearBySizeByConfigured = <TClearStyle extends {}>({

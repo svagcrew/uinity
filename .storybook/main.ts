@@ -23,9 +23,6 @@ const config: StorybookConfig = {
   async viteFinal(config) {
     const { mergeConfig } = await import('vite')
     return mergeConfig(config, {
-      optimizeDeps: {
-        // include: ['@uinity/core'],
-      },
       resolve: {
         alias: Object.fromEntries(
           Object.entries(tsconfig.compilerOptions.paths).map(([key, [value]]) => [

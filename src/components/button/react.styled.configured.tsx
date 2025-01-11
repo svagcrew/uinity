@@ -3,13 +3,13 @@ import {
   type ButtonConfiguredCommonProps,
   type ButtonUinityConfig,
 } from '@/components/button/config.js'
-import type { IconConfigured, IconConfiguredSpecialProps } from '@/components/icon/react.configured.js'
+import type { IconConfigured, IconConfiguredSpecialProps } from '@/components/icon/react.styled.configured.js'
 import { extractSettingsFromProps } from '@/lib/anyConfig.js'
 import type { AsPropsWithRef, WithoutRef } from '@/lib/asRef.js'
 import { getMainClassName } from '@/lib/classes.js'
 import { forwardRef } from 'react'
-import type { ButtonClearMainProps } from './react.clear.js'
-import { Button as ButtonClear } from './react.clear.js'
+import type { ButtonClearMainProps } from './react.styled.clear.js'
+import { Button as ButtonClear } from './react.styled.clear.js'
 
 // Special props for configured component
 export type ButtonConfiguredSpecialProps<TIconName extends string = string> = {

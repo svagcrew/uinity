@@ -24,6 +24,8 @@
     "lint": "eslint --color --cache --cache-location ./node_modules/.cache/.eslintcache .",
     "lint-fix": "pnpm lint --fix",
     "test": "cross-env NODE_OPTIONS=--experimental-vm-modules TS_JEST_DISABLE_VER_CHECKER=true jest --color --runInBand",
+    "generate-uinity-config": "tsx ./src/scripts/generateUinityConfigFromSource.js ./src/examples/config/uinity.config.source.yml ./src/examples/config/uinity.config.json",
+    "watch-uinity-config": "onchange -i './src/scripts/generateUinityConfigFromSource.ts' './src/examples/config/uinity.config.source.yml' -- pnpm generate-uinity-config",
     "prepare": "husky"
   },
   "devDependencies": {
@@ -35,9 +37,11 @@
     "@storybook/react": "^8.4.7",
     "@storybook/react-vite": "^8.4.7",
     "@storybook/test": "^8.4.7",
+    "@types/js-yaml": "^4.0.9",
     "@types/lodash": "^4.17.14",
     "@types/react": "^19.0.3",
     "@types/react-dom": "^19.0.2",
+    "@types/yargs": "^17.0.33",
     "@typescript-eslint/eslint-plugin": "^8.19.1",
     "@typescript-eslint/parser": "^8.19.1",
     "@vitejs/plugin-react": "^4.3.4",
@@ -48,12 +52,16 @@
     "eslint-plugin-n": "^17.15.1",
     "husky": "^9.0.11",
     "jest": "^29.7.0",
+    "onchange": "^7.1.0",
     "pnpm": "^9.3.0",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
     "rimraf": "^6.0.1",
     "storybook": "^8.4.7",
     "svag-husky": "^0.1.53",
     "ts-jest": "^29.2.5",
     "tsc-alias": "^1.8.10",
+    "tsx": "^4.19.2",
     "typescript": "^5.7.2",
     "vite": "^6.0.7",
     "vite-plugin-svgr": "^4.3.0"
@@ -67,10 +75,12 @@
   },
   "dependencies": {
     "classnames": "^2.5.1",
+    "js-yaml": "^4.1.0",
     "json-stable-stringify": "^1.2.1",
     "lodash": "^4.17.21",
     "svag-deep-map": "^0.1.14",
     "uuid-by-string": "^4.0.0",
+    "yargs": "^17.7.2",
     "zod": "^3.24.1"
   }
 }

@@ -40,13 +40,16 @@ export type AnyConfig<
   variants?: AnyConfigVariants<TStyleRoot, TSettings>
 }
 
-export type AnyConfiguredCommonProps<TConfig extends AnyConfig<TStyleRoot> | undefined, TStyleRoot extends {}> = {
+export type AnyConfiguredCommonProps<
+  TConfig extends AnyConfig<TStyleRoot> | undefined | null,
+  TStyleRoot extends {},
+> = {
   variant?: keyof NonNullable<TConfig>['variants']
 } & {
   [key in AnyConfigSettingsItemName<NonNullable<TConfig>>]?: AnyConfigSettingsItemValue<NonNullable<TConfig>, key>
 } & { $style?: TStyleRoot }
 
-export type PartialUinityConfig = Record<string, AnyConfig<any, any>>
+export type PartialUinityConfig = Record<string, AnyConfig<any, any> | undefined>
 
 export const getGetAnyStyleRoot = <
   TPartialUinityConfig extends PartialUinityConfig,
@@ -76,7 +79,7 @@ export const getGetAnyStyleRoot = <
     settings: Record<string, any> | undefined | null
     styleRootConfiguredOverrides: TStyleRootConfigured | undefined | null
   }): TStyleRootConfigured => {
-    const c = uinityConfig[componentName]
+    const c = uinityConfig[componentName] || {}
     const result: TStyleRootConfigured = {} as never
     assignStyleRootConfigured(result, c.general)
     // get only thouse settings which exists in config
