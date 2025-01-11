@@ -120,10 +120,15 @@ const getButtonFinalCss = ($sf: ButtonClearStyleFinal) => {
   `
 }
 
-// TODO: refactor types of config, may be I do not need anything except variants and settings, all other can be getted just from base UinityConfig
-// TODO: add colors modes
-
+// TODO: Цвета до 4 уровней
+// TODO: Разделить конфиг с переменными и готовый конфиг. Собирать конфиг по команде из скрипта
+// TODO: Выпилить не нужные генерики из конфига, раз валидацией конфига занимается расширение
+// TODO: ? Вшить в ход конфиге места для переменных, чтобы были не где попало, а в допустимых местах
+// TODO: В юнити сделать комплекс поле конфига
 // TODO: add uinity config foxy validator
+// TODO: К иконке добавить вср и передавать вариант иконки из кнопки в иконку
+
+// TODO: add colors modes
 
 // TODO: uinity config provider
 // TODO: color mode provider
@@ -151,10 +156,16 @@ const getButtonFinalCss = ($sf: ButtonClearStyleFinal) => {
 // TODO: (D) create all simple components
 // TODO: (D) add stories for each component
 
-// TODO: create zod schema and type for standard uinity config
+// TODO: standard uinity config: create zod schema, validator and type for
 
-// TODO: browser editor for uinityConfig special for web-designers
-// TODO: add AI for uinity config generation and modification
+// TODO: vscode ext
+// TODO: figma ext
+// TODO: ai generator
+
+// TODO: подписка одна на все опенсорсы на сайте свага
+
+// TODO: передавать стили или прямо css для каждого отдельного компонента
+// TODO: react-native
 
 // Styled components
 const IconS = styled(Icon)``

@@ -170,7 +170,8 @@ const uinityConfig = parseUinityConfig({
         overrides: {
           rest: {
             iconVariant: 'blueSmall',
-            backgroundColor: '#ff0000',
+            // backgroundColor: '#ff0000',
+            backgroundColor: { pointer: '$.colors.semantic.y.strong' },
             textSize: 98,
           },
           byWindowWidthReverse: [
