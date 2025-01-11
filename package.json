@@ -29,6 +29,7 @@
     "test": "cross-env NODE_OPTIONS=--experimental-vm-modules TS_JEST_DISABLE_VER_CHECKER=true jest --color --runInBand",
     "uinity-config-generate": "uinity config-generate ./src/examples/config/uinity.config.source.yml ./src/examples/config/uinity.config.json",
     "uinity-config-watch": "pnpm uinity-config-generate --watch",
+    "uinity-json-schema": "tsx ./src/lib/generateUinityJsonSchema.ts",
     "prepare": "husky"
   },
   "devDependencies": {
@@ -67,7 +68,8 @@
     "tsx": "^4.19.2",
     "typescript": "^5.7.2",
     "vite": "^6.0.7",
-    "vite-plugin-svgr": "^4.3.0"
+    "vite-plugin-svgr": "^4.3.0",
+    "zod-to-json-schema": "^3.24.1"
   },
   "workspaces": [
     "packages/*"

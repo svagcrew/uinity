@@ -1,0 +1,751 @@
+{
+  "$ref": "#/definitions/MySchema",
+  "definitions": {
+    "MySchema": {
+      "type": "object",
+      "properties": {
+        "breakSizes": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "number"
+          }
+        },
+        "colors": {
+          "anyOf": [
+            {
+              "type": "object",
+              "additionalProperties": {
+                "anyOf": [
+                  {
+                    "anyOf": [
+                      {
+                        "type": "string",
+                        "minLength": 1
+                      },
+                      {
+                        "type": "object",
+                        "additionalProperties": {
+                          "anyOf": [
+                            {
+                              "anyOf": [
+                                {
+                                  "not": {}
+                                },
+                                {
+                                  "type": "string",
+                                  "minLength": 1
+                                }
+                              ]
+                            },
+                            {
+                              "type": "null"
+                            }
+                          ]
+                        },
+                        "propertyNames": {
+                          "minLength": 1
+                        }
+                      }
+                    ]
+                  },
+                  {
+                    "type": "null"
+                  },
+                  {
+                    "not": {}
+                  }
+                ]
+              }
+            },
+            {
+              "type": "object",
+              "additionalProperties": {
+                "$ref": "#/definitions/MySchema/properties/colors/anyOf/0"
+              }
+            },
+            {
+              "type": "object",
+              "additionalProperties": {
+                "$ref": "#/definitions/MySchema/properties/colors/anyOf/1"
+              }
+            },
+            {
+              "type": "object",
+              "additionalProperties": {
+                "$ref": "#/definitions/MySchema/properties/colors/anyOf/2"
+              }
+            },
+            {
+              "type": "object",
+              "additionalProperties": {
+                "$ref": "#/definitions/MySchema/properties/colors/anyOf/3"
+              }
+            }
+          ]
+        },
+        "icon": {
+          "type": "object",
+          "properties": {
+            "general": {
+              "anyOf": [
+                {
+                  "anyOf": [
+                    {
+                      "not": {}
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "color": {
+                          "$ref": "#/definitions/MySchema/properties/colors/anyOf/0/additionalProperties"
+                        },
+                        "size": {
+                          "anyOf": [
+                            {
+                              "anyOf": [
+                                {
+                                  "not": {}
+                                },
+                                {
+                                  "anyOf": [
+                                    {
+                                      "type": "number"
+                                    },
+                                    {
+                                      "type": "string",
+                                      "minLength": 1
+                                    }
+                                  ]
+                                }
+                              ]
+                            },
+                            {
+                              "type": "null"
+                            }
+                          ]
+                        }
+                      },
+                      "additionalProperties": false
+                    }
+                  ]
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "settings": {
+              "anyOf": [
+                {
+                  "anyOf": [
+                    {
+                      "not": {}
+                    },
+                    {
+                      "type": "object",
+                      "additionalProperties": {
+                        "type": "object",
+                        "additionalProperties": {
+                          "$ref": "#/definitions/MySchema/properties/icon/properties/general/anyOf/0/anyOf/1"
+                        }
+                      }
+                    }
+                  ]
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "variants": {
+              "anyOf": [
+                {
+                  "anyOf": [
+                    {
+                      "not": {}
+                    },
+                    {
+                      "type": "object",
+                      "additionalProperties": {
+                        "type": "object",
+                        "properties": {
+                          "settings": {
+                            "anyOf": [
+                              {
+                                "anyOf": [
+                                  {
+                                    "not": {}
+                                  },
+                                  {
+                                    "type": "object",
+                                    "additionalProperties": {
+                                      "type": "string"
+                                    }
+                                  }
+                                ]
+                              },
+                              {
+                                "type": "null"
+                              }
+                            ]
+                          },
+                          "overrides": {
+                            "anyOf": [
+                              {
+                                "anyOf": [
+                                  {
+                                    "not": {}
+                                  },
+                                  {
+                                    "$ref": "#/definitions/MySchema/properties/icon/properties/general/anyOf/0/anyOf/1"
+                                  }
+                                ]
+                              },
+                              {
+                                "type": "null"
+                              }
+                            ]
+                          }
+                        },
+                        "additionalProperties": false
+                      }
+                    }
+                  ]
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            }
+          },
+          "additionalProperties": false
+        },
+        "button": {
+          "type": "object",
+          "properties": {
+            "general": {
+              "anyOf": [
+                {
+                  "anyOf": [
+                    {
+                      "not": {}
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "rest": {
+                          "anyOf": [
+                            {
+                              "anyOf": [
+                                {
+                                  "not": {}
+                                },
+                                {
+                                  "type": "object",
+                                  "properties": {
+                                    "gapHorizontalAccessoryText": {
+                                      "$ref": "#/definitions/MySchema/properties/icon/properties/general/anyOf/0/anyOf/1/properties/size"
+                                    },
+                                    "textFont": {
+                                      "$ref": "#/definitions/MySchema/properties/colors/anyOf/0/additionalProperties/anyOf/0/anyOf/1/additionalProperties"
+                                    },
+                                    "textWeight": {
+                                      "$ref": "#/definitions/MySchema/properties/icon/properties/general/anyOf/0/anyOf/1/properties/size"
+                                    },
+                                    "textSize": {
+                                      "$ref": "#/definitions/MySchema/properties/icon/properties/general/anyOf/0/anyOf/1/properties/size"
+                                    },
+                                    "textLineHeight": {
+                                      "$ref": "#/definitions/MySchema/properties/icon/properties/general/anyOf/0/anyOf/1/properties/size"
+                                    },
+                                    "borderWidth": {
+                                      "$ref": "#/definitions/MySchema/properties/icon/properties/general/anyOf/0/anyOf/1/properties/size"
+                                    },
+                                    "minHeight": {
+                                      "$ref": "#/definitions/MySchema/properties/icon/properties/general/anyOf/0/anyOf/1/properties/size"
+                                    },
+                                    "backgroundColor": {
+                                      "$ref": "#/definitions/MySchema/properties/colors/anyOf/0/additionalProperties"
+                                    },
+                                    "borderColor": {
+                                      "$ref": "#/definitions/MySchema/properties/colors/anyOf/0/additionalProperties"
+                                    },
+                                    "textColor": {
+                                      "$ref": "#/definitions/MySchema/properties/colors/anyOf/0/additionalProperties"
+                                    },
+                                    "iconColor": {
+                                      "$ref": "#/definitions/MySchema/properties/colors/anyOf/0/additionalProperties"
+                                    },
+                                    "iconSize": {
+                                      "$ref": "#/definitions/MySchema/properties/icon/properties/general/anyOf/0/anyOf/1/properties/size"
+                                    },
+                                    "iconSettings": {
+                                      "anyOf": [
+                                        {
+                                          "anyOf": [
+                                            {
+                                              "not": {}
+                                            },
+                                            {
+                                              "type": "object",
+                                              "additionalProperties": {
+                                                "type": "string",
+                                                "minLength": 1
+                                              }
+                                            }
+                                          ]
+                                        },
+                                        {
+                                          "type": "null"
+                                        }
+                                      ]
+                                    },
+                                    "iconVariant": {
+                                      "$ref": "#/definitions/MySchema/properties/colors/anyOf/0/additionalProperties/anyOf/0/anyOf/1/additionalProperties"
+                                    }
+                                  },
+                                  "additionalProperties": false
+                                }
+                              ]
+                            },
+                            {
+                              "type": "null"
+                            }
+                          ]
+                        },
+                        "hover": {
+                          "anyOf": [
+                            {
+                              "anyOf": [
+                                {
+                                  "not": {}
+                                },
+                                {
+                                  "$ref": "#/definitions/MySchema/properties/button/properties/general/anyOf/0/anyOf/1/properties/rest/anyOf/0/anyOf/1"
+                                }
+                              ]
+                            },
+                            {
+                              "type": "null"
+                            }
+                          ]
+                        },
+                        "active": {
+                          "anyOf": [
+                            {
+                              "anyOf": [
+                                {
+                                  "not": {}
+                                },
+                                {
+                                  "$ref": "#/definitions/MySchema/properties/button/properties/general/anyOf/0/anyOf/1/properties/rest/anyOf/0/anyOf/1"
+                                }
+                              ]
+                            },
+                            {
+                              "type": "null"
+                            }
+                          ]
+                        },
+                        "focus": {
+                          "anyOf": [
+                            {
+                              "anyOf": [
+                                {
+                                  "not": {}
+                                },
+                                {
+                                  "$ref": "#/definitions/MySchema/properties/button/properties/general/anyOf/0/anyOf/1/properties/rest/anyOf/0/anyOf/1"
+                                }
+                              ]
+                            },
+                            {
+                              "type": "null"
+                            }
+                          ]
+                        },
+                        "disabled": {
+                          "anyOf": [
+                            {
+                              "anyOf": [
+                                {
+                                  "not": {}
+                                },
+                                {
+                                  "$ref": "#/definitions/MySchema/properties/button/properties/general/anyOf/0/anyOf/1/properties/rest/anyOf/0/anyOf/1"
+                                }
+                              ]
+                            },
+                            {
+                              "type": "null"
+                            }
+                          ]
+                        },
+                        "byWindowWidth": {
+                          "anyOf": [
+                            {
+                              "anyOf": [
+                                {
+                                  "not": {}
+                                },
+                                {
+                                  "type": "array",
+                                  "items": {
+                                    "type": "array",
+                                    "minItems": 2,
+                                    "maxItems": 2,
+                                    "items": [
+                                      {
+                                        "anyOf": [
+                                          {
+                                            "type": "number"
+                                          },
+                                          {
+                                            "type": "string",
+                                            "minLength": 1
+                                          }
+                                        ]
+                                      },
+                                      {
+                                        "type": "object",
+                                        "properties": {
+                                          "rest": {
+                                            "$ref": "#/definitions/MySchema/properties/button/properties/general/anyOf/0/anyOf/1/properties/rest"
+                                          },
+                                          "hover": {
+                                            "$ref": "#/definitions/MySchema/properties/button/properties/general/anyOf/0/anyOf/1/properties/hover"
+                                          },
+                                          "active": {
+                                            "$ref": "#/definitions/MySchema/properties/button/properties/general/anyOf/0/anyOf/1/properties/active"
+                                          },
+                                          "focus": {
+                                            "$ref": "#/definitions/MySchema/properties/button/properties/general/anyOf/0/anyOf/1/properties/focus"
+                                          },
+                                          "disabled": {
+                                            "$ref": "#/definitions/MySchema/properties/button/properties/general/anyOf/0/anyOf/1/properties/disabled"
+                                          }
+                                        },
+                                        "additionalProperties": false
+                                      }
+                                    ]
+                                  }
+                                }
+                              ]
+                            },
+                            {
+                              "type": "null"
+                            }
+                          ]
+                        },
+                        "byWindowWidthReverse": {
+                          "anyOf": [
+                            {
+                              "anyOf": [
+                                {
+                                  "not": {}
+                                },
+                                {
+                                  "type": "array",
+                                  "items": {
+                                    "type": "array",
+                                    "minItems": 2,
+                                    "maxItems": 2,
+                                    "items": [
+                                      {
+                                        "$ref": "#/definitions/MySchema/properties/button/properties/general/anyOf/0/anyOf/1/properties/byWindowWidth/anyOf/0/anyOf/1/items/items/0"
+                                      },
+                                      {
+                                        "$ref": "#/definitions/MySchema/properties/button/properties/general/anyOf/0/anyOf/1/properties/byWindowWidth/anyOf/0/anyOf/1/items/items/1"
+                                      }
+                                    ]
+                                  }
+                                }
+                              ]
+                            },
+                            {
+                              "type": "null"
+                            }
+                          ]
+                        },
+                        "byWindowHeight": {
+                          "anyOf": [
+                            {
+                              "anyOf": [
+                                {
+                                  "not": {}
+                                },
+                                {
+                                  "type": "array",
+                                  "items": {
+                                    "type": "array",
+                                    "minItems": 2,
+                                    "maxItems": 2,
+                                    "items": [
+                                      {
+                                        "$ref": "#/definitions/MySchema/properties/button/properties/general/anyOf/0/anyOf/1/properties/byWindowWidth/anyOf/0/anyOf/1/items/items/0"
+                                      },
+                                      {
+                                        "$ref": "#/definitions/MySchema/properties/button/properties/general/anyOf/0/anyOf/1/properties/byWindowWidth/anyOf/0/anyOf/1/items/items/1"
+                                      }
+                                    ]
+                                  }
+                                }
+                              ]
+                            },
+                            {
+                              "type": "null"
+                            }
+                          ]
+                        },
+                        "byWindowHeightReverse": {
+                          "anyOf": [
+                            {
+                              "anyOf": [
+                                {
+                                  "not": {}
+                                },
+                                {
+                                  "type": "array",
+                                  "items": {
+                                    "type": "array",
+                                    "minItems": 2,
+                                    "maxItems": 2,
+                                    "items": [
+                                      {
+                                        "$ref": "#/definitions/MySchema/properties/button/properties/general/anyOf/0/anyOf/1/properties/byWindowWidth/anyOf/0/anyOf/1/items/items/0"
+                                      },
+                                      {
+                                        "$ref": "#/definitions/MySchema/properties/button/properties/general/anyOf/0/anyOf/1/properties/byWindowWidth/anyOf/0/anyOf/1/items/items/1"
+                                      }
+                                    ]
+                                  }
+                                }
+                              ]
+                            },
+                            {
+                              "type": "null"
+                            }
+                          ]
+                        },
+                        "byContainerWidth": {
+                          "anyOf": [
+                            {
+                              "anyOf": [
+                                {
+                                  "not": {}
+                                },
+                                {
+                                  "type": "array",
+                                  "items": {
+                                    "type": "array",
+                                    "minItems": 2,
+                                    "maxItems": 2,
+                                    "items": [
+                                      {
+                                        "$ref": "#/definitions/MySchema/properties/button/properties/general/anyOf/0/anyOf/1/properties/byWindowWidth/anyOf/0/anyOf/1/items/items/0"
+                                      },
+                                      {
+                                        "$ref": "#/definitions/MySchema/properties/button/properties/general/anyOf/0/anyOf/1/properties/byWindowWidth/anyOf/0/anyOf/1/items/items/1"
+                                      }
+                                    ]
+                                  }
+                                }
+                              ]
+                            },
+                            {
+                              "type": "null"
+                            }
+                          ]
+                        },
+                        "byContainerWidthReverse": {
+                          "anyOf": [
+                            {
+                              "anyOf": [
+                                {
+                                  "not": {}
+                                },
+                                {
+                                  "type": "array",
+                                  "items": {
+                                    "type": "array",
+                                    "minItems": 2,
+                                    "maxItems": 2,
+                                    "items": [
+                                      {
+                                        "$ref": "#/definitions/MySchema/properties/button/properties/general/anyOf/0/anyOf/1/properties/byWindowWidth/anyOf/0/anyOf/1/items/items/0"
+                                      },
+                                      {
+                                        "$ref": "#/definitions/MySchema/properties/button/properties/general/anyOf/0/anyOf/1/properties/byWindowWidth/anyOf/0/anyOf/1/items/items/1"
+                                      }
+                                    ]
+                                  }
+                                }
+                              ]
+                            },
+                            {
+                              "type": "null"
+                            }
+                          ]
+                        },
+                        "byContainerHeight": {
+                          "anyOf": [
+                            {
+                              "anyOf": [
+                                {
+                                  "not": {}
+                                },
+                                {
+                                  "type": "array",
+                                  "items": {
+                                    "type": "array",
+                                    "minItems": 2,
+                                    "maxItems": 2,
+                                    "items": [
+                                      {
+                                        "$ref": "#/definitions/MySchema/properties/button/properties/general/anyOf/0/anyOf/1/properties/byWindowWidth/anyOf/0/anyOf/1/items/items/0"
+                                      },
+                                      {
+                                        "$ref": "#/definitions/MySchema/properties/button/properties/general/anyOf/0/anyOf/1/properties/byWindowWidth/anyOf/0/anyOf/1/items/items/1"
+                                      }
+                                    ]
+                                  }
+                                }
+                              ]
+                            },
+                            {
+                              "type": "null"
+                            }
+                          ]
+                        },
+                        "byContainerHeightReverse": {
+                          "anyOf": [
+                            {
+                              "anyOf": [
+                                {
+                                  "not": {}
+                                },
+                                {
+                                  "type": "array",
+                                  "items": {
+                                    "type": "array",
+                                    "minItems": 2,
+                                    "maxItems": 2,
+                                    "items": [
+                                      {
+                                        "$ref": "#/definitions/MySchema/properties/button/properties/general/anyOf/0/anyOf/1/properties/byWindowWidth/anyOf/0/anyOf/1/items/items/0"
+                                      },
+                                      {
+                                        "$ref": "#/definitions/MySchema/properties/button/properties/general/anyOf/0/anyOf/1/properties/byWindowWidth/anyOf/0/anyOf/1/items/items/1"
+                                      }
+                                    ]
+                                  }
+                                }
+                              ]
+                            },
+                            {
+                              "type": "null"
+                            }
+                          ]
+                        }
+                      },
+                      "additionalProperties": false
+                    }
+                  ]
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "settings": {
+              "anyOf": [
+                {
+                  "anyOf": [
+                    {
+                      "not": {}
+                    },
+                    {
+                      "type": "object",
+                      "additionalProperties": {
+                        "type": "object",
+                        "additionalProperties": {
+                          "$ref": "#/definitions/MySchema/properties/button/properties/general/anyOf/0/anyOf/1"
+                        }
+                      }
+                    }
+                  ]
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "variants": {
+              "anyOf": [
+                {
+                  "anyOf": [
+                    {
+                      "not": {}
+                    },
+                    {
+                      "type": "object",
+                      "additionalProperties": {
+                        "type": "object",
+                        "properties": {
+                          "settings": {
+                            "anyOf": [
+                              {
+                                "anyOf": [
+                                  {
+                                    "not": {}
+                                  },
+                                  {
+                                    "type": "object",
+                                    "additionalProperties": {
+                                      "type": "string"
+                                    }
+                                  }
+                                ]
+                              },
+                              {
+                                "type": "null"
+                              }
+                            ]
+                          },
+                          "overrides": {
+                            "anyOf": [
+                              {
+                                "anyOf": [
+                                  {
+                                    "not": {}
+                                  },
+                                  {
+                                    "$ref": "#/definitions/MySchema/properties/button/properties/general/anyOf/0/anyOf/1"
+                                  }
+                                ]
+                              },
+                              {
+                                "type": "null"
+                              }
+                            ]
+                          }
+                        },
+                        "additionalProperties": false
+                      }
+                    }
+                  ]
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            }
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    }
+  },
+  "$schema": "http://json-schema.org/draft-07/schema#"
+}

@@ -1,5 +1,3 @@
-uinity json schema and yml validation by schema
-
 config custom varaibles with deep structure
 
 ? К иконке добавить вср и передавать вариант иконки из кнопки в иконку (? именно рест состояние)

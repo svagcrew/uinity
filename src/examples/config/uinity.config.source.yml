@@ -1,3 +1,4 @@
+# yaml-language-server: $schema=../../../uinity.schema.json
 breakSizes:
   big: 1200
   small: 1000
