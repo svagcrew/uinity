@@ -144,7 +144,7 @@ export const Button: ButtonClearType = forwardRef<any, ButtonClearPropsWithoutRe
         $sf={$sf}
       >
         {iconStart && (
-          <IconS src={iconStart} className={getSubClassName({ subComponentName: 'icon', modKey: 'start' })} />
+          <IconS src={iconStart} className={getSubClassName({ subComponentName: ['icon', 'icon-start'] })} />
         )}
         <ContentS className={getSubClassName({ subComponentName: 'content' })}>{children}</ContentS>
       </ButtonS>

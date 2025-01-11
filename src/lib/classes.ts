@@ -30,7 +30,7 @@ export const getMainClassName = ({
   isConfigured?: boolean
   settings?: Record<string, string>
   variantName?: string | undefined
-  providedClassName: string | undefined
+  providedClassName?: string | undefined
 }): string => {
   const componentNameKebabed = kebabify(componentName)
   const componentNamePrefixed = `uinity-${componentNameKebabed}`
@@ -61,12 +61,26 @@ export const getSubClassName = ({
   mods,
 }: {
   componentName: string
-  subComponentName: string
+  subComponentName: string | string[]
   providedClassName?: string | undefined
   modKey?: string
   modValue?: string
   mods?: Record<string, string | undefined>
 }): string => {
+  if (Array.isArray(subComponentName)) {
+    return subComponentName
+      .map((subComponentNameItem) =>
+        getSubClassName({
+          componentName,
+          subComponentName: subComponentNameItem,
+          providedClassName,
+          modKey,
+          modValue,
+          mods,
+        })
+      )
+      .join(' ')
+  }
   const componentNameKebabed = kebabify(componentName)
   const componentNamePrefixed = `uinity-${componentNameKebabed}`
   const subComponentNameKebabed = kebabify(subComponentName)
@@ -92,7 +106,7 @@ export const getSubClassName = ({
 
 export const getGetClassName = ({ componentName }: { componentName: string }) => {
   return {
-    getMainClassName: (props: Omit<Parameters<typeof getMainClassName>[0], 'componentName'>) =>
+    getMainClassName: (props: Omit<Parameters<typeof getMainClassName>[0], 'componentName'> = {}) =>
       getMainClassName({ componentName, ...props }),
     getSubClassName: (props: Omit<Parameters<typeof getSubClassName>[0], 'componentName'>) =>
       getSubClassName({ componentName, ...props }),

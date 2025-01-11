@@ -10,6 +10,7 @@ import { parseUinityConfig } from '@/lib/unintyConfig.js'
 import SvgIcon from '@/examples/icons/icon1.svg?react'
 import type { Meta, StoryObj } from '@storybook/react'
 import { forwardRef, useEffect, useRef } from 'react'
+import { buttonStructureClear, buttonStructureConfigured } from '@/components/button/structure.js'
 
 const { default: uinityConfigRaw } = await import('@/examples/config/uinity.config.json')
 
