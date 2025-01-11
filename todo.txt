@@ -1,4 +1,4 @@
-add uinity config foxy validator
+uinity json schema and yml validation by schema
 
 config custom varaibles with deep structure
 

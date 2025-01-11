@@ -20,7 +20,11 @@ void (async () => {
       .option('-w, --watch', 'Watch the input file for changes')
       .action((srcPath, distPath, options) => {
         const watch = !!options.watch
-        generateUinityConfigFromSource({ srcPath, distPath, verbose: true })
+        try {
+          generateUinityConfigFromSource({ srcPath, distPath, verbose: true })
+        } catch (error: any) {
+          console.error(error.message)
+        }
         if (watch) {
           generateUinityConfigFromSourceWithWatch({ srcPath, distPath, verbose: true })
         }
