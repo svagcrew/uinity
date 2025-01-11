@@ -5,12 +5,11 @@ import { createButton } from '@/components/button/react.styled.configured.js'
 import { Buttons } from '@/components/buttons/react.clear.js'
 import { Icon } from '@/components/icon/react.styled.clear.js'
 import { createIcon } from '@/components/icon/react.styled.configured.js'
-import { iconsSources } from '@/examples/icons/sources.js'
-import { parseUinityConfig } from '@/lib/unintyConfig.js'
 import SvgIcon from '@/examples/icons/icon1.svg?react'
+import { iconsSources } from '@/examples/icons/sources.js'
+import { parseUinityConfig } from '@/lib/uinityConfigGeneral.js'
 import type { Meta, StoryObj } from '@storybook/react'
 import { forwardRef, useEffect, useRef } from 'react'
-import { buttonStructureClear, buttonStructureConfigured } from '@/components/button/structure.js'
 
 const { default: uinityConfigRaw } = await import('@/examples/config/uinity.config.json')
 

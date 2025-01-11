@@ -16,6 +16,9 @@
   "license": "MIT",
   "private": true,
   "type": "module",
+  "bin": {
+    "uinity": "./bin/index.js"
+  },
   "scripts": {
     "sb": "storybook dev -p 6006",
     "watch": "tsc --project tsconfig.build.json || true && (concurrently 'tsc --project tsconfig.build.json --watch --preserveWatchOutput' 'tsc-alias --project tsconfig.build.json --watch')",
@@ -24,8 +27,8 @@
     "lint": "eslint --color --cache --cache-location ./node_modules/.cache/.eslintcache .",
     "lint-fix": "pnpm lint --fix",
     "test": "cross-env NODE_OPTIONS=--experimental-vm-modules TS_JEST_DISABLE_VER_CHECKER=true jest --color --runInBand",
-    "generate-uinity-config": "tsx ./src/scripts/generateUinityConfigFromSource.js ./src/examples/config/uinity.config.source.yml ./src/examples/config/uinity.config.json",
-    "watch-uinity-config": "onchange -i './src/scripts/generateUinityConfigFromSource.ts' './src/examples/config/uinity.config.source.yml' -- pnpm generate-uinity-config",
+    "uinity-config-generate": "uinity config-generate ./src/examples/config/uinity.config.source.yml ./src/examples/config/uinity.config.json",
+    "uinity-config-watch": "pnpm uinity-config-generate --watch",
     "prepare": "husky"
   },
   "devDependencies": {
@@ -74,13 +77,14 @@
     "styled-components": "^6.1.14"
   },
   "dependencies": {
+    "chokidar": "^4.0.3",
     "classnames": "^2.5.1",
+    "commander": "^13.0.0",
     "js-yaml": "^4.1.0",
     "json-stable-stringify": "^1.2.1",
     "lodash": "^4.17.21",
     "svag-deep-map": "^0.1.14",
     "uuid-by-string": "^4.0.0",
-    "yargs": "^17.7.2",
     "zod": "^3.24.1"
   }
 }
