@@ -3,10 +3,19 @@ import {
   validateUinityConfig,
   variablifyUinityConfigSource,
 } from '@/lib/uinityConfigGeneral.js'
+import chokidar from 'chokidar'
 import * as fs from 'fs'
 import * as yaml from 'js-yaml'
 
-export const generateUinityConfigFromSource = ({ srcPath, distPath }: { srcPath: string; distPath: string }): void => {
+export const generateUinityConfigFromSource = ({
+  srcPath,
+  distPath,
+  verbose,
+}: {
+  srcPath: string
+  distPath: string
+  verbose?: boolean
+}): void => {
   const srcContent = fs.readFileSync(srcPath, 'utf8')
   const srcExt = srcPath.split('.').pop()
   const isSrcYml = srcExt === 'yml' || srcExt === 'yaml'
@@ -26,4 +35,28 @@ export const generateUinityConfigFromSource = ({ srcPath, distPath }: { srcPath:
   const uinityConfigInfinitified = infinitifyUinityConfig({ uinityConfigRaw })
   validateUinityConfig({ uinityConfig: uinityConfigInfinitified })
   fs.writeFileSync(distPath, JSON.stringify(uinityConfigRaw, null, 2))
+  if (verbose) {
+    console.info(`Config saved to ${distPath}`)
+  }
+}
+
+export const generateUinityConfigFromSourceWithWatch = ({
+  srcPath,
+  distPath,
+  verbose,
+}: {
+  srcPath: string
+  distPath: string
+  verbose?: boolean
+}): void => {
+  verbose && console.info(`Watching for changes on ${srcPath}`)
+  const watcher = chokidar.watch(srcPath, { persistent: true })
+  watcher.on('change', (path) => {
+    try {
+      verbose && console.info(`File ${path} has been changed`)
+      generateUinityConfigFromSource({ srcPath, distPath, verbose })
+    } catch (error: any) {
+      console.error(error.message)
+    }
+  })
 }
