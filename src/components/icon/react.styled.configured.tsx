@@ -8,7 +8,7 @@ import type { AsPropsWithRef, WithoutRef } from '@/lib/asRef.js'
 import { forwardRef } from 'react'
 import type { IconClearMainProps, IconClearSrc } from './react.styled.clear.js'
 import { Icon as IconClear } from './react.styled.clear.js'
-import { getMainClassName } from '@/lib/classes.js'
+import { getComponentClassName } from '@/lib/classes.js'
 
 // Special props for configured component
 export type IconConfiguredSpecialProps<TIconName extends string = string> = {
@@ -63,7 +63,7 @@ export const createIcon = <TIconUinityConfig extends IconUinityConfig, TIconName
       return (
         <IconClear
           {...restPropsWithoutSettings}
-          className={getMainClassName({
+          className={getComponentClassName({
             componentName: 'icon',
             isConfigured: true,
             variantName,

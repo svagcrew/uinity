@@ -12,7 +12,8 @@ import {
   bySizeKeys,
   getZPartByAllSizesConfiguredOptionalNullable,
 } from '@/lib/bySize.js'
-import { type ColorModeName, getColorByMode, zColorValueOptionalNullable } from '@/lib/color.js'
+import { type ColorModeName, getColorByMode } from '@/lib/color.js'
+import { zCssCamelCaseObjectExtendedSilent } from '@/lib/css.js'
 import { objectAssignExceptUndefined, omit } from '@/lib/utils.js'
 import {
   zNumberOrStringOptionalNullable,
@@ -23,20 +24,29 @@ import { z } from 'zod'
 
 export const zButtonStyleCoreConfigured = z
   .object({
-    gapHorizontalAccessoryText: zNumberOrStringOptionalNullable,
-    textFont: zStringOptionalNullable,
-    textWeight: zNumberOrStringOptionalNullable,
-    textSize: zNumberOrStringOptionalNullable,
-    textLineHeight: zNumberOrStringOptionalNullable,
-    borderWidth: zNumberOrStringOptionalNullable,
-    minHeight: zNumberOrStringOptionalNullable,
-    backgroundColor: zColorValueOptionalNullable,
-    borderColor: zColorValueOptionalNullable,
-    textColor: zColorValueOptionalNullable,
-    iconColor: zColorValueOptionalNullable,
-    iconSize: zNumberOrStringOptionalNullable,
-    iconSettings: zRecordOfStringsOptionalNullable,
-    iconVariant: zStringOptionalNullable,
+    special: z
+      .object({
+        gapHorizontalIconText: zNumberOrStringOptionalNullable.describe('Gap between icon and text'),
+      })
+      .optional()
+      .nullable(),
+    button: zCssCamelCaseObjectExtendedSilent({}),
+    icon: zCssCamelCaseObjectExtendedSilent({
+      iconVariant: zStringOptionalNullable,
+      iconSettings: zRecordOfStringsOptionalNullable,
+      size: zNumberOrStringOptionalNullable,
+    }),
+    iconStart: zCssCamelCaseObjectExtendedSilent({
+      iconVariant: zStringOptionalNullable,
+      iconSettings: zRecordOfStringsOptionalNullable,
+      size: zNumberOrStringOptionalNullable,
+    }),
+    content: zCssCamelCaseObjectExtendedSilent({}),
+    iconEnd: zCssCamelCaseObjectExtendedSilent({
+      iconVariant: zStringOptionalNullable,
+      iconSettings: zRecordOfStringsOptionalNullable,
+      size: zNumberOrStringOptionalNullable,
+    }),
   })
   .strict()
 export type ButtonStyleCoreConfigured = z.output<typeof zButtonStyleCoreConfigured>
@@ -87,6 +97,7 @@ export type ButtonStyleCoreClear = ReturnType<typeof getButtonStyleCoreClearByCo
 export const buttonStatesKeys = ['rest', 'hover', 'active', 'focus', 'disabled'] as const
 export type ButtonStateKey = (typeof buttonStatesKeys)[number]
 export const zButtonStyleStatesConfigured = z.object({
+  // TODO: use generated style with map or reduce
   rest: zButtonStyleCoreConfigured.optional().nullable(),
   hover: zButtonStyleCoreConfigured.optional().nullable(),
   active: zButtonStyleCoreConfigured.optional().nullable(),

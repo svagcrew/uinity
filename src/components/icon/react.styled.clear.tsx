@@ -69,7 +69,7 @@ const IconGlobalS = createGlobalStyle<{ $sf: IconClearStyleFinal }>`
 `
 
 // Component
-const { getMainClassName } = getGetClassName({ componentName: 'icon' })
+const { getComponentClassName: getMainClassName } = getGetClassName({ componentName: 'icon' })
 export const Icon: IconClearType = forwardRef<any, IconClearPropsWithoutRef>(
   ({ $style = {}, className, src, ...restProps }, ref) => {
     const gcn = getGlobalClassName($style)

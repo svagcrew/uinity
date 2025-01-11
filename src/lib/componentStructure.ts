@@ -1,28 +1,27 @@
-import cloneDeep from 'lodash/cloneDeep.js'
+import cn from 'classnames'
 
-export type ComponentStructureItem = {
+export type ComponentStructureFlatItem = {
+  elementName: string
   desc?: string
+  htmlTag?: string
+  className?: string
+  config?: Record<string, any>
+}
+export type ComponentStructureDeepItem = {
+  elementName: string | string[]
   htmlTag: string
   className: string
-  children?: ComponentStructureItem[]
+  children?: ComponentStructureDeepItem[]
 }
+export type ComponentStructureFlat = Record<string, ComponentStructureFlatItem>
+export type ComponentStructureDeep = ComponentStructureDeepItem[]
 
-export type ComponentStructure = ComponentStructureItem[]
-
-export const getConfiguredComponentStructure = (structureClear: ComponentStructure): ComponentStructure => {
-  const structureConfigured: ComponentStructure = cloneDeep(structureClear)
-  const mainClassName = structureConfigured[0].className
-  const mainClassNameWithVariantAndSettings = `${mainClassName} ${mainClassName}--variant_{variantName} ${mainClassName}--setting-{settingKey}_{settingValue}`
-  structureConfigured[0].className = mainClassNameWithVariantAndSettings
-  return structureConfigured
-}
-
-export const getComponentStructures = (
-  structureClear: ComponentStructure
-): {
-  structureClear: ComponentStructure
-  structureConfigured: ComponentStructure
-} => {
-  const structureConfigured = getConfiguredComponentStructure(structureClear)
-  return { structureClear, structureConfigured }
+export const mergeComponentStructureItems = (...items: ComponentStructureFlatItem[]): ComponentStructureDeepItem => {
+  return items.reduce((acc, item) => {
+    return {
+      elementName: [acc.elementName, item.elementName].filter(Boolean) as string[],
+      htmlTag: acc.htmlTag || item.htmlTag || 'div',
+      className: cn(acc.className, item.className),
+    }
+  }, {} as ComponentStructureDeepItem)
 }

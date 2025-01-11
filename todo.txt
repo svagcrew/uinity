@@ -1,14 +1,18 @@
+Прямо в батоне уже всё разбить на компоненты внутри конфига
+Дать передавать в том числе и все прочие ксс свойства
+
+Брейкпоинтс
+Делать плюс 1 в вср
 config custom varaibles with deep structure
-
 ? К иконке добавить вср и передавать вариант иконки из кнопки в иконку (? именно рест состояние)
-
 add colors modes
-
 uinity config provider
 color mode provider
-
 В юнити сделать комплекс поле конфига
+Сделать экстендабл конфиг
+createEverything
 
+rtl
 buttons
 
 add text component
@@ -19,8 +23,7 @@ create real style props and css button, text, icon
 add textinput
 add textarea components
 
-make nice import per each component
-Вынести основные типы функций мерджа
+? Вынести основные типы функций мерджа
 
 create perfect story for clear
 create perfect story for configured
@@ -31,6 +34,12 @@ generate docs website by components
 create all difficult components
 (D) create all simple components
 (D) add stories for each component
+
+? Убрать Джейсон шему и генерацию
+? Собаку заменить на юинити
+make nice import per each component
+Разбить на пакеты, вероятно генерируемые
+Тесты на все компоненты по отдельности и вместе
 
 standard uinity config: create zod schema, validator and type for
 

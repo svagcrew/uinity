@@ -128,7 +128,9 @@ export const ButtonS = styled.button.attrs(mark('ButtonS'))<{ $sf: ButtonClearSt
 `
 
 // Component
-const { getMainClassName, getSubClassName } = getGetClassName({ componentName: 'button' })
+const { getComponentClassName, getElementClassName } = getGetClassName({
+  componentName: 'button',
+})
 export const Button: ButtonClearType = forwardRef<any, ButtonClearPropsWithoutRef<any>>(
   ({ iconStart, children, disabled, loading, className: providedClassName, $style = {}, ...restProps }, ref) => {
     const $sf: ButtonClearStyleFinal = {
@@ -138,15 +140,13 @@ export const Button: ButtonClearType = forwardRef<any, ButtonClearPropsWithoutRe
     return (
       <ButtonS
         {...restProps}
-        className={getMainClassName({ providedClassName })}
+        className={getComponentClassName({ providedClassName })}
         disabled={disabled || loading}
         ref={syncRefs(ref)}
         $sf={$sf}
       >
-        {iconStart && (
-          <IconS src={iconStart} className={getSubClassName({ subComponentName: ['icon', 'icon-start'] })} />
-        )}
-        <ContentS className={getSubClassName({ subComponentName: 'content' })}>{children}</ContentS>
+        {iconStart && <IconS src={iconStart} className={getElementClassName({ elementName: ['icon', 'iconStart'] })} />}
+        <ContentS className={getElementClassName({ elementName: 'content' })}>{children}</ContentS>
       </ButtonS>
     )
   }

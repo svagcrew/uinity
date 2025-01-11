@@ -19,7 +19,7 @@ const isClassNameContains = (className: string | undefined, part: string) => {
   return className?.split(' ').includes(part) || false
 }
 
-export const getMainClassName = ({
+export const getComponentClassName = ({
   componentName,
   isConfigured,
   settings,
@@ -52,27 +52,27 @@ export const getMainClassName = ({
   return result
 }
 
-export const getSubClassName = ({
+export const getElementClassName = ({
   componentName,
-  subComponentName,
+  elementName,
   providedClassName,
   modKey,
   modValue,
   mods,
 }: {
   componentName: string
-  subComponentName: string | string[]
+  elementName: string | string[]
   providedClassName?: string | undefined
   modKey?: string
   modValue?: string
   mods?: Record<string, string | undefined>
 }): string => {
-  if (Array.isArray(subComponentName)) {
-    return subComponentName
-      .map((subComponentNameItem) =>
-        getSubClassName({
+  if (Array.isArray(elementName)) {
+    return elementName
+      .map((elementNameItem) =>
+        getElementClassName({
           componentName,
-          subComponentName: subComponentNameItem,
+          elementName: elementNameItem,
           providedClassName,
           modKey,
           modValue,
@@ -83,21 +83,21 @@ export const getSubClassName = ({
   }
   const componentNameKebabed = kebabify(componentName)
   const componentNamePrefixed = `uinity-${componentNameKebabed}`
-  const subComponentNameKebabed = kebabify(subComponentName)
-  const subComponentNamePrefixed = `${componentNamePrefixed}__${subComponentNameKebabed}`
+  const elementNameKebabed = kebabify(elementName)
+  const elementNamePrefixed = `${componentNamePrefixed}__${elementNameKebabed}`
   let result = providedClassName
-  result = cn(result, subComponentNamePrefixed)
+  result = cn(result, elementNamePrefixed)
   if (modKey && modValue) {
-    result = cn(result, `${subComponentNamePrefixed}--${modKey}_${modValue}`)
+    result = cn(result, `${elementNamePrefixed}--${modKey}_${modValue}`)
   } else if (modKey) {
-    result = cn(result, `${subComponentNamePrefixed}--${modKey}`)
+    result = cn(result, `${elementNamePrefixed}--${modKey}`)
   }
   if (mods) {
     for (const [key, value] of Object.entries(mods)) {
       if (value) {
-        result = cn(result, `${subComponentNamePrefixed}--${key}_${value}`)
+        result = cn(result, `${elementNamePrefixed}--${key}_${value}`)
       } else {
-        result = cn(result, `${subComponentNamePrefixed}--${key}`)
+        result = cn(result, `${elementNamePrefixed}--${key}`)
       }
     }
   }
@@ -106,9 +106,9 @@ export const getSubClassName = ({
 
 export const getGetClassName = ({ componentName }: { componentName: string }) => {
   return {
-    getMainClassName: (props: Omit<Parameters<typeof getMainClassName>[0], 'componentName'> = {}) =>
-      getMainClassName({ componentName, ...props }),
-    getSubClassName: (props: Omit<Parameters<typeof getSubClassName>[0], 'componentName'>) =>
-      getSubClassName({ componentName, ...props }),
+    getComponentClassName: (props: Omit<Parameters<typeof getComponentClassName>[0], 'componentName'> = {}) =>
+      getComponentClassName({ componentName, ...props }),
+    getElementClassName: (props: Omit<Parameters<typeof getElementClassName>[0], 'componentName'>) =>
+      getElementClassName({ componentName, ...props }),
   }
 }

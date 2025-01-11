@@ -6,7 +6,7 @@ import {
 import type { IconConfigured, IconConfiguredSpecialProps } from '@/components/icon/react.styled.configured.js'
 import { extractSettingsFromProps } from '@/lib/anyConfig.js'
 import type { AsPropsWithRef, WithoutRef } from '@/lib/asRef.js'
-import { getMainClassName } from '@/lib/classes.js'
+import { getComponentClassName } from '@/lib/classes.js'
 import { forwardRef } from 'react'
 import type { ButtonClearMainProps } from './react.styled.clear.js'
 import { Button as ButtonClear } from './react.styled.clear.js'
@@ -62,7 +62,7 @@ export const createButton = <TButtonUinityConfig extends ButtonUinityConfig, TIc
       return (
         <ButtonClear
           {...restPropsWithoutSettings}
-          className={getMainClassName({
+          className={getComponentClassName({
             componentName: 'button',
             isConfigured: true,
             variantName,

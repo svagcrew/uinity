@@ -24,6 +24,8 @@ export default [
   {
     ...general,
     rules: {
+      '@typescript-eslint/consistent-indexed-object-style': 'off',
+      '@typescript-eslint/prefer-reduce-type-parameter': 'off',
       '@typescript-eslint/array-type': 'off',
       '@typescript-eslint/no-dynamic-delete': 'off',
       '@typescript-eslint/no-unsafe-type-assertion': 'off',
