@@ -1,7 +1,7 @@
 {
-  "$ref": "#/definitions/MySchema",
+  "$ref": "#/definitions/uinity",
   "definitions": {
-    "MySchema": {
+    "uinity": {
       "type": "object",
       "properties": {
         "breakSizes": {
@@ -60,25 +60,25 @@
             {
               "type": "object",
               "additionalProperties": {
-                "$ref": "#/definitions/MySchema/properties/colors/anyOf/0"
+                "$ref": "#/definitions/uinity/properties/colors/anyOf/0"
               }
             },
             {
               "type": "object",
               "additionalProperties": {
-                "$ref": "#/definitions/MySchema/properties/colors/anyOf/1"
+                "$ref": "#/definitions/uinity/properties/colors/anyOf/1"
               }
             },
             {
               "type": "object",
               "additionalProperties": {
-                "$ref": "#/definitions/MySchema/properties/colors/anyOf/2"
+                "$ref": "#/definitions/uinity/properties/colors/anyOf/2"
               }
             },
             {
               "type": "object",
               "additionalProperties": {
-                "$ref": "#/definitions/MySchema/properties/colors/anyOf/3"
+                "$ref": "#/definitions/uinity/properties/colors/anyOf/3"
               }
             }
           ]
@@ -97,7 +97,7 @@
                       "type": "object",
                       "properties": {
                         "color": {
-                          "$ref": "#/definitions/MySchema/properties/colors/anyOf/0/additionalProperties"
+                          "$ref": "#/definitions/uinity/properties/colors/anyOf/0/additionalProperties"
                         },
                         "size": {
                           "anyOf": [
@@ -146,7 +146,7 @@
                       "additionalProperties": {
                         "type": "object",
                         "additionalProperties": {
-                          "$ref": "#/definitions/MySchema/properties/icon/properties/general/anyOf/0/anyOf/1"
+                          "$ref": "#/definitions/uinity/properties/icon/properties/general/anyOf/0/anyOf/1"
                         }
                       }
                     }
@@ -197,7 +197,7 @@
                                     "not": {}
                                   },
                                   {
-                                    "$ref": "#/definitions/MySchema/properties/icon/properties/general/anyOf/0/anyOf/1"
+                                    "$ref": "#/definitions/uinity/properties/icon/properties/general/anyOf/0/anyOf/1"
                                   }
                                 ]
                               },
@@ -244,40 +244,40 @@
                                   "type": "object",
                                   "properties": {
                                     "gapHorizontalAccessoryText": {
-                                      "$ref": "#/definitions/MySchema/properties/icon/properties/general/anyOf/0/anyOf/1/properties/size"
+                                      "$ref": "#/definitions/uinity/properties/icon/properties/general/anyOf/0/anyOf/1/properties/size"
                                     },
                                     "textFont": {
-                                      "$ref": "#/definitions/MySchema/properties/colors/anyOf/0/additionalProperties/anyOf/0/anyOf/1/additionalProperties"
+                                      "$ref": "#/definitions/uinity/properties/colors/anyOf/0/additionalProperties/anyOf/0/anyOf/1/additionalProperties"
                                     },
                                     "textWeight": {
-                                      "$ref": "#/definitions/MySchema/properties/icon/properties/general/anyOf/0/anyOf/1/properties/size"
+                                      "$ref": "#/definitions/uinity/properties/icon/properties/general/anyOf/0/anyOf/1/properties/size"
                                     },
                                     "textSize": {
-                                      "$ref": "#/definitions/MySchema/properties/icon/properties/general/anyOf/0/anyOf/1/properties/size"
+                                      "$ref": "#/definitions/uinity/properties/icon/properties/general/anyOf/0/anyOf/1/properties/size"
                                     },
                                     "textLineHeight": {
-                                      "$ref": "#/definitions/MySchema/properties/icon/properties/general/anyOf/0/anyOf/1/properties/size"
+                                      "$ref": "#/definitions/uinity/properties/icon/properties/general/anyOf/0/anyOf/1/properties/size"
                                     },
                                     "borderWidth": {
-                                      "$ref": "#/definitions/MySchema/properties/icon/properties/general/anyOf/0/anyOf/1/properties/size"
+                                      "$ref": "#/definitions/uinity/properties/icon/properties/general/anyOf/0/anyOf/1/properties/size"
                                     },
                                     "minHeight": {
-                                      "$ref": "#/definitions/MySchema/properties/icon/properties/general/anyOf/0/anyOf/1/properties/size"
+                                      "$ref": "#/definitions/uinity/properties/icon/properties/general/anyOf/0/anyOf/1/properties/size"
                                     },
                                     "backgroundColor": {
-                                      "$ref": "#/definitions/MySchema/properties/colors/anyOf/0/additionalProperties"
+                                      "$ref": "#/definitions/uinity/properties/colors/anyOf/0/additionalProperties"
                                     },
                                     "borderColor": {
-                                      "$ref": "#/definitions/MySchema/properties/colors/anyOf/0/additionalProperties"
+                                      "$ref": "#/definitions/uinity/properties/colors/anyOf/0/additionalProperties"
                                     },
                                     "textColor": {
-                                      "$ref": "#/definitions/MySchema/properties/colors/anyOf/0/additionalProperties"
+                                      "$ref": "#/definitions/uinity/properties/colors/anyOf/0/additionalProperties"
                                     },
                                     "iconColor": {
-                                      "$ref": "#/definitions/MySchema/properties/colors/anyOf/0/additionalProperties"
+                                      "$ref": "#/definitions/uinity/properties/colors/anyOf/0/additionalProperties"
                                     },
                                     "iconSize": {
-                                      "$ref": "#/definitions/MySchema/properties/icon/properties/general/anyOf/0/anyOf/1/properties/size"
+                                      "$ref": "#/definitions/uinity/properties/icon/properties/general/anyOf/0/anyOf/1/properties/size"
                                     },
                                     "iconSettings": {
                                       "anyOf": [
@@ -301,7 +301,7 @@
                                       ]
                                     },
                                     "iconVariant": {
-                                      "$ref": "#/definitions/MySchema/properties/colors/anyOf/0/additionalProperties/anyOf/0/anyOf/1/additionalProperties"
+                                      "$ref": "#/definitions/uinity/properties/colors/anyOf/0/additionalProperties/anyOf/0/anyOf/1/additionalProperties"
                                     }
                                   },
                                   "additionalProperties": false
@@ -321,7 +321,7 @@
                                   "not": {}
                                 },
                                 {
-                                  "$ref": "#/definitions/MySchema/properties/button/properties/general/anyOf/0/anyOf/1/properties/rest/anyOf/0/anyOf/1"
+                                  "$ref": "#/definitions/uinity/properties/button/properties/general/anyOf/0/anyOf/1/properties/rest/anyOf/0/anyOf/1"
                                 }
                               ]
                             },
@@ -338,7 +338,7 @@
                                   "not": {}
                                 },
                                 {
-                                  "$ref": "#/definitions/MySchema/properties/button/properties/general/anyOf/0/anyOf/1/properties/rest/anyOf/0/anyOf/1"
+                                  "$ref": "#/definitions/uinity/properties/button/properties/general/anyOf/0/anyOf/1/properties/rest/anyOf/0/anyOf/1"
                                 }
                               ]
                             },
@@ -355,7 +355,7 @@
                                   "not": {}
                                 },
                                 {
-                                  "$ref": "#/definitions/MySchema/properties/button/properties/general/anyOf/0/anyOf/1/properties/rest/anyOf/0/anyOf/1"
+                                  "$ref": "#/definitions/uinity/properties/button/properties/general/anyOf/0/anyOf/1/properties/rest/anyOf/0/anyOf/1"
                                 }
                               ]
                             },
@@ -372,7 +372,7 @@
                                   "not": {}
                                 },
                                 {
-                                  "$ref": "#/definitions/MySchema/properties/button/properties/general/anyOf/0/anyOf/1/properties/rest/anyOf/0/anyOf/1"
+                                  "$ref": "#/definitions/uinity/properties/button/properties/general/anyOf/0/anyOf/1/properties/rest/anyOf/0/anyOf/1"
                                 }
                               ]
                             },
@@ -410,19 +410,19 @@
                                         "type": "object",
                                         "properties": {
                                           "rest": {
-                                            "$ref": "#/definitions/MySchema/properties/button/properties/general/anyOf/0/anyOf/1/properties/rest"
+                                            "$ref": "#/definitions/uinity/properties/button/properties/general/anyOf/0/anyOf/1/properties/rest"
                                           },
                                           "hover": {
-                                            "$ref": "#/definitions/MySchema/properties/button/properties/general/anyOf/0/anyOf/1/properties/hover"
+                                            "$ref": "#/definitions/uinity/properties/button/properties/general/anyOf/0/anyOf/1/properties/hover"
                                           },
                                           "active": {
-                                            "$ref": "#/definitions/MySchema/properties/button/properties/general/anyOf/0/anyOf/1/properties/active"
+                                            "$ref": "#/definitions/uinity/properties/button/properties/general/anyOf/0/anyOf/1/properties/active"
                                           },
                                           "focus": {
-                                            "$ref": "#/definitions/MySchema/properties/button/properties/general/anyOf/0/anyOf/1/properties/focus"
+                                            "$ref": "#/definitions/uinity/properties/button/properties/general/anyOf/0/anyOf/1/properties/focus"
                                           },
                                           "disabled": {
-                                            "$ref": "#/definitions/MySchema/properties/button/properties/general/anyOf/0/anyOf/1/properties/disabled"
+                                            "$ref": "#/definitions/uinity/properties/button/properties/general/anyOf/0/anyOf/1/properties/disabled"
                                           }
                                         },
                                         "additionalProperties": false
@@ -452,10 +452,10 @@
                                     "maxItems": 2,
                                     "items": [
                                       {
-                                        "$ref": "#/definitions/MySchema/properties/button/properties/general/anyOf/0/anyOf/1/properties/byWindowWidth/anyOf/0/anyOf/1/items/items/0"
+                                        "$ref": "#/definitions/uinity/properties/button/properties/general/anyOf/0/anyOf/1/properties/byWindowWidth/anyOf/0/anyOf/1/items/items/0"
                                       },
                                       {
-                                        "$ref": "#/definitions/MySchema/properties/button/properties/general/anyOf/0/anyOf/1/properties/byWindowWidth/anyOf/0/anyOf/1/items/items/1"
+                                        "$ref": "#/definitions/uinity/properties/button/properties/general/anyOf/0/anyOf/1/properties/byWindowWidth/anyOf/0/anyOf/1/items/items/1"
                                       }
                                     ]
                                   }
@@ -482,10 +482,10 @@
                                     "maxItems": 2,
                                     "items": [
                                       {
-                                        "$ref": "#/definitions/MySchema/properties/button/properties/general/anyOf/0/anyOf/1/properties/byWindowWidth/anyOf/0/anyOf/1/items/items/0"
+                                        "$ref": "#/definitions/uinity/properties/button/properties/general/anyOf/0/anyOf/1/properties/byWindowWidth/anyOf/0/anyOf/1/items/items/0"
                                       },
                                       {
-                                        "$ref": "#/definitions/MySchema/properties/button/properties/general/anyOf/0/anyOf/1/properties/byWindowWidth/anyOf/0/anyOf/1/items/items/1"
+                                        "$ref": "#/definitions/uinity/properties/button/properties/general/anyOf/0/anyOf/1/properties/byWindowWidth/anyOf/0/anyOf/1/items/items/1"
                                       }
                                     ]
                                   }
@@ -512,10 +512,10 @@
                                     "maxItems": 2,
                                     "items": [
                                       {
-                                        "$ref": "#/definitions/MySchema/properties/button/properties/general/anyOf/0/anyOf/1/properties/byWindowWidth/anyOf/0/anyOf/1/items/items/0"
+                                        "$ref": "#/definitions/uinity/properties/button/properties/general/anyOf/0/anyOf/1/properties/byWindowWidth/anyOf/0/anyOf/1/items/items/0"
                                       },
                                       {
-                                        "$ref": "#/definitions/MySchema/properties/button/properties/general/anyOf/0/anyOf/1/properties/byWindowWidth/anyOf/0/anyOf/1/items/items/1"
+                                        "$ref": "#/definitions/uinity/properties/button/properties/general/anyOf/0/anyOf/1/properties/byWindowWidth/anyOf/0/anyOf/1/items/items/1"
                                       }
                                     ]
                                   }
@@ -542,10 +542,10 @@
                                     "maxItems": 2,
                                     "items": [
                                       {
-                                        "$ref": "#/definitions/MySchema/properties/button/properties/general/anyOf/0/anyOf/1/properties/byWindowWidth/anyOf/0/anyOf/1/items/items/0"
+                                        "$ref": "#/definitions/uinity/properties/button/properties/general/anyOf/0/anyOf/1/properties/byWindowWidth/anyOf/0/anyOf/1/items/items/0"
                                       },
                                       {
-                                        "$ref": "#/definitions/MySchema/properties/button/properties/general/anyOf/0/anyOf/1/properties/byWindowWidth/anyOf/0/anyOf/1/items/items/1"
+                                        "$ref": "#/definitions/uinity/properties/button/properties/general/anyOf/0/anyOf/1/properties/byWindowWidth/anyOf/0/anyOf/1/items/items/1"
                                       }
                                     ]
                                   }
@@ -572,10 +572,10 @@
                                     "maxItems": 2,
                                     "items": [
                                       {
-                                        "$ref": "#/definitions/MySchema/properties/button/properties/general/anyOf/0/anyOf/1/properties/byWindowWidth/anyOf/0/anyOf/1/items/items/0"
+                                        "$ref": "#/definitions/uinity/properties/button/properties/general/anyOf/0/anyOf/1/properties/byWindowWidth/anyOf/0/anyOf/1/items/items/0"
                                       },
                                       {
-                                        "$ref": "#/definitions/MySchema/properties/button/properties/general/anyOf/0/anyOf/1/properties/byWindowWidth/anyOf/0/anyOf/1/items/items/1"
+                                        "$ref": "#/definitions/uinity/properties/button/properties/general/anyOf/0/anyOf/1/properties/byWindowWidth/anyOf/0/anyOf/1/items/items/1"
                                       }
                                     ]
                                   }
@@ -602,10 +602,10 @@
                                     "maxItems": 2,
                                     "items": [
                                       {
-                                        "$ref": "#/definitions/MySchema/properties/button/properties/general/anyOf/0/anyOf/1/properties/byWindowWidth/anyOf/0/anyOf/1/items/items/0"
+                                        "$ref": "#/definitions/uinity/properties/button/properties/general/anyOf/0/anyOf/1/properties/byWindowWidth/anyOf/0/anyOf/1/items/items/0"
                                       },
                                       {
-                                        "$ref": "#/definitions/MySchema/properties/button/properties/general/anyOf/0/anyOf/1/properties/byWindowWidth/anyOf/0/anyOf/1/items/items/1"
+                                        "$ref": "#/definitions/uinity/properties/button/properties/general/anyOf/0/anyOf/1/properties/byWindowWidth/anyOf/0/anyOf/1/items/items/1"
                                       }
                                     ]
                                   }
@@ -632,10 +632,10 @@
                                     "maxItems": 2,
                                     "items": [
                                       {
-                                        "$ref": "#/definitions/MySchema/properties/button/properties/general/anyOf/0/anyOf/1/properties/byWindowWidth/anyOf/0/anyOf/1/items/items/0"
+                                        "$ref": "#/definitions/uinity/properties/button/properties/general/anyOf/0/anyOf/1/properties/byWindowWidth/anyOf/0/anyOf/1/items/items/0"
                                       },
                                       {
-                                        "$ref": "#/definitions/MySchema/properties/button/properties/general/anyOf/0/anyOf/1/properties/byWindowWidth/anyOf/0/anyOf/1/items/items/1"
+                                        "$ref": "#/definitions/uinity/properties/button/properties/general/anyOf/0/anyOf/1/properties/byWindowWidth/anyOf/0/anyOf/1/items/items/1"
                                       }
                                     ]
                                   }
@@ -669,7 +669,7 @@
                       "additionalProperties": {
                         "type": "object",
                         "additionalProperties": {
-                          "$ref": "#/definitions/MySchema/properties/button/properties/general/anyOf/0/anyOf/1"
+                          "$ref": "#/definitions/uinity/properties/button/properties/general/anyOf/0/anyOf/1"
                         }
                       }
                     }
@@ -720,7 +720,7 @@
                                     "not": {}
                                   },
                                   {
-                                    "$ref": "#/definitions/MySchema/properties/button/properties/general/anyOf/0/anyOf/1"
+                                    "$ref": "#/definitions/uinity/properties/button/properties/general/anyOf/0/anyOf/1"
                                   }
                                 ]
                               },
