@@ -9,14 +9,12 @@ export const getValueByPointer = ({
   pointer,
   touchedPointers = [pointer],
   maxDeep = 100,
-  throwIfUndefined = true,
   recursive = true,
 }: {
   uinityConfigSource: Record<string, any>
   pointer: string
   touchedPointers?: string[]
   maxDeep?: number
-  throwIfUndefined?: boolean
   recursive?: boolean
 }): any => {
   const touchedPointersString = touchedPointers.join(' -> ')
@@ -47,7 +45,6 @@ export const getValueByPointer = ({
     pointer: nextPointer,
     touchedPointers,
     maxDeep,
-    throwIfUndefined,
     recursive,
   })
 }

@@ -31,10 +31,12 @@ export const generateUinityConfigFromSource = ({
     string,
     any
   >
-  const uinityConfigRaw = variablifyUinityConfigSource({ uinityConfigSource })
-  const uinityConfigInfinitified = infinitifyUinityConfig({ uinityConfigRaw })
+  const { uinityConfigVariablified } = variablifyUinityConfigSource({ uinityConfigSource })
+  const uinityConfigInfinitified = infinitifyUinityConfig({ uinityConfigRaw: uinityConfigVariablified })
+  // we validate with Infinity values
   validateUinityConfig({ uinityConfig: uinityConfigInfinitified })
-  fs.writeFileSync(distPath, JSON.stringify(uinityConfigRaw, null, 2))
+  // we save without Infinity values, because JSON.stringify does not support Infinity
+  fs.writeFileSync(distPath, JSON.stringify(uinityConfigVariablified, null, 2))
   if (verbose) {
     console.info(`Config saved to ${distPath}`)
   }

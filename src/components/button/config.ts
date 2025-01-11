@@ -21,22 +21,24 @@ import {
 } from '@/lib/zod.js'
 import { z } from 'zod'
 
-export const zButtonStyleCoreConfigured = z.object({
-  gapHorizontalAccessoryText: zNumberOrStringOptionalNullable,
-  textFont: zStringOptionalNullable,
-  textWeight: zNumberOrStringOptionalNullable,
-  textSize: zNumberOrStringOptionalNullable,
-  textLineHeight: zNumberOrStringOptionalNullable,
-  borderWidth: zNumberOrStringOptionalNullable,
-  minHeight: zNumberOrStringOptionalNullable,
-  backgroundColor: zColorValueOptionalNullable,
-  borderColor: zColorValueOptionalNullable,
-  textColor: zColorValueOptionalNullable,
-  iconColor: zColorValueOptionalNullable,
-  iconSize: zNumberOrStringOptionalNullable,
-  iconSettings: zRecordOfStringsOptionalNullable,
-  iconVariant: zStringOptionalNullable,
-})
+export const zButtonStyleCoreConfigured = z
+  .object({
+    gapHorizontalAccessoryText: zNumberOrStringOptionalNullable,
+    textFont: zStringOptionalNullable,
+    textWeight: zNumberOrStringOptionalNullable,
+    textSize: zNumberOrStringOptionalNullable,
+    textLineHeight: zNumberOrStringOptionalNullable,
+    borderWidth: zNumberOrStringOptionalNullable,
+    minHeight: zNumberOrStringOptionalNullable,
+    backgroundColor: zColorValueOptionalNullable,
+    borderColor: zColorValueOptionalNullable,
+    textColor: zColorValueOptionalNullable,
+    iconColor: zColorValueOptionalNullable,
+    iconSize: zNumberOrStringOptionalNullable,
+    iconSettings: zRecordOfStringsOptionalNullable,
+    iconVariant: zStringOptionalNullable,
+  })
+  .strict()
 export type ButtonStyleCoreConfigured = z.output<typeof zButtonStyleCoreConfigured>
 
 export const getButtonStyleCoreClearByConfigured = ({

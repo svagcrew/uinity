@@ -10,10 +10,12 @@ import { objectAssignExceptUndefined, omit } from '@/lib/utils.js'
 import { zNumberOrStringOptionalNullable } from '@/lib/zod.js'
 import { z } from 'zod'
 
-export const zIconStyleRootConfigured = z.object({
-  color: zColorValueOptionalNullable,
-  size: zNumberOrStringOptionalNullable,
-})
+export const zIconStyleRootConfigured = z
+  .object({
+    color: zColorValueOptionalNullable,
+    size: zNumberOrStringOptionalNullable,
+  })
+  .strict()
 export type IconStyleRootConfigured = z.output<typeof zIconStyleRootConfigured>
 
 export const getIconStyleRootClearByConfigured = ({

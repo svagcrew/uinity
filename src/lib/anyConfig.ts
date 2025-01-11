@@ -248,35 +248,6 @@ export const getZAnyConfig = <TZodSchema extends z.ZodObject<any, any, any>>({
       .optional()
       .nullable(),
   })
-  // TODO: validate in another specific function where it needed
-  // .superRefine((data, ctx) => {
-  //   const settingsItemsNames = Object.keys(data.settings ?? {})
-  //   const settingsItemsNamesAndValues: Record<string, [string, string[]]> = settingsItemsNames.reduce(
-  //     (acc, settingName) => {
-  //       return {
-  //         ...acc,
-  //         [settingName]: Object.keys(data.settings?.[settingName] ?? {}),
-  //       }
-  //     },
-  //     {}
-  //   )
-  //   for (const variantName of Object.keys(data.variants ?? {})) {
-  //     const variant = data.variants?.[variantName]
-  //     if (!variant) {
-  //       continue
-  //     }
-  //     const variantSettingsItemsNames = Object.keys(variant.settings ?? {})
-  //     for (const variantSettingName of variantSettingsItemsNames) {
-  //       if (!settingsItemsNamesAndValues[variantSettingName].includes(variantSettingName)) {
-  //         ctx.addIssue({
-  //           code: 'custom',
-  //           message: `Variant "${variantName}" has setting "${variantSettingName}" which is not present in settings`,
-  //         })
-  //         return
-  //       }
-  //     }
-  //   }
-  // })
 }
 
 export const extractSettingsFromProps = <TConfig extends AnyConfig<any, any> | undefined, TProps extends {}>({

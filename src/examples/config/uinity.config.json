@@ -209,6 +209,9 @@
         "overrides": {
           "rest": {
             "iconVariant": "redBig",
+            "iconSettings": {
+              "xsize": "small"
+            },
             "backgroundColor": "#0000ff",
             "textSize": 24
           },
