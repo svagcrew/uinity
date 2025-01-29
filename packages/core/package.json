@@ -39,7 +39,6 @@
     "dedent": "^1.5.3",
     "lodash": "^4.17.21",
     "svag-deep-map": "^0.1.14",
-    "svag-utils": "^0.1.9",
     "zod": "^3.23.8"
   },
   "devDependencies": {

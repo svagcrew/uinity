@@ -3,8 +3,15 @@ import { zColorValue } from '@/utils/color.js'
 import { toCss, zOptionalNumberOrString, zOptionalString } from '@/utils/other.js'
 import { $ } from '@/utils/variables.js'
 import camelCasify from 'lodash/camelCase.js'
-import { omit } from 'svag-utils'
+import lodashOmit from 'lodash/omit.js'
 import { z } from 'zod'
+
+const omit = <TObject extends Object, TKeys extends keyof TObject>(
+  obj: TObject,
+  keys: TKeys[]
+): Omit<TObject, TKeys> => {
+  return lodashOmit(obj, keys)
+}
 
 export const textFonts = ['common', 'special', 'alternate'] as const
 export const zTextFontName = z.enum(textFonts)

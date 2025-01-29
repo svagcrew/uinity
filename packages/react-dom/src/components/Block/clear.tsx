@@ -4,10 +4,17 @@ import { forwardRefIgnoreTypes, mark } from '@/utils.js'
 import { toCss } from '@uinity/core/dist/utils/other.js'
 import isArray from 'lodash/isArray.js'
 import isString from 'lodash/isString.js'
+import lodashPick from 'lodash/pick.js'
 import type { CSSProperties } from 'react'
 import type { RuleSet } from 'styled-components'
 import { css, styled } from 'styled-components'
-import { pick } from 'svag-utils/dist/utils/pick.js'
+
+export const pick = <TObject extends Object, TKeys extends keyof TObject>(
+  obj: TObject,
+  keys: TKeys[]
+): Pick<TObject, TKeys> => {
+  return lodashPick(obj, keys)
+}
 
 type BlockStyleCore = {
   /** display: {value}; */
