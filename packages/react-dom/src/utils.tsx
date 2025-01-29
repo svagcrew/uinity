@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
+import getHash from 'hash-it'
 import isNil from 'lodash/isNil.js'
 import React from 'react'
-import { getHash } from 'svag-utils'
 
 export type As = keyof JSX.IntrinsicElements
 // export type AsProps<T extends As | undefined> = T extends As ? JSX.IntrinsicElements[T] : { [key: string]: any }

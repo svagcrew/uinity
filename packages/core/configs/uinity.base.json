@@ -402,7 +402,7 @@
       "headerBorderColor": "#ccc",
       "footerBorderColor": "#ccc",
       "sidebarBorderColor": "#ccc",
-      "sidebarBackgroundColor": "#000",
+      "sidebarBackgroundColor": "#fff",
       "modalBorderColor": "#ccc"
     },
     "size": {
@@ -423,10 +423,10 @@
         "footerPaddingBottom": 24
       },
       "desktop": {
-        "layoutMaxWidth": 1440,
+        "layoutMaxWidth": null,
         "contentMaxWidth": 1440,
         "textMaxWidth": 800,
-        "sidebarWidth": 240,
+        "sidebarWidth": 280,
         "sidebarMarginEnd": 32,
         "headerBorderWidth": 1,
         "footerBorderWidth": 1,
@@ -881,20 +881,20 @@
     },
     "size": {
       "xs": {
-        "width": 16,
-        "height": 16
+        "height": 16,
+        "maxWidth": 800
       },
       "s": {
-        "width": 24,
-        "height": 24
+        "height": 24,
+        "maxWidth": 800
       },
       "m": {
-        "width": 32,
-        "height": 32
+        "height": 32,
+        "maxWidth": 800
       },
       "l": {
-        "width": 40,
-        "height": 40
+        "height": 40,
+        "maxWidth": 800
       }
     }
   },
