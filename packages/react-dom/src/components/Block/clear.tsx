@@ -15,7 +15,6 @@ export const pick = <TObject extends Object, TKeys extends keyof TObject>(
 ): Pick<TObject, TKeys> => {
   return lodashPick(obj, keys)
 }
-
 type BlockStyleCore = {
   /** display: {value}; */
   d?: CSSProperties['display']
